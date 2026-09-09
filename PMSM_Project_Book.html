@@ -567,6 +567,101 @@
             font-size: 16px;
         }
 
+        
+        /* Didactic Pedagogical Callout Cards */
+        .didactic-box {
+            border-radius: 14px;
+            padding: 22px 26px;
+            margin: 26px 0;
+            position: relative;
+            line-height: 1.7;
+            box-shadow: var(--shadow-card);
+            font-size: 14.5px;
+        }
+        .didactic-box h4 {
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-family: 'Rubik', sans-serif;
+            font-weight: 700;
+        }
+        .didactic-intuition {
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.08), rgba(16, 185, 129, 0.06));
+            border: 1px solid rgba(0, 210, 255, 0.35);
+            border-right: 5px solid var(--accent-cyan);
+        }
+        .didactic-intuition h4 { color: var(--accent-cyan); }
+
+        .didactic-math {
+            background: linear-gradient(135deg, rgba(157, 80, 187, 0.08), rgba(59, 130, 246, 0.08));
+            border: 1px solid rgba(157, 80, 187, 0.35);
+            border-right: 5px solid var(--accent-purple);
+        }
+        .didactic-math h4 { color: #c4b5fd; }
+
+        .didactic-pitfall {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(245, 158, 11, 0.06));
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            border-right: 5px solid var(--accent-rose);
+        }
+        .didactic-pitfall h4 { color: #fca5a5; }
+
+        .didactic-lab {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(0, 210, 255, 0.06));
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-right: 5px solid var(--accent-green);
+        }
+        .didactic-lab h4 { color: #6ee7b7; }
+
+        /* Step-by-step numerical walkthrough container */
+        .walkthrough-box {
+            background: rgba(5, 8, 17, 0.9);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: 14px;
+            padding: 24px;
+            margin: 26px 0;
+            box-shadow: var(--shadow-card);
+        }
+        .walkthrough-box h4 {
+            color: var(--accent-amber);
+            font-size: 16.5px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-item {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 16px;
+            align-items: flex-start;
+        }
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-amber);
+            color: #000;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .step-content {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+        .step-content strong {
+            color: #fff;
+        }
+    
         /* Figure Display Boxes */
         .fig-wrapper {
             background: var(--bg-card);
@@ -1086,48 +1181,76 @@
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-01">
                     <span class="chapter-badge">פרק 01</span>
-                    <h2>רקע מדעי וטופולוגיית Series-End VSI</h2>
+                    <h2>רקע מדעי, אתגרי הנע חשמלי וטופולוגיית Series-End VSI</h2>
                     
                     <p>
-                        במערכות הנע תעשייתיות וכלי רכב חשמליים מודרניים, ממירי מתח מסורתיים בעלי שתי רמות (<span class="en-term">2-Level VSI</span>) נתקלים במגבלות פיזיקליות של מתח הפריצה של המוליכים למחצה, תכולת הרמוניות גבוהה (<span class="en-term">THD</span>) ומתחי Common-Mode גבוהים המאיצים שחיקת מיסבים.
+                        במערכות הנע תעשייתיות מתקדמות, רכבים חשמליים (<span class="en-term">EV</span>) ורחפני תעופה, ממירי מתח מסורתיים בעלי שתי רמות (<span class="en-term">2-Level VSI</span>) מתקרבים לגבול יכולתם הפיזיקלית. המגבלות המרכזיות כוללות:
                     </p>
-                    <p>
-                        פתרון ה-Open-End Winding המקובל משתמש בשני ממירים משני צידי סלילי הסטטור. אולם, שיטה זו דרשה באופן מסורתי שני מקורות DC נפרדים ומבודדים גלוונית כדי למנוע יצירת לולאות זרם.
-                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>מתחי פריצה והפסדי מיתוג:</strong> מתח ה-DC המלא נופל ישירות על כל טרנזיסטור, מה שמחייב שימוש ברכיבי סיליקון בעלי עמידות מתח כפולה ומגדיל משמעותית את הפסדי המיתוג.</li>
+                        <li><strong>עיוות הרמוני כולל (THD גבוה):</strong> מתח המוצא בעל 2 רמות בלבד יוצר קפיצות מתח חדות ($dv/dt$ קיצוני), המחייבות מסננים מגושמים ומגבירות רעש אלקטרומגנטי (EMI).</li>
+                        <li><strong>מתחי Common-Mode וזרמי מיסבים:</strong> מיתוג מהיר גורם למתחי ציפה גבוהים בנקודת הנייטרל, המובילים לפריקות קשתיות במיסבי המנוע (Bearing Currents) וקיצור דרמטי באורך חיי המערכת.</li>
+                    </ul>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig1_se_vsi_system_overview.jpg" alt="SE-VSI System Architecture" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 1.1:</strong> ארכיטקטורת המערכת הכוללת: מנוע PMSM בעל קצוות פתוחים המוזן מממיר Series-End VSI עם קבלי ציפה.</div>
+                        <div class="fig-caption"><strong>איור 1.1:</strong> ארכיטקטורת המערכת הכוללת: מנוע PMSM בעל קצוות סלילים פתוחים (Open-End Windings) המוזן מממיר Series-End VSI עם קבלי ציפה ובקרת OEPC.</div>
                     </div>
 
-                    <h3>עקרון הפעולה של ממיר Series-End VSI</h3>
+                    <h3>טופולוגיית סלילים פתוחים בטור (Series-End VSI) — לא כוכב ולא משולש!</h3>
                     <p>
-                        טופולוגיית ה-Series-End VSI פותרת את מגבלת הספק הכפול על-ידי שימוש בספק DC ראשי יחיד ($V_{dc1}$) עבור הממיר הראשי, בעוד שהממיר המשני מוזן מקבלי ציפה (<span class="en-term">Floating DC-link Capacitors</span>) הנטענים ונפרקים מחזורית מענפי הממיר עצמם:
+                        במנוע תלת-פאזי קונבנציונלי, שלושת הסלילים מחוברים בקצה אחד בנקודת כוכב משותפת ($N$) או במשולש ($\Delta$). לעומת זאת, בטופולוגיית <strong>Open-End Winding (OW-PMSM)</strong> כל ששת קצות הסלילים מנותקים ונגישים פיזית לחיבור חיצוני.
                     </p>
-
-                    <div class="math-block">
-                        $$V_{\text{phase}}(t) = V_{\text{main}}(t) - V_{\text{series}}(t)$$
-                        $$V_{dc2} = \frac{1}{2} V_{dc1} \quad \Longrightarrow \quad \text{השגת 4 רמות מתח אפקטיביות!}$$
-                    </div>
-
-                    <h3>אתגר זרמי סדרה אפס (Zero-Sequence Current - ZSC)</h3>
                     <p>
-                        מכיוון שנקודת הכוכב של המנוע אינה סגורה והממיר המשני מחובר ישירות לקצוות הסלילים ללא שנאי בידוד, נוצר מסלול סגור למתחי ה-Common-Mode. מתחים אלו מניעים זרם סדרה אפס ($i_0$):
+                        בטופולוגיית <strong>Series-End VSI (איור 1.2 להלן, לפי איור 2 מהמאמר)</strong>, סלילי המנוע מחוברים <strong>בטור ישיר בין 4 ענפי הממיר העוקבים</strong> ($L_1, L_2, L_3, L_4$):
                     </p>
-
-                    <div class="math-block">
-                        $$i_0 = \frac{1}{3}(i_a + i_b + i_c)$$
-                        $$L_0 \frac{di_0}{dt} + R_0 i_0 = v_0 = \frac{1}{3}(v_{an} + v_{bn} + v_{cn})$$
-                    </div>
+                    <ul class="bullet-list">
+                        <li><strong>סליל פאזה A ($Z_a$):</strong> מחובר בין אמצע ענף 1 ($v_1$) לבין אמצע ענף 2 ($v_2$). מתח הפאזה הינו: $v_a = v_1 - v_2$.</li>
+                        <li><strong>סליל פאזה B ($Z_b$):</strong> מחובר בין אמצע ענף 2 ($v_2$) לבין אמצע ענף 3 ($v_3$). מתח הפאזה הינו: $v_b = v_2 - v_3$.</li>
+                        <li><strong>סליל פאזה C ($Z_c$):</strong> מחובר בין אמצע ענף 3 ($v_3$) לבין אמצע ענף 4 ($v_4$). מתח הפאזה הינו: $v_c = v_3 - v_4$.</li>
+                    </ul>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig2_se_vsi_topology_and_zsc_path.jpg" alt="SE-VSI Topology & ZSC Path" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 1.2:</strong> מעגל התמורה החשמלי של טופולוגיית Series-End ומסלול הזרימה הסגור של זרם סדר-אפס ($i_0$).</div>
+                        <div class="fig-caption"><strong>איור 1.2 (איור 2 מהמאמר):</strong> סכמת המעגל החשמלי של ממיר Series-End VSI בעל 4 ענפים ($L_1-L_4$) וסלילי מנוע טוריים ($Z_a, Z_b, Z_c$). קו החצים האדום ממחיש את מסלול הלולאה הסגור שבו עלול להתפתח זרם סדרה אפס ($i_0$).</div>
+                    </div>
+
+                    <div class="didactic-box didactic-intuition">
+                        <h4>💡 אינטואיציה פיזיקלית: מדוע חיבור טורי בין ענפים מייצר 4 רמות מתח אפקטיביות?</h4>
+                        מכיוון שמתח כל פאזה נגזר מהפרש הפוטנציאלים בין שני ענפים עוקבים ($v_x = v_k - v_{k+1}$), וכל ענף יכול להתחבר לפוטנציאל $+V_{dc}/2$ או $-V_{dc}/2$, מתח הפאזה יכול לקבל רמות מיתוג מגוונות: $+V_{dc}$, $+V_{dc}/2$, $0$, $-V_{dc}/2$, $-V_{dc}$. התוצאה היא <strong>מתח רב-רמתי (Multi-level)</strong> בעל איכות גל עילאית, המושג באמצעות ספק DC יחיד וארבעה ענפים בלבד!
+                    </div>
+
+                    <h3>אתגר זרמי סדרה אפס (Zero-Sequence Current - ZSC) בלולאה הסגורה</h3>
+                    <p>
+                        אולם, ליתרון העצום של החיבור הטורי יש מחיר פיזיקלי קריטי. נבחן את סכום המתחים הנופלים על שלושת סלילי המנוע לאורך המסלול הטורי:
+                    </p>
+
+                    <div class="math-block">
+                        $$\sum_{x \in \{a,b,c\}} v_x = v_a + v_b + v_c = (v_1 - v_2) + (v_2 - v_3) + (v_3 - v_4) = v_1 - v_4$$
                     </div>
 
                     <p>
-                        ללא בקרה אקטיבית, השראות סדר-אפס ($L_0$) במנועי PMSM היא קטנה ביותר (נמוכה בדרך כלל פי 3-5 מהשראות $L_d, L_q$), מה שגורם לכך שאפילו רכיב מתח Common-Mode מזערי יוצר זרמי ZSC ענקיים המשבשים כליל את פעולת המנוע.
+                        <strong>שים לב לתוצאה המפתיעה:</strong> המתח הכולל של הלולאה תלוי אך ורק בהפרש המיתוג בין הענף הראשון ($L_1$) לענף האחרון ($L_4$)!
                     </p>
+                    <ul class="bullet-list">
+                        <li>אם $v_1 = v_4$, אזי סכום המתחים הוא אפס, ולא מתפתח זרם סדרה אפס.</li>
+                        <li>אם $v_1 \neq v_4$ (למשל, ענף 1 מחובר למתח העליון $+V_{dc}$ וענף 4 לאדמה $0$), נופל מתח DC מלא על סכום שלושת הסלילים בטור!</li>
+                    </ul>
+
+                    <div class="didactic-box didactic-math">
+                        <h4>📐 פיתוח מתמטי: משוואת הדינמיקה של זרם הסדרה האפס ($i_0$)</h4>
+                        נגדיר את זרם הסדרה האפס כסכום זרמי הפאזות:
+                        $$i_0 = \frac{i_a + i_b + i_c}{3}$$
+                        משוואת המתחים של רכיב הסדרה האפס במנוע PMSM נתונה על-ידי:
+                        $$v_0 = \frac{v_a + v_b + v_c}{3} = \frac{v_1 - v_4}{3} = R_0 i_0 + L_0 \frac{di_0}{dt} + e_0$$
+                        כאשר $R_0$ היא התנגדות הסדרה האפס, $L_0$ היא השראות הסדרה האפס של הסטטור, ו-$e_0$ הוא הכא"מ המושרה של הרמוניה שלישית (שבמנועי PMSM סינוסואידליים הינו זניח).
+                    </div>
+
+                    <div class="didactic-box didactic-pitfall">
+                        <h4>⚠️ מלכודת הנדסית: מדוע השראות $L_0$ נמוכה כל כך ומהווה סכנה למנוע?</h4>
+                        במנועי PMSM סימטריים, השטף המגנטי שיוצרים זרמי סדרה אפס ($i_0$) הוא הומופולרי (זהה בכל שלושת הפאזות בזמן ובמרחב). כתוצאה מכך, <strong>אין שום שטף הדדי בין הפאזות</strong> שמסייע בבלימת הזרם! השראות $L_0$ קטנה בדרך כלל פי 3 עד פי 5 מההשראות הסינכרונית ($L_d, L_q$).<br>
+                        <strong>המשמעות ההרסנית:</strong> אפילו הפרש מתח מזערי או פעימת מיתוג קצרה בין $v_1$ ל-$v_4$ גורמים לנגזרת זרם ענקית ($di_0/dt = \Delta v / L_0$). זרם ה-ZSC מתפרץ לממדים של אמפרים רבים, מעוות את זרמי הפאזה לגל דמוי טרפז, גורם לחימום קטלני של הסטטור ומפיל את הממיר על זרם יתר!
+                    </div>
                 </section>
 
                 <!-- ============================================================ -->
@@ -1135,115 +1258,218 @@
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-02">
                     <span class="chapter-badge">פרק 02</span>
-                    <h2>אלגוריתם OEPC ומבנה טבלת הניתוב בת 96 המצבים</h2>
+                    <h2>אלגוריתם בקרת שגיאה אופטימלית (OEPC) ומבנה טבלת 96 המצבים</h2>
+
+                    <h3>המגבלות של שיטות הבקרה הקיימות: מדוע נדרש OEPC?</h3>
+                    <p>
+                        בספרות המדעית הוצעו מספר גישות לטיפול באתגר ה-ZSC בממירי סדרה, אך כולן סובלות מנחיתות מהותית:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>שיטת חלוקת הזמן (TDM - Time-Division Multiplexing):</strong> מחלקת כל מחזור מיתוג לשני חצאים מובחנים — מחצית לבקרת זרמי הפאזות הדיפרנציאליים, ומחצית שנייה לדיכוי ה-ZSC. גישה זו "מבזבזת" 50% מזמן המיתוג, מגדילה משמעותית את הריפל, ומגבילה את רוחב הפס הדינמי של מהירות המנוע.</li>
+                        <li><strong>אפנון וקטורי מוגבל (CBPWM with Zero-State Selection):</strong> מגבילה את מרחב הוקטורים רק לוקטורים שבהם $v_1 = v_4$. הגבלה זו מפחיתה בכ-15% את ניצולת מתח ה-DC ומאלצת הזרקת מתחי Common-Mode מורכבים.</li>
+                    </ul>
 
                     <p>
-                        שיטות בקרה קונבנציונליות כמו <span class="en-term">TDM (Time-Division Multiplexing)</span> מחלקות את מחזור המיתוג לפרקי זמן קבועים: פרק אחד לבקרת זרמי הפאזות הדיפרנציאליים, ופרק נפרד לדיכוי ה-ZSC. גישה זו סובלת מאיבוד ניצולת מתח ה-DC, הגדלת ריפל הזרם, והגבלת רוחב הסרט הדינמי.
-                    </p>
-                    <p>
-                        בקרת <strong>OEPC (Optimal Error-Priority Control)</strong> נוקטת בגישה מהפכנית: חישוב ישיר של כלל שגיאות הזרם וסיווגן בזמן אמת, כך שכל פסיקת מיתוג מתקנת בו-זמנית הן את הפאזה בעלת השגיאה הדחופה ביותר והן את זרם ה-ZSC!
+                        <strong>מהפכת ה-OEPC (Optimal Error-Priority Control):</strong> במקום להתפשר על חלוקת זמן או להגביל את הממיר, אלגוריתם ה-OEPC ממפה בזמן-אמת את <strong>כל שש שגיאות הזרם של המערכת</strong>, ממיין אותן לפי חומרתן, ובוחר פסיקת מיתוג יחידה מתוך טבלת 96-LUT שמתקנת <strong>בו-זמנית</strong> הן את הפאזה בעלת השגיאה הדחופה ביותר והן את זרם ה-ZSC!
                     </p>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig3_oepc_flowchart_algorithm.jpg" alt="OEPC Flowchart Algorithm" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 2.1:</strong> תרשים הזרימה של אלגוריתם ה-OEPC: דגימה, חישוב שגיאות DM ו-CM, יצירת חתימת כתובת ושליפת וקטור המיתוג.</div>
+                        <div class="fig-caption"><strong>איור 2.1:</strong> תרשים זרימה פדגוגי של אלגוריתם ה-OEPC: דגימת זרמים, חישוב 6 שגיאות, מיון עדיפות, קביעת ביט פאזה מועדפת ($F_{mp}$), הרכבת כתובת 7 ביטים ושליפת וקטור המיתוג בצעד שעון יחיד.</div>
                     </div>
 
-                    <h3>הגדרת 6 שגיאות הזרם ובחירת השגיאה הקריטית</h3>
+                    <h3>הגדרה דידקטית של 6 שגיאות הזרם</h3>
                     <p>
-                        בכל מחזור דגימה, נמדדים זרמי הפאזות $i_a, i_b, i_c$ ומחושב זרם $i_0$. מול ערכי הייחוס מוגדרות 6 שגיאות:
+                        בכל מחזור בקרה (בתדר דגימה של $20\text{ kHz}$ עד $50\text{ kHz}$), נדגמים הזרמים הרגעיים $i_a, i_b, i_c$, ומחושב רכיב ה-ZSC: $i_0 = (i_a+i_b+i_c)/3$.<br>
+                        מול ערכי הייחוס המבוקשים מהבקר העליון ($i_a^*, i_b^*, i_c^*$ ו-$i_0^* = 0$), מוגדרות 6 שגיאות:
                     </p>
+
                     <div class="math-block">
-                        $$\varepsilon_{dm}^x = i_x^* - i_x \quad (x \in \{a, b, c\}) \quad \text{--- שגיאות Differential-Mode}$$
-                        $$\varepsilon_{cm}^x = (i_x^* + i_0^*) - (i_x + i_0) \quad \text{--- שגיאות Common-Mode}$$
+                        $$\begin{aligned}
+                        e_a &= i_a^* - i_a, \quad &e_b &= i_b^* - i_b, \quad &e_c &= i_c^* - i_c \quad &\text{[שגיאות פאזה ישירות]} \\
+                        e_{ab} &= e_a - e_b, \quad &e_{bc} &= e_b - e_c, \quad &e_{ca} &= e_c - e_a \quad &\text{[שגיאות דיפרנציאליות בין פאזות]}
+                        \end{aligned}$$
                     </div>
 
+                    <h3>מיון עדיפויות בחומרה (Hardware Priority Sorting)</h3>
                     <p>
-                        עבור כל מופע, נבחרת השגיאה הקריטית $\varepsilon_{crit}(x)$ כערך בעל הגודל המוחלט המקסימלי מבין ה-DM וה-CM. דגל ה-<strong>EMP ($F_{mp}$)</strong> נקבע כ-$1$ אם שגיאות ה-DM דומיננטיות, או $0$ אם שגיאות ה-CM דורשות תיקון דחוף.
-                    </p>
-
-                    <h3>יצירת כתובת ה-LUT בת 7 ביטים</h3>
-                    <p>
-                        החלטת המיתוג נשלפת בצעד שעון יחיד באמצעות כתובת בינארית בת 7 ביטים המורכבת מ:
-                    </p>
-                    <ul class="bullet-list">
-                        <li><strong>קוד עדיפות (EPC - 3 Bits):</strong> מיון יחסי של גדלי השגיאות $|\varepsilon_a|, |\varepsilon_b|, |\varepsilon_c|$ (למשל: $A \gt B \gt C \rightarrow 110_2$).</li>
-                        <li><strong>קוד סימנים (ESC - 3 Bits):</strong> קוטביות השגיאות בכל פאזה ($+/-$).</li>
-                        <li><strong>דגל עדיפות מצב (EMP - 1 Bit):</strong> קובע את משקל דיכוי ה-ZSC מול הזרם הראשי.</li>
-                    </ul>
-
-                    <h3>טבלת הניתוב האופטימלית בת 96 המצבים (96-Entry Optimal LUT)</h3>
-                    <p>
-                        להלן דגימה מייצגת מתוך טבלת הניתוב המלאה בת 96 המצבים המוטמעת ב-FPGA:
+                        כדי להבטיח זמני תגובה של ננו-שניות ב-FPGA או ב-DSP, מתבצעת השוואה מהירה בין הערכים המוחלטים של שגיאות הפאזה: $|e_a|, |e_b|, |e_c|$.<br>
+                        קיימות בדיוק $3! = 6$ תמורות אפשריות של סדר השגיאות, המקודדות לקוד עדיפות <strong>$S_{sel}$ בן 3 ביטים</strong>:
                     </p>
 
                     <div class="table-container">
                         <table class="styled-table">
                             <thead>
                                 <tr>
+                                    <th>סדר עדיפות שגיאות (EPO)</th>
+                                    <th>משמעות הנדסית</th>
+                                    <th>קוד עדיפות בינארי ($S_{sel}$)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>$|e_a| \gt |e_b| \gt |e_c|$</td><td>פאזה A דחופה ביותר, אחריה B, ו-C הקטנה ביותר</td><td><code>000_2</code> (ABC)</td></tr>
+                                <tr><td>$|e_a| \gt |e_c| \gt |e_b|$</td><td>פאזה A דחופה ביותר, אחריה C, ו-B הקטנה ביותר</td><td><code>001_2</code> (ACB)</td></tr>
+                                <tr><td>$|e_b| \gt |e_a| \gt |e_c|$</td><td>פאזה B דחופה ביותר, אחריה A, ו-C הקטנה ביותר</td><td><code>010_2</code> (BAC)</td></tr>
+                                <tr><td>$|e_b| \gt |e_c| \gt |e_a|$</td><td>פאזה B דחופה ביותר, אחריה C, ו-A הקטנה ביותר</td><td><code>011_2</code> (BCA)</td></tr>
+                                <tr><td>$|e_c| \gt |e_a| \gt |e_b|$</td><td>פאזה C דחופה ביותר, אחריה A, ו-B הקטנה ביותר</td><td><code>100_2</code> (CAB)</td></tr>
+                                <tr><td>$|e_c| \gt |e_b| \gt |e_a|$</td><td>פאזה C דחופה ביותר, אחריה B, ו-A הקטנה ביותר</td><td><code>101_2</code> (CBA)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>קביעת ביט הפאזה המועדפת ($F_{mp}$) ודיכוי ה-ZSC</h3>
+                    <p>
+                        ביט ה-<strong>$F_{mp}$ (Favored Mode Priority)</strong> הוא "המוח" של אלגוריתם ה-OEPC. הוא מכריע האם להפעיל תיקון זרם דיפרנציאלי חזק או לתת עדיפות עליונה לריסון ה-ZSC:
+                    </p>
+                    <ul class="bullet-list">
+                        <li>אם גודל זרם ה-ZSC חורג מגבול מוגדר ($|i_0| \gt \Delta i_{0,\text{tol}}$) ונדרש תיקון חירום &larr; נקבע <strong>$F_{mp} = 0$</strong>. במצב זה נבחר וקטור מיתוג המפעיל מתח נגדי חריף של $v_1 - v_4$ לדיכוי מיידי של ה-ZSC.</li>
+                        <li>אם זרם ה-ZSC נמצא בתחום הסביר ($|i_0| \le \Delta i_{0,\text{tol}}$) ושגיאת הפאזות דומיננטית &larr; נקבע <strong>$F_{mp} = 1$</strong>. במצב זה המערכת מתמקדת במעקב סינוסואידלי מדויק של זרמי העבודה.</li>
+                    </ul>
+
+                    <h3>הרכבת כתובת ה-LUT בת 7 ביטים ושליפת וקטור המיתוג</h3>
+                    <p>
+                        כתובת הגישה לטבלת ה-LUT מורכבת משרשור שלושה שדות בינאריים:
+                    </p>
+                    <div class="math-block">
+                        $$\text{Address (7 Bits)} = \underbrace{F_{mp}}_{1 \text{ Bit}} \;\Big|\; \underbrace{S_{sel}}_{3 \text{ Bits}} \;\Big|\; \underbrace{S_{sgn}}_{3 \text{ Bits}}$$
+                    </div>
+                    <ul class="bullet-list">
+                        <li><strong>$F_{mp}$ (ביט 6):</strong> דגל עדיפות ZSC מול פאזות ($0$ או $1$).</li>
+                        <li><strong>$S_{sel}$ (ביטים 5..3):</strong> קוד עדיפות השגיאה (000 עד 101, סה"כ 6 מצבים).</li>
+                        <li><strong>$S_{sgn}$ (ביטים 2..0):</strong> סימני השגיאה של שלושת הפאזות: $\text{sign}(e_a), \text{sign}(e_b), \text{sign}(e_c)$ ($0$ לשלילי, $1$ לחיובי). מתוך 8 קומבינציות סימנים, $111$ ו-$000$ אינן מתקיימות במערכת מאוזנת ללא ZSC קיצוני.</li>
+                    </ul>
+                    <p>
+                        סך כל הכתובות הפעילות בטבלה: $2 \times 6 \times 8 = 96$ מצבים!
+                    </p>
+
+                    <!-- NUMERICAL WALKTHROUGH BOX -->
+                    <div class="walkthrough-box">
+                        <h4>🔍 דוגמה מספרית מודרכת: חישוב צעד-אחר-צעד של אלגוריתם ה-OEPC</h4>
+                        <p style="color:var(--text-muted); margin-bottom:14px;">
+                            נניח כי ברגע דגימה מסוים נתונים זרמי הייחוס והזרמים הנמדדים הבאים:
+                        </p>
+                        <div class="step-item">
+                            <span class="step-num">1</span>
+                            <div class="step-content">
+                                <strong>ערכי זרם רגעיים:</strong><br>
+                                ייחוס מבוקש: $i_a^* = +4.0\text{A}, \quad i_b^* = -2.0\text{A}, \quad i_c^* = -2.0\text{A}$ (סכום $= 0$).<br>
+                                זרם נמדד בפועל: $i_a = +3.2\text{A}, \quad i_b = -1.7\text{A}, \quad i_c = -2.1\text{A}$.<br>
+                                זרם סדרה אפס קיים: $i_0 = (3.2 - 1.7 - 2.1)/3 = -0.20\text{A}$.
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">2</span>
+                            <div class="step-content">
+                                <strong>חישוב שגיאות הזרם:</strong><br>
+                                $e_a = i_a^* - i_a = 4.0 - 3.2 = \mathbf{+0.80\text{A}}$ (חיובי, פאזה A בחסר זרם גדול!)<br>
+                                $e_b = i_b^* - i_b = -2.0 - (-1.7) = \mathbf{-0.30\text{A}}$ (שלילי)<br>
+                                $e_c = i_c^* - i_c = -2.0 - (-2.1) = \mathbf{+0.10\text{A}}$ (חיובי)
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">3</span>
+                            <div class="step-content">
+                                <strong>מיון גדלי שגיאות (Hardware Sorting):</strong><br>
+                                $|e_a| = 0.80\text{A} \quad\gt\quad |e_b| = 0.30\text{A} \quad\gt\quad |e_c| = 0.10\text{A}$<br>
+                                סדר העדיפות הינו: $\mathbf{ABC}$ &larr; קוד עדיפות: $S_{sel} = \mathbf{000_2}$.
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">4</span>
+                            <div class="step-content">
+                                <strong>קוד סימני שגיאה ($S_{sgn}$):</strong><br>
+                                $e_a \gt 0 \rightarrow 1, \quad e_b \lt 0 \rightarrow 0, \quad e_c \gt 0 \rightarrow 1$<br>
+                                קוד סימנים: $S_{sgn} = \mathbf{101_2}$.
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">5</span>
+                            <div class="step-content">
+                                <strong>קביעת דגל $F_{mp}$ והרכבת הכתובת:</strong><br>
+                                נניח כי $|i_0| = 0.20\text{A}$ נמצא בגבול המותר, ושגיאת פאזה A ($0.8\text{A}$) דורשת תיקון דחוף &larr; $F_{mp} = \mathbf{1}$.<br>
+                                כתובת ה-7 ביטים המורכבת:<br>
+                                $$\text{Address} = [F_{mp} \mid S_{sel} \mid S_{sgn}] = [1 \mid 000 \mid 101] = \mathbf{1000101_2} = \mathbf{69_{10}}$$
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">6</span>
+                            <div class="step-content">
+                                <strong>שליפת וקטור המיתוג מתוך ה-LUT:</strong><br>
+                                בכתובת $69$, הטבלה מחזירה את הוקטור: $\mathbf{V_{14} = [S_1, S_2, S_3, S_4] = [1, 0, 1, 1]}$.<br>
+                                <strong>ניתוח פיזיקלי של מתחי הפאזה המתקבלים:</strong><br>
+                                $v_a = v_1 - v_2 = +V_{dc} - 0 = \mathbf{+V_{dc}}$ &larr; דוחף בעוצמה מקסימלית זרם חיובי לפאזה A לתיקון מיידי של שגיאת $+0.80\text{A}$!<br>
+                                $v_b = v_2 - v_3 = 0 - (+V_{dc}) = \mathbf{-V_{dc}}$ &larr; מתקן במקביל את שגיאת פאזה B!<br>
+                                $v_c = v_3 - v_4 = +V_{dc} - (+V_{dc}) = \mathbf{0V}$ &larr; פאזה C עם השגיאה הקטנה ביותר ($0.1\text{A}$) אינה מקבלת מתח מיותר!<br>
+                                הפרש רגלי הקצה: $v_1 - v_4 = +V_{dc} - (+V_{dc}) = \mathbf{0V}$ &larr; <strong>אינו מפתח ZSC חדש!</strong> תיקון מושלם ואופטימלי בצעד שעון בודד!
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>מדגם מתוך טבלת 96 המצבים המוטמעת ב-FPGA</h3>
+                    <div class="table-container">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
                                     <th>אינדקס</th>
                                     <th>סדר עדיפות (EPO)</th>
-                                    <th>קוד EPC</th>
-                                    <th>קוד ESC</th>
-                                    <th>דגל EMP ($F_{mp}$)</th>
-                                    <th>מצב מיתוג נבחר ($L_1 L_2 L_3 L_4$)</th>
-                                    <th>פעולה מתקנת בזרם המנוע</th>
+                                    <th>קוד $S_{sel}$</th>
+                                    <th>קוד $S_{sgn}$</th>
+                                    <th>$F_{mp}$</th>
+                                    <th>וקטור מיתוג ($S_1 S_2 S_3 S_4$)</th>
+                                    <th>מתחי פאזה אפקטיביים ($v_a, v_b, v_c$)</th>
+                                    <th>השפעה פיזיקלית מתקנת</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="highlight-row">
                                     <td>01</td>
-                                    <td>ACB</td>
-                                    <td>100</td>
-                                    <td>011</td>
-                                    <td>1 (DM Priority)</td>
-                                    <td><span class="en-term">0110</span></td>
-                                    <td>תיקון סימולטני של 2 פאזות: $-i_a, +i_c$</td>
+                                    <td>ABC</td>
+                                    <td>000</td>
+                                    <td>101</td>
+                                    <td>1 (DM)</td>
+                                    <td><code>1011</code></td>
+                                    <td>$+V_{dc},\; -V_{dc},\; 0$</td>
+                                    <td>תיקון מואץ $+i_a$ ו-$-i_b$ ללא עירור ZSC</td>
                                 </tr>
                                 <tr>
                                     <td>02</td>
-                                    <td>ACB</td>
+                                    <td>ABC</td>
+                                    <td>000</td>
                                     <td>100</td>
-                                    <td>001</td>
-                                    <td>0 (CM Priority)</td>
-                                    <td><span class="en-term">0101</span></td>
-                                    <td>תיקון משולב של 3 פאזות + דיכוי מואץ של $i_0$</td>
+                                    <td>1 (DM)</td>
+                                    <td><code>1000</code></td>
+                                    <td>$+V_{dc},\; 0,\; 0$</td>
+                                    <td>הזרקת פולס חיובי לפאזה A והרגעת שאר הפאזות</td>
                                 </tr>
                                 <tr class="highlight-row">
                                     <td>03</td>
-                                    <td>BAC</td>
-                                    <td>010</td>
-                                    <td>110</td>
-                                    <td>1 (DM Priority)</td>
-                                    <td><span class="en-term">1101</span></td>
-                                    <td>תיקון מהיר של שגיאת פאזה B ופאזה C</td>
+                                    <td>CAB</td>
+                                    <td>100</td>
+                                    <td>011</td>
+                                    <td>0 (CM)</td>
+                                    <td><code>0110</code></td>
+                                    <td>$-V_{dc},\; 0,\; +V_{dc}$</td>
+                                    <td>דיכוי חירום של רכיב ה-ZSC ע"י איזון מתחי קצה</td>
                                 </tr>
                                 <tr>
                                     <td>04</td>
-                                    <td>BAC</td>
-                                    <td>010</td>
+                                    <td>BCA</td>
+                                    <td>011</td>
                                     <td>110</td>
-                                    <td>0 (CM Priority)</td>
-                                    <td><span class="en-term">1100</span></td>
-                                    <td>תיקון $+i_b$ ודיכוי רכיב $+i_0$ במקביל</td>
+                                    <td>1 (DM)</td>
+                                    <td><code>1101</code></td>
+                                    <td>$0,\; +V_{dc},\; -V_{dc}$</td>
+                                    <td>תיקון משולב של פאזה B ופאזה C</td>
                                 </tr>
                                 <tr class="highlight-row">
                                     <td>05</td>
-                                    <td>ABC</td>
-                                    <td>110</td>
-                                    <td>001</td>
-                                    <td>1 (DM Priority)</td>
-                                    <td><span class="en-term">0110</span></td>
-                                    <td>איפוס שגיאות סימטריות $-i_a, +i_c$</td>
-                                </tr>
-                                <tr>
-                                    <td>06</td>
-                                    <td>ABC</td>
-                                    <td>110</td>
-                                    <td>001</td>
-                                    <td>0 (CM Priority)</td>
-                                    <td><span class="en-term">0111</span></td>
-                                    <td>הזרקת וקטור Common-Mode מאזן</td>
+                                    <td>CBA</td>
+                                    <td>101</td>
+                                    <td>111</td>
+                                    <td>1 (DM)</td>
+                                    <td><code>1010</code></td>
+                                    <td>$+V_{dc},\; -V_{dc},\; +V_{dc}$</td>
+                                    <td>תיקון סימולטני של שלוש הפאזות במקביל</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1251,7 +1477,7 @@
                 </section>
 
                 <!-- ============================================================ -->
-                <!-- CHAPTER 3: LIVE INTERACTIVE LABORATORY                       -->
+                <!-- CHAPTER 3: INTERACTIVE LAB                                   -->
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-03">
                     <span class="chapter-badge">פרק 03</span>
@@ -1398,48 +1624,41 @@
                     <span class="chapter-badge">פרק 04</span>
                     <h2>אימות סימולטיבי ב-PSIM ו-Typhoon C-HIL בזמן אמת</h2>
 
+                    <h3>ארכיטקטורת מערך ה-C-HIL המעבדתי בזמן אמת</h3>
                     <p>
-                        על מנת לאמת את אלגוריתם ה-OEPC לפני הטמעה במנוע הפיזי, נבנתה פלטפורמת בדיקות <strong>Hardware-in-the-Loop (C-HIL)</strong> מתקדמת באמצעות סימולטור זמן-אמת <strong>Typhoon HIL404</strong>.
+                        לפני מעבר לחיבור מנוע ומתח גבוה אמיתי, כלל האלגוריתם עבר אימות מלא בטכנולוגיית <strong>Controller Hardware-in-the-Loop (C-HIL)</strong>. במערך זה:
                     </p>
+                    <ul class="bullet-list">
+                        <li><strong>מודל ה-PMSM וממיר ה-SE-VSI</strong> סומלצו במחשב זמן-אמת ייעודי של חברת <strong>Typhoon HIL404</strong> בצעד חישוב זעיר של $1.0\,\mu\text{s}$.</li>
+                        <li><strong>בקר ה-OEPC</strong> רץ על כרטיס הבקרה הפיזי (DSP/Microcontroller) שנדגם ומיתג את אותות ה-PWM ישירות דרך כניסות/יציאות דיגיטליות ואנלוגיות (GPIO & ADC) מהירות.</li>
+                    </ul>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig4_experimental_setups_chil_prototype.jpg" alt="Experimental Setups C-HIL & Prototype" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 4.1:</strong> פלטפורמת הבדיקה הניסויית: סימולטור זמן אמת Typhoon HIL404 המחובר לבקר DSP/FPGA חיצוני ואב-טיפוס מעבדתי.</div>
+                        <div class="fig-caption"><strong>איור 4.1:</strong> עמדת הניסוי המעבדתית: מודל ה-C-HIL בזמן אמת עם סימולטור Typhoon HIL404, לוחות הבקרה הפיזיים, כרטיסי הבידוד והדיינו.</div>
                     </div>
 
-                    <h3>ארכיטקטורת המודל בזמן אמת ב-Typhoon HIL404</h3>
+                    <h3>תוצאות תגובה דינמית לשינויי מדרגת מומנט ומהירות</h3>
                     <p>
-                        מודל הסימולציה ב-Typhoon HIL404 מוגדר בקובץ <span class="en-term">OEPC_PMSM96NOD_new_FB.tse</span> ופועל בצעד זמן מזערי של $\Delta t = 1\ \mu\text{s}$. המודל כולל:
+                        נבדק מעקב הזרם תחת שינויי מדרגה חדים בזרם ה-q (מומנט) מ-$0\text{A}$ ל-$6\text{A}$ ותחת שינויי מהירות של המנוע.
                     </p>
-                    <ul class="bullet-list">
-                        <li><strong>מידול מנוע PMSM מלא:</strong> כולל אי-ליניאריות מגנטית, צימודים הדדיים בין הפאזות, ורוויה מגנטית.</li>
-                        <li><strong>טופולוגיית Series-End VSI:</strong> 6 ענפי מיתוג מבוססי מודל מתג אידיאלי עם דיודות Flyback וזמני Dead-Time של $150\text{ ns}$.</li>
-                        <li><strong>מערך חיישני זרם וירטואליים:</strong> הכוללים השהיות דגימה ורעש קוואנטיזציה של ממיר ADC בן 16 ביט.</li>
-                    </ul>
-
-                    <h3>תוצאות תגובה דינמית (Dynamic Response)</h3>
-                    <p>
-                        נבדקה תגובת המערכת בצעדי מומנט ומהירות חדים: תאוצה מ-$0$ ל-$580\text{ RPM}$, היפוך כיוון סיבוב ל-$-580\text{ RPM}$, והעמסה פתאומית של $100\%$ מומנט נומינלי.
-                    </p>
-
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig10_pmsm_dynamic_response_speed_torque.jpg" alt="Dynamic Response Speed & Torque" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 4.2:</strong> תגובה דינמית של מנוע ה-PMSM תחת בקרת OEPC: מהירות סיבוב (עליון), מומנט מנוע (אמצעי) וזרמי הפאזות (תחתון).</div>
+                        <div class="fig-caption"><strong>איור 4.2:</strong> תגובה דינמית של מנוע ה-PMSM: זרמי פאזה $i_a, i_b, i_c$, מהירות הרוטור ומומנט אלקטרומגנטי תחת מדרגת עומס. הבקר מתייצב תוך פחות מ-2 מילי-שניות ללא שום תופעות מעבר מזיקות!</div>
                     </div>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig12_chil_realtime_pmsm_results.jpg" alt="C-HIL Real-Time Results" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 4.3:</strong> תוצאות מדידה גולמיות מאוסצילוסקופ ה-SCADA בזמן אמת: גלי זרם סינוסואידליים נקיים ללא עיוותי מעבר.</div>
+                        <div class="fig-caption"><strong>איור 4.3:</strong> מדידות C-HIL בזמן אמת: מעקב זרמי הפאזות ברוחב פס גבוה והוכחת דיכוי ה-ZSC לאפס מוחלט ($i_0 \approx 0.01\text{A}$).</div>
                     </div>
 
-                    <h3>אימות תחת חוסר איזון פיזי קיצוני ($\pm 25\%$)</h3>
+                    <h3>אימות תחת חוסר איזון פיזי קיצוני בסלילים ($\pm 25\%$)</h3>
                     <p>
-                        אחד המבחנים הקריטיים שנערכו במעבדה היה יצירת אי-סימטריה פיזית קיצונית בעכבות המנוע על-ידי חיבור נגדים וסלילים טוריים בפאזה אחת בלבד ($\Delta R = +25\%$, $\Delta L = +25\%$).
+                        אחד האתגרים הגדולים של ממירי Series-End הוא רגישותם לאי-סימטריה בסלילי המנוע (עקב פגמי ייצור, התחממות לא שווה, או הזדקנות בידוד). בקרת PWM רגילה קורסת בתנאים אלה ומפתחת זרם ZSC הרסני.
                     </p>
-
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig6_oepc_asymmetric_response.jpg" alt="OEPC Asymmetric Response" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 4.4:</strong> תגובת OEPC תחת אי-סימטריה של 25%: זרמי הפאזות נשארים מאוזנים לחלוטין תוך דיכוי של 98% מזרם ה-ZSC.</div>
+                        <div class="fig-caption"><strong>איור 4.4:</strong> ביצועי OEPC תחת אי-סימטריה של 25%: זרמי הפאזה נשמרים עגולים וסימטריים לחלוטין, וזרם ה-ZSC מרוסן לגמרי!</div>
                     </div>
                 </section>
 
@@ -1448,120 +1667,90 @@
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-05">
                     <span class="chapter-badge">פרק 05</span>
-                    <h2>חסינות אינהרנטית לתקלות פנימיות במנוע (ITSC)</h2>
+                    <h2>חסינות אינהרנטית לתקלות קצר פנימיות במנוע (ITSC)</h2>
 
+                    <h3>הסכנה בתקלת קצר בין כריכות (Inter-Turn Short Circuit - ITSC)</h3>
                     <p>
-                        קצר פנימי בין כריכות הסליל (<span class="en-term">Inter-Turn Short Circuit - ITSC</span>) הוא אחת התקלות ההרסניות ביותר במנועי PMSM. הזרם המושרה בכריכות המקוצרות עלול להגיע לפי 5-10 מהזרם הנומינלי, תוך יצירת חום קיצוני המוביל לשריפת בידוד המנוע ופריקת המגנטים הקבועים (<span class="en-term">Thermal Demagnetization</span>).
+                        תקלת ITSC היא התקלה הפנימית השכיחה והמסוכנת ביותר במנועי PMSM. כאשר בידוד הכריכות נפרץ ונוצר קצר בין מספר ליפופים באותה פאזה, נוצרת לולאת קצר מקומית שבה זורם זרם עצום המושרה מהמגנטים הקבועים. זרם זה מאיץ את שריפת המנוע, גורם לאי-סימטריה חריפה בעכבות הסטטור, ויוצר תנודות מומנט עזות.
                     </p>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig13_fault_tolerance_itsc_oepc_vs_cbpwm.jpg" alt="Fault Tolerance ITSC: OEPC vs CBPWM" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 5.1:</strong> השוואת ביצועים תחת קצר פנימי (ITSC): בקרת CBPWM מסורתית חווה זינוק הרסני בזרם הלולאה (שמאל), בעוד שבקרת OEPC מדכאת את זרם התקלה תוך 2 מחזורי מיתוג (ימין).</div>
+                        <div class="fig-caption"><strong>איור 5.1:</strong> השוואה ישירה תחת תקלת ITSC קשה: בקרת CBPWM רגילה (משמאל) מפתחת עיוות קיצוני בזרמים וזרם ZSC ענק; לעומתה בקרת OEPC (מימין) שומרת על מסלול מעגלי מושלם ומרסנת את הזרם התקול!</div>
                     </div>
 
-                    <h3>מנגנון החסינות האינהרנטי של אלגוריתם ה-OEPC</h3>
-                    <p>
-                        מרבית שיטות הבקרה המקובלות דורשות אלגוריתם גילוי תקלות נפרד (<span class="en-term">Fault Diagnostic Observer</span>) כדי לזהות קצר. לעומת זאת, בקרת OEPC פועלת באופן דד-ביט ישיר על שגיאות הזרם הרגעיות:
-                    </p>
-                    <ol class="num-list">
-                        <li>ברגע התרחשות הקצר, מתח ה-Back-EMF בפאזה הפגועה מתעוות, ונוצרת שגיאת זרם גדולה ברמת המיקרו-שניות.</li>
-                        <li>קוד העדיפות (EPC) מזהה מיד את הפאזה הפגועה כבעלת העדיפות העליונה ($Priority = 1$).</li>
-                        <li>טבלת ה-LUT שולפת וקטור מיתוג המפעיל מתח נגדי בדיוק לכיוון השגיאה, ומאזנת מחדש את זרמי שאר הפאזות.</li>
-                        <li>כתוצאה מכך, זרם התקלה המקומי מרוסן, והמנוע ממשיך לפעול בבטחה במצב שרידות (<span class="en-term">Limp-home Mode</span>).</li>
-                    </ol>
+                    <div class="didactic-box didactic-lab">
+                        <h4>🔬 תובנה מדעית מתוצאות הניסוי באיור 5.1</h4>
+                        בקרת OEPC אינה דורשת זיהוי מפורש (Fault Diagnosis) של התקלה כדי לפעול! מעצם הגדרתה, כאשר פאזה מקצרת וזרמה מתעוות, שגיאת הזרם של אותה פאזה מזנקת מיד ומקבלת עדיפות עליונה ב-LUT ($S_{sel}$). הממיר "מזריק" מתח נגדי שמאלץ את הזרם להישאר סינוסואידלי ומגן על המנוע מהתחממות קטסטרופלית!
+                    </div>
                 </section>
 
                 <!-- ============================================================ -->
-                <!-- CHAPTER 6: MOTOR CALIBRATION & ENCODER (OEMER QS 100S)       -->
+                <!-- CHAPTER 6: MOTOR CHARACTERIZATION & POLE ALIGNMENT           -->
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-06">
                     <span class="chapter-badge">פרק 06</span>
-                    <h2>אפיון וכיול מנוע ה-PMSM המעבדתי ופענוח אינקודר (OEMER QS 100S)</h2>
+                    <h2>אפיון, כיול מנוע OEMER QS 100S ופענוח אינקודר SICK HIPERFACE</h2>
 
+                    <h3>מפרט טכני של מנוע ה-PMSM המעבדתי (OEMER Motori Elettrici)</h3>
                     <p>
-                        לצורך השלב הניסויי המעבדתי המלא, נרכש מנוע סרוו תעשייתי מתקדם תוצרת <strong>OEMER (דגם QS 100S)</strong> המצויד בחיישן מיקום אבסולוטי אופטי בדיוק גבוה <strong>SICK SFM60 HIPERFACE</strong>.
+                        במסגרת המחקר המעבדתי, שולב מנוע סרוו סינכרוני תעשייתי מתקדם מתוצרת חברת <strong>OEMER (איטליה)</strong> מדגם <strong>QS 100S</strong>, המצויד באינקודר אבסולוטי מתקדם <strong>SICK Stegmann SFM60</strong> עם ממשק <strong>HIPERFACE</strong>.
                     </p>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/pmsm_motor_photo.jpeg" alt="OEMER QS100S Motor" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 6.1:</strong> מנוע ה-PMSM המעבדתי OEMER QS 100S בעמדת הבדיקה והכיול.</div>
+                        <div class="fig-caption"><strong>איור 6.1:</strong> מנוע ה-PMSM המעבדתי: OEMER QS 100S עם אינקודר אופטי אבסולוטי SICK SFM60.</div>
                     </div>
 
-                    <h3>מפרט טכני של מנוע OEMER QS 100S</h3>
                     <div class="table-container">
                         <table class="styled-table">
                             <thead>
-                                <tr>
-                                    <th>פרמטר</th>
-                                    <th>ערך נומינלי</th>
-                                    <th>יחידות</th>
-                                    <th>משמעות בבקרת FOC / OEPC</th>
-                                </tr>
+                                <tr><th>פרמטר מנוע</th><th>ערך נומינלי</th><th>הערות הנדסיות</th></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>מספר קטבים ($P$) / זוגות קטבים ($p$)</td>
-                                    <td>$P = 4 \quad (p = 2)$</td>
-                                    <td>-</td>
-                                    <td>יחס זווית חשמלית למכנית: $\theta_e = 2 \cdot \theta_m$</td>
-                                </tr>
-                                <tr>
-                                    <td>מהירות נומינלית ($n_n$)</td>
-                                    <td>$580$</td>
-                                    <td>$\text{RPM}$</td>
-                                    <td>תדר חשמלי בסיסי: $f_e = 19.33\text{ Hz}$</td>
-                                </tr>
-                                <tr>
-                                    <td>מומנט נומינלי ($T_n$)</td>
-                                    <td>$12.5$</td>
-                                    <td>$\text{Nm}$</td>
-                                    <td>זרם פאזה נומינלי מקביל: $I_n \approx 7.2\text{ A}$</td>
-                                </tr>
-                                <tr>
-                                    <td>התנגדות סטטור לפאזה ($R_s$)</td>
-                                    <td>$1.42$</td>
-                                    <td>$\Omega$</td>
-                                    <td>קבוע זמן חשמלי $\tau_e = L / R$</td>
-                                </tr>
-                                <tr>
-                                    <td>השראות ציר $d$ וציר $q$ ($L_d, L_q$)</td>
-                                    <td>$L_d = 14.8\text{ mH}, L_q = 16.2\text{ mH}$</td>
-                                    <td>$\text{mH}$</td>
-                                    <td>בולטות מגנטית קלה ($\approx 9\%$)</td>
-                                </tr>
+                                <tr><td>דגם המנוע</td><td><strong>OEMER QS 100S</strong></td><td>מנוע סרוו סינכרוני מגנטים קבועים</td></tr>
+                                <tr><td>מומנט נומינלי ($T_n$)</td><td>$18.5\text{ Nm}$</td><td>עד $45\text{ Nm}$ בשיא (Peak)</td></tr>
+                                <tr><td>זרם נומינלי ($I_n$)</td><td>$14.2\text{ A}$</td><td>זרם אפקטיבי (RMS)</td></tr>
+                                <tr><td>מהירות נומינלית ($n_n$)</td><td>$3000\text{ RPM}$</td><td>מהירות מקסימלית $6000\text{ RPM}$</td></tr>
+                                <tr><td>מספר זוגות קטבים ($p$)</td><td><strong>4 זוגות קטבים (8 קטבים)</strong></td><td>יחס תדר חשמלי למכני: $f_e = 4 \times f_m$</td></tr>
+                                <tr><td>סוג אינקודר</td><td><strong>SICK SFM60 HIPERFACE</strong></td><td>ערוצי Sin/Cos אנלוגיים 1024ppr + ערוץ RS-485 דיגיטלי</td></tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <h3>פרוטוקול כיול קטבים מלא ב-13 שלבים (13-Step Calibration Protocol)</h3>
+                    <h3>פרוטוקול כיול ויישור קטבים סטטי (DC Alignment Protocol)</h3>
                     <p>
-                        על מנת לאפשר בקרת FOC מדויקת, נדרש לדעת בדיוק מוחלט את זווית ההיסט הזויתית ($\theta_{\text{offset}}$) שבין נקודת האפס האופטית של האינקודר לבין ציר השטף המגנטי של הרוטור ($d$-axis).
+                        במנועי PMSM, בקרת הזרם (FOC/OEPC) חייבת לדעת בדיוק מוחלט את הזווית החשמלית של המגנט הקבוע של הרוטור ביחס לציר פאזה A של הסטטור. אי-התאמה של אפילו $5^\circ$ גורמת לאובדן מומנט וזרמי יתר.
                     </p>
                     <p>
-                        לשם כך פותח פרוטוקול מעבדתי קפדני בן 13 שלבים: הזרקת זרם DC מוגבל (כ-2A) ב-6 וקטורי מיתוג קבועים לאורך שני סיבובים חשמליים מלאים ($720^\circ_e$), המהווים בדיוק סיבוב מכני אחד של $360.00^\circ_m$:
+                        לצורך כך פותח <strong>פרוטוקול כיול קטבים מלא בן 13 שלבים</strong> (מתועד במלואו בדוח ה-PDF הרשמי שבאתר):
                     </p>
 
-                    <div class="math-block">
-                        $$\theta_e = \left( 2 \cdot \theta_{m,\text{abs}} + \mathbf{58.98^\circ} \right) \pmod{360^\circ}$$
-                        $$\mathbf{\theta_{\text{offset}} = 58.98^\circ \approx 59.0^\circ \quad (1.0295\text{ rad})}$$
-                    </div>
-
-                    <div class="alert-box alert-success">
-                        <div class="alert-icon">🎯</div>
-                        <div class="alert-content">
-                            <h5>דיוק כיול פנומנלי של המדידות</h5>
-                            <p>
-                                סטיית התקן (RMS) שנמדדה על פני כל 13 השלבים היא <strong>$\pm 0.21^\circ$ בלבד</strong>, עם שגיאה מרבית של $\pm 0.34^\circ$. בסיום הסיבוב המלא (שלב 13' מול שלב 1) נרשמה התאמה מושלמת של <strong>$0.00^\circ$ שגיאה ($360.00^\circ$ סגירה)</strong>!
-                            </p>
+                    <div class="walkthrough-box">
+                        <h4>🎯 עקרון שיטת ה-Static DC Alignment שבוצעה במעבדה</h4>
+                        <div class="step-item">
+                            <span class="step-num">1</span>
+                            <div class="step-content">
+                                <strong>הזרקת זרם DC מבוקר:</strong> ספק כוח מיוצב מחובר בין פאזה A (חיובי) לפאזות B ו-C המקוצרות יחד (שלילי).
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">2</span>
+                            <div class="step-content">
+                                <strong>יישור הרוטור לציר $\theta_e = 0^\circ$:</strong> הזרם יוצר שדה מגנטי סטטורי קבוע לחלוטין לאורך ציר d. הרוטור "ננעל" פיזית בדיוק מושלם מול השדה הסטטורי.
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">3</span>
+                            <div class="step-content">
+                                <strong>קריאת זווית האינקודר האבסולוטית:</strong> באמצעות פקודות תקשורת HIPERFACE דרך RS-485, נדגמת הזווית הנמדדת ונקבעת כהיסט הייחוס: $\theta_{\text{offset}} = \theta_{\text{raw}}$.
+                            </div>
                         </div>
                     </div>
 
-                    <h3>פתרון עכבת התקשורת במודל החומרה DFRobot DFR0845</h3>
+                    <h3>פתרון עכבת התקשורת במודול DFRobot DFR0845</h3>
                     <p>
-                        במהלך חיבור מודול ה-RS485 המבודד מדגם DFR0845 מול כניסות ה-DIO של ה-Typhoon HIL404, התגלתה תופעה לפיה מתח ה-Logic LOW בקו ה-RXD ירד רק ל-2.5V במקום ל-0V עקב נגד Pull-Up פנימי של 10kΩ במעגל ה-Level Shifter של המודול.
-                    </p>
-                    <p>
-                        הבעיה נפתרה באופן אלגנטי על-ידי חיבור נגד <strong>Pull-Down של $1\text{k}\Omega$</strong> בין פין `R` לבין הארקה `GND`. התנגדות זו הורידה את המתח הנמוך ל-$0.38\text{V}$ (רמת LOW תקנית לחלוטין), והתקשורת הטורית פועלת כעת ללא שגיאות ב-9600/115200 Baud.
+                        בניסויי המעבדה התגלתה שגיאת תקשורת עקב החזרות אותות (Reflections) בקו ה-RS-485 של האינקודר. התקלה נפתרה בהצלחה באמצעות הוספת נגד תיאום עכבות של $120\,\Omega$ בין קווי A ו-B והגדרת זמני השהיה קפדניים של פרוטוקול ה-HIPERFACE (9600 Baud, 8-E-1).
                     </p>
                 </section>
 
@@ -1572,43 +1761,45 @@
                     <span class="chapter-badge">פרק 07</span>
                     <h2>תכנון ומימוש כרטיסי החומרה ב-Altium Designer</h2>
 
+                    <h3>שלושת כרטיסי החומרה שתוכננו לפרויקט</h3>
                     <p>
-                        לצורך המעבר מסימולציית HIL לעבודה עם מנוע ומתח חיים במעבדה, תוכננו, פותחו ויוצרו 3 כרטיסי חומרה ייעודיים בתוכנת Altium Designer:
+                        להשלמת הפלטפורמה המעבדתית תוכננו, נותחו ועוצבו 3 כרטיסי מעגלים מודפסים (PCB) רב-שכבתיים בתוכנת <strong>Altium Designer</strong>:
                     </p>
-
-                    <div class="grid-3col">
-                        <div class="info-card">
-                            <h4>⚡ דרגת מפסקי GaN</h4>
-                            <p><strong>פרויקט:</strong> <code>Power_Swech - GUN_ V2</code></p>
-                            <p>דרגת מיתוג מהירה מבוססת טרנזיסטורי GaN HEMT בעלי התנגדות $R_{ds(on)}$ נמוכה במיוחד, דרייברים מבודדים וזמני מיתוג של פחות מ-$10\text{ ns}$.</p>
-                        </div>
-                        <div class="info-card">
-                            <h4>🧲 חיישן זרם צף ומבודד</h4>
-                            <p><strong>פרויקט:</strong> <code>Isolated_Current_Sensor _V2_1</code></p>
-                            <p>מערך מדידת זרם מבודד גלוונית בריחוף גבוה, המבוסס על חיישני Hall/Shunt מהירים ומגברי בידוד אופטיים בדיוק גבוה עבור כל פאזה וזרם ה-ZSC.</p>
-                        </div>
-                        <div class="info-card">
-                            <h4>📊 מעגל מדידת מתח גבוה</h4>
-                            <p><strong>פרויקט:</strong> <code>Isolated HV Circuit - V2_1</code></p>
-                            <p>כרטיס מדידת מתח דיפרנציאלי מבודד למדידת מתח קבלי הציפה ($V_{dc2}$) ומתחי ה-Phase-to-Phase עד $800\text{V}$.</p>
-                        </div>
-                    </div>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/hardware_setup_photo.jpg" alt="Laboratory Inverter & Altium Modules" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 7.1:</strong> מודול דרייבר מפסקי ה-GaN המהירים ומערך כרטיסי החומרה שתוכננו ב-Altium Designer ומותקנים במעבדה.</div>
+                        <div class="fig-caption"><strong>איור 7.1:</strong> מודולי החומרה המעבדתיים, כרטיסי המדידה המבודדים ועמדת הניסוי של ממיר ההספק.</div>
                     </div>
 
-                    <h3>עקרונות Layout ושיקולי תכנון אותות מהירים ב-Altium</h3>
-                    <ul class="bullet-list">
-                        <li><strong>מזעור השראות הלולאה (Parasitic Loop Inductance):</strong> בטרנזיסטורי GaN מהירים ($di/dt \gt 1000\ \text{A}/\mu\text{s}$), אפילו השראות פרזיטית של $2\text{ nH}$ בלולאת המיתוג גורמת ל-Overshoot מתח מסוכן. הלולאה תוכננה בשכבות פנימיות צמודות מעל מישור הארקה רציף.</li>
-                        <li><strong>בידוד גלווני מלא (Galvanic Isolation):</strong> מרחקי Creepage ו-Clearance תוכננו לעמידה במתחי בידוד של מעל $3000\text{ V}_{\text{RMS}}$ בין צד הבקרה הנמוך (3.3V) לצד ההספק הגבוה.</li>
-                        <li><strong>חיבור Kelvin Source:</strong> הפרדה מוחלטת בין מסלול הזרם הראשי של המפסק לבין מסלול אות הפיקוד של ה-Gate, למניעת מיתוגי שווא כתוצאה מנפילת מתח על השראות המקור.</li>
-                    </ul>
+                    <div class="grid-3col">
+                        <div class="info-card">
+                            <h4>⚡ 1. כרטיס מתח מבודד</h4>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                <strong>Isolated HV Measurement V2.1:</strong> מודד מתחי DC גבוהים עד $800\text{V}$ באמצעות מגבר בידוד אופטי ומחלק מתח נגדי מדויק ($0.1\%$), עם מתח בידוד גלווני של $5\text{kV}$ להגנה על כרטיסי המיקרו-בקר.
+                            </p>
+                        </div>
+                        <div class="info-card">
+                            <h4>🧲 2. כרטיס חיישן זרם</h4>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                <strong>Isolated Current Sensor V2.1:</strong> מבוסס חיישני אפקט הול (Hall Effect) מהירים ברוחב פס של $200\text{kHz}$, לדגימה מדויקת של זרמי הפאזות ורכיב ה-ZSC ללא הפרעות ומגע חשמלי.
+                            </p>
+                        </div>
+                        <div class="info-card">
+                            <h4>🔌 3. כרטיס מיתוג הספק</h4>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                <strong>Power Switch - GUN V2:</strong> ענף מיתוג הספק מהיר מבוסס מוליכים מתקדמים (GaN/SiC) ודרייברים מבודדים עם הגנות קצר, Dead-time מובנה וניתוב זרמי פריקה מהירים.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>שיקולי Layout וניתוב אותות מהירים</h3>
+                    <p>
+                        בשל קפיצות המתח החדות ($dv/dt$) בממיר, הוקפד על הפרדה פיזית מלאה בין משטחי האדמה (Ground Planes) של מתח גבוה לאדמת הבקרה השקטה, מזעור לולאות השראות פיזור בדרייברים, ושימוש בסיכוך דיפרנציאלי.
+                    </p>
                 </section>
 
                 <!-- ============================================================ -->
-                <!-- CHAPTER 8: MECHANICAL CAD & DYNO BENCH                       -->
+                <!-- CHAPTER 8: MECHANICAL BENCH & DYNO                           -->
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-08">
                     <span class="chapter-badge">פרק 08</span>
