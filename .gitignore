@@ -1,0 +1,10 @@
+# Ignore large binary and simulation target files
+HIL_PMSM/
+OEPC_RLE/
+Hardware_Design/
+OEPC_PMSM_Presentation_For_Advisor.zip
+*.zip
+*.bin
+*.elf
+*.o
+__pycache__/
