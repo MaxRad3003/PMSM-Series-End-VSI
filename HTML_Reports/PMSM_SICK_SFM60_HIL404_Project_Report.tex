@@ -1,0 +1,116 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Typhoon HIL 404 -- SICK SFM60 HIPERFACE Interface}
+\lhead{Project Summary Report}
+\rfoot{Page \thepage}
+
+\title{\textbf{\Large Comprehensive Project Report: Hybrid SICK SFM60 HIPERFACE Encoder Integration and Sensor Fusion in Typhoon HIL 404 Real-Time Simulator}}
+\author{Eli \& Max \\ Department of Electrical and Electronic Engineering}
+\date{August 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report documents the full implementation, decoding, calibration, and real-time verification of a hybrid feedback system using an industrial \textbf{SICK SFM60 HIPERFACE} Multiturn encoder connected to a \textbf{Typhoon HIL 404} real-time emulator. The system integrates both the parameter channel via half-duplex RS-485 serial communication and the analog process channel using 1,024 Sin/Cos differential periods. A high-bandwidth $10\text{ kHz}$ 2nd-order Phase-Locked Loop (PLL) tracking observer is designed for jitter-free rotor velocity estimation and immediate electrical angle calculation ($\theta_e$) for field-oriented current control (FOC). Real-time operation is validated through Typhoon HIL SCADA featuring digital monitoring, circular speed dials, and live polar Phasor Graphs.
+\end{abstract}
+
+\section{Introduction and Hardware Architecture}
+The SICK SFM60 is a high-performance multiturn absolute optical encoder designed for permanent magnet synchronous machines (PMSM). It combines two complementary communication channels:
+\begin{enumerate}
+    \item \textbf{Asynchronous Serial RS-485 Parameter Channel}: Operates at $9600\text{ Baud},\; 8\text{E}1$ (Even Parity), transmitting command $\text{0x42}$ (\textit{Read Position}) every $10\text{ ms}$.
+    \item \textbf{Analog Sin/Cos Differential Process Channel}: Delivers 1,024 sine and cosine cycles per revolution with a differential peak-to-peak amplitude of $1.0\text{ V}_{\text{pp}}$.
+\end{enumerate}
+
+\subsection{Physical Pinout and Conditioning}
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Encoder Wire} & \textbf{Signal Description} & \textbf{Typhoon HIL 404 Pin} & \textbf{Conditioning / Notes} \\ \midrule
+Red (12V) & Power Supply $+12\text{V}$ & External Power Supply & Common GND with HIL \\
+Blue (GND) & Ground & HIL Digital / Analog GND & Shield Ground \\
+Grey (Data+) & RS-485 Non-Inverting & RS-485 Transceiver A & Transceiver RO $\to$ DI1 \\
+Green (Data-) & RS-485 Inverting & RS-485 Transceiver B & Transceiver DI $\leftarrow$ DO1 \\
+White (+SIN) & Sine Positive Phase & Analog Input 1 (AI1) & Differential Pair 1 \\
+Brown (-SIN) & Sine Negative Phase & Analog Input 2 (AI2) & Differential Pair 1 \\
+Pink (+COS) & Cosine Positive Phase & Analog Input 3 (AI3) & Differential Pair 2 \\
+Black (-COS) & Cosine Negative Phase & Analog Input 4 (AI4) & Differential Pair 2 \\ \bottomrule
+\end{tabular}
+\caption{Physical Pin Mapping on Typhoon HIL 404.}
+\end{table}
+
+\section{Mathematical Formulation of Position Decoding}
+
+\subsection{Serial Frame Structure and Transmit Echo Handling}
+On a two-wire half-duplex RS-485 bus, the transmitter output is looped back to the local receiver. The 10-byte received packet is parsed as:
+\begin{equation}
+\mathbf{B} = \underbrace{[b_0,\, b_1,\, b_2]}_{\text{Transmit Echo (Filtered)}} \; \underbrace{[b_3,\, b_4]}_{\text{Slave Header: 0x40 0x42}} \; \underbrace{[b_5,\, b_6,\, b_7,\, b_8]}_{\text{Position Bytes (MSB}\to\text{LSB)}} \; \underbrace{[b_9]}_{\text{Checksum}}
+\end{equation}
+
+The 32-bit raw word is reconstructed according to big-endian order:
+\begin{equation}
+pos\_raw = (b_5 \ll 24) \mid (b_6 \ll 16) \mid (b_7 \ll 8) \mid b_8
+\end{equation}
+
+\subsection{Singleturn and Multiturn Position Extraction}
+\begin{align}
+S_{\text{st}} &= pos\_raw \ \& \ \text{0x7FFF} \quad (0 \le S_{\text{st}} \le 32,767) \\
+\theta_{\text{mech, coarse}} &= \left( \frac{S_{\text{st}}}{32768.0} \right) \times 360.0^\circ \\
+N_{\text{turns}} &= (pos\_raw \gg 15) \ \& \ \text{0xFFF} \quad (0 \le N_{\text{turns}} \le 4,095) \\
+\theta_{\text{continuous}} &= (N_{\text{turns}} \times 360.0^\circ) + \theta_{\text{mech, coarse}}
+\end{align}
+
+\subsection{Electrical Angle for FOC with $P=4$ Pole Pairs}
+\begin{equation}
+\theta_e = \left( P \cdot \theta_{\text{mech}} \cdot \frac{\pi}{180^\circ} \right) \pmod{2\pi} \in [0, 2\pi)\text{ rad}
+\end{equation}
+
+\section{Analog Differential Processing and Micro-Interpolation}
+
+\subsection{Common-Mode Inverter Noise and Offset Rejection}
+By sampling the complementary analog lines differentially:
+\begin{align}
+V_{\text{sin, diff}} &= V_{\text{AI1}} - V_{\text{AI2}} = (V_{\text{offset}} + 0.5\sin\theta) - (V_{\text{offset}} - 0.5\sin\theta) = 1.0\sin\theta \\
+V_{\text{cos, diff}} &= V_{\text{AI3}} - V_{\text{AI4}} = (V_{\text{offset}} + 0.5\cos\theta) - (V_{\text{offset}} - 0.5\cos\theta) = 1.0\cos\theta
+\end{align}
+
+\subsection{High-Resolution Angle Synthesis ($20\text{-Bit}$ Resolution)}
+\begin{equation}
+\theta_{\text{fine}} = \text{atan2}(V_{\text{sin, diff}},\, V_{\text{cos, diff}}) \in [0, 2\pi)
+\end{equation}
+\begin{equation}
+\theta_{\text{hires}} = \left( k_{\text{period}} + \frac{\theta_{\text{fine}}}{2\pi} \right) \times \frac{360.0^\circ}{1024}, \quad k_{\text{period}} \in [0, 1023]
+\end{equation}
+Total singleturn resolution achieves $1,024 \times 1,024 = 1,048,576\text{ steps/turn}$, providing an angular precision of $\Delta\theta \approx 0.000343^\circ$.
+
+\section{Second-Order Phase-Locked Loop (PLL) Tracking Observer}
+To eliminate derivative amplification noise from finite-difference calculations $\omega = \frac{\Delta\theta}{\Delta t}$, a continuous 2nd-order PLL observer is integrated in discrete time ($\Delta t = 100\,\mu\text{s}$):
+\begin{align}
+e_{\theta}(k) &= \theta_{\text{hires}}(k) - \hat{\theta}_{\text{pll}}(k) \\
+\hat{\omega}_{\text{rad/s}}(k+1) &= \hat{\omega}_{\text{rad/s}}(k) + \left( K_i \cdot e_{\theta}(k) \right) \Delta t \\
+\hat{\theta}_{\text{pll}}(k+1) &= \hat{\theta}_{\text{pll}}(k) + \left( \hat{\omega}_{\text{rad/s}}(k) + K_p \cdot e_{\theta}(k) \right) \Delta t \\
+\hat{\omega}_{\text{RPM}} &= \hat{\omega}_{\text{rad/s}} \times \left( \frac{60}{2\pi} \right)
+\end{align}
+With tuned gains $K_p = 800.0$ and $K_i = 40,000.0$, the observer exhibits a critically damped response ($\zeta = 1.0$) with bandwidth $\omega_n \approx 200\text{ rad/s}$ and exact zero-speed stabilization at standstill ($0.0\text{ RPM}$).
+
+\section{SCADA Monitoring and Phasor Graph Verification}
+The Typhoon HIL SCADA dashboard features:
+\begin{itemize}
+    \item \textbf{Phasor Graph}: Polar phasor diagram rendering the live rotor position vector $\vec{r} = (1.0, \angle\theta_{\text{mech}})$ in real time.
+    \item \textbf{Gauges and Numerical Displays}: Continuous monitoring of $\theta_{\text{mech}}$, $\theta_e$, speed (RPM), and the 12-bit multiturn revolution counter.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מדריך חיווט מפורט: MIKROE-2821 (RS485 3 Click) & Typhoon HIL 404</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.8);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --shadow-glow: 0 0 35px rgba(6, 182, 212, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Rubik', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.8;
+            padding: 2rem 1rem;
+            direction: rtl;
+            text-align: right;
+            background-image: 
+                radial-gradient(circle at 12% 12%, rgba(6, 182, 212, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 88% 88%, rgba(139, 92, 246, 0.08) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-glow);
+            backdrop-filter: blur(12px);
+        }
+
+        header h1 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(6, 182, 212, 0.45);
+        }
+
+        .card-title {
+            font-size: 1.55rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Code / LTR badges */
+        code, .code-inline {
+            font-family: 'Consolas', 'Courier New', monospace;
+            direction: ltr;
+            unicode-bidi: embed;
+            display: inline-block;
+            background: rgba(6, 182, 212, 0.15);
+            color: #38bdf8;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .code-block {
+            font-family: 'Consolas', 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+            background: #020617;
+            color: #38bdf8;
+            padding: 1.5rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            line-height: 1.6;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Callouts */
+        .callout {
+            border-right: 4px solid var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.08);
+            padding: 1.25rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .callout.alert {
+            border-right-color: var(--accent-amber);
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .callout.success {
+            border-right-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .callout.purple {
+            border-right-color: var(--accent-purple);
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.65rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .badge-cyan { background: rgba(6, 182, 212, 0.2); color: var(--accent-cyan); }
+        .badge-purple { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
+        .badge-green { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <header>
+            <h1>מדריך חיווט מפורט: MIKROE-2821 (RS485 3 Click) & Typhoon HIL 404</h1>
+            <p>הוראות חיבור פיזיות, סכמת גשרים וקונפיגורציה לקריאת אנקודר HIPERFACE במנועי PMSM</p>
+        </header>
+
+        <!-- Card 1: Overview & Advantage -->
+        <div class="card" id="overview">
+            <h2 class="card-title"><span>🔌</span> 1. תיאור הרכיב והיתרון ההנדסי</h2>
+            <p>הכרטיס <strong>MIKROE-2821 (RS485 3 Click)</strong> מבוסס על רכיב מקלט/משדר מתקדם מסוג Full-Duplex של חברת Texas Instruments (<code dir="ltr">SN65HVD31DR</code>).</p>
+            
+            <div class="callout purple">
+                <h3 style="color: var(--accent-purple); margin-bottom: 0.5rem;">למה MIKROE-2821 פותר את בעיית הקליטה?</h3>
+                <p>בניגוד לממירים רגילים בעלי ערוץ חצי-כפול (Half-Duplex) הדורשים מנגנוני מיתוג כיוון (DE/RE), לרכיב <strong>SN65HVD31</strong> יש ערוצי שידור (<code dir="ltr">Tx+</code>, <code dir="ltr">Tx-</code>) וערוצי קליטה (<code dir="ltr">Rx+</code>, <code dir="ltr">Rx-</code>) נפרדים לחלוטין!</p>
+                <p style="margin-top: 0.5rem;">כאשר מחברים את ערוץ הקליטה במקביל לערוץ השידור בטרמינל, <strong>ערוץ הקליטה של ה-HIL מקשיב ברציפות 100% מהזמן ללא שום השהיית מיתוג</strong>, מה שמבטיח קליטה מיידית של תשובת האנקודר ב-DI1!</p>
+            </div>
+        </div>
+
+        <!-- Card 2: Visual Diagram -->
+        <div class="card" id="diagram">
+            <h2 class="card-title"><span>📐</span> 2. סכמת חיווט ויזואלית (System Wiring Diagram)</h2>
+            
+            <div class="code-block">
++--------------------+            +------------------------+            +--------------------+
+|  Typhoon HIL 404   |   UART     |   MIKROE-2821 Module   |  RS-485    | HIPERFACE Encoder  |
+|  Real-Time Device  |   TTL      |   (RS485 3 Click)      |  Diff.     | (SICK VFS60 / PMSM)|
++--------------------+            +------------------------+            +--------------------+
+|  DO1 (UART TX) ----|==========> | TX                     |            |                    |
+|  DI1 (UART RX) <---|=========== | RX                     |            |                    |
+|  3.3V / 5V --------|==========> | 3.3V / 5V              |            |                    |
+|  GND --------------|==========> | GND                    |            |                    |
+|                    |            |                        |            |                    |
+|                    |            | [Tx+] --+---> (A) -----|===========>| DATA+              |
+|                    |            | [Rx+] --+ (גשר קצר)    |            |                    |
+|                    |            | [Tx-] --+---> (B) -----|===========>| DATA-              |
+|                    |            | [Rx-] --+ (גשר קצר)    |            |                    |
+|                    |            | GND -------------------|===========>| 0V / GND           |
++--------------------+            +------------------------+            | +12V Power Supply  |
+                                                                        +--------------------+
+            </div>
+        </div>
+
+        <!-- Card 3: Detailed Pinout Tables -->
+        <div class="card" id="pinout">
+            <h2 class="card-title"><span>📋</span> 3. טבלאות חיבורים מפורטות (Pinout Tables)</h2>
+            
+            <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">א. צד ה-UART (חיבור ל-Typhoon HIL 404 - פיני mikroBUS / Headers)</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>פין ב-MIKROE-2821</th>
+                            <th>שם האות</th>
+                            <th>תפקיד</th>
+                            <th>חיבור ב-Typhoon HIL 404</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge badge-cyan">Pin 14</span></td>
+                            <td><code dir="ltr">TX</code></td>
+                            <td>כניסת שידור UART מה-HIL</td>
+                            <td>מתחבר ל-<strong><code dir="ltr">DO 1</code></strong> ב-HIL 404 (שידור HIL)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-purple">Pin 13</span></td>
+                            <td><code dir="ltr">RX</code></td>
+                            <td>יציאת קליטת UART ל-HIL</td>
+                            <td>מתחבר ל-<strong><code dir="ltr">DI 1</code></strong> ב-HIL 404 (קליטה HIL)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-green">Pin 7 / 10</span></td>
+                            <td><code dir="ltr">3.3V / 5V</code></td>
+                            <td>הזנת מתח לוגי למודול</td>
+                            <td>מתחבר ל-<strong><code dir="ltr">3.3V</code> או <code dir="ltr">5V</code></strong> ב-HIL 404</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-cyan">Pin 8 / 9</span></td>
+                            <td><code dir="ltr">GND</code></td>
+                            <td>אדמה לוגית משותפת</td>
+                            <td>מתחבר ל-<strong><code dir="ltr">GND</code></strong> ב-HIL 404</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="color: var(--accent-purple); margin-top: 2rem; margin-bottom: 1rem;">ב. צד ה-RS485 (טרמינל הברגים - חיבור לאנקודר HIPERFACE)</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>טרמינל ב-MIKROE</th>
+                            <th>חיבור הגשר (Bridge Wire)</th>
+                            <th>חיבור באנקודר HIPERFACE</th>
+                            <th>הערות</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code dir="ltr">Tx+</code> & <code dir="ltr">Rx+</code></td>
+                            <td>חבר גשר קצר בטרמינל בין <strong><code dir="ltr">Tx+</code></strong> ל-<strong><code dir="ltr">Rx+</code></strong></td>
+                            <td>מתחבר ל-<strong><code dir="ltr">DATA+</code></strong> (אות A) באנקודר</td>
+                            <td>יוצר את ערוץ RS485 החיובי</td>
+                        </tr>
+                        <tr>
+                            <td><code dir="ltr">Tx-</code> & <code dir="ltr">Rx-</code></td>
+                            <td>חבר גשר קצר בטרמינל בין <strong><code dir="ltr">Tx-</code></strong> ל-<strong><code dir="ltr">Rx-</code></strong></td>
+                            <td>מתחבר ל-<strong><code dir="ltr">DATA-</code></strong> (אות B) באנקודר</td>
+                            <td>יוצר את ערוץ RS485 השלילי</td>
+                        </tr>
+                        <tr>
+                            <td><code dir="ltr">GND</code></td>
+                            <td>ללא גשר</td>
+                            <td>מתחבר ל-<strong><code dir="ltr">0V / GND</code></strong> באנקודר</td>
+                            <td>אדמת תקשורת משותפת</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Card 4: Software Configuration -->
+        <div class="card" id="software">
+            <h2 class="card-title"><span>⚙️</span> 4. הגדרות תוכנה ב-Typhoon HIL (TSE & SCADA)</h2>
+            
+            <div class="callout success">
+                <h3 style="color: var(--accent-green); margin-bottom: 0.5rem;">הגדרת הרכיבים ב-Schematic Editor:</h3>
+                <ul>
+                    <li><strong>Serial Setup</strong>: <code dir="ltr">Access port: DIO</code>, <code dir="ltr">UART rx DI pin: 1</code>, <code dir="ltr">Baud rate: 9600</code> (או 19200), <code dir="ltr">Data bits: 8</code>, <code dir="ltr">Parity: Even</code>, <code dir="ltr">Stop bits: 1</code>.</li>
+                    <li><strong>Initial Settings (Digital Outputs)</strong>: סמן את <code dir="ltr">DO1</code> כמשוייך ל-<code dir="ltr">HIL0 Serial Setup.uart tx data</code>.</li>
+                    <li><strong>Serial Send1</strong>: <code dir="ltr">Sending period: 10 ms</code> (או <code dir="ltr">0 ms</code> לבדיקת הבהוב), <code dir="ltr">Execution rate: 100e-6</code>, <code dir="ltr">Start of frame: [0x40, 0x42]</code> (או Broadcast <code dir="ltr">[0xFF, 0x42]</code>), Constant Payload = <code dir="ltr">2</code> (או <code dir="ltr">189</code> ב-Broadcast).</li>
+                    <li><strong>Serial Receive1</strong>: <code dir="ltr">Start of frame: []</code> (קליטה פתוחה), Variable Payload = <code dir="ltr">raw_sensor_position</code> (<code dir="ltr">4 Bytes</code>).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Card 5: Testing Procedure -->
+        <div class="card" id="testing">
+            <h2 class="card-title"><span>🚀</span> 5. נוהל בדיקה ואימות מעבדתי</h2>
+            <ol>
+                <li><strong>אימות גשרים בטרמינל</strong>: ודא כי הגשרים בין <code dir="ltr">Tx+</code> ל-<code dir="ltr">Rx+</code> ובין <code dir="ltr">Tx-</code> ל-<code dir="ltr">Rx-</code> מקושרים היטב בטרמינל הברגים ב-MIKROE-2821.</li>
+                <li><strong>בדיקת מתח ההזנה</strong>: מדוד במולטימטר מתח של <code dir="ltr">3.3V</code> בפין ההזנה של ה-MIKROE ומתח של <code dir="ltr">12V DC</code> באנקודר.</li>
+                <li><strong>הפעלת הסימולציה ב-SCADA</strong>: הפעל <code dir="ltr">Start Simulation</code> ב-HIL SCADA וודא כי נורית ה-PWR ב-MIKROE דולקת.</li>
+                <li><strong>צפייה בזווית המיקום</strong>: צפה ב-Probes ב-SCADA לקבלת המיקום המוחלט (<code dir="ltr">out_pos_deg</code>) והזווית החשמלית (<code dir="ltr">Rotor_Position_deg</code>) בזמן אמת.</li>
+            </ol>
+        </div>
+
+    </div>
+</body>
+</html>

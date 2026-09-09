@@ -1,0 +1,75 @@
+Created At: 2026-09-09T12:14:27+03:00
+Completed At: 2026-09-09T12:14:28+03:00
+File Path: `file:///c:/Users/maxra/OneDrive%20-%20ac.sce.ac.il/Barabi/2025%20Eli%20&%20Max/PMSM/generate_hebrew_presentation.py`
+Total Lines: 3025
+Total Bytes: 152835
+Showing lines 2180 to 2280
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+2180:     const e_alpha = ea;
+2181:     const e_beta = (eb - ec) / Math.sqrt(3);
+2182: 
+2183:     if (errPoint && !errPoint.isDraggable) {
+2184:         errPoint.moveTo([e_alpha, e_beta]);
+2185:     }
+2186: 
+2187:     const mag = Math.sqrt(e_alpha*e_alpha + e_beta*e_beta);
+2188:     let ang = Math.atan2(e_beta, e_alpha) * (180 / Math.PI);
+2189:     document.getElementById('tel-err-mag').textContent = mag.toFixed(2) + ' A';
+2190:     document.getElementById('tel-err-ang').textContent = ang.toFixed(1) + '°';
+2191: 
+2192:     // Priority Sorting
+2193:     const phases = [
+2194:         { name: 'פאזה A', code: 'a', val: ea, abs: Math.abs(ea), sign: ea >= 0 ? '+' : '-' },
+2195:         { name: 'פאזה B', code: 'b', val: eb, abs: Math.abs(eb), sign: eb >= 0 ? '+' : '-' },
+2196:         { name: 'פאזה C', code: 'c', val: ec, abs: Math.abs(ec), sign: ec >= 0 ? '+' : '-' }
+2197:     ];
+2198:     phases.sort((a, b) => b.abs - a.abs);
+2199: 
+2200:     const prime = phases[0];
+2201:     const sec = phases[1];
+2202:     const minor = phases[2];
+2203: 
+2204:     document.getElementById('badge-prime-phase').textContent = prime.name;
+2205:     document.getElementById('badge-prime-val').textContent = (prime.val >= 0 ? '+' : '') + prime.val.toFixed(2) + ' A';
+2206:     document.getElementById('badge-sec-phase').textContent = sec.name;
+2207:     document.getElementById('badge-sec-val').textContent = (sec.val >= 0 ? '+' : '') + sec.val.toFixed(2) + ' A';
+2208:     document.getElementById('b
+<truncated 2597 bytes>
+ent.getElementById('lut-vector-code');
+2245:     if (vCodeEl) vCodeEl.textContent = lutCode;
+2246:     const vActEl = document.getElementById('lut-action-desc');
+2247:     if (vActEl) vActEl.innerHTML = lutAction;
+2248:     const compEl = document.getElementById('tdm-compare-note');
+2249:     if (compEl) compEl.innerHTML = tdmNote;
+2250:     const v0El = document.getElementById('tel-v0');
+2251:     if (v0El) v0El.textContent = (v0 >= 0 ? '+' : '') + v0.toFixed(1) + ' V';
+2252: 
+2253:     // Plot vectors: Optimal vector points opposite to error
+2254:     if (mag > 0.1) {
+2255:         const vMag = 2.4;
+2256:         optVx = - (e_alpha / mag) * vMag;
+2257:         optVy = - (e_beta / mag) * vMag;
+2258: 
+2259:         // TDM vector projects only on prime axis
+2260:         const tdmMag = 1.6;
+2261:         if (prime.name === 'פאזה A') {
+2262:             tdmVx = -Math.sign(prime.val) * tdmMag;
+2263:             tdmVy = 0;
+2264:         } else if (prime.name === 'פאזה B') {
+2265:             tdmVx = -Math.sign(prime.val) * tdmMag * Math.cos(2*Math.PI/3);
+2266:             tdmVy = -Math.sign(prime.val) * tdmMag * Math.sin(2*Math.PI/3);
+2267:         } else {
+2268:             tdmVx = -Math.sign(prime.val) * tdmMag * Math.cos(4*Math.PI/3);
+2269:             tdmVy = -Math.sign(prime.val) * tdmMag * Math.sin(4*Math.PI/3);
+2270:         }
+2271: 
+2272:         if (optVoltArrow && optVoltArrow.point2) optVoltArrow.point2.moveTo([optVx, optVy]);
+2273:         if (tdmVoltArrow && tdmVoltArrow.point2) tdmVoltArrow.point2.moveTo([tdmVx, tdmVy]);
+2274:     }
+2275: }
+2276: 
+2277: // --- 2. DYNAMIC PMSM & OSCILLOSCOPE SIMULATOR (STABILIZED & EXPLAINED) ---
+2278: let simActive = true;
+2279: let currentAlgo = 'OEPC';
+2280: let scopeMode = 'trig'; // 'trig' = stationary triggered, 'slow' = gentle scrolling
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

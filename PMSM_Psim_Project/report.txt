@@ -1,0 +1,24 @@
+Conversion report
+-----------------
+
+Source file used:
+C:\Users\maximr\OneDrive - ac.sce.ac.il\Barabi\2025 Eli & Max\PMSM\PMSP_Psim_Proj.xml
+
+Schematic saved as:
+C:\Users\maximr\OneDrive - ac.sce.ac.il\Barabi\2025 Eli & Max\PMSM\PMSP_Psim_Proj.tse
+
+
+Number of components found in the source file: 0
+
+-------------------------------------------------------------------------
+                         Converted components
+-------------------------------------------------------------------------
+            Name                |               Type
+-------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------
+                         Non-converted components
+-------------------------------------------------------------------------
+            Name                |               Type
+-------------------------------------------------------------------------

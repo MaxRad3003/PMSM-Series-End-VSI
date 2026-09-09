@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מדריך ומפרט מלא: פרוטוקול HIPERFACE® ואינטגרציה ל-Typhoon HIL 404</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.75);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --shadow-glow: 0 0 30px rgba(6, 182, 212, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Rubik', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.8;
+            padding: 2rem 1rem;
+            direction: rtl;
+            text-align: right;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(6, 182, 212, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(139, 92, 246, 0.08) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-glow);
+            backdrop-filter: blur(12px);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Card Section */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .card-title .icon {
+            font-size: 1.6rem;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Code / LTR badges */
+        code, .code-inline {
+            font-family: 'Consolas', 'Courier New', monospace;
+            direction: ltr;
+            unicode-bidi: embed;
+            display: inline-block;
+            background: rgba(6, 182, 212, 0.15);
+            color: #38bdf8;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .code-block {
+            font-family: 'Consolas', 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+            background: #020617;
+            color: #e2e8f0;
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin: 1rem 0;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        /* Callout Box */
+        .callout {
+            border-right: 4px solid var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.08);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .callout.alert {
+            border-right-color: var(--accent-amber);
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .callout.success {
+            border-right-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        /* Lists */
+        ul, ol {
+            padding-right: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-cyan { background: rgba(6, 182, 212, 0.2); color: var(--accent-cyan); }
+        .badge-purple { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
+        .badge-green { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <header>
+            <h1>סנכרון ומפרט מלא: פרוטוקול HIPERFACE® ו-Typhoon HIL 404</h1>
+            <p>מדריך טכני RTL מעובד עבור קריאת מיקום מוחלט מאנקודרים מבית SICK AG</p>
+        </header>
+
+        <!-- Section 1: HIPERFACE Architecture -->
+        <div class="card" id="sec-architecture">
+            <h2 class="card-title"><span class="icon">🔌</span> 1. ארכיטקטורה היברידית (Hybrid Architecture)</h2>
+            <p>פרוטוקול <strong>HIPERFACE®</strong> (מבוסס מפרט SICK <code dir="ltr">im0064865</code>) משלב שני ערוצי תקשורת מקבילים הפועלים בו-זמנית:</p>
+            
+            <div class="grid-2" style="margin-top: 1.5rem;">
+                <div class="callout">
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">ערוץ תהליך אנלוגי (Process Channel)</h3>
+                    <ul>
+                        <li>אותות דיפרנציאליים אנלוגיים: <code dir="ltr">+SIN</code>, <code dir="ltr">-SIN</code>, <code dir="ltr">+COS</code>, <code dir="ltr">-COS</code>.</li>
+                        <li>מתח נומינלי: <code dir="ltr">1 Vpp</code> (תווח <code dir="ltr">0.8 Vpp</code> עד <code dir="ltr">1.1 Vpp</code>) עם אופסט ישר של כ-<code dir="ltr">2.5V</code>.</li>
+                        <li>ללא השהייה (Zero Delay): משמש לסגירת חוגי מהירות ומיקום בזמן אמת בדרייבר.</li>
+                    </ul>
+                </div>
+                
+                <div class="callout">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 0.5rem;">ערוץ פרמטרים ספרתי (Parameter Channel)</h3>
+                    <ul>
+                        <li>תקשורת טורית בממשק דיפרנציאלי <code dir="ltr">RS-485</code> (<code dir="ltr">Data+</code> / <code dir="ltr">Data-</code>).</li>
+                        <li>פורמט תווים: <code dir="ltr">UART</code> (1 Start, 8 Data, Parity, 1 Stop bit).</li>
+                        <li>משמש לקריאת מיקום מוחלט, הגדרת נקודת אפס, וקריאת זיכרון EEPROM.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Physical Layer & Timings -->
+        <div class="card" id="sec-physical">
+            <h2 class="card-title"><span class="icon">⚙️</span> 2. השכבה הפיזית והגדרות תזמון (Physical Layer)</h2>
+            <p>פרמטרי התקשורת של ערוץ ה-RS-485 הטורי ב-HIPERFACE:</p>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>פרמטר</th>
+                            <th>ערך מוגדר / ברירת מחדל</th>
+                            <th>הערות הנדסיות</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>קצב שידור (Baud Rate)</strong></td>
+                            <td><code dir="ltr">9600 Baud</code> (ברירת מחדל)</td>
+                            <td>ניתן להגדרה מ-<code dir="ltr">600 Baud</code> ועד <code dir="ltr">38,400 Baud</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ביטי נתונים (Data Bits)</strong></td>
+                            <td><code dir="ltr">8 Bits</code></td>
+                            <td>לוגיקת תווים רגילה ב-UART.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>זוגיות (Parity)</strong></td>
+                            <td><code dir="ltr">Even</code> (זוגי)</td>
+                            <td>נדרש ב-HIPERFACE (ניתן לשנות ל-None/Odd במידת הצורך).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ביטי עצירה (Stop Bits)</strong></td>
+                            <td><code dir="ltr">1 Bit</code></td>
+                            <td>קבוע במפרט.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Timeout</strong></td>
+                            <td><code dir="ltr">55 / Baud Rate</code> (~<code dir="ltr">5.73 ms</code> ב-9600)</td>
+                            <td>פסק זמן בין תווים לזיהוי סוף הפריים.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 3: Frame Format & Commands -->
+        <div class="card" id="sec-protocol">
+            <h2 class="card-title"><span class="icon">📦</span> 3. מבנה הפריים ופקודת קריאת מיקום (Frame & Commands)</h2>
+            <p>מבנה פריים תקני ב-HIPERFACE:</p>
+            
+            <div class="code-block">
+[ Address ] + [ Command ] + [ Data 0 ... Data n ] + [ XOR Checksum ]
+            </div>
+
+            <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--accent-cyan);">פקודת קריאת מיקום (Read Position - Command 42h)</h3>
+            <p>פניית ה-Master (Typhoon HIL 404) לקבלת מיקום מוחלט מורכבת מ-3 בייטים בדיוק:</p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>בייט</th>
+                            <th>ערך Hex</th>
+                            <th>ערך עשרוני</th>
+                            <th>תיאור</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>בייט 1 (Address)</td>
+                            <td><code dir="ltr">0x40</code> (או Broadcast <code dir="ltr">0xFF</code>)</td>
+                            <td><code dir="ltr">64</code> (או <code dir="ltr">255</code>)</td>
+                            <td>כתובת ה-Slave (כתובת ברירת מחדל: Slave 0 = <code dir="ltr">40h</code>).</td>
+                        </tr>
+                        <tr>
+                            <td>בייט 2 (Command)</td>
+                            <td><code dir="ltr">0x42</code></td>
+                            <td><code dir="ltr">66</code></td>
+                            <td>קוד פקודת קריאת המיקום המוחלט (<code dir="ltr">Read Position</code>).</td>
+                        </tr>
+                        <tr>
+                            <td>בייט 3 (Checksum)</td>
+                            <td><code dir="ltr">0x02</code> (או ב-Broadcast <code dir="ltr">0xBD</code>)</td>
+                            <td><code dir="ltr">2</code> (או <code dir="ltr">189</code>)</td>
+                            <td>תוצאת פעולת XOR: <code dir="ltr">0x40 ^ 0x42 = 0x02</code>.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout success">
+                <strong>תגובת האנקודר המוחזרת ל-HIL 404:</strong><br>
+                האנקודר מחזיר פריים של 7 בייטים: <code dir="ltr">[0x40] [0x42] [Pos_Byte_3] [Pos_Byte_2] [Pos_Byte_1] [Pos_Byte_0] [Checksum]</code>.
+            </div>
+        </div>
+
+        <!-- Section 4: Typhoon HIL 404 & DFR0845 Integration -->
+        <div class="card" id="sec-integration">
+            <h2 class="card-title"><span class="icon">🛠️</span> 4. סיכום חיווט והגדרות ב-Typhoon HIL 404 (RTL Formatted)</h2>
+            
+            <div class="grid-2">
+                <div>
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">חיווט פיזי (Physical Wiring)</h3>
+                    <ul>
+                        <li><code dir="ltr">Gravity T (TXD)</code> &rarr; <code dir="ltr">Typhoon HIL DI 1</code> (קליטה ב-HIL)</li>
+                        <li><code dir="ltr">Gravity R (RXD)</code> &rarr; <code dir="ltr">Typhoon HIL DO 1</code> (שידור מ-HIL)</li>
+                        <li><code dir="ltr">Gravity + (VCC)</code> &rarr; <code dir="ltr">Typhoon HIL 5V</code></li>
+                        <li><code dir="ltr">Gravity - (GND)</code> &rarr; <code dir="ltr">Typhoon HIL GND</code></li>
+                        <li><code dir="ltr">Gravity A / B</code> &rarr; <code dir="ltr">Encoder DATA+ / DATA-</code></li>
+                        <li><code dir="ltr">Gravity 12V / GND2</code> &rarr; <code dir="ltr">Encoder +VDC / 0V</code></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">הגדרות הרכיבים ב-Schematic</h3>
+                    <ul>
+                        <li><strong>Serial Setup</strong>: <code dir="ltr">Access port: DIO</code>, <code dir="ltr">UART rx DI pin: 1</code>, <code dir="ltr">Baud: 9600</code>, <code dir="ltr">Parity: Even</code>.</li>
+                        <li><strong>Initial Settings (Outputs)</strong>: <code dir="ltr">DO1</code> ממופה ל-<code dir="ltr">HIL0 Serial Setup.uart tx data</code>.</li>
+                        <li><strong>Serial Send1</strong>: <code dir="ltr">Sending period: 10 ms</code>, <code dir="ltr">Start of frame: [0x40, 0x42]</code>, <code dir="ltr">Constant payload: 2</code> (1 Byte), <code dir="ltr">End of frame: []</code>.</li>
+                        <li><strong>Serial Receive1</strong>: <code dir="ltr">Start of frame: [0x40, 0x42]</code>, <code dir="ltr">Variable: raw_sensor_position</code> (4 Bytes).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

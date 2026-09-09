@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOC 10: דוח סיכום הנדסי – מיקום קטבים ואפסים, זוויות מכניות וחשמליות | OEMER QS 100S</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- MathJax 3 for LaTeX Rendering -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #0a0f1d;
+      --bg-secondary: #111827;
+      --bg-card: rgba(17, 24, 39, 0.94);
+      --border-color: rgba(255, 255, 255, 0.12);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent-blue: #38bdf8;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+      --accent-rose: #ef4444;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Heebo', sans-serif;
+      background: radial-gradient(circle at 15% 15%, #0f172a 0%, #070a14 50%, #030712 100%);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding: 2.5rem 1.5rem;
+    }
+    .container { max-width: 1240px; margin: 0 auto; }
+
+    header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6);
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; left: 0; height: 5px;
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc, #34d399);
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    h1 { font-size: 2.05rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 0.75rem; }
+    .badge {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .badge-success {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2.2rem;
+      margin-bottom: 2.25rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    }
+    h2 {
+      font-size: 1.45rem;
+      color: #38bdf8;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 0.75rem;
+    }
+    h3 { font-size: 1.2rem; color: #e2e8f0; margin: 1.6rem 0 0.8rem 0; }
+    p { margin-bottom: 1rem; color: #cbd5e1; font-size: 1.02rem; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+      margin: 1.25rem 0;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin: 1.25rem 0;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem; }
+    .stat-val { font-size: 1.6rem; font-weight: 900; font-family: 'JetBrains Mono', monospace; color: #38bdf8; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+      font-size: 0.94rem;
+    }
+    th, td {
+      padding: 0.9rem 0.75rem;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    th {
+      background: rgba(30, 41, 59, 0.95);
+      color: #94a3b8;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    .calc-cell { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #f8fafc; }
+    .status-pass {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 0.82rem;
+    }
+
+    .diagram-container {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      text-align: center;
+      margin: 1.75rem 0;
+    }
+
+    .pole-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      position: relative;
+    }
+    .pole-card.north { border-right: 4px solid #ef4444; }
+    .pole-card.south { border-right: 4px solid #38bdf8; }
+    .pole-card.zero { border-right: 4px solid #10b981; }
+
+    pre {
+      background: #030712;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      margin: 1.25rem 0;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .btn {
+      padding: 0.65rem 1.3rem;
+      border-radius: 8px;
+      font-weight: 800;
+      font-family: 'Heebo', sans-serif;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-primary { background: #0284c7; color: #fff; }
+    .btn-primary:hover { background: #0369a1; }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: #cbd5e1; border-color: rgba(255,255,255,0.15); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.12); }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <div class="header-top">
+        <div>
+          <h1>📑 DOC 10: דוח סיכום הנדסי ומסקנות – כיול מיקום קטבים ואפסים</h1>
+          <p style="color: var(--text-muted); margin-top: 0.4rem;">
+            ניתוח מעמיק: מיקום קטבים מגנטיים (Poles) ונקודות אפס (Zeros), יחס הזוויות המכניות והחשמליות מול האינקודר האבסולוטי והטמעה ב-Typhoon HIL404.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;" class="no-print">
+          <a href="DOC_09_Pole_Alignment_Measurement_Protocol.html" class="btn btn-secondary">📊 טבלת מדידות (DOC 09)</a>
+          <button class="btn btn-primary" onclick="window.print()">🖨️ הדפס דוח סיכום</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
+        <span class="badge">OEMER QS 100S</span>
+        <span class="badge">4 Poles (p = 2)</span>
+        <span class="badge">SICK SFM60 HIPERFACE</span>
+        <span class="badge-success badge">Calibrated Offset: 58.98° (1.0295 rad)</span>
+        <span class="badge">Typhoon HIL404</span>
+      </div>
+    </header>
+
+    <!-- Executive Metrics -->
+    <div class="card">
+      <h2>🏆 1. תוצאות הניסוי והמסקנות המרכזיות (Executive Summary)</h2>
+      <p>
+        בניסוי כיול מיקום קטבים (Pole Alignment / Absolute Zero Identification) שנערך במעבדה עבור מנוע <strong>OEMER QS 100S</strong> מול אינקודר אבסולוטי <strong>SICK SFM60</strong> ומערכת <strong>Typhoon HIL404</strong>, נמדד סיבוב מכני שלם ($360^\circ$) ב-13 שלבים.
+      </p>
+
+      <div class="grid-4">
+        <div class="stat-box">
+          <span class="stat-label">היסט קטבים מכויל סופי ($\theta_{\text{offset}}$):</span>
+          <span class="stat-val" style="color: #38bdf8;">58.98&deg;</span>
+          <span style="font-size: 0.8rem; color: #94a3b8;">1.0295 rad</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">שגיאה מרבית על פני 360&deg;:</span>
+          <span class="stat-val" style="color: #34d399;">&plusmn; 0.34&deg;</span>
+          <span style="font-size: 0.8rem; color: #94a3b8;">דיוק פנומנלי</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">סטיית תקן (RMS Error):</span>
+          <span class="stat-val" style="color: #c084fc;">&plusmn; 0.21&deg;</span>
+          <span style="font-size: 0.8rem; color: #94a3b8;">עקביות ליניארית</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">שגיאת סגירת מעגל (Step 13):</span>
+          <span class="stat-val" style="color: #fbbf24;">0.00&deg;</span>
+          <span style="font-size: 0.8rem; color: #94a3b8;">סגירה אבסולוטית</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Detailed Explanation of Poles & Zeros -->
+    <div class="card">
+      <h2>🧭 2. הגדרה מדויקת ופיענוח מיקום הקטבים והאפסים במערכת</h2>
+      <p>
+        כדי לשלוט במנוע סינכרוני מגנטים קבועים בשיטת <strong>Field Oriented Control (FOC)</strong>, הבקר חייב לדעת בכל רגע את מיקומו המדויק של ציר השטף המגנטי של הרוטור ($d$-axis). להלן הגדרת נקודות הייחוס והמיקום האבסולוטי שלהן:
+      </p>
+
+      <div class="grid-3">
+        <!-- Zero 1 -->
+        <div class="pole-card zero">
+          <h3 style="color: #34d399; margin-top: 0;">🟢 אפס מכני אבסולוטי ($\theta_{m,\text{abs}} = 0^\circ$)</h3>
+          <p style="font-size: 0.92rem; color: #cbd5e1;">
+            <strong>מקור:</strong> האינדקס האופטי הפיזי של דיסק האינקודר SICK SFM60 (ספירת 0 מתוך 32,768 צעדים לסיבוב).
+          </p>
+          <p style="font-size: 0.88rem; color: #94a3b8;">
+            <strong>זווית חשמלית בנקודה זו:</strong><br>
+            $\theta_e = (2 \cdot 0^\circ + 58.98^\circ) = \mathbf{58.98^\circ_e}$.
+          </p>
+        </div>
+
+        <!-- North Pole 1 -->
+        <div class="pole-card north">
+          <h3 style="color: #ef4444; margin-top: 0;">🔴 קוטב צפוני 1 ($d$-axis 1, $\theta_e = 0^\circ$)</h3>
+          <p style="font-size: 0.92rem; color: #cbd5e1;">
+            <strong>מיקום מכני אבסולוטי:</strong><br>
+            <span style="font-family:'JetBrains Mono'; font-size:1.2rem; color:#ef4444; font-weight:800;">&theta;<sub>m</sub> = 330.56&deg;</span><br>
+            (קריאת צעדים באינקודר: <code>30,088</code>).
+          </p>
+          <p style="font-size: 0.88rem; color: #94a3b8;">
+            זהו ציר המגנט של קוטב N הראשון הננעל בשלב 1 תחת הזרמת זרם $U(+) \rightarrow (V+W)(-)$.
+          </p>
+        </div>
+
+        <!-- North Pole 2 -->
+        <div class="pole-card north">
+          <h3 style="color: #ef4444; margin-top: 0;">🔴 קוטב צפוני 2 ($d$-axis 2, $\theta_e = 360^\circ$)</h3>
+          <p style="font-size: 0.92rem; color: #cbd5e1;">
+            <strong>מיקום מכני אבסולוטי:</strong><br>
+            <span style="font-family:'JetBrains Mono'; font-size:1.2rem; color:#ef4444; font-weight:800;">&theta;<sub>m</sub> = 150.34&deg;</span><br>
+            (קריאת צעדים באינקודר: <code>13,684</code>).
+          </p>
+          <p style="font-size: 0.88rem; color: #94a3b8;">
+            מופרד בדיוק ב-<strong>$180.0^\circ$ מכני</strong> מקוטב 1 ($330.56^\circ - 180^\circ = 150.56^\circ \approx 150.34^\circ$).
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 1.25rem;">
+        <!-- South Pole 1 -->
+        <div class="pole-card south">
+          <h3 style="color: #38bdf8; margin-top: 0;">🔵 קוטב דרומי 1 ($q$-axis / היפוך, $\theta_e = 180^\circ$)</h3>
+          <p style="font-size: 0.92rem; color: #cbd5e1;">
+            <strong>מיקום מכני אבסולוטי:</strong><br>
+            <span style="font-family:'JetBrains Mono'; font-size:1.15rem; color:#38bdf8; font-weight:800;">&theta;<sub>m</sub> = 60.60&deg;</span> (צעדים: <code>5,516</code> | שלב 4 במדידה).
+          </p>
+        </div>
+
+        <!-- South Pole 2 -->
+        <div class="pole-card south">
+          <h3 style="color: #38bdf8; margin-top: 0;">🔵 קוטב דרומי 2 ($\theta_e = 540^\circ \equiv 180^\circ$)</h3>
+          <p style="font-size: 0.92rem; color: #cbd5e1;">
+            <strong>מיקום מכני אבסולוטי:</strong><br>
+            <span style="font-family:'JetBrains Mono'; font-size:1.15rem; color:#38bdf8; font-weight:800;">&theta;<sub>m</sub> = 240.56&deg;</span> (צעדים: <code>21,896</code> | שלב 10 במדידה).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: The Mathematical & Physical Mapping -->
+    <div class="card">
+      <h2>📐 3. הקשר הפיזיקלי והמתמטי בין הזווית המכנית לזווית החשמלית</h2>
+      <p>
+        במנוע 4 קטבים ($P=4$, זוגות קטבים $p=2$), עבור כל סיבוב מכני אחד של הציר ($360^\circ$ מכני), השדה המגנטי משלים **שני מחזורים חשמליים מלאים ($720^\circ_e$)**.
+      </p>
+
+      <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; margin: 1.5rem 0;">
+        <h3 style="color: #38bdf8; margin-top: 0;">משוואת המרת המיקום הרגעי (Absolute Position Transformation Formula)</h3>
+        <div style="font-size: 1.4rem; color: #f8fafc; font-family: 'JetBrains Mono'; font-weight: 700; margin: 0.75rem 0;">
+          $$\theta_e = \left( 2 \cdot \theta_{m,\text{abs}} + 58.98^\circ \right) \pmod{360^\circ}$$
+        </div>
+        <div style="font-size: 1.15rem; color: #34d399; font-family: 'JetBrains Mono'; margin-top: 0.5rem;">
+          $$\theta_e \text{ [rad]} = \left( 2 \cdot \theta_{m,\text{rad}} + 1.0295 \text{ rad} \right) \pmod{2\pi}$$
+        </div>
+      </div>
+
+      <!-- Polar Dual-Ring Diagram -->
+      <div class="diagram-container">
+        <h3 style="color: #f8fafc; margin-top: 0; margin-bottom: 0.5rem;">📐 איור פולארי מקיף: מיפוי 4 הקטבים ו-12 נקודות המדידה בסיבוב שלם</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
+          טבעת פנימית: זווית מכנית אבסולוטית $\theta_m$ ($0^\circ \rightarrow 360^\circ$). טבעת חיצונית: התקדמות חשמלית $\theta_e$ ($0^\circ \rightarrow 720^\circ$).
+        </p>
+
+        <svg viewBox="0 0 740 540" style="max-width: 100%; height: auto;">
+          <!-- Outer Reference Rings -->
+          <circle cx="370" cy="270" r="230" fill="none" stroke="rgba(168,85,247,0.3)" stroke-width="2"/>
+          <circle cx="370" cy="270" r="190" fill="none" stroke="rgba(56,189,248,0.4)" stroke-width="2" stroke-dasharray="6,6"/>
+          <circle cx="370" cy="270" r="140" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+
+          <!-- Axis Crosshairs -->
+          <line x1="370" y1="20" x2="370" y2="520" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+          <line x1="120" y1="270" x2="620" y2="270" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+
+          <!-- Mechanical Quadrants -->
+          <text x="635" y="275" fill="#38bdf8" font-size="12" font-family="JetBrains Mono" font-weight="700">θm = 0° (Sensor Zero)</text>
+          <text x="370" y="16" fill="#38bdf8" font-size="12" font-family="JetBrains Mono" font-weight="700" text-anchor="middle">θm = 90°</text>
+          <text x="35" y="275" fill="#38bdf8" font-size="12" font-family="JetBrains Mono" font-weight="700">θm = 180°</text>
+          <text x="370" y="535" fill="#38bdf8" font-size="12" font-family="JetBrains Mono" font-weight="700" text-anchor="middle">θm = 270°</text>
+
+          <!-- Pole 1 (North 1) Vector at 330.56 deg -->
+          <!-- x = 370 + 190 * cos(-29.44 deg) = 370 + 165.5 = 535.5, y = 270 - 190 * sin(-29.44 deg) = 270 + 93.4 = 363.4 -->
+          <line x1="370" y1="270" x2="536" y2="363" stroke="#ef4444" stroke-width="4"/>
+          <circle cx="536" cy="363" r="11" fill="#ef4444"/>
+          <text x="555" y="370" fill="#ef4444" font-size="12" font-weight="900" font-family="Heebo">קוטב צפוני 1 (330.56°)</text>
+
+          <!-- Pole 2 (North 2) Vector at 150.34 deg -->
+          <!-- x = 370 + 190 * cos(150.34 deg) = 370 - 165.1 = 204.9, y = 270 - 190 * sin(150.34 deg) = 270 - 94.0 = 176.0 -->
+          <line x1="370" y1="270" x2="205" y2="176" stroke="#ef4444" stroke-width="4"/>
+          <circle cx="205" cy="176" r="11" fill="#ef4444"/>
+          <text x="80" y="170" fill="#ef4444" font-size="12" font-weight="900" font-family="Heebo">קוטב צפוני 2 (150.34°)</text>
+
+          <!-- South Pole 1 Vector at 60.60 deg -->
+          <!-- x = 370 + 190 * cos(60.6 deg) = 370 + 93.3 = 463.3, y = 270 - 190 * sin(60.6 deg) = 270 - 165.5 = 104.5 -->
+          <line x1="370" y1="270" x2="463" y2="105" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4,4"/>
+          <circle cx="463" cy="105" r="8" fill="#06b6d4"/>
+          <text x="478" y="100" fill="#06b6d4" font-size="11" font-weight="700" font-family="Heebo">קוטב דרומי 1 (60.60°)</text>
+
+          <!-- South Pole 2 Vector at 240.56 deg -->
+          <!-- x = 370 + 190 * cos(240.56 deg) = 370 - 93.4 = 276.6, y = 270 - 190 * sin(240.56 deg) = 270 + 165.5 = 435.5 -->
+          <line x1="370" y1="270" x2="277" y2="435" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4,4"/>
+          <circle cx="277" cy="435" r="8" fill="#06b6d4"/>
+          <text x="145" y="445" fill="#06b6d4" font-size="11" font-weight="700" font-family="Heebo">קוטב דרומי 2 (240.56°)</text>
+
+          <!-- 12 Intermediate Measurement Markers -->
+          <circle cx="560" cy="269" r="6" fill="#38bdf8"/> <!-- Step 2: 0.35 deg -->
+          <text x="575" y="260" fill="#38bdf8" font-size="10" font-family="JetBrains Mono">#2 (0.35°)</text>
+
+          <circle cx="534" cy="174" r="6" fill="#38bdf8"/> <!-- Step 3: 30.52 deg -->
+          <text x="545" y="165" fill="#38bdf8" font-size="10" font-family="JetBrains Mono">#3 (30.52°)</text>
+
+          <circle cx="368" cy="80" r="6" fill="#38bdf8"/> <!-- Step 5: 90.66 deg -->
+          <text x="380" y="70" fill="#38bdf8" font-size="10" font-family="JetBrains Mono">#5 (90.66°)</text>
+
+          <circle cx="273" cy="106" r="6" fill="#38bdf8"/> <!-- Step 6: 120.59 deg -->
+          <text x="225" y="98" fill="#38bdf8" font-size="10" font-family="JetBrains Mono">#6 (120.59°)</text>
+
+          <circle cx="180" cy="272" r="6" fill="#c084fc"/> <!-- Step 8: 180.57 deg -->
+          <text x="100" y="290" fill="#c084fc" font-size="10" font-family="JetBrains Mono">#8 (180.57°)</text>
+
+          <circle cx="205" cy="365" r="6" fill="#c084fc"/> <!-- Step 9: 210.37 deg -->
+          <text x="125" y="380" fill="#c084fc" font-size="10" font-family="JetBrains Mono">#9 (210.37°)</text>
+
+          <circle cx="369" cy="460" r="6" fill="#c084fc"/> <!-- Step 11: 270.37 deg -->
+          <text x="375" y="475" fill="#c084fc" font-size="10" font-family="JetBrains Mono">#11 (270.37°)</text>
+
+          <circle cx="466" cy="435" r="6" fill="#c084fc"/> <!-- Step 12: 300.56 deg -->
+          <text x="480" y="450" fill="#c084fc" font-size="10" font-family="JetBrains Mono">#12 (300.56°)</text>
+
+          <!-- Center Rotor Indicator -->
+          <circle cx="370" cy="270" r="40" fill="#0f172a" stroke="#38bdf8" stroke-width="2.5"/>
+          <text x="370" y="274" fill="#fff" font-size="11" font-weight="900" text-anchor="middle">ROTOR</text>
+          <text x="370" y="290" fill="#38bdf8" font-size="9" font-family="JetBrains Mono" text-anchor="middle">4-POLES</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Section 4: Complete Lab Measurement Table -->
+    <div class="card">
+      <h2>📊 4. טבלת תוצאות המדידות ומיפוי כל 13 השלבים מול האינקודר האבסולוטי</h2>
+      <p>להלן הנתונים המדויקים שנמדדו במעבדה, הממחישים את הקשר הליניארי המושלם בין הצעדים, הזוויות המכניות והחשמליות:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>שלב (#)</th>
+            <th>מחזור חשמלי</th>
+            <th>חיבור בספק DC</th>
+            <th>&theta;<sub>e</sub> חשמלי</th>
+            <th>&theta;<sub>m</sub> צפוי</th>
+            <th>קריאה גולמית (32-bit SCADA)</th>
+            <th>צעדים (15-bit)</th>
+            <th>&theta;<sub>m</sub> נמדד בפועל</th>
+            <th>הפרש צעד משלב 1 (&Delta;&theta;<sub>m</sub>)</th>
+            <th>שגיאת צעד מהנומינל</th>
+            <th>&theta;<sub>offset</sub> מחושב</th>
+            <th>משמעות פיזיקלית / סטטוס</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>1</strong></td><td><span class="badge">מחזור 1</span></td><td><strong>Phase U &rarr; V+W</strong></td><td>0.0&deg;</td><td>0.0&deg; (Ref)</td><td><code>18216328</code></td><td>30,088</td><td class="calc-cell">330.56&deg;</td><td class="calc-cell">0.00&deg; (Ref)</td><td>ייחוס</td><td class="calc-cell" style="color:#38bdf8;">58.89&deg;</td><td><span class="status-pass">🔴 קוטב צפוני 1 (d-axis)</span></td></tr>
+          <tr><td><strong>2</strong></td><td><span class="badge">מחזור 1</span></td><td><strong>Phase U+V &rarr; W</strong></td><td>60.0&deg;</td><td>+30.0&deg;</td><td><code>18219040</code></td><td>32</td><td class="calc-cell">0.35&deg;</td><td class="calc-cell">+29.79&deg;</td><td>-0.21&deg;</td><td class="calc-cell" style="color:#38bdf8;">59.30&deg;</td><td><span class="status-pass">&check; וקטור V2</span></td></tr>
+          <tr><td><strong>3</strong></td><td><span class="badge">מחזור 1</span></td><td><strong>Phase V &rarr; U+W</strong></td><td>120.0&deg;</td><td>+60.0&deg;</td><td><code>18221786</code></td><td>2,778</td><td class="calc-cell">30.52&deg;</td><td class="calc-cell">+59.96&deg;</td><td>-0.04&deg;</td><td class="calc-cell" style="color:#38bdf8;">58.96&deg;</td><td><span class="status-pass">&check; וקטור V3</span></td></tr>
+          <tr><td><strong>4</strong></td><td><span class="badge">מחזור 1</span></td><td><strong>Phase V+W &rarr; U</strong></td><td>180.0&deg;</td><td>+90.0&deg;</td><td><code>18224524</code></td><td>5,516</td><td class="calc-cell">60.60&deg;</td><td class="calc-cell">+90.04&deg;</td><td>+0.04&deg;</td><td class="calc-cell" style="color:#38bdf8;">58.80&deg;</td><td><span class="status-pass">🔵 קוטב דרומי 1</span></td></tr>
+          <tr><td><strong>5</strong></td><td><span class="badge">מחזור 1</span></td><td><strong>Phase W &rarr; U+V</strong></td><td>240.0&deg;</td><td>+120.0&deg;</td><td><code>18227260</code></td><td>8,252</td><td class="calc-cell">90.66&deg;</td><td class="calc-cell">+120.10&deg;</td><td>+0.10&deg;</td><td class="calc-cell" style="color:#38bdf8;">58.68&deg;</td><td><span class="status-pass">&check; וקטור V5</span></td></tr>
+          <tr><td><strong>6</strong></td><td><span class="badge">מחזור 1</span></td><td><strong>Phase W+U &rarr; V</strong></td><td>300.0&deg;</td><td>+150.0&deg;</td><td><code>18229984</code></td><td>10,976</td><td class="calc-cell">120.59&deg;</td><td class="calc-cell">+150.03&deg;</td><td>+0.03&deg;</td><td class="calc-cell" style="color:#38bdf8;">58.83&deg;</td><td><span class="status-pass">&check; וקטור V6</span></td></tr>
+          <tr style="background: rgba(168,85,247,0.05);"><td><strong>7</strong></td><td><span class="badge" style="background:rgba(168,85,247,0.2); color:#c084fc;">מחזור 2</span></td><td><strong>Phase U &rarr; V+W</strong></td><td>360.0&deg;</td><td>+180.0&deg;</td><td><code>18232692</code></td><td>13,684</td><td class="calc-cell">150.34&deg;</td><td class="calc-cell">+179.78&deg;</td><td>-0.22&deg;</td><td class="calc-cell" style="color:#c084fc;">59.33&deg;</td><td><span class="status-pass">🔴 קוטב צפוני 2 (חצי סיבוב)</span></td></tr>
+          <tr style="background: rgba(168,85,247,0.05);"><td><strong>8</strong></td><td><span class="badge" style="background:rgba(168,85,247,0.2); color:#c084fc;">מחזור 2</span></td><td><strong>Phase U+V &rarr; W</strong></td><td>420.0&deg;</td><td>+210.0&deg;</td><td><code>18235444</code></td><td>16,436</td><td class="calc-cell">180.57&deg;</td><td class="calc-cell">+210.01&deg;</td><td>+0.01&deg;</td><td class="calc-cell" style="color:#c084fc;">58.86&deg;</td><td><span class="status-pass">&check; וקטור V2'</span></td></tr>
+          <tr style="background: rgba(168,85,247,0.05);"><td><strong>9</strong></td><td><span class="badge" style="background:rgba(168,85,247,0.2); color:#c084fc;">מחזור 2</span></td><td><strong>Phase V &rarr; U+W</strong></td><td>480.0&deg;</td><td>+240.0&deg;</td><td><code>18238156</code></td><td>19,148</td><td class="calc-cell">210.37&deg;</td><td class="calc-cell">+239.81&deg;</td><td>-0.19&deg;</td><td class="calc-cell" style="color:#c084fc;">59.27&deg;</td><td><span class="status-pass">&check; וקטור V3'</span></td></tr>
+          <tr style="background: rgba(168,85,247,0.05);"><td><strong>10</strong></td><td><span class="badge" style="background:rgba(168,85,247,0.2); color:#c084fc;">מחזור 2</span></td><td><strong>Phase V+W &rarr; U</strong></td><td>540.0&deg;</td><td>+270.0&deg;</td><td><code>18240904</code></td><td>21,896</td><td class="calc-cell">240.56&deg;</td><td class="calc-cell">+270.00&deg;</td><td>0.00&deg;</td><td class="calc-cell" style="color:#c084fc;">58.89&deg;</td><td><span class="status-pass">🔵 קוטב דרומי 2</span></td></tr>
+          <tr style="background: rgba(168,85,247,0.05);"><td><strong>11</strong></td><td><span class="badge" style="background:rgba(168,85,247,0.2); color:#c084fc;">מחזור 2</span></td><td><strong>Phase W &rarr; U+V</strong></td><td>600.0&deg;</td><td>+300.0&deg;</td><td><code>18243618</code></td><td>24,610</td><td class="calc-cell">270.37&deg;</td><td class="calc-cell">+299.82&deg;</td><td>-0.18&deg;</td><td class="calc-cell" style="color:#c084fc;">59.25&deg;</td><td><span class="status-pass">&check; וקטור V5'</span></td></tr>
+          <tr style="background: rgba(168,85,247,0.05);"><td><strong>12</strong></td><td><span class="badge" style="background:rgba(168,85,247,0.2); color:#c084fc;">מחזור 2</span></td><td><strong>Phase W+U &rarr; V</strong></td><td>660.0&deg;</td><td>+330.0&deg;</td><td><code>18246366</code></td><td>27,358</td><td class="calc-cell">300.56&deg;</td><td class="calc-cell">+330.01&deg;</td><td>+0.01&deg;</td><td class="calc-cell" style="color:#c084fc;">58.87&deg;</td><td><span class="status-pass">&check; וקטור V6'</span></td></tr>
+          <tr style="background: rgba(16,185,129,0.12); font-weight:800;"><td><strong>13'</strong></td><td><span class="badge-success badge">סיום 360&deg;</span></td><td><strong>Phase U &rarr; V+W</strong></td><td>720.0&deg;</td><td>+360.0&deg;</td><td><code>18249096</code></td><td>30,088</td><td class="calc-cell" style="color:#34d399;">330.56&deg;</td><td class="calc-cell" style="color:#34d399;">+360.00&deg; &equiv; 0&deg;</td><td>0.00&deg;</td><td class="calc-cell" style="color:#34d399;">58.89&deg;</td><td><span class="status-pass">🟢 סגירת סיבוב אבסולוטית</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 5: C-Function Implementation -->
+    <div class="card">
+      <h2>💻 5. קוד C מוכן ומוטמע ב-Typhoon HIL404 (FOC Implementation)</h2>
+      <p>קוד זה מוטמע ישירות במודל ה-TSE של Typhoon HIL (<code>PMSM_Position_Reader_HIL404_v1.tse</code>):</p>
+
+      <pre><code>// ============================================================================
+// Typhoon HIL404 - High Resolution Electrical Angle & FOC Commutation
+// Motor: OEMER QS 100S (4 Poles, p = 2) | Encoder: SICK SFM60 HIPERFACE
+// Calibrated from 13-Step Full 360° Mechanical Revolution Lab Protocol
+// ============================================================================
+
+#define POLE_PAIRS 2                                   // 4 Poles (p = 2)
+#define TWO_PI     (2.0 * 3.14159265358979323846)
+
+// Calibrated Pole Position Offset Angle (From 13-Step Lab Protocol)
+#define THETA_OFFSET_DEG 58.98
+#define THETA_OFFSET_RAD (58.98 * (3.14159265358979323846 / 180.0)) // 1.0295 rad
+
+// 1. Instantaneous Electrical Angle Calculation for Park & Clarke Transformations
+double theta_e = fmod(POLE_PAIRS * hires_rad + THETA_OFFSET_RAD, TWO_PI);
+if (theta_e < 0.0) {
+    theta_e += TWO_PI;
+}
+
+// 2. Output electrical angle in degrees for SCADA monitoring
+double theta_e_deg = theta_e * (180.0 / 3.14159265358979323846);
+</code></pre>
+    </div>
+
+  </div>
+
+</body>
+</html>

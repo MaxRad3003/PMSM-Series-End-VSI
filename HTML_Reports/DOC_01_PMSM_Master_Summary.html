@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סיכום פרויקט PMSM, ציוד Typhoon HIL (404/402/DSP 180), חיישנים ומודול DFR0845</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --shadow-glow: 0 0 25px rgba(6, 182, 212, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Rubik', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 2rem 1rem;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-glow);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple), var(--accent-rose));
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 850px;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        .badge-group {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(6, 182, 212, 0.12);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 0.35rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge.purple {
+            background: rgba(139, 92, 246, 0.12);
+            color: var(--accent-purple);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .badge.green {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--accent-green);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .badge.rose {
+            background: rgba(244, 63, 94, 0.12);
+            color: var(--accent-rose);
+            border-color: rgba(244, 63, 94, 0.3);
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .section-card:hover {
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.2));
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            color: var(--accent-cyan);
+            flex-shrink: 0;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        p {
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .sub-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.25rem;
+        }
+
+        .sub-card h3 {
+            font-size: 1.15rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Lists */
+        ul {
+            list-style: none;
+            padding-right: 0;
+        }
+
+        li {
+            position: relative;
+            padding-right: 1.5rem;
+            margin-bottom: 0.6rem;
+            color: #cbd5e1;
+        }
+
+        li::before {
+            content: "•";
+            position: absolute;
+            right: 0;
+            color: var(--accent-cyan);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--accent-cyan);
+            padding: 0.85rem 1rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+            background: rgba(30, 41, 59, 0.4);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        /* Highlight Boxes */
+        .highlight-box {
+            background: rgba(6, 182, 212, 0.08);
+            border-right: 4px solid var(--accent-cyan);
+            padding: 1.25rem;
+            border-radius: 8px 12px 12px 8px;
+            margin: 1.25rem 0;
+        }
+
+        .highlight-box.purple {
+            background: rgba(139, 92, 246, 0.08);
+            border-right-color: var(--accent-purple);
+        }
+
+        .highlight-box.amber {
+            background: rgba(245, 158, 11, 0.08);
+            border-right-color: var(--accent-amber);
+        }
+
+        .highlight-box.rose {
+            background: rgba(244, 63, 94, 0.08);
+            border-right-color: var(--accent-rose);
+        }
+
+        .highlight-title {
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
+        }
+
+        /* Code Block */
+        pre {
+            background: #090d16;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: #38bdf8;
+            direction: ltr;
+            text-align: left;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.3rem; }
+            .section-card { padding: 1.25rem; }
+            body { padding: 1rem 0.5rem; }
+        }
+    </style>
+    <!-- MathJax 3 for rendering LaTeX equations -->
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true
+        },
+        options: {
+            enableMenu: false
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <header>
+        <h1>מאסטר-סיכום: PMSM, Typhoon HIL 404/402, כרטיס DSP 180, חיישנים ומודול DFR0845</h1>
+        <p class="subtitle">מדריך מקיף וריכוז טכני עבור מערכות בקרת מנועים, חומרות סימולציה בזמן אמת (HIL), כרטיסי פיקוד DSP, קריאת חיישני מיקום ב-Schematic Editor ושילוב בחוגי בקרה.</p>
+        <div class="badge-group">
+            <span class="badge">PMSM & OEPC Drive</span>
+            <span class="badge rose">Typhoon HIL 404 (4 Cores)</span>
+            <span class="badge purple">DSP 180 Interface Board (C2000)</span>
+            <span class="badge green">Absolute Encoder (Hiperface)</span>
+            <span class="badge">DFRobot DFR0845 (Isolated RS485)</span>
+        </div>
+    </header>
+
+    <!-- NEW SECTION 7: Schematic Editor Architecture: Sensor Reading to Motor Control Loops -->
+    <section class="section-card">
+        <div class="section-header">
+            <div class="icon-box">🧠</div>
+            <h2>7. ארכיטקטורה ב-Schematic Editor (TSE): מקריאת החיישן ועד לחוגי בקרת המנוע</h2>
+        </div>
+        <p>קריאת החיישן מתבצעת כולה בתוך ה-<strong>Typhoon Schematic Editor (TSE)</strong>, והאות המפולח משמש כהיזון חוזר (Feedback Signal $\theta_e$) עבור חוגי הבקרה שיתווספו בהמשך:</p>
+
+        <div class="grid-2">
+            <div class="sub-card">
+                <h3>📥 שלב 1: מודול קריאת החיישן ב-TSE</h3>
+                <ul>
+                    <li><strong>קבלת האותות הפיזיים:</strong> כניסות דיגיטליות (DI) או אנלוגיות (AI) המגיעות מפיני ה-HIL 404 (מהחיישן / DFR0845).</li>
+                    <li><strong>בלוק המענח (Decoder):</strong> רכיב <code>Quadrature Encoder (QEP)</code> או <code>C Function Decoder</code> הממיר את הפולסים/בייטים לזווית מכנית $\theta_m$.</li>
+                    <li><strong>חישוב הזווית החשמלית ($\theta_e$):</strong>
+                        $$\theta_e = \text{mod}(p \cdot \theta_m, 2\pi)$$
+                        *(כאשר $p$ הוא מספר זוגות הקטבים של מנוע ה-PMSM).*
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sub-card">
+                <h3>🔄 שלב 2: שילוב הזווית בחוגי בקרת המנוע (FOC & OEPC)</h3>
+                <ul>
+                    <li><strong>תמרת Park & Clarke (dq Transformation):</strong> ה-$\theta_e$ מוזן למטריצת התמרה להמרת זרמי הסטטור ($i_a, i_b, i_c$) לזרמי שדה ומומנט ($i_d, i_q$).</li>
+                    <li><strong>חוגי בקרת זרם פנימיים (Current Loops):</strong> בקר PI עבור $I_q$ (מומנט) ובקר PI עבור $I_d$ (שטף / Field Weakening).</li>
+                    <li><strong>חוג בקרת מהירות/מיקום חיצוני (Speed & Position Loops):</strong> בקר PI חיצוני המקבל את שגיאת המהירות $(\omega^* - \omega)$ ומפיק את זרם הייחוס $I_q^*$.</li>
+                    <li><strong>יצירת מיתוג לדרייברים (OEPC / VSI Gate Gen):</strong> אלגוריתם ה-96 NOD / Space Vector מפיק את 8 אותות המיתוג (<code>GS0..GS7</code>) לממיר ה-OEPC.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>בלוק ב-Schematic Editor (TSE)</th>
+                        <th>אות כניסה (Input)</th>
+                        <th>אות יציאה (Output)</th>
+                        <th>תפקיד בחוג הבקרה</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sensor Reader / QEP Block</strong></td>
+                        <td>פיני DI / AI מ-HIL 404 (דרך DFR0845)</td>
+                        <td><code>theta_m</code>, <code>omega_m</code></td>
+                        <td>קריאת חיישן המיקום והמהירות בזמן אמת</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Electrical Angle Calculator</strong></td>
+                        <td><code>theta_m</code>, מספר קטבים $p$</td>
+                        <td><code>theta_e</code> (הזווית החשמלית)</td>
+                        <td>המרת הזווית המכנית לזווית חשמלית $0\dots2\pi$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Clarke & Park Transform</strong></td>
+                        <td>זרמים $i_a, i_b, i_c$ ו-<code>theta_e</code></td>
+                        <td>זרמים $i_d, i_q$</td>
+                        <td>העברת מדידות הזרם למערכת צירים מסתובבת $d-q$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PI Current Controllers</strong></td>
+                        <td>שגיאות הזרם $\Delta i_d, \Delta i_q$</td>
+                        <td>מתחי ייחוס $v_d^*, v_q^*$</td>
+                        <td>בקרת הזרם והמומנט המדויקת של המנוע</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OEPC Gate Generator / 96 NOD</strong></td>
+                        <td>מתחים $v_d^*, v_q^*$ ו-<code>theta_e</code></td>
+                        <td> אותות מיתוג <code>GS0..GS7</code></td>
+                        <td>מיתוג דרייברי ה-OEPC/Dual Inverter במעגל הכוח</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="highlight-box purple">
+            <div class="highlight-title">💡 זרימת העבודה המומלצת ב-Schematic Editor</div>
+            <ol style="margin-right: 1.2rem; color: #cbd5e1;">
+                <li><strong>צעד ראשון:</strong> בציעת מודול קריאת החיישן ב-TSE, בדיקת תקינות הקריאה, והצגת הזווית ב-SCADA Panel (Gauge / Digital Display).</li>
+                <li><strong>צעד שני:</strong> שילוב הזווית $\theta_e$ בחוגי בקרת הזרם (FOC) והזנת הזרמים מהאינוורטר.</li>
+                <li><strong>צעד שלישי:</strong> הוספת חוג בקרת מהירות ומיקום סגור (Closed Loop Speed & Position Control) מעל חוגי הזרם.</li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- SECTION 6: How to Connect DFR0845 Converter to Typhoon HIL 404 & DSP 180 -->
+    <section class="section-card">
+        <div class="section-header">
+            <div class="icon-box">🔌</div>
+            <h2>6. מדריך חיווט פין-לפין: חיבור הממיר (DFR0845) ל-Typhoon HIL 404 ול-DSP 180</h2>
+        </div>
+        <p>להלן הוראות החיווט והחיבור הפיזי בין מודול הממיר המבודד DFRobot DFR0845 לבין ה-Typhoon HIL 404 וכרטיס ה-DSP 180:</p>
+    </section>
+
+    <!-- SECTION 5: Reading Sensor & Displaying Position on HIL 404 Screen -->
+    <section class="section-card">
+        <div class="section-header">
+            <div class="icon-box">🖥️</div>
+            <h2>5. מדריך מעשי: קריאת החיישן ב-Typhoon HIL 404 והצגת המיקום על המסך</h2>
+        </div>
+        <p>כדי לקרוא חיישן מיקום בזמן אמת באמצעות ה-Typhoon HIL 404 ולהציג את המיקום הזוויתי והמכני על גבי מסך ה-HIL Control Center (SCADA Panel), יש לבצע את הצעדים הבאים:</p>
+    </section>
+
+    <!-- SECTION 1: Typhoon HIL 404 & HIL DSP 180 -->
+    <section class="section-card">
+        <div class="section-header">
+            <div class="icon-box">🚀</div>
+            <h2>1. חומרה מתקדמת: Typhoon HIL 404 ו-DSP 180 Interface Board</h2>
+        </div>
+        <p>ברשותך חומרות הסימולציה והבקרה המתקדמות ביותר של Typhoon HIL, המאפשרות ביצוע **Controller Hardware-in-the-Loop (C-HIL)** ברמה תעשייתית גבוהה.</p>
+    </section>
+
+    <!-- SECTION 2: PMSM & OEPC Folder Analysis -->
+    <section class="section-card">
+        <div class="section-header">
+            <div class="icon-box">⚡</div>
+            <h2>2. ניתוח תיקיית הפרויקט: <code>2025 Eli & Max\PMSM</code></h2>
+        </div>
+        <p>הפרויקט מרכז מחקר, תכנון מכני, סימולציות HIL בזמן אמת ובקרה מתקדמת עבור מנוע סינכרוני עם מגנטים קבועים (PMSM) בשילוב ממיר הספק בטופולוגיית OEPC (Open Electronics Power Center).</p>
+    </section>
+
+    <!-- SECTION 3: Absolute Position Sensor -->
+    <section class="section-card">
+        <div class="section-header">
+            <div class="icon-box">🎯</div>
+            <h2>3. חיישן מיקום אבסולוטי (Absolute Position Encoder)</h2>
+        </div>
+        <p>חיישן מיקום אבסולוטי מספק את הזווית הזוויתית המדויקת והמוחלטת של ציר המנוע מיד עם הדלקת המערכת (Power-on), ללא צורך בתנועת איפוס (Homing) או חיפוש אינדקס.</p>
+    </section>
+
+    <!-- SECTION 4: DFRobot DFR0845 Module -->
+    <section class="section-card">
+        <div class="section-header">
+            <div class="icon-box">🔌</div>
+            <h2>4. מודול מבודד תקשורת DFRobot DFR0845 (RS485 to UART)</h2>
+        </div>
+        <p>רכיב <strong>DFRobot Gravity: Active Isolated RS485 to UART Signal Adapter Module</strong> הינו ממיר ומבודד אקטיבי הממיר אותות דיפרנציאליים RS485 לאותות UART 3.3V/5V המתאימים למיקרו-בקרים.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        מאסטר-סיכום טכני | SCE - Shamoon College of Engineering | פרויקט PMSM, Typhoon HIL 404 & DSP 180 (2025)
+    </footer>
+
+</div>
+
+</body>
+</html>

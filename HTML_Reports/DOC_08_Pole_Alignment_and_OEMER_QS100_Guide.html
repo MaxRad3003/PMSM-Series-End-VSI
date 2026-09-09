@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOC 08: מדריך מנוע OEMER QS 100 וכיול מיקום קטבים אבסולוטי (Pole Alignment)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- MathJax for Beautiful LaTeX Formula Rendering -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root {
+      --bg-primary: #0a0f1d;
+      --bg-secondary: #111827;
+      --bg-card: rgba(17, 24, 39, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(59, 130, 246, 0.3);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      --accent-rose: #ef4444;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Heebo', sans-serif;
+      background: radial-gradient(circle at 15% 15%, #0f172a 0%, #070a14 50%, #030712 100%);
+      color: var(--text-main);
+      line-height: 1.7;
+      padding: 2.5rem 1.5rem;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; left: 0; height: 4px;
+      background: linear-gradient(90deg, var(--accent-rose), var(--accent-blue), var(--accent-emerald));
+    }
+    h1 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.4rem; font-weight: 700; color: var(--accent-cyan); margin: 2rem 0 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    h3 { font-size: 1.15rem; font-weight: 600; color: #fff; margin: 1.25rem 0 0.5rem; }
+    p { margin-bottom: 1rem; color: #d1d5db; }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      margin-right: 0.4rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      text-align: right;
+    }
+    th { background: rgba(0, 0, 0, 0.3); color: var(--accent-cyan); font-weight: 600; }
+    tr:hover { background: rgba(255, 255, 255, 0.02); }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      color: #93c5fd;
+      font-size: 0.85em;
+    }
+    pre {
+      background: #030712;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e5e7eb;
+      margin: 1rem 0;
+      direction: ltr;
+      text-align: left;
+    }
+    .alert {
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-sm);
+      margin: 1.25rem 0;
+      border-right: 4px solid;
+    }
+    .alert-tip { background: rgba(16, 185, 129, 0.1); border-color: var(--accent-emerald); color: #a7f3d0; }
+    .alert-warn { background: rgba(245, 158, 11, 0.1); border-color: var(--accent-amber); color: #fde68a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <header>
+      <h1>📑 DOC 08: מדריך מנוע OEMER QS 100 וכיול מיקום קטבים אבסולוטי</h1>
+      <p>סיכום הנדסי מקיף: מפרט טכני רשמי של מנוע OEMER QS 100, שיטות כיול מיקום קטבים (Pole Alignment Offset) מול אינקודר SICK SFM60, והטמעה ב-Typhoon HIL.</p>
+      <div style="margin-top: 1rem;">
+        <span class="badge">OEMER QS 100</span>
+        <span class="badge">SICK SFM60 HIPERFACE</span>
+        <span class="badge">Pole Identification</span>
+        <span class="badge">Typhoon HIL404</span>
+      </div>
+    </header>
+
+    <!-- Section 1: Motor Parameters -->
+    <div class="card">
+      <h2>⚡ 1. מפרט טכני רשמי – מנוע OEMER QS 100 (SincroSPE®)</h2>
+      <p>סדרת מנועי <strong>OEMER QS 100</strong> היא מנועי סרוו סינכרוניים מגנט קבוע (PMSM) בעלי נצילות על <strong>IE4</strong> המיועדים לבקרת תנועה מדויקת מול ממירי תדר של 400V.</p>
+
+      <table>
+        <thead>
+          <tr><th>פרמטר מנוע (Nameplate Data)</th><th>ערך נומינלי</th><th>הערות הנדסיות</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>יצרן ודגם מלא</td><td><strong>OEMER S.p.A. - QS 100S</strong></td><td>Made in Rescaldina (MI) ITALY, S/N: <code>25M0147</code></td></tr>
+          <tr><td>סוג מנוע</td><td><strong>3-Ph AC PM Motor (PMSM)</strong></td><td>IEC 60034-1 / 34-2, יעילות IE4 (86%)</td></tr>
+          <tr><td>מספר קטבים (P) / זוגות קטבים ($p$)</td><td><strong>P = 4 קטבים (Pole Pairs $p=2$)</strong></td><td><strong>$180^\circ$ מכני למחזור חשמלי שלם ($360^\circ_e$)</strong></td></tr>
+          <tr><td>הספק נומינלי ($P_n$)</td><td><strong>$1.7\text{ kW}$</strong></td><td>Duty S1, משקל $37\text{ kg}$</td></tr>
+          <tr><td>מהירות נומינלית ($n_n$)</td><td><strong>$580\text{ RPM}$</strong></td><td>$n = \frac{60 \cdot f_n}{p} = \frac{60 \cdot 19.3}{2} = 580\text{ RPM}$</td></tr>
+          <tr><td>תדר נומינלי ($f_n$)</td><td><strong>$19.3\text{ Hz}$</strong></td><td>תדר עבודה ב-$580\text{ RPM}$</td></tr>
+          <tr><td>מומנט נומינלי ($M_n$) ומומנט שיא ($M_{pk}$)</td><td><strong>$M_n = 28\text{ Nm}$ | $M_{pk} = 60\text{ Nm}$</strong></td><td>מומנט גבוה במיוחד במהירות נמוכה</td></tr>
+          <tr><td>מתח וזרם בחיבור כוכב ($Y$)</td><td><strong>$U_n = 360\text{ V}$ | $I_n = 3.5\text{ A}$</strong></td><td>חיבור ברירת המחדל במעבדה ($Y$)</td></tr>
+          <tr><td>מתח וזרם בחיבור משולש ($\Delta$)</td><td><strong>$U_n = 208\text{ V}$ | $I_n = 6.1\text{ A}$</strong></td><td>אופציונלי למתח נמוך</td></tr>
+          <tr><td>התנגדות פאזה לפאזה ($R_{f/f}$)</td><td><strong>$18.35\ \Omega$</strong></td><td>התנגדות פאזה בודדת: $R_s = 9.175\ \Omega$</td></tr>
+          <tr><td>מהירות מרבית ($n_{\max}$)</td><td><strong>$3,600\text{ RPM}$</strong></td><td>מגבלה מכנית/חשמלית</td></tr>
+          <tr><td>חיישן מיקום מובנה (Feedback)</td><td><strong>SICK SFM60 HIPERFACE</strong></td><td>$1024\text{ Sin/Cos} \times 4096\text{ Multiturn}$ (15-bit singleturn)</td></tr>
+          <tr><td>מפוח קירור</td><td><strong>RB2C-175</strong></td><td>1Ph 230Vac, $0.3/0.37\text{A}$, $64\text{W}$</td></tr>
+        </tbody>
+      </table>
+
+      <h3>טבלת ביצועים לפי אורך גוף ב-1500 RPM:</h3>
+      <table>
+        <thead>
+          <tr><th>דגם</th><th>הספק ($P_n$)</th><th>זרם ($I_n$)</th><th>מומנט ($M_n$)</th><th>מומנט שיא ($M_{\max}$)</th><th>אינרציה ($J$)</th><th>משקל</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>QS 100S</strong></td><td>4.0 kW</td><td>7.7 A</td><td>25.5 Nm</td><td>60 Nm</td><td>0.0075 kg·m²</td><td>37 kg</td></tr>
+          <tr><td><strong>QS 100M</strong></td><td>5.5 kW</td><td>10.4 A</td><td>35.0 Nm</td><td>80 Nm</td><td>0.0110 kg·m²</td><td>45 kg</td></tr>
+          <tr><td><strong>QS 100L</strong></td><td>7.5 kW</td><td>14.1 A</td><td>47.8 Nm</td><td>110 Nm</td><td>0.0140 kg·m²</td><td>54 kg</td></tr>
+          <tr><td><strong>QS 100P</strong></td><td>9.2 kW</td><td>17.3 A</td><td>58.6 Nm</td><td>130 Nm</td><td>0.0160 kg·m²</td><td>61 kg</td></tr>
+          <tr><td><strong>QS 100X</strong></td><td>11.0 kW</td><td>20.6 A</td><td>70.0 Nm</td><td>160 Nm</td><td>0.0200 kg·m²</td><td>71 kg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 2: Pole Alignment Methods -->
+    <div class="card">
+      <h2>🎯 2. שיטות מציאת מיקום הקטבים ביחס לחיישן האבסולוטי (Pole Alignment)</h2>
+      <p>במנוע PMSM, בקר ה-FOC חייב לדעת את הזווית החשמלית המדויקת של ציר השטף המגנטי של הרוטור ($d$-axis). הקשר מוגדר ע"י:</p>
+      <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-sm); text-align: center; font-size: 1.1rem; margin-bottom: 1rem; color: #93c5fd; font-family: 'JetBrains Mono', monospace;">
+        &theta;<sub>e</sub> = (4 &times; &theta;<sub>mech</sub> + &theta;<sub>offset</sub>) mod 2&pi;
+      </div>
+
+      <h3>שיטה 1: נעילת ציר באמצעות זרם DC (מומלץ למעבדה)</h3>
+      <ol style="padding-right: 1.5rem; margin-bottom: 1rem;">
+        <li>מכוונים ספק כוח DC לזרם בטוח של <strong>1.5A עד 2A</strong>.</li>
+        <li>מחברים הדק חיובי לפאזה <strong>U</strong>.</li>
+        <li>מקצרים את פאזות <strong>V ו-W</strong> ומחברים להדק השלילי.</li>
+        <li>הרוטור ננעל מכנית ב-<strong>&theta;<sub>e</sub> = 0&deg;</strong>.</li>
+        <li>קוראים את הזווית מהאינקודר האבסולוטי: <code>&theta;<sub>read</sub></code>.</li>
+        <li>מחשבים: <code>&theta;<sub>offset</sub> = - (4 &times; &theta;<sub>read</sub>)</code>.</li>
+      </ol>
+
+      <h3>טבלת 6 מצבי ההזרמה על פני מחזור חשמלי מלא (UVW 6-Step):</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>שלב</th>
+            <th>חיבור הדק (+) בספק</th>
+            <th>חיבור הדק (–) בספק</th>
+            <th>&theta;<sub>e</sub> חשמלי</th>
+            <th>&theta;<sub>m</sub> מכני צפוי</th>
+            <th>קפיצה מכנית צפויה</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="font-weight: 700; background: rgba(59,130,246,0.08);"><td>1</td><td>Phase U</td><td>Phase V + W</td><td>0.0&deg;</td><td>0.0&deg; (Ref)</td><td>ייחוס</td></tr>
+          <tr><td>2</td><td>Phase U + V</td><td>Phase W</td><td>60.0&deg;</td><td>+15.0&deg;</td><td>+15.0&deg;</td></tr>
+          <tr style="font-weight: 700; background: rgba(59,130,246,0.08);"><td>3</td><td>Phase V</td><td>Phase U + W</td><td>120.0&deg;</td><td>+30.0&deg;</td><td>+15.0&deg;</td></tr>
+          <tr><td>4</td><td>Phase V + W</td><td>Phase U</td><td>180.0&deg;</td><td>+45.0&deg;</td><td>+15.0&deg;</td></tr>
+          <tr style="font-weight: 700; background: rgba(59,130,246,0.08);"><td>5</td><td>Phase W</td><td>Phase U + V</td><td>240.0&deg;</td><td>+60.0&deg;</td><td>+15.0&deg;</td></tr>
+          <tr><td>6</td><td>Phase W + U</td><td>Phase V</td><td>300.0&deg;</td><td>+75.0&deg;</td><td>+15.0&deg;</td></tr>
+          <tr style="font-weight: 700; background: rgba(16,185,129,0.1);"><td>חזרה 1'</td><td>Phase U</td><td>Phase V + W</td><td>360.0&deg; &equiv; 0&deg;</td><td>+90.0&deg;</td><td>מחזור חשמלי שלם (+90&deg;)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="alert alert-tip">
+        <strong>💡 טיפ לבדיקה:</strong> סובב מעט את הציר ביד וחבר שוב את הזרם – הציר יינעל באחד מ-4 הקטבים המגנטיים. ההפרש בין הזוויות המכניות חייב להיות בדיוק <strong>90.0&deg; &plusmn; 0.2&deg;</strong>.<br>
+        טופס מדידה מלא ואינטראקטיבי זמין במסמך: <a href="DOC_09_Pole_Alignment_Measurement_Protocol.html" style="color: #6ee7b7; font-weight: 700;">DOC 09: טבלת מדידות ופרוטוקול כיול קטבים ↗</a>.
+      </div>
+    </div>
+
+    <!-- Section 3: C-Code Implementation -->
+    <div class="card">
+      <h2>💻 3. הטמעה במודל הסימולציה של Typhoon HIL</h2>
+      <p>קוד ה-C-Function לחישוב הזווית החשמלית המכוילת ב-Typhoon HIL404:</p>
+
+      <pre><code>#define POLE_PAIRS 2
+#define TWO_PI (2.0 * 3.14159265358979323846)
+
+// ערך ה-Offset שנמדד בניסוי הנעילה
+#define THETA_OFFSET_DEG 57.15
+#define THETA_OFFSET_RAD (THETA_OFFSET_DEG * (3.14159265358979323846 / 180.0))
+
+// חישוב זווית חשמלית מדויקת ל-FOC
+double theta_e = fmod(POLE_PAIRS * hires_rad + THETA_OFFSET_RAD, TWO_PI);
+if (theta_e < 0.0) {
+    theta_e += TWO_PI;
+}
+double theta_e_deg = theta_e * (180.0 / 3.14159265358979323846);
+</code></pre>
+    </div>
+
+  </div>
+</body>
+</html>

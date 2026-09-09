@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מדריך מפורט: שלבי הפעלה, חיווט ותכנות - Typhoon HIL 404 & PMSM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0b1329;
+            --bg-secondary: #172341;
+            --bg-card: rgba(23, 35, 65, 0.85);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --accent-purple: #8b5cf6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --shadow-glow: 0 0 35px rgba(6, 182, 212, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Rubik', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.75;
+            padding: 2rem 1rem;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(139, 92, 246, 0.12) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple), var(--accent-green), var(--accent-rose));
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.75rem;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 900px;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        .step-badge-group {
+            display: flex;
+            justify-content: center;
+            gap: 0.85rem;
+            flex-wrap: wrap;
+        }
+
+        .step-badge {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .step-badge.purple {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--accent-purple);
+            border-color: rgba(139, 92, 246, 0.35);
+        }
+
+        .step-badge.green {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        .stage-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.2rem;
+            margin-bottom: 2.2rem;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .stage-number {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #ffffff;
+            font-size: 1.6rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+            flex-shrink: 0;
+        }
+
+        h2 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .sub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.25rem;
+        }
+
+        .item-box {
+            background: rgba(11, 19, 41, 0.75);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.35rem;
+        }
+
+        .item-box h3 {
+            font-size: 1.15rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        ul {
+            list-style: none;
+            padding-right: 0;
+        }
+
+        li {
+            position: relative;
+            padding-right: 1.6rem;
+            margin-bottom: 0.7rem;
+            color: #cbd5e1;
+        }
+
+        li::before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 1.25rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(11, 19, 41, 0.95);
+            color: var(--accent-cyan);
+            padding: 0.9rem 1.1rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.85rem 1.1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+            background: rgba(23, 35, 65, 0.4);
+        }
+
+        tr:hover td {
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        .callout {
+            background: rgba(6, 182, 212, 0.08);
+            border-right: 4px solid var(--accent-cyan);
+            padding: 1.25rem;
+            border-radius: 8px 12px 12px 8px;
+            margin: 1.25rem 0;
+        }
+
+        .callout.green {
+            background: rgba(16, 185, 129, 0.08);
+            border-right-color: var(--accent-green);
+        }
+
+        .callout.amber {
+            background: rgba(245, 158, 11, 0.08);
+            border-right-color: var(--accent-amber);
+        }
+
+        .callout.purple {
+            background: rgba(139, 92, 246, 0.08);
+            border-right-color: var(--accent-purple);
+        }
+
+        .callout.rose {
+            background: rgba(244, 63, 94, 0.08);
+            border-right-color: var(--accent-rose);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
+        }
+
+        pre {
+            background: #060a12;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: #38bdf8;
+            direction: ltr;
+            text-align: left;
+            margin: 1rem 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+    </style>
+    <!-- MathJax 3 for rendering LaTeX equations -->
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true
+        },
+        options: {
+            enableMenu: false
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>מדריך מפורט: שלבי הפעלה, חיווט והגדרות מערכת</h1>
+        <p class="subtitle">פירוט מקיף ומלא של חיווט החומרה, הגדרות ה-Schematic Editor (TSE), רכיבי Serial Setup & Receive, ניתוח Execution Rate 100e-6, קוד C, ותצוגת SCADA.</p>
+        <div class="step-badge-group">
+            <span class="step-badge">1. חיווט פיזי</span>
+            <span class="step-badge purple">2. הגדרות TSE & Serial</span>
+            <span class="step-badge green">3. קוד C ומתמטיקה</span>
+            <span class="step-badge">4. תצוגת SCADA</span>
+            <span class="step-badge purple">5. חוגי בקרת PMSM</span>
+        </div>
+    </header>
+
+    <!-- SECTION 1: PHYSICAL WIRING -->
+    <div class="stage-card">
+        <div class="stage-header">
+            <div class="stage-number">1</div>
+            <div>
+                <h2>שלב 1: חיווט פיזי וחיבורי חומרה (Hardware Wiring)</h2>
+                <p style="color: var(--text-muted);">חיבור מודול הממיר המבודד DFR0845 ל-Typhoon HIL 404 ולחיישן המיקום הפיזי.</p>
+            </div>
+        </div>
+
+        <h3 style="color: var(--accent-cyan); margin-bottom: 0.75rem;">א. חיבור המודול (DFR0845) ל-Typhoon HIL 404 (או ל-DSP 180 Board)</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>פין במודול DFR0845</th>
+                        <th>שם הפין</th>
+                        <th>פין ב-Typhoon HIL 404 (Digital I/O)</th>
+                        <th>פין ב-HIL DSP 180 Board (TI C2000)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td><code>T</code> (TX)</td>
+                        <td><strong>Digital Input (`DI_0` / RX)</strong></td>
+                        <td><strong>SCIA_RX / SCIB_RX (GPIO43 / GPIO19)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td><code>R</code> (RX)</td>
+                        <td><strong>Digital Output (`DO_0` / TX)</strong></td>
+                        <td><strong>SCIA_TX / SCIB_TX (GPIO42 / GPIO18)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td><code>-</code> (GND)</td>
+                        <td><strong>GND</strong></td>
+                        <td><strong>GND</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td><code>+</code> (VCC)</td>
+                        <td><strong>+5V / +3.3V Power Out</strong></td>
+                        <td><strong>+3.3V / +5V</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="color: var(--accent-green); margin-top: 1.5rem; margin-bottom: 0.75rem;">ב. חיבור החיישן הפיזי לטרמינל ה-RS485 המבודד במודול DFR0845</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>פין בטרמינל ה-RS485</th>
+                        <th>תפקיד הפין במודול</th>
+                        <th>חיבור בחיישן המיקום (Sensor Side)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>12V</strong></td>
+                        <td>יציאת מתח מבודדת $12\,\text{V}$ (עד 160mA)</td>
+                        <td>מתח הזנה חיובי $12\,\text{V}$ של החיישן (מוזן פנימית!)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GND</strong></td>
+                        <td>אדמה מבודדת RS485</td>
+                        <td>אדמת החיישן (GND)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A</strong></td>
+                        <td>קו RS485 חיובי ($A / D+$)</td>
+                        <td>קו תקשורת חיובי RS485 ($A$) בחיישן</td>
+                    </tr>
+                    <tr>
+                        <td><strong>B</strong></td>
+                        <td>קו RS485 שלילי ($B / D-$)</td>
+                        <td>קו תקשורת שלילי RS485 ($B$) בחיישן</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SECTION 2: COMPLETE TSE CONFIGURATION & SERIAL SETUP -->
+    <div class="stage-card">
+        <div class="stage-header">
+            <div class="stage-number">2</div>
+            <div>
+                <h2>שלב 2: הגדרות מפורטות ב-Typhoon Schematic Editor (TSE)</h2>
+                <p style="color: var(--text-muted);">קונפיגורציית פרמטרי המודל, רכיב Serial Setup ורכיב Serial Receive.</p>
+            </div>
+        </div>
+
+        <h3 style="color: var(--accent-cyan); margin-bottom: 0.75rem;">2.1 הגדרות קובץ המודל (Model Configuration Properties)</h3>
+        <div class="item-box">
+            <ul>
+                <li>פתיחת חלון הגדרות המודל (Model -> Configuration Properties או מקש קיצור <code>Ctrl+E</code>).</li>
+                <li><strong>מכשיר היעד:</strong> <code style="color: var(--accent-cyan);">hil_device = "HIL404"</code></li>
+                <li><strong>מספר ליבות הסימולציה:</strong> <code style="color: var(--accent-cyan);">hil_configuration_id = 1</code> (לניצול מלא של 4 הליבות ב-HIL 404).</li>
+                <li><strong>זמן צעד הסימולציה:</strong> <code style="color: var(--accent-cyan);">simulation_time_step = 1e-6</code> ($1\,\mu\text{s}$).</li>
+            </ul>
+        </div>
+
+        <h3 style="color: var(--accent-purple); margin-top: 1.5rem; margin-bottom: 0.75rem;">2.2 הגדרת רכיב Serial Setup ב-TSE</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>פרמטר ברכיב Serial Setup</th>
+                        <th>ערך מוגדר</th>
+                        <th>הסבר ומשמעות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Baud Rate</strong></td>
+                        <td><code>115200</code> (או <code>921600</code>)</td>
+                        <td>קצב העברת הנתונים בסיביות לשניה. חייב להיות זהה להגדרת החיישן!</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Bits</strong></td>
+                        <td><code>8</code></td>
+                        <td>מספר סיביות הנתונים בכל בייט.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Parity</strong></td>
+                        <td><code>None</code></td>
+                        <td>סיבית זוגיות (None / Even / Odd).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stop Bits</strong></td>
+                        <td><code>1</code></td>
+                        <td>מספר סיביות עצירה (Stop bits).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="color: var(--accent-rose); margin-top: 1.5rem; margin-bottom: 0.75rem;">2.3 הגדרת רכיב Serial Receive ב-TSE</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>לשונית / פרמטר ב-Serial Receive</th>
+                        <th>ערך מוגדר</th>
+                        <th>הסבר ומשמעות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Execution Rate</strong></td>
+                        <td><code>100e-6</code> ($100\,\mu\text{s}$)</td>
+                        <td>תדר דגימה ועדכון של **$10\,\text{kHz}$** – מתאים בדיוק לתדר חוגי בקרת PMSM!</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Start of Frame (SOF)</strong></td>
+                        <td><code>[0xFF, 0xFF]</code> (או <code>[]</code>)</td>
+                        <td>תווי תחילת המסגרת (Header). אם אין Header רושמים <code>[]</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>End of Frame (EOF)</strong></td>
+                        <td><code>[0x0D, 0x0A]</code> (או <code>[]</code>)</td>
+                        <td>תווי סיום המסגרת (Tail). אם אין תו סיום רושמים <code>[]</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Status Port</strong></td>
+                        <td>פורט יציאה אוטומטי</td>
+                        <td>מציג את מספר שגיאות הקליטה (Framing/Parity errors). במצב תקין מציג <code>0</code>.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h4 style="color: var(--accent-amber); margin-top: 1.25rem; margin-bottom: 0.5rem;">מפרט חלון Message Configuration (Generate Configuration):</h4>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>שדה בחלון Configuration</th>
+                        <th>ערך מוגדר</th>
+                        <th>הסבר תפקודי</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Signal Name</strong></td>
+                        <td><code>raw_sensor_position</code></td>
+                        <td>שם המשתנה שיופק בפין היציאה של הבלוק ב-TSE</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Signal Type</strong></td>
+                        <td><strong>Variable</strong></td>
+                        <td><strong>קריטי!</strong> יוצר פין יציאה פיזי על גבי הבלוק ב-Schematic Editor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Type</strong></td>
+                        <td><code>Unsigned Integer</code></td>
+                        <td>סוג הנתונים של קוד המיקום (שלם חיובי 16-bit / 32-bit)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Length (bytes)</strong></td>
+                        <td><code>2</code> (או 4)</td>
+                        <td>אורך הנתונים בבייטים (2 בייטים = 16-bit, 4 בייטים = 32-bit)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Endian</strong></td>
+                        <td><strong>Big Endian</strong> / Little Endian</td>
+                        <td>סדר הבייטים במסגרת התקשורת (Big Endian מציב MSB ראשון)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SECTION 3: MATHEMATICAL CALCULATIONS & C-CODE -->
+    <div class="stage-card">
+        <div class="stage-header">
+            <div class="stage-number">3</div>
+            <div>
+                <h2>שלב 3: חישובים מתמטיים וקוד C מלא לפענוח המיקום</h2>
+                <p style="color: var(--text-muted);">המרת הקריאה הגולמית מהחיישן לזווית מכנית, זווית במעלות וזווית חשמלית עבור הבקרה.</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>שם הגודל המחושב</th>
+                        <th>נוסחה מתמטית</th>
+                        <th>הסבר ומשמעות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>זווית מכנית ברדיאנים ($\theta_m$)</strong></td>
+                        <td>$$\theta_m = \text{raw\_sensor\_position} \cdot \frac{2\pi}{65536}$$</td>
+                        <td>הזווית הפיזית האמיתית של הציר ברדיאנים ($0 \dots 2\pi$)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>מיקום במעלות ($Pos_{deg}$)</strong></td>
+                        <td>$$Pos_{deg} = \theta_m \cdot \frac{180}{\pi}$$</td>
+                        <td>המיקום במעלות ($0^\circ \dots 360^\circ$) המועבר לתצוגת מסך ב-SCADA</td>
+                    </tr>
+                    <tr>
+                        <td><strong>זווית חשמלית ברדיאנים ($\theta_e$)</strong></td>
+                        <td>$$\theta_e = \text{mod}(p \cdot \theta_m, 2\pi)$$</td>
+                        <td>הזווית החשמלית המוזנת לחוגי בקרת ה-FOC ולממיר ה-OEPC</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="callout green">
+            <div class="callout-title">💻 קוד C להעתקה לבלוק C-Function ב-Schematic Editor</div>
+            <pre><code>/* 
+   Typhoon HIL TSE - C Function: Position & Electrical Angle Decoder
+   POLE_PAIRS: מספר זוגות הקטבים במנוע (לדוגמה 4 ב-QS100)
+*/
+#define PI 3.14159265358979323846
+#define POLE_PAIRS 4
+
+// 1. קבלת הקריאה הגולמית מבלוק ה-Serial Receive
+unsigned int raw_count = in_raw_sensor_position;
+
+// 2. חישוב זווית מכנית ברדיאנים (0 עד 2*PI עבור 16-bit sensor)
+double theta_m = fmod((double)raw_count * (2.0 * PI / 65536.0), 2.0 * PI);
+if (theta_m < 0) theta_m += 2.0 * PI;
+
+// 3. המרה למעלות עבור תצוגת SCADA
+double pos_deg = theta_m * (180.0 / PI);
+
+// 4. חישוב זווית חשמלית עבור FOC וחוגי בקרת המנוע
+double theta_e = fmod(POLE_PAIRS * theta_m, 2.0 * PI);
+if (theta_e < 0) theta_e += 2.0 * PI;
+
+// 5. השמת יציאות הבלוק ב-TSE
+out_pos_deg = pos_deg;
+out_theta_e = theta_e;</code></pre>
+        </div>
+    </div>
+
+    <!-- SECTION 4: SCADA DISPLAY SETUP -->
+    <div class="stage-card">
+        <div class="stage-header">
+            <div class="stage-number">4</div>
+            <div>
+                <h2>שלב 4: הגדרת מסך ותצוגה ב-HIL Control Center SCADA</h2>
+                <p style="color: var(--text-muted);">הוספת ווידג'טים להצגת הזווית במעלות ומחוג מסתובב בזמן אמת.</p>
+            </div>
+        </div>
+
+        <div class="sub-grid">
+            <div class="item-box">
+                <h3>📊 הווידג'טים להוספה במסך הפאנל (.cus)</h3>
+                <ul>
+                    <li><strong>Digital Display:</strong> מקשרים לאות <code>Rotor_Position_deg</code>. מציג זווית מדויקת (לדוגמה <code>142.85°</code>).</li>
+                    <li><strong>Gauge (מד חוג מעגלי):</strong> הגדרת Min = 0, Max = 360. מציג מחוג מסתובב בזמן אמת.</li>
+                    <li><strong>Capture / Scope:</strong> אוסצילוסקופ המציג גרף רציף $Position(t)$ בזמן אמת.</li>
+                </ul>
+            </div>
+
+            <div class="item-box">
+                <h3>⚡ סקריפט בדיקה ב-SCADA Log</h3>
+                <pre><code># סקריפט פייתון ב-SCADA לקריאת המיקום בזמן אמת
+pos = hil.read_analog_signal("Rotor_Position_deg")
+printf(f"[SCADA Log] Rotor Position: {pos:.2f}°")</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 5: MOTOR CONTROL LOOPS INTEGRATION -->
+    <div class="stage-card">
+        <div class="stage-header">
+            <div class="stage-number">5</div>
+            <div>
+                <h2>שלב 5: שילוב הזווית החשמלית ($\theta_e$) בחוגי בקרת המנוע</h2>
+                <p style="color: var(--text-muted);">חיבור משוב המיקום שנקרא ב-TSE לחוגי בקרת ה-PMSM ודרייברי ה-OEPC.</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>סדר השילוב</th>
+                        <th>בלוק/חוג בקרה ב-TSE</th>
+                        <th>תפקיד ושימוש בזווית החשמלית ($\theta_e$)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td><strong>Clarke & Park Transformation</strong></td>
+                        <td>המזת זרמי הסטטור ($i_a, i_b, i_c$) לזרמי $i_d, i_q$ בעזרת זווית הרוטור החשמלית $\theta_e$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td><strong>PI Current Controllers ($I_d, I_q$)</strong></td>
+                        <td>בקרת הזרם והמומנט: שמירת $I_d = 0$ וויסות $I_q$ לפי דרישת המומנט</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td><strong>Speed & Position Outer Loop</strong></td>
+                        <td>חוג סגור חיצוני המקבל את שגיאת המהירות $(\omega^* - \omega)$ ומפיק את זרם הייחוס $I_q^*$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td><strong>OEPC Gate Generator (96 NOD)</strong></td>
+                        <td>יצירת 8 אותות המיתוג (<code>GS0..GS7</code>) לממיר ה-OEPC בהתאם למתחי הייחוס ו-$\theta_e$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        מדריך מפורט ומלא | SCE - Shamoon College of Engineering | פרויקט PMSM & Typhoon HIL 404 (2025)
+    </footer>
+
+</div>
+
+</body>
+</html>

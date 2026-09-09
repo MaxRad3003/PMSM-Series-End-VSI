@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>דף שער - פרויקט הנדסי SCE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;800;900&family=Heebo:wght@400;600;700&display=swap');
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f1f3f6;
+            font-family: 'David', 'Frank Ruhl Libre', 'Times New Roman', serif;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* A4 Page */
+        .a4-page {
+            width: 210mm;
+            height: 297mm;
+            padding: 18mm 25mm 20mm 25mm;
+            background: #ffffff;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        @media print {
+            body {
+                background: none;
+                margin: 0;
+            }
+            .a4-page {
+                box-shadow: none;
+                width: 210mm;
+                height: 297mm;
+                padding: 18mm 25mm 20mm 25mm;
+                page-break-after: always;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* Header with official logo */
+        .header-logo-container {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .header-logo-img {
+            width: 100%;
+            max-height: 70px;
+            object-fit: contain;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex-grow: 1;
+            justify-content: space-evenly;
+            padding: 5px 0 15px 0;
+        }
+
+        .title-en {
+            font-family: 'Times New Roman', 'David', serif;
+            font-size: 21pt;
+            font-weight: 700;
+            line-height: 1.35;
+            direction: ltr;
+            max-width: 95%;
+            margin-bottom: 8px;
+        }
+
+        .title-he {
+            font-size: 19pt;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 20px;
+            max-width: 95%;
+        }
+
+        .project-section {
+            margin: 10px 0;
+        }
+
+        .project-type {
+            font-size: 20pt;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .report-type {
+            font-size: 17pt;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .degree-text {
+            font-size: 15pt;
+            font-weight: 700;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+
+        .degree-text span.en {
+            direction: ltr;
+            display: inline-block;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .author-box {
+            margin: 10px 0;
+        }
+
+        .author-header {
+            font-size: 15pt;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .author-name {
+            font-size: 18pt;
+            font-weight: 700;
+        }
+
+        .advisor-box {
+            font-size: 19pt;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .dept-box {
+            font-size: 16pt;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            font-size: 16pt;
+            font-weight: 700;
+            padding-top: 10px;
+            direction: rtl;
+        }
+
+        .footer-hebrew {
+            text-align: right;
+            direction: rtl;
+        }
+
+        .footer-gregorian {
+            text-align: left;
+            direction: ltr;
+            font-family: 'Times New Roman', 'David', serif;
+            unicode-bidi: isolate;
+        }
+
+        /* BiDi Isolation */
+        .en-term {
+            direction: ltr;
+            unicode-bidi: isolate;
+            display: inline-block;
+            font-family: 'Times New Roman', 'David', serif;
+        }
+
+        .id-num {
+            direction: ltr;
+            unicode-bidi: isolate;
+            display: inline-block;
+        }
+
+        /* Action Buttons */
+        .action-bar {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 999;
+        }
+
+        .action-btn {
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            padding: 13px 25px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+            transition: all 0.2s;
+            font-family: 'Heebo', sans-serif;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: #1557b0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="action-bar no-print">
+        <button class="action-btn" onclick="window.print()">
+            🖨️ הדפסה / שמירה כ-PDF
+        </button>
+    </div>
+
+    <div class="a4-page">
+        <!-- Official SCE Header Logo -->
+        <div class="header-logo-container">
+            <img src="Images/sce_official_header.png" alt="SCE Logo Header" class="header-logo-img">
+        </div>
+
+        <!-- Main Body Content -->
+        <div class="main-content">
+            <!-- Titles -->
+            <div>
+                <div class="title-en" dir="ltr">
+                    Hardware-Efficient Optimal Error-Priority Control for Series-End VSI With ZSC Suppression
+                </div>
+                <div class="title-he" dir="rtl">
+                    בקרה אופטימלית מבוססת תעדוף שגיאה עבור ממיר <span class="en-term">Series-End</span> למנועי <span class="en-term">PMSM</span> ודיכוי זרמי סדרה אפס
+                </div>
+            </div>
+
+            <!-- Project & Report Category -->
+            <div class="project-section">
+                <div class="project-type">פרויקט הנדסי</div>
+                <div class="report-type">דו"ח מסכם פרויקט גמר</div>
+            </div>
+
+            <!-- Degree Requirement -->
+            <div class="degree-text">
+                הוכן לשם מילוי דרישות לקבלת תואר שני בהנדסה <span class="en-term">M.Sc.</span>
+            </div>
+
+            <!-- Author -->
+            <div class="author-box">
+                <div class="author-header">מאת</div>
+                <div class="author-name">מקסים רדקין <span class="id-num">307072827</span></div>
+            </div>
+
+            <!-- Advisor -->
+            <div class="advisor-box">
+                בהנחיית ד"ר אלי גד ברבי
+            </div>
+
+            <!-- Department & Institution -->
+            <div class="dept-box">
+                הוגש למחלקה להנדסת חשמל ואלקטרוניקה<br>
+                המכללה האקדמית להנדסה סמי שמעון<br>
+                באר שבע
+            </div>
+        </div>
+
+        <!-- Footer with Hebrew & Gregorian Dates -->
+        <div class="footer-row" dir="rtl">
+            <div class="footer-hebrew">
+                אלול תשפ"ו
+            </div>
+            <div class="footer-gregorian">
+                ספטמבר 2026
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

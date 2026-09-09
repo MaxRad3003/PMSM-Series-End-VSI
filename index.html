@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>פורטל פרויקט PMSM & Typhoon HIL | מרכז בקרה וניווט</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0f1d;
+      --bg-secondary: #111827;
+      --bg-card: rgba(17, 24, 39, 0.75);
+      --bg-card-hover: rgba(31, 41, 55, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(59, 130, 246, 0.3);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-oemer: #ef4444;
+
+      --glow-blue: rgba(59, 130, 246, 0.15);
+      --glow-cyan: rgba(6, 182, 212, 0.15);
+      --glow-emerald: rgba(16, 185, 129, 0.15);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-blue) var(--bg-secondary);
+    }
+
+    body {
+      font-family: 'Heebo', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 15% 15%, #0f172a 0%, #070a14 50%, #030712 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background Glow */
+    .ambient-glow {
+      position: fixed;
+      top: -150px;
+      left: 20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+    }
+
+    .ambient-glow-2 {
+      position: fixed;
+      bottom: -150px;
+      right: 10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(90px);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan), var(--accent-purple), var(--accent-oemer), var(--accent-emerald));
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .title-area h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .title-area p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 780px;
+    }
+
+    .header-badges {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+    }
+
+    .badge-blue { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border-color: rgba(59, 130, 246, 0.3); }
+    .badge-cyan { background: rgba(6, 182, 212, 0.15); color: #67e8f9; border-color: rgba(6, 182, 212, 0.3); }
+    .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.3); }
+    .badge-purple { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.3); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: #fde68a; border-color: rgba(245, 158, 11, 0.3); }
+    .badge-rose { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); }
+
+    /* Summary Metrics Row */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      transition: all 0.25s ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-accent);
+      box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
+    }
+
+    .metric-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .metric-info h3 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .metric-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Controls Bar: Search & Category Filter */
+    .controls-bar {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 280px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 2.8rem 0.65rem 1rem;
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .filter-btn.active {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: var(--accent-blue);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Section Headings */
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #fff;
+    }
+
+    .section-title span {
+      width: 8px;
+      height: 24px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* Card Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-accent);
+      background: var(--bg-card-hover);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-top {
+      margin-bottom: 1.2rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-icon-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.75rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+      color: #fff;
+      flex: 1;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #60a5fa, var(--accent-blue));
+      box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .btn-oemer {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: #fff;
+      flex: 1;
+      box-shadow: 0 4px 10px rgba(220, 38, 38, 0.25);
+    }
+
+    .btn-oemer:hover {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    /* Technical Pinout & Quick Reference Box */
+    .quick-ref-box {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 3rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .ref-card {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+    }
+
+    .ref-card h4 {
+      color: var(--accent-cyan);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pin-table {
+      width: 100%;
+      font-size: 0.85rem;
+      border-collapse: collapse;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pin-table th {
+      text-align: right;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .pin-table td {
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .pin-table .val {
+      color: #93c5fd;
+      font-weight: 600;
+    }
+
+    /* File System Tree / Table */
+    .file-table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      margin-bottom: 3rem;
+    }
+
+    .file-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: right;
+    }
+
+    .file-table th {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1rem 1.25rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .file-table td {
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: var(--text-main);
+    }
+
+    .file-table tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .file-link {
+      color: var(--accent-blue);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .file-link:hover {
+      text-decoration: underline;
+      color: #60a5fa;
+    }
+
+    .code-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      color: #cbd5e1;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    /* Modal Viewer */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      width: 90%;
+      max-width: 1100px;
+      height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.75rem;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .modal-body {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .controls-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow"></div>
+  <div class="ambient-glow-2"></div>
+
+  <div class="container">
+    
+    <!-- Header Section -->
+    <header>
+      <div class="header-content">
+        <div class="title-area">
+          <h1>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: #60a5fa;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            פורטל פרויקט PMSM & Typhoon HIL
+          </h1>
+          <p>מרכז בקרה, ניווט וגישה מהירה לכל מודלי הסימולציה, דפי הנתונים הרשמיים מבית OEMER Motori Elettrici, תכנוני CAD והדוחות הטכניים.</p>
+        </div>
+        <div class="header-badges">
+          <span class="badge badge-rose">🔴 OEMER QS 100</span>
+          <span class="badge badge-blue">⚙️ Typhoon HIL404</span>
+          <span class="badge badge-purple">📡 SICK SFM60 (HIPERFACE)</span>
+          <span class="badge badge-emerald">🔌 MIKROE-2821 RS-485</span>
+          <span class="badge badge-amber">📐 SolidWorks Load Stand</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Master Project Book Banner -->
+    <div style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.2)); border: 1.5px solid rgba(0, 210, 255, 0.5); border-radius: var(--radius-lg); padding: 1.75rem 2rem; margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);">
+      <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <div style="font-size: 2.8rem; background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 16px; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">📖</div>
+        <div>
+          <div style="display: flex; gap: 0.6rem; align-items: center; margin-bottom: 0.3rem;">
+            <span class="badge" style="background: rgba(0, 210, 255, 0.2); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); font-weight: 700;">חדש • תוצר מרכזי</span>
+            <span class="badge badge-purple">ספר דיגיטלי אינטראקטיבי</span>
+          </div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 0.2rem;">ספר הסיכום המלא של פרויקט ה-PMSM וה-OEPC</h2>
+          <p style="color: #cbd5e1; font-size: 0.95rem; margin: 0;">סיכום אקדמי מעמיק של כלל היבטי המחקר: תיאוריית Series-End VSI, אלגוריתם OEPC, טבלת 96-LUT, סימולציות חיות (JSXGraph ואוסצילוסקופ 60FPS), אימותי HIL, כיול מנוע OEMER QS 100S, חומרת Altium ודוחות הניסוי.</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+        <a href="PMSM_Project_Book.html" style="background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; text-decoration: none; padding: 0.85rem 1.6rem; border-radius: 10px; font-weight: 700; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.6rem; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          <span>📖 פתח את ספר הפרויקט</span>
+          <span>←</span>
+        </a>
+        <a href="OEPC_SE_VSI_PMSM_Presentation_HE.html" style="background: linear-gradient(135deg, #059669, #10b981); border: 1px solid rgba(16, 185, 129, 0.4); color: #ffffff; text-decoration: none; padding: 0.85rem 1.3rem; border-radius: 10px; font-weight: 700; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);">
+          <span>⚡ מצגת אינטראקטיבית</span>
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Metrics Row -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">🏭</div>
+        <div class="metric-info">
+          <h3>35 מסמכי OEMER</h3>
+          <p>קטלוגים, מדריכים ו-CAD רשמיים</p>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">📑</div>
+        <div class="metric-info">
+          <h3>11 דוחות</h3>
+          <p>מדריכים, פרוטוקולים ודוחות מלאים</p>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">💻</div>
+        <div class="metric-info">
+          <h3>HIL & PSIM</h3>
+          <p>מודלי סימולציה בזמן אמת</p>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">📐</div>
+        <div class="metric-info">
+          <h3>SolidWorks & STEP</h3>
+          <p>מודלי מעמד עומס וחלקי CAD</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Reference Card (Pinouts & Settings) -->
+    <div class="quick-ref-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.6rem;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          מפרט חיווט והגדרות מהירות (Quick Reference)
+        </h2>
+        <span class="badge badge-cyan">MIKROE-2821 ↔ HIL404 ↔ SICK SFM60</span>
+      </div>
+      
+      <div class="ref-grid">
+        <!-- Card 1: RS485 Pinout -->
+        <div class="ref-card">
+          <h4>🔌 חיבורי תקשורת RS-485</h4>
+          <table class="pin-table">
+            <thead>
+              <tr><th>רכיב / פין</th><th>פונקציה</th><th>יעד ב-HIL404</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>MIKROE VCC</td><td>הזנה 5V / 3.3V</td><td class="val">5V VCC</td></tr>
+              <tr><td>MIKROE GND</td><td>אדמה משותפת</td><td class="val">GND</td></tr>
+              <tr><td>MIKROE TX</td><td>UART DI</td><td class="val">HIL404 DI / TX</td></tr>
+              <tr><td>MIKROE RX</td><td>UART RO</td><td class="val">HIL404 DO / RX</td></tr>
+              <tr><td>7 & 8 (Encoder)</td><td>Data+ / Data-</td><td class="val">RS-485 A / B</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Card 2: Sine/Cosine Signals -->
+        <div class="ref-card">
+          <h4>📈 אותות אנלוגיים Sin/Cos (1Vpp)</h4>
+          <table class="pin-table">
+            <thead>
+              <tr><th>פין אינקודר</th><th>אות</th><th>כניסת HIL404</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Pin 3</td><td>+SIN (1Vpp)</td><td class="val">Analog In 1 (+)</td></tr>
+              <tr><td>Pin 4</td><td>-SIN (REFSIN)</td><td class="val">Analog In 1 (-)</td></tr>
+              <tr><td>Pin 5</td><td>+COS (1Vpp)</td><td class="val">Analog In 2 (+)</td></tr>
+              <tr><td>Pin 6</td><td>-COS (REFCOS)</td><td class="val">Analog In 2 (-)</td></tr>
+              <tr><td>Pin 1 & 2</td><td>Us (7-12V) / GND</td><td class="val">Power Supply</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Card 3: Protocol Parameters -->
+        <div class="ref-card">
+          <h4>⚙️ פרמטרי פרוטוקול HIPERFACE</h4>
+          <table class="pin-table">
+            <thead>
+              <tr><th>פרמטר</th><th>ערך</th><th>הערה</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Baudrate</td><td class="val">9600 Baud</td><td>תקשורת אסינכרונית</td></tr>
+              <tr><td>Data Frame</td><td class="val">8-E-1</td><td>1 Start, 8 Data, Even, 1 Stop</td></tr>
+              <tr><td>Line Periods</td><td class="val">1024 Sin/Cos</td><td>לסיבוב מכני אחד</td></tr>
+              <tr><td>Absolute Steps</td><td class="val">32,768 (15 bit)</td><td>Singleturn per rev</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="controls-bar">
+      <div class="search-box">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="חיפוש מהיר בכל הקבצים, הדוחות, דפי נתוני OEMER והמודלים (לדוגמה: QS 100, HIPERFACE, SFM60, CAD, Manual)...">
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">הכל (All)</button>
+        <button class="filter-btn" data-filter="oemer">🔴 ספרית OEMER הרשמית</button>
+        <button class="filter-btn" data-filter="report">📑 דוחות HTML</button>
+        <button class="filter-btn" data-filter="hil">💻 מודלי Typhoon HIL</button>
+        <button class="filter-btn" data-filter="psim">⚡ סימולציית PSIM</button>
+        <button class="filter-btn" data-filter="datasheet">📚 Datasheets & Docs</button>
+        <button class="filter-btn" data-filter="cad">🏗️ מודלי SolidWorks & CAD</button>
+        <button class="filter-btn" data-filter="tools">🛠️ כלים וארכיון</button>
+      </div>
+    </div>
+
+    <!-- SECTION 0: OEMER Official Motor Library -->
+    <div class="section-title">
+      <span style="background: var(--accent-oemer);"></span>
+      🔴 ספרית מנוע OEMER Motori Elettrici הרשמית (הורדה ממרכז ההורדות)
+    </div>
+
+    <div class="grid" id="oemerGrid">
+
+      <!-- OEMER QS 100 Catalogue -->
+      <div class="card" data-category="oemer" data-keywords="oemer qs series 100 synchronous servomotors catalogue datasheet 7.3.1">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">📕</div>
+              <div>
+                <div class="card-title">קטלוג מנועי OEMER QS Series (כולל QS 100)</div>
+                <span class="code-tag">Datasheets_and_Docs/OEMER_Catalogues/7.3.1_QS_Series_Catalogue.pdf</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">הקטלוג הטכני המלא והעדכני ביותר לסדרת מנועי QS: נתוני מומנט, זרמים, עקומות מהירות/מומנט, השראות וממדים מדויקים ל-QS 100.</p>
+          <div class="card-tags">
+            <span class="badge badge-rose">QS Series Official</span>
+            <span class="badge">QS 100 S/M/L/P/X</span>
+            <span class="badge">2.5 MB PDF</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Datasheets_and_Docs/OEMER_Catalogues/7.3.1_QS_Series_Catalogue.pdf" target="_blank" class="btn btn-oemer">פתח קטלוג PDF ↗</a>
+        </div>
+      </div>
+
+      <!-- OEMER SICK SFM60 & SFS60 Official Datasheet -->
+      <div class="card" data-category="oemer" data-keywords="oemer sick sfm60 sfs60 hiperface encoder official datasheet accessories feedback">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd;">📡</div>
+              <div>
+                <div class="card-title">מפרט אינקודר SICK SFM60 / SFS60 הרשמי</div>
+                <span class="code-tag">Datasheets_and_Docs/OEMER_Feedback_Encoders/Encoder_SFS60_SFM60...pdf</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">דף הנתונים הרשמי של OEMER עבור שילוב אינקודר SICK SFM60 HIPERFACE: חיווט מחברים, אותות Sin/Cos ופרמטרי תקשורת.</p>
+          <div class="card-tags">
+            <span class="badge badge-purple">SICK SFM60 Official</span>
+            <span class="badge badge-rose">OEMER Feedback</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Datasheets_and_Docs/OEMER_Feedback_Encoders/Encoder_SFS60_SFM60_SFS60SC_SFM60SC.pdf" target="_blank" class="btn btn-oemer">פתח מפרט PDF ↗</a>
+        </div>
+      </div>
+
+      <!-- OEMER AC Motors Operating & Safety Manual -->
+      <div class="card" data-category="oemer" data-keywords="oemer 1 manual ac motors installation maintenance operating instructions">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">📘</div>
+              <div>
+                <div class="card-title">מדריך הפעלה ובטיחות למנועי AC וסרוו</div>
+                <span class="code-tag">Datasheets_and_Docs/OEMER_Manuals/1_Manual_AC_Motors.pdf</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">המדריך הרשמי המלא של OEMER: הוראות התקנה, בטיחות, חיבורי כוח, הארקות ונהלי הפעלה במעבדה ובתעשייה.</p>
+          <div class="card-tags">
+            <span class="badge badge-blue">Official Manual</span>
+            <span class="badge">Safety & Ops</span>
+            <span class="badge">6.5 MB</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Datasheets_and_Docs/OEMER_Manuals/1_Manual_AC_Motors.pdf" target="_blank" class="btn btn-oemer">פתח מדריך PDF ↗</a>
+        </div>
+      </div>
+
+      <!-- OEMER Mounting & Installation -->
+      <div class="card" data-category="oemer" data-keywords="oemer mounting instruction rev 2 mechanical installation coupling shaft">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">🔩</div>
+              <div>
+                <div class="card-title">הוראות התקנה והרכבה מכנית (Mounting)</div>
+                <span class="code-tag">Datasheets_and_Docs/OEMER_Manuals/Mounting_Instruction_REV_2.pdf</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">הנחיות הרכבה מכנית, יישור צירים (Shaft Alignment), חיבורי קופלונג ומומנטי סגירת ברגים לתושבת המנוע.</p>
+          <div class="card-tags">
+            <span class="badge badge-amber">Mounting Guide</span>
+            <span class="badge">Alignment & Torques</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Datasheets_and_Docs/OEMER_Manuals/Mounting_Instruction_REV_2.pdf" target="_blank" class="btn btn-oemer">פתח מסמך PDF ↗</a>
+        </div>
+      </div>
+
+      <!-- OEMER Technical Drawings: QS 100 (PDF & 3D CAD) -->
+      <div class="card" data-category="oemer" data-keywords="oemer qs 100 cad 2d 3d step dwg drawings dimensions pdf">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">📐</div>
+              <div>
+                <div class="card-title">שרטוטים ומודלי CAD של QS 100 (2D/3D)</div>
+                <span class="code-tag">Solid/OEMER_CAD_Drawings/</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">שרטוטי מידות רשמיים (PDF), מודלי תלת-מימד DWG/STEP וחבילות שרטוטי 2D עבור מנוע QS 100 SM ו-LPX.</p>
+          <div class="card-tags">
+            <span class="badge badge-emerald">CAD & 3D Models</span>
+            <span class="badge badge-rose">QS_100SM / LPX</span>
+            <span class="badge">STEP / DWG / PDF</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Solid/OEMER_CAD_Drawings/QS_100SM_Drawing.pdf" target="_blank" class="btn btn-oemer">שרטוט PDF ↗</a>
+          <a href="Solid/OEMER_CAD_Drawings/QS_100_3D_DWG.zip" class="btn btn-secondary">הורד 3D DWG</a>
+        </div>
+      </div>
+
+      <!-- OEMER Encoder Cables & Programming Tools -->
+      <div class="card" data-category="oemer" data-keywords="oemer encoder cables overview pgt10pro sick programming thermal probes pt100">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">🔌</div>
+              <div>
+                <div class="card-title">כבלי אינקודר, חיישני טמפרטורה וכלי תכנות</div>
+                <span class="code-tag">Datasheets_and_Docs/OEMER_Feedback_Encoders/</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מפרטי כבלי אינקודר מקוריים, חיישני טמפרטורה PT100/PTC ומדריך כלי התכנות SICK PGT-10-Pro.</p>
+          <div class="card-tags">
+            <span class="badge badge-cyan">Cables & Probes</span>
+            <span class="badge">PGT-10-Pro</span>
+            <span class="badge">Thermal Probes</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Datasheets_and_Docs/OEMER_Feedback_Encoders/2_Encoder_Cable_Rev_3.1.pdf" target="_blank" class="btn btn-oemer">מפרט כבלים ↗</a>
+          <a href="Datasheets_and_Docs/OEMER_Feedback_Encoders/Thermal_Probes_Rev2.3.pdf" target="_blank" class="btn btn-secondary">חיישני חום</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 1: HTML Project Reports -->
+    <div class="section-title">
+      <span style="background: var(--accent-blue);"></span>
+      📑 דוחות ומדריכי פרויקט טכניים (HTML Reports)
+    </div>
+
+    <div class="grid" id="reportsGrid">
+      
+      <!-- Doc 01 -->
+      <div class="card" data-category="report" data-keywords="doc 01 master summary pmsm overview architecture">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">📘</div>
+              <div>
+                <div class="card-title">DOC 01: סיכום ראשי של הפרויקט</div>
+                <span class="code-tag">DOC_01_PMSM_Master_Summary.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">סקירה מקיפה של מערכת ה-PMSM, ארכיטקטורת הבקרה המשולבת, יעדי הפרויקט, רכיבי חומרה ומבנה עבודה.</p>
+          <div class="card-tags">
+            <span class="badge badge-blue">מבט על</span>
+            <span class="badge">ארכיטקטורה</span>
+            <span class="badge">מערכת בקרה</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_01_PMSM_Master_Summary.html" target="_blank" class="btn btn-primary">פתח דוח ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_01_PMSM_Master_Summary.html', 'DOC 01: PMSM Master Summary')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 02 -->
+      <div class="card" data-category="report" data-keywords="doc 02 wiring operation guide inverter hil connections">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">🔌</div>
+              <div>
+                <div class="card-title">DOC 02: מדריך חיווט והפעלה מפורט</div>
+                <span class="code-tag">DOC_02_Wiring_and_Operation_Guide.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">הוראות חיווט מלאות לממירי מתח, חיבורי כוח, אותות בקרה, פקודות PWM וממשקי סביבת העבודה.</p>
+          <div class="card-tags">
+            <span class="badge badge-cyan">חיווט והפעלה</span>
+            <span class="badge">חיבורי כוח</span>
+            <span class="badge">Safety</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_02_Wiring_and_Operation_Guide.html" target="_blank" class="btn btn-primary">פתח דוח ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_02_Wiring_and_Operation_Guide.html', 'DOC 02: Wiring & Operation Guide')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 03 -->
+      <div class="card" data-category="report" data-keywords="doc 03 tse detailed settings typhoon hil model parameters">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">⚙️</div>
+              <div>
+                <div class="card-title">DOC 03: הגדרות מודל ה-TSE ב-Typhoon HIL</div>
+                <span class="code-tag">DOC_03_TSE_Detailed_Settings.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">פירוט כל פרמטרי המודל בסביבת Typhoon Schematic Editor (TSE): מנוע PMSM, השראות, התנגדות, זרמים וזמני חישוב.</p>
+          <div class="card-tags">
+            <span class="badge badge-emerald">TSE Parameters</span>
+            <span class="badge">Typhoon HIL</span>
+            <span class="badge">Model Configuration</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_03_TSE_Detailed_Settings.html" target="_blank" class="btn btn-primary">פתח דוח ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_03_TSE_Detailed_Settings.html', 'DOC 03: TSE Detailed Settings')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 04 -->
+      <div class="card" data-category="report" data-keywords="doc 04 hiperface protocol specification sick rs485 sincos timing">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(139, 92, 246, 0.15); color: #a78bfa;">📡</div>
+              <div>
+                <div class="card-title">DOC 04: מפרט פרוטוקול HIPERFACE</div>
+                <span class="code-tag">DOC_04_HIPERFACE_Protocol_Specification.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">ניתוח מלא של פרוטוקול HIPERFACE: תקשורת טורית RS-485 ב-9600 Baud, שילוב אותות אנלוגיים Sin/Cos וחישוב מיקום אבסולוטי.</p>
+          <div class="card-tags">
+            <span class="badge badge-purple">HIPERFACE</span>
+            <span class="badge">RS-485</span>
+            <span class="badge">Sin/Cos 1024</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_04_HIPERFACE_Protocol_Specification.html" target="_blank" class="btn btn-primary">פתח דוח ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_04_HIPERFACE_Protocol_Specification.html', 'DOC 04: HIPERFACE Protocol Specification')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 05 -->
+      <div class="card" data-category="report" data-keywords="doc 05 mikroe2821 rs485 wiring guide hil404 click board">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">🎛️</div>
+              <div>
+                <div class="card-title">DOC 05: מדריך חיווט MIKROE-2821 RS485</div>
+                <span class="code-tag">DOC_05_MIKROE2821_RS485_Wiring_Guide.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מדריך חיבור כרטיס המרת תקשורת MIKROE-2821 (RS485 Click 3.3V/5V) אל ממשקי Typhoon HIL404 ואינקודר SICK.</p>
+          <div class="card-tags">
+            <span class="badge badge-amber">MIKROE-2821</span>
+            <span class="badge">RS-485 Click</span>
+            <span class="badge">Pinout Guide</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_05_MIKROE2821_RS485_Wiring_Guide.html" target="_blank" class="btn btn-primary">פתח דוח ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_05_MIKROE2821_RS485_Wiring_Guide.html', 'DOC 05: MIKROE2821 RS485 Wiring Guide')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 06 -->
+      <div class="card" data-category="report" data-keywords="doc 06 sick sfm60 hil404 complete guide integration encoder">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">🎯</div>
+              <div>
+                <div class="card-title">DOC 06: מדריך אינטגרציה מלא - SFM60 & HIL404</div>
+                <span class="code-tag">DOC_06_SICK_SFM60_HIL404_Complete_Guide.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מדריך מעשי צעד-אחר-צעד לאינטגרציה וחומרה של אינקודר SICK SFM60 מול מדמה זמן אמת Typhoon HIL404.</p>
+          <div class="card-tags">
+            <span class="badge" style="background: rgba(244,63,94,0.15); color: #fda4af; border-color: rgba(244,63,94,0.3);">SFM60 Encoder</span>
+            <span class="badge badge-blue">HIL404</span>
+            <span class="badge">Hardware Integration</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_06_SICK_SFM60_HIL404_Complete_Guide.html" target="_blank" class="btn btn-primary">פתח דוח ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_06_SICK_SFM60_HIL404_Complete_Guide.html', 'DOC 06: SICK SFM60 & HIL404 Guide')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 07 -->
+      <div class="card" data-category="report" data-keywords="doc 07 complete project summary final latex report hil pmsm">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: #fff;">🏆</div>
+              <div>
+                <div class="card-title">DOC 07: סיכום פרויקט כולל וסופי</div>
+                <span class="code-tag">DOC_07_PMSM_HIPERFACE_Complete_Project_Summary.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">הדוח המסכם הכולל של כל שלבי הפרויקט: תיאוריה, מידול, חיווט, בדיקות מעבדה ותוצאות HIL. כולל קובץ LaTeX מצורף.</p>
+          <div class="card-tags">
+            <span class="badge badge-purple">דוח מסכם</span>
+            <span class="badge badge-emerald">Complete Summary</span>
+            <span class="badge">LaTeX Source</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_07_PMSM_HIPERFACE_Complete_Project_Summary.html" target="_blank" class="btn btn-primary">פתח דוח ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_07_PMSM_HIPERFACE_Complete_Project_Summary.html', 'DOC 07: Complete Project Summary')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 08 -->
+      <div class="card" data-category="report" data-keywords="doc 08 oemer qs 100 pole alignment offset sick sfm60 foc calibration">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">🎯</div>
+              <div>
+                <div class="card-title">DOC 08: מדריך QS 100 וכיול מיקום קטבים (Pole Alignment)</div>
+                <span class="code-tag">DOC_08_Pole_Alignment_and_OEMER_QS100_Guide.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מדריך כיול וחישוב מיקום קטבים (&theta;<sub>offset</sub>) ביחס לאינקודר SICK SFM60, שיטת נעילת DC והטמעה ב-Typhoon HIL.</p>
+          <div class="card-tags">
+            <span class="badge badge-rose">OEMER QS 100</span>
+            <span class="badge badge-blue">Pole Alignment</span>
+            <span class="badge badge-emerald">HIL404 Code</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_08_Pole_Alignment_and_OEMER_QS100_Guide.html" target="_blank" class="btn btn-primary">פתח דוח ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_08_Pole_Alignment_and_OEMER_QS100_Guide.html', 'DOC 08: Pole Alignment Guide')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 09 -->
+      <div class="card" data-category="report" data-keywords="doc 09 measurement table protocol pole alignment template encoder steps calibration test sheet">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">📋</div>
+              <div>
+                <div class="card-title">DOC 09: טבלת מדידות ופרוטוקול כיול קטבים (Interactive Sheet)</div>
+                <span class="code-tag">DOC_09_Pole_Alignment_Measurement_Protocol.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">טופס וטבלת מדידות מעבדתית אינטראקטיבית ומוכנה להדפסה: הזנת צעדים גולמיים מהאינקודר, חישוב אוטומטי של &theta;<sub>offset</sub> וייצוא קוד C ל-HIL.</p>
+          <div class="card-tags">
+            <span class="badge badge-emerald">טבלת מדידות פעילה</span>
+            <span class="badge badge-cyan">חישוב אוטומטי</span>
+            <span class="badge">מוכן להדפסה 🖨️</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_09_Pole_Alignment_Measurement_Protocol.html" target="_blank" class="btn btn-primary">פתח טופס מדידות ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_09_Pole_Alignment_Measurement_Protocol.html', 'DOC 09: Pole Alignment Protocol')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 10 -->
+      <div class="card" data-category="report" data-keywords="doc 10 pole alignment final experiment summary conclusions zeros poles oemer qs 100s offset report results">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: linear-gradient(135deg, #0284c7, #38bdf8); color: #fff;">📑</div>
+              <div>
+                <div class="card-title">DOC 10: דוח סיכום הנדסי ומסקנות – כיול קטבים ואפסים</div>
+                <span class="code-tag">DOC_10_Pole_Alignment_Final_Experiment_Summary.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">דוח מסכם כולל של תוצאות הניסוי: תרשים פולארי של 2 הקטבים המגנטיים, ניתוח שגיאות של 13 השלבים וקוד C סופי ל-HIL404 (Offset: 58.98° / 1.0295 rad).</p>
+          <div class="card-tags">
+            <span class="badge badge-emerald">דוח מסכם ומסקנות</span>
+            <span class="badge badge-cyan">Offset: 58.98°</span>
+            <span class="badge badge-purple">תרשים פולארי</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_10_Pole_Alignment_Final_Experiment_Summary.html" target="_blank" class="btn btn-primary">פתח דוח סיכום ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_10_Pole_Alignment_Final_Experiment_Summary.html', 'DOC 10: Final Experiment Summary & Conclusions')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+      <!-- Doc 11 -->
+      <div class="card" data-category="report" data-keywords="doc 11 digilent pmod rs485 adm2582e integration wiring guide typhoon hil404 sick sfm60 5v half duplex">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff;">🔌</div>
+              <div>
+                <div class="card-title">DOC 11: מדריך אינטגרציה וחיווט – Digilent Pmod RS485</div>
+                <span class="code-tag">DOC_11_Digilent_Pmod_RS485_Integration_Guide.html</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מדריך חיווט מלא למודול Digilent Pmod RS485 (ADM2582E): עבודה ב-5V טבעי ללא מחלקי מתח, תצורת Half-Duplex ל-HIPERFACE וחיבור ישיר ל-HIL404.</p>
+          <div class="card-tags">
+            <span class="badge badge-emerald">Digilent Pmod RS485</span>
+            <span class="badge badge-cyan">Native 5V / 3.3V</span>
+            <span class="badge badge-purple">ADM2582E Isolated</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HTML_Reports/DOC_11_Digilent_Pmod_RS485_Integration_Guide.html" target="_blank" class="btn btn-primary">פתח מדריך חיווט ↗</a>
+          <button onclick="previewFile('HTML_Reports/DOC_11_Digilent_Pmod_RS485_Integration_Guide.html', 'DOC 11: Digilent Pmod RS485 Guide')" class="btn btn-secondary">תצוגה מהירה 👁️</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 2: Simulation Models & PSIM -->
+    <div class="section-title">
+      <span style="background: var(--accent-cyan);"></span>
+      💻 מודלי סימולציה (Typhoon HIL & PSIM)
+    </div>
+
+    <div class="grid" id="simGrid">
+      
+      <!-- HIL Model 1 -->
+      <div class="card" data-category="hil" data-keywords="hil pmsm position reader hil404 v1 tse cus scada panel">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">📈</div>
+              <div>
+                <div class="card-title">PMSM Position Reader HIL404 (v1)</div>
+                <span class="code-tag">HIL_PMSM/PMSM_Position_Reader_HIL404_v1.tse</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מודל סכמטי ראשי ב-Typhoon HIL לקריאת אותות אינקודר בזמן אמת, עיבוד Sin/Cos ותקשורת RS-485.</p>
+          <div class="card-tags">
+            <span class="badge badge-cyan">TSE Model</span>
+            <span class="badge badge-blue">PANEL_Position_Monitor_v1.cus</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HIL_PMSM/PMSM_Position_Reader_HIL404_v1.tse" class="btn btn-primary">פתח מודל TSE</a>
+          <a href="HIL_PMSM/PANEL_Position_Monitor_v1.cus" class="btn btn-secondary">פאנל SCADA (.cus)</a>
+        </div>
+      </div>
+
+      <!-- HIL Model 2 -->
+      <div class="card" data-category="hil" data-keywords="oepc pmsm96nod new fb test hil tse cus inverter">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">⚡</div>
+              <div>
+                <div class="card-title">OEPC PMSM 96NOD Feedback System</div>
+                <span class="code-tag">HIL_PMSM/OEPC_PMSM96NOD_new_FB.tse</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מודל הדמיית ממיר OEPC תלת-פאזי עבור מנוע PMSM עם חוגי משוב זרם, מהירות ובקרת וקטור (FOC).</p>
+          <div class="card-tags">
+            <span class="badge badge-emerald">OEPC Inverter</span>
+            <span class="badge badge-purple">OEPC_PANEL1.cus</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="HIL_PMSM/OEPC_PMSM96NOD_new_FB.tse" class="btn btn-primary">פתח מודל TSE</a>
+          <a href="HIL_PMSM/OEPC_PANEL1.cus" class="btn btn-secondary">פאנל SCADA (.cus)</a>
+        </div>
+      </div>
+
+      <!-- PSIM Project -->
+      <div class="card" data-category="psim" data-keywords="psim project pmspsimproj psimsch tse xml report conversion">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">⚡</div>
+              <div>
+                <div class="card-title">פרויקט PSIM והמרת Typhoon HIL</div>
+                <span class="code-tag">PMSM_Psim_Project/PMSP_Psim_Proj.psimsch</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">סכמת סימולציה של PSIM, קבצי יצוא XML, מודל TSE מומר ודוח תאימות רכיבים (Conversion Report).</p>
+          <div class="card-tags">
+            <span class="badge badge-amber">PSIM Schematic</span>
+            <span class="badge badge-cyan">PMSP_Psim_Proj.tse</span>
+            <span class="badge">XML Export</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="PMSM_Psim_Project/PMSP_Psim_Proj.psimsch" class="btn btn-primary">קובץ PSIM (.psimsch)</a>
+          <a href="PMSM_Psim_Project/report.txt" target="_blank" class="btn btn-secondary">דוח המרה (.txt)</a>
+        </div>
+      </div>
+
+      <!-- OEPC RLE Models -->
+      <div class="card" data-category="hil" data-keywords="oepc rle models pract1 pract2 pract3 tse runx cus load test">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd;">🔄</div>
+              <div>
+                <div class="card-title">מודלי סימולציה OEPC RLE (עומסים)</div>
+                <span class="code-tag">OEPC_RLE/OEPC_RLE_PRACT3.tse</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">חבילת מודלי בדיקה של ממיר OEPC מול עומסי RLE, שלבי תרגול PRACT 1/2/3 וסקריפטי הרצה (.runx).</p>
+          <div class="card-tags">
+            <span class="badge badge-purple">RLE Load</span>
+            <span class="badge">PRACT 1/2/3</span>
+            <span class="badge badge-emerald">OEPC_RLE_Panel.cus</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="OEPC_RLE/OEPC_RLE_PRACT3.tse" class="btn btn-primary">פתח מודל PRACT3</a>
+          <a href="OEPC_RLE/OEPC_RLE_Panel.cus" class="btn btn-secondary">פאנל SCADA (.cus)</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 3: Datasheets & Manufacturer Specs -->
+    <div class="section-title">
+      <span style="background: var(--accent-emerald);"></span>
+      📚 דפי נתונים ומפרטי יצרן (Datasheets & Docs)
+    </div>
+
+    <div class="grid" id="docsGrid">
+      
+      <!-- Doc: SICK HIPERFACE Spec -->
+      <div class="card" data-category="datasheet" data-keywords="sick hiperface protocol operating instructions official specification pdf im0064865">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">📑</div>
+              <div>
+                <div class="card-title">SICK HIPERFACE Official Protocol Spec</div>
+                <span class="code-tag">Datasheets_and_Docs/operating_instructions_specification_...</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מסמך המפרט הרשמי של חברת SICK לפרוטוקול HIPERFACE: פקודות תקשורת, פרוטוקול RS485 ופקודות קריאת מיקום.</p>
+          <div class="card-tags">
+            <span class="badge badge-blue">SICK Official</span>
+            <span class="badge badge-purple">HIPERFACE Standard</span>
+            <span class="badge">1.45 MB</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Datasheets_and_Docs/operating_instructions_specification_hiperfacer_motor_feedback_protocol_en_im0064865.pdf" target="_blank" class="btn btn-primary">פתח קובץ PDF ↗</a>
+        </div>
+      </div>
+
+      <!-- Doc: OEPC Inverter -->
+      <div class="card" data-category="datasheet" data-keywords="oepc se vsi pmsm 3ph inverter converter manual pdf">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">⚡</div>
+              <div>
+                <div class="card-title">OEPC 3-Phase Inverter Documentation</div>
+                <span class="code-tag">Datasheets_and_Docs/OEPC_SE_VSI_PMSM_3ph.pdf</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">תיעוד ומדריך הפעלה לבקר ממיר OEPC תלת-פאזי (VSI) עבור מנועי PMSM ומערכות HIL.</p>
+          <div class="card-tags">
+            <span class="badge badge-amber">OEPC Inverter</span>
+            <span class="badge">3-Phase VSI</span>
+            <span class="badge">2.4 MB</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Datasheets_and_Docs/OEPC_SE_VSI_PMSM_3ph.pdf" target="_blank" class="btn btn-primary">פתח קובץ PDF ↗</a>
+        </div>
+      </div>
+
+      <!-- Doc: Accuracy Values Whitepaper -->
+      <div class="card" data-category="datasheet" data-keywords="accuracy values encoder motor feedback systems sick whitepaper">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd;">📖</div>
+              <div>
+                <div class="card-title">Whitepaper: Encoder & Feedback Accuracy</div>
+                <span class="code-tag">Datasheets_and_Docs/whitepaper_data_sheet_accuracy_values...pdf</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">נייר עמדה מקצועי של חברת SICK לגבי דיוק, שגיאות כיול ורזולוציה במערכות משוב מנוע.</p>
+          <div class="card-tags">
+            <span class="badge badge-purple">SICK Whitepaper</span>
+            <span class="badge">Accuracy Analysis</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Datasheets_and_Docs/whitepaper_data_sheet_accuracy_values_of_encoders_and_motor_feedback_systems_en_im0090276.pdf" target="_blank" class="btn btn-primary">פתח מסמך PDF ↗</a>
+        </div>
+      </div>
+
+      <!-- Doc: BMB Sensor -->
+      <div class="card" data-category="datasheet" data-keywords="bmb 7052a sensor datasheet module pdf">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">🔍</div>
+              <div>
+                <div class="card-title">BMB-7052A Sensor Datasheet</div>
+                <span class="code-tag">Datasheets_and_Docs/BMB-7052A_20210209.pdf</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מפרט טכני של חיישן / כרטיס BMB-7052A.</p>
+          <div class="card-tags">
+            <span class="badge" style="background: rgba(244,63,94,0.15); color: #fda4af;">BMB Sensor</span>
+            <span class="badge">604 KB</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Datasheets_and_Docs/BMB-7052A_20210209.pdf" target="_blank" class="btn btn-primary">פתח קובץ PDF ↗</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 4: SolidWorks & CAD Mechanical Design -->
+    <div class="section-title">
+      <span style="background: var(--accent-amber);"></span>
+      🏗️ תכנון מכני ומודלי SolidWorks (CAD & 3D Models)
+    </div>
+
+    <div class="grid" id="cadGrid">
+      
+      <!-- Assembly 1: Load Stand -->
+      <div class="card" data-category="cad" data-keywords="pmsm load stand sldasm solidworks assembly mechanical bench">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">🔩</div>
+              <div>
+                <div class="card-title">הרכבת מעמד עומס PMSM (Load Stand)</div>
+                <span class="code-tag">Solid/PMSM_Load_Stend.SLDASM</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מודל ההרכבה הראשי (Assembly) של מעמד הבדיקות המכני: מנוע PMSM, מד מומנט, קופלונגים ושולחן חיבורים.</p>
+          <div class="card-tags">
+            <span class="badge badge-amber">Main Assembly</span>
+            <span class="badge">SolidWorks 13.4MB</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Solid/PMSM_Load_Stend.SLDASM" class="btn btn-primary">פתח הרכבה (.SLDASM)</a>
+        </div>
+      </div>
+
+      <!-- Assembly 2: Machine Bed -->
+      <div class="card" data-category="cad" data-keywords="mv1004 machine bed sldasm solidworks base table">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">📐</div>
+              <div>
+                <div class="card-title">שולחן מכונה MV1004 (Machine Bed)</div>
+                <span class="code-tag">Solid/MV1004 Machine Bed.SLDASM</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">הרכבת שולחן מכונה ובסיס קיבוע עבור סטנד הניסויים של מערכת ההינע.</p>
+          <div class="card-tags">
+            <span class="badge badge-blue">Machine Bed</span>
+            <span class="badge">SLDASM</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Solid/MV1004 Machine Bed.SLDASM" class="btn btn-primary">פתח הרכבה (.SLDASM)</a>
+        </div>
+      </div>
+
+      <!-- Torque Sensor T210 -->
+      <div class="card" data-category="cad" data-keywords="torque sensor t210 nominal 100nm sldprt stp cad solid">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🧲</div>
+              <div>
+                <div class="card-title">מד מומנט T210 (100 Nm)</div>
+                <span class="code-tag">Solid/T210-nominal-rated-torque-100-Nm-CAD.stp</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מודל CAD תלת-מימדי (SLDPRT ו-STEP) של חיישן מומנט דינמי T210 למדידת מומנט המנוע.</p>
+          <div class="card-tags">
+            <span class="badge badge-emerald">Torque Sensor 100Nm</span>
+            <span class="badge">STEP / SLDPRT</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Solid/T210-nominal-rated-torque-100-Nm-CAD.stp" class="btn btn-primary">קובץ STEP (.stp)</a>
+          <a href="Solid/T210-nominal-rated-torque-100-Nm-CAD.SLDPRT" class="btn btn-secondary">קובץ SLDPRT</a>
+        </div>
+      </div>
+
+      <!-- QS 100 Models -->
+      <div class="card" data-category="cad" data-keywords="qs100 step models 3d sldasm motor versions l m p s x">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd;">⚙️</div>
+              <div>
+                <div class="card-title">מודלי מנוע QS 100 (STEP & SLDASM)</div>
+                <span class="code-tag">Solid/QS_100/</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">מודלים תלת-מימדיים מדויקים של מנוע QS 100 בכל הווריאציות: QS_100_L, M, P, S, X בפורמט STEP ו-SLDASM.</p>
+          <div class="card-tags">
+            <span class="badge badge-purple">QS 100 Variants</span>
+            <span class="badge">STEP Files</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Solid/QS_100/QS_100_S.SLDASM" class="btn btn-primary">הרכבת QS_100_S</a>
+          <a href="Solid/QS_100/QS_100_M.STEP" class="btn btn-secondary">קובץ STEP</a>
+        </div>
+      </div>
+
+      <!-- Power Switch GUN V2 -->
+      <div class="card" data-category="cad" data-keywords="power switch gun v2 altium designer pcb gan gs66516b ahv85111 inverter hardware">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">⚡</div>
+              <div>
+                <div class="card-title">מודול מתג כוח מבוסס GaN (Power_Swech GUN V2)</div>
+                <span class="code-tag">Hardware_Design/Power_Swech_GUN_V2/</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">תכנון חומרה מלא ב-Altium Designer: טרנזיסטור GaN Systems GS66516B (650V/60A, 25m&Omega;), דרייבר מבודד Allegro AHV85111 והדקי REDCUBE.</p>
+          <div class="card-tags">
+            <span class="badge badge-rose">Altium Designer</span>
+            <span class="badge badge-amber">GS66516B (650V/60A)</span>
+            <span class="badge badge-blue">AHV85111 Gate Driver</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Hardware_Design/Power_Swech_GUN_V2/Power_Swech - GUN_ V2.PrjPcb" class="btn btn-primary">פרויקט Altium (.PrjPcb)</a>
+          <a href="Hardware_Design/Power_Swech_GUN_V2/Sheet1.SchDoc" class="btn btn-secondary">סכמה (.SchDoc)</a>
+        </div>
+      </div>
+
+      <!-- Isolated Current Sensor V2.1 -->
+      <div class="card" data-category="cad" data-keywords="isolated current sensor v2.1 altium designer acs37030 allegro hall effect 5mhz 40a hardware">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">🧲</div>
+              <div>
+                <div class="card-title">חיישן זרם מבודד מהיר (Isolated Current Sensor V2.1)</div>
+                <span class="code-tag">Hardware_Design/Isolated_Current_Sensor_V2_1/</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">כרטיס דגימת זרם מהיר ומבודד ב-Altium Designer: רכיב Allegro ACS37030 (&plusmn;40A, רוחב פס 5MHz, בידוד 3.5kV) עם מוצא דיפרנציאלי ל-HIL404.</p>
+          <div class="card-tags">
+            <span class="badge badge-cyan">ACS37030 (&plusmn;40A)</span>
+            <span class="badge badge-purple">5 MHz Bandwidth</span>
+            <span class="badge badge-emerald">Diff Output &plusmn;Out</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Hardware_Design/Isolated_Current_Sensor_V2_1/Isolated_Current_Sensor _V2.PrjPcb" class="btn btn-primary">פרויקט Altium (.PrjPcb)</a>
+          <a href="Hardware_Design/Isolated_Current_Sensor_V2_1/Current_Sensor.SchDoc" class="btn btn-secondary">סכמה (.SchDoc)</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 5: Tools, Media & Automation Scripts -->
+    <div class="section-title">
+      <span style="background: var(--accent-purple);"></span>
+      🛠️ כלי אוטומציה, תמונות וגיבויים
+    </div>
+
+    <div class="grid" id="toolsGrid">
+      
+      <!-- Antigravity History Sync -->
+      <div class="card" data-category="tools" data-keywords="sync history python script antigravity backup conversations logs">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd;">🤖</div>
+              <div>
+                <div class="card-title">סנכרון וארכוב שיחות Antigravity</div>
+                <span class="code-tag">sync_history.py / .bat / .ps1</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">סקריפט Python ואוטומציה לייצוא, תיעוד וארכוב כל היסטוריית השיחות, הפקודות והתוצרים מה-IDE לתוך התיקייה.</p>
+          <div class="card-tags">
+            <span class="badge badge-purple">Python 3</span>
+            <span class="badge badge-emerald">Batch / PowerShell</span>
+            <span class="badge">One-Click Sync</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="antigravity_history/README.md" target="_blank" class="btn btn-primary">ארכיון השיחות (README)</a>
+          <a href="sync_history.bat" class="btn btn-secondary">סנכרון עכשיו (.bat)</a>
+        </div>
+      </div>
+
+      <!-- Lab & Hardware Photos -->
+      <div class="card" data-category="tools" data-keywords="images photos lab setup hardware cap 1">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">📷</div>
+              <div>
+                <div class="card-title">תמונות מעבדה וסטנד הניסוי</div>
+                <span class="code-tag">Images/</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">צילומי מעבדה, כרטיס הבקרה, חיבורי האינקודר ומעמד הבדיקה הפיזי.</p>
+          <div class="card-tags">
+            <span class="badge badge-cyan">Cap_1.png</span>
+            <span class="badge">Lab Setup</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Images/Cap_1.png" target="_blank" class="btn btn-primary">צפה בתמונה ↗</a>
+        </div>
+      </div>
+
+      <!-- Archives -->
+      <div class="card" data-category="tools" data-keywords="archives zip hil pmsm oepc rle backup">
+        <div class="card-top">
+          <div class="card-header">
+            <div class="card-icon-title">
+              <div class="card-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">📦</div>
+              <div>
+                <div class="card-title">ארכיון וגיבויי ZIP</div>
+                <span class="code-tag">Archives/</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-desc">גיבויי ZIP מלאים של פרויקטי HIL_PMSM.zip ו-OEPC_RLE.zip לשמירה היסטורית ושחזור מהיר.</p>
+          <div class="card-tags">
+            <span class="badge badge-amber">ZIP Archives</span>
+            <span class="badge">HIL_PMSM.zip</span>
+            <span class="badge">OEPC_RLE.zip</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="Archives/HIL_PMSM.zip" class="btn btn-primary">הורד HIL_PMSM.zip</a>
+          <a href="Archives/OEPC_RLE.zip" class="btn btn-secondary">OEPC_RLE.zip</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>פרויקט PMSM & Typhoon HIL | ד"ר אלי ברבי & מקס רבינוביץ' © 2025–2026</p>
+      <p style="margin-top: 0.4rem; color: var(--text-dim);">פורטל הניווט עודכן עם כל מסמכי OEMER Motori Elettrici • סנכרון תיעוד מלא</p>
+    </footer>
+
+  </div>
+
+  <!-- Modal Preview -->
+  <div class="modal" id="previewModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">תצוגת מסמך</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <iframe class="modal-body" id="modalIframe" src=""></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Search Functionality
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.card');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const keywords = card.getAttribute('data-keywords') || '';
+        const cardText = card.innerText.toLowerCase();
+
+        const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+        const matchesQuery = !query || cardText.includes(query) || keywords.toLowerCase().includes(query);
+
+        if (matchesFilter && matchesQuery) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    searchInput.addEventListener('input', filterCards);
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    // Modal Preview Functionality
+    const modal = document.getElementById('previewModal');
+    const modalIframe = document.getElementById('modalIframe');
+    const modalTitle = document.getElementById('modalTitle');
+
+    function previewFile(url, title) {
+      modalTitle.innerText = title;
+      modalIframe.src = url;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      modalIframe.src = '';
+      document.body.style.overflow = 'auto';
+    }
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
