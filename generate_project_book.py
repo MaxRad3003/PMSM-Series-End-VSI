@@ -1047,7 +1047,7 @@ def get_book_html():
                         <div class="authors-grid">
                             <div class="author-card">
                                 <h4>מקסים רדקין</h4>
-                                <span class="role">סטודנט ומחבר המחקר (.M.Sc)</span>
+                                <span class="role">סטודנט (.M.Sc)</span>
                                 <p>המחלקה להנדסת חשמל ואלקטרוניקה, SCE</p>
                             </div>
                             <div class="author-card">
