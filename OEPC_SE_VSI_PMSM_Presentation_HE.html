@@ -2199,7 +2199,7 @@
                 <!-- PANEL 2: OEPC 96-LUT DECISION CORE & LIVE ELECTRONIC CIRCUIT SIMULATION -->
                 <div class="slide11-card">
                     <div class="slide11-card-title" style="justify-content:space-between; margin-bottom:4px;">
-                        <span><span>🔌</span> מעגל אלקטרוני חי (איור 2)</span>
+                        <span><span>🔌</span> מעגל Series-End VSI וסלילים טוריים (איור 2)</span>
                         <div style="display:flex; gap:4px;">
                             <button id="btn-tab-circuit" class="demo-btn active-tab" onclick="setPanel2Tab('circuit')" style="padding:2px 7px; font-size:0.72rem; background:rgba(0,210,255,0.25); border-color:#00d2ff; color:#fff;">מעגל חי</button>
                             <button id="btn-tab-matrix" class="demo-btn" onclick="setPanel2Tab('matrix')" style="padding:2px 7px; font-size:0.72rem; opacity:0.65;">מטריצה</button>
@@ -2227,6 +2227,7 @@
                     <!-- VIEW 1: LIVE ELECTRONIC CIRCUIT SIMULATION (Default) -->
                     <div id="panel2-view-circuit" style="display:block;">
                         <canvas id="demo-circuit-canvas" style="width:100%; height:200px; background:#060a14; border-radius:6px; display:block; border:1px solid rgba(0,210,255,0.25);"></canvas>
+                        <div style="font-size:0.68rem; color:var(--text-muted); text-align:center; margin-top:2px; font-weight:500;">חיבור סלילים טורי בין ענפי הממיר L1-L4 (ללא כוכב וללא משולש)</div>
                         <div style="display:flex; justify-content:space-between; font-size:0.70rem; font-family:monospace; background:rgba(0,0,0,0.45); padding:2px 8px; border-radius:5px; border:1px solid rgba(255,255,255,0.08); margin-top:3px;">
                             <span id="circuit-hud-van" style="color:#00d2ff;">v_an: +Vdc</span>
                             <span id="circuit-hud-vbn" style="color:#f6d365;">v_bn: 0V</span>
@@ -4458,7 +4459,7 @@ function updateDemoUI() {
         ctx.restore();
     }
 
-    // Canvas 4: Dynamic Electronic Circuit Simulation (4-Leg SE-VSI & PMSM Topology)
+    // Canvas 4: Dynamic Electronic Circuit Simulation (Fig. 2: Series-End VSI with Series Windings)
     let circuitParticlePhase = 0;
 
     function renderCircuitCanvas() {
@@ -4493,217 +4494,192 @@ function updateDemoUI() {
             ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
         }
 
-        // Geometry layout
+        // Geometry layout - Fig. 2 exact topology
         const topRailY = 24 * dpr;
-        const botRailY = Math.max(topRailY + 60 * dpr, H - 22 * dpr);
+        const botRailY = Math.max(topRailY + 65 * dpr, H - 24 * dpr);
         const midY = (topRailY + botRailY) / 2;
 
-        const inverterRight = W * 0.58;
+        // Left DC source with split caps
+        const xDc = 22 * dpr;
+        const xRailStart = xDc;
+        
+        // 4 Legs: L1, L2, L3, L4
         const legX = [
-            W * 0.14, // Leg A
-            W * 0.26, // Leg B
-            W * 0.38, // Leg C
-            W * 0.50  // Leg N (Neutral)
+            xDc + (W - xDc) * 0.18, // Leg 1 (v1)
+            xDc + (W - xDc) * 0.44, // Leg 2 (v2)
+            xDc + (W - xDc) * 0.70, // Leg 3 (v3)
+            xDc + (W - xDc) * 0.93  // Leg 4 (v4)
         ];
-
-        const motorCenterX = W * 0.82;
-        const motorCenterY = midY;
-        const motorRadius = Math.max(18 * dpr, Math.min(W * 0.13, (botRailY - topRailY) * 0.38));
+        const xRailEnd = legX[3] + 10 * dpr;
 
         // Advance particle phase
         if (demoRunning) {
             circuitParticlePhase = (circuitParticlePhase + 0.08 * (demoSpeed / 0.5)) % 1.0;
         }
 
-        // 1. DC BUS RAILS
+        // 1. DC BUS RAILS (+Vdc and 0V / GND)
         // Top Rail (+Vdc)
         ctx.strokeStyle = '#f6d365';
         ctx.lineWidth = 2.4 * dpr;
         ctx.shadowColor = '#f6d365';
         ctx.shadowBlur = 4 * dpr;
-        ctx.beginPath(); ctx.moveTo(12 * dpr, topRailY); ctx.lineTo(inverterRight + 8 * dpr, topRailY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(xRailStart, topRailY); ctx.lineTo(xRailEnd, topRailY); ctx.stroke();
 
         // Bottom Rail (0V / GND)
         ctx.strokeStyle = '#00d2ff';
-        ctx.beginPath(); ctx.moveTo(12 * dpr, botRailY); ctx.lineTo(inverterRight + 8 * dpr, botRailY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(xRailStart, botRailY); ctx.lineTo(xRailEnd, botRailY); ctx.stroke();
         ctx.shadowBlur = 0;
 
         // Rail Labels
         ctx.font = `bold ${7.5 * dpr}px monospace`;
         ctx.fillStyle = '#f6d365';
         ctx.textAlign = 'left';
-        ctx.fillText('+Vdc', 14 * dpr, topRailY - 5 * dpr);
+        ctx.fillText('+Vdc', xDc + 2 * dpr, topRailY - 5 * dpr);
 
         ctx.fillStyle = '#00d2ff';
-        ctx.fillText('0V (GND)', 14 * dpr, botRailY + 14 * dpr);
+        ctx.fillText('0V', xDc + 2 * dpr, botRailY + 14 * dpr);
 
-        // DC Bus Filter Capacitor (C_dc)
-        const capX = 28 * dpr;
-        const capTopY = topRailY + 15 * dpr;
-        const capBotY = botRailY - 15 * dpr;
-        if (capBotY > capTopY + 10 * dpr) {
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+        // DC Source & Split Capacitors C/2 on left (Fig. 2)
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 1.2 * dpr;
+        ctx.beginPath(); ctx.moveTo(xDc, topRailY); ctx.lineTo(xDc, midY - 6 * dpr); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(xDc, botRailY); ctx.lineTo(xDc, midY + 6 * dpr); ctx.stroke();
+        
+        // Ground tap at midY
+        ctx.beginPath(); ctx.moveTo(xDc, midY); ctx.lineTo(xDc - 10 * dpr, midY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(xDc - 10 * dpr, midY - 4 * dpr); ctx.lineTo(xDc - 10 * dpr, midY + 4 * dpr); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(xDc - 13 * dpr, midY - 2.5 * dpr); ctx.lineTo(xDc - 13 * dpr, midY + 2.5 * dpr); ctx.stroke();
+
+        // Split cap plates
+        const capPlateW = 5 * dpr;
+        // Top C
+        ctx.beginPath(); ctx.moveTo(xDc - capPlateW, topRailY + 12 * dpr); ctx.lineTo(xDc + capPlateW, topRailY + 12 * dpr); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(xDc - capPlateW, topRailY + 16 * dpr); ctx.lineTo(xDc + capPlateW, topRailY + 16 * dpr); ctx.stroke();
+        // Bot C
+        ctx.beginPath(); ctx.moveTo(xDc - capPlateW, botRailY - 16 * dpr); ctx.lineTo(xDc + capPlateW, botRailY - 16 * dpr); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(xDc - capPlateW, botRailY - 12 * dpr); ctx.lineTo(xDc + capPlateW, botRailY - 12 * dpr); ctx.stroke();
+
+        ctx.font = `${6.5 * dpr}px sans-serif`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+        ctx.textAlign = 'right';
+        ctx.fillText('C', xDc - 6 * dpr, topRailY + 16 * dpr);
+        ctx.fillText('C', xDc - 6 * dpr, botRailY - 12 * dpr);
+
+        // 2. FOUR INVERTER LEGS: L1, L2, L3, L4 (Switches & Diodes)
+        const legColors = ['#00d2ff', '#ff9f43', '#ff6b81', '#00ff88'];
+        const legNames = ['L1', 'L2', 'L3', 'L4'];
+        const isLeg4Fault = (typeof leg4Fault !== 'undefined' && leg4Fault) || (typeof activeFault !== 'undefined' && activeFault === 'leg4');
+        const isAsymActive = (typeof asymPercent !== 'undefined' && asymPercent > 0) || (typeof activeFault !== 'undefined' && activeFault === 'asym');
+
+        const switchGap = 13 * dpr;
+        const swTopStart = topRailY;
+        const swTopEnd = midY - switchGap;
+        const swBotStart = midY + switchGap;
+        const swBotEnd = botRailY;
+
+        for (let k = 0; k < 4; k++) {
+            const lx = legX[k];
+            const isFaultedLeg = (k === 3 && isLeg4Fault);
+            const highState = isFaultedLeg ? 0 : activeSwitches[k];
+            const lowState = isFaultedLeg ? 0 : (1 - activeSwitches[k]);
+
+            // Vertical wire from rail to top switch
+            ctx.strokeStyle = 'rgba(255,255,255,0.25)';
             ctx.lineWidth = 1.2 * dpr;
-            ctx.beginPath(); ctx.moveTo(capX, topRailY); ctx.lineTo(capX, capTopY); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(capX, botRailY); ctx.lineTo(capX, capBotY); ctx.stroke();
-            // Capacitor plates
-            ctx.beginPath(); ctx.moveTo(capX - 6 * dpr, capTopY); ctx.lineTo(capX + 6 * dpr, capTopY); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(capX - 6 * dpr, capBotY); ctx.lineTo(capX + 6 * dpr, capBotY); ctx.stroke();
-            ctx.font = `${6.5 * dpr}px sans-serif`;
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.fillText('C_dc', capX + 8 * dpr, midY + 3 * dpr);
+            ctx.beginPath(); ctx.moveTo(lx, topRailY); ctx.lineTo(lx, swTopStart); ctx.stroke();
+            // From top switch to midpoint
+            ctx.beginPath(); ctx.moveTo(lx, swTopEnd); ctx.lineTo(lx, midY); ctx.stroke();
+            // From midpoint to bottom switch
+            ctx.beginPath(); ctx.moveTo(lx, midY); ctx.lineTo(lx, swBotStart); ctx.stroke();
+            // From bottom switch to bottom rail
+            ctx.beginPath(); ctx.moveTo(lx, swBotEnd); ctx.lineTo(lx, botRailY); ctx.stroke();
+
+            // Draw Switches
+            drawTransistorSwitch(ctx, lx, swTopStart + 2 * dpr, swTopEnd - 2 * dpr, highState, legColors[k], dpr, isFaultedLeg);
+            drawTransistorSwitch(ctx, lx, swBotStart + 2 * dpr, swBotEnd - 2 * dpr, lowState, legColors[k], dpr, isFaultedLeg);
+
+            // Switch Labels: S_Hk, S_Lk
+            ctx.font = `${6.5 * dpr}px monospace`;
+            ctx.fillStyle = highState ? '#00ff88' : 'rgba(255,255,255,0.4)';
+            ctx.textAlign = 'right';
+            ctx.fillText(`S_H${k+1}`, lx - 6 * dpr, (swTopStart + swTopEnd) / 2 + 2 * dpr);
+
+            ctx.fillStyle = lowState ? '#00ff88' : 'rgba(255,255,255,0.4)';
+            ctx.fillText(`S_L${k+1}`, lx - 6 * dpr, (swBotStart + swBotEnd) / 2 + 2 * dpr);
+
+            // Midpoint Node Dot (vk)
+            ctx.fillStyle = isFaultedLeg ? '#ff4757' : (activeSwitches[k] ? '#f6d365' : '#00d2ff');
+            ctx.shadowColor = ctx.fillStyle;
+            ctx.shadowBlur = 5 * dpr;
+            ctx.beginPath(); ctx.arc(lx, midY, 3.2 * dpr, 0, 2 * Math.PI); ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Midpoint Voltage Label (v1, v2, v3, v4)
+            ctx.font = `bold ${7.5 * dpr}px monospace`;
+            ctx.fillStyle = '#f368e0';
+            ctx.textAlign = 'center';
+            ctx.fillText(`v_${k+1}`, lx, midY - 6 * dpr);
+
+            // Leg Label under bottom rail (L1, L2, L3, L4)
+            ctx.font = `bold ${8.5 * dpr}px sans-serif`;
+            ctx.fillStyle = isFaultedLeg ? '#ff6b81' : legColors[k];
+            ctx.fillText(legNames[k], lx, botRailY + 15 * dpr);
+
+            // Draw current flowing from active switch into midpoint
+            if (!isFaultedLeg) {
+                if (highState) {
+                    drawSwitchCurrentParticles(ctx, lx, swTopStart, lx, midY, legColors[k], circuitParticlePhase, dpr);
+                } else {
+                    drawSwitchCurrentParticles(ctx, lx, midY, lx, swBotEnd, legColors[k], circuitParticlePhase, dpr);
+                }
+            }
         }
 
-        // 2. INVERTER LEGS & SWITCHES
-        const legColors = ['#00d2ff', '#f6d365', '#ff6b81', '#00ff88'];
-        const legNames = ['A', 'B', 'C', 'N'];
-        const legCurrents = [curIa, curIb, curIc, -curIzsc]; // Inverter output currents
-
-        legX.forEach((lx, k) => {
-            const isNeutral = (k === 3);
-            const legCol = legColors[k];
-            const swH = activeSwitches[k];
-            const swL = (isNeutral && leg4Fault) ? 0 : (swH === 1 ? 0 : 1);
-
-            // Vertical bus feed wires
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-            ctx.lineWidth = 1 * dpr;
-            ctx.beginPath(); ctx.moveTo(lx, topRailY); ctx.lineTo(lx, topRailY + 12 * dpr); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(lx, botRailY); ctx.lineTo(lx, botRailY - 12 * dpr); ctx.stroke();
-
-            // --- Upper Switch S_kh ---
-            const swH_topY = topRailY + 12 * dpr;
-            const swH_botY = midY - 12 * dpr;
-            drawTransistorSwitch(ctx, lx, swH_topY, swH_botY, swH, legCol, dpr, isNeutral && leg4Fault);
-
-            // Label S_h
-            ctx.font = `bold ${7 * dpr}px monospace`;
-            ctx.fillStyle = swH === 1 ? '#00ff88' : 'rgba(255,255,255,0.45)';
-            ctx.textAlign = 'right';
-            ctx.fillText(`S_${legNames[k].toLowerCase()}h`, lx - 7 * dpr, (swH_topY + swH_botY) / 2 + 2 * dpr);
-
-            // --- Lower Switch S_kl ---
-            const swL_topY = midY + 12 * dpr;
-            const swL_botY = botRailY - 12 * dpr;
-            drawTransistorSwitch(ctx, lx, swL_topY, swL_botY, swL, legCol, dpr, isNeutral && leg4Fault);
-
-            // Label S_l
-            ctx.font = `bold ${7 * dpr}px monospace`;
-            ctx.fillStyle = swL === 1 ? '#00ff88' : 'rgba(255,255,255,0.45)';
-            ctx.fillText(`S_${legNames[k].toLowerCase()}l`, lx - 7 * dpr, (swL_topY + swL_botY) / 2 + 2 * dpr);
-
-            // --- Midpoint Terminal Node ---
-            ctx.strokeStyle = legCol;
-            ctx.lineWidth = 1.4 * dpr;
-            ctx.beginPath(); ctx.moveTo(lx, swH_botY); ctx.lineTo(lx, swL_topY); ctx.stroke();
-
-            // Terminal Dot
-            ctx.fillStyle = swH === 1 ? '#f6d365' : '#00d2ff';
-            ctx.beginPath(); ctx.arc(lx, midY, 3.5 * dpr, 0, 2 * Math.PI); ctx.fill();
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 1 * dpr;
-            ctx.stroke();
-
-            // Terminal Potential Tag
-            ctx.font = `bold ${7 * dpr}px monospace`;
-            ctx.fillStyle = legCol;
-            ctx.textAlign = 'center';
-            ctx.fillText(legNames[k], lx, midY - 6 * dpr);
-        });
-
-        // 3. PMSM MOTOR STATOR & STAR POINT (Y-Connected with Neutral Return)
-        // Stator Housing
-        ctx.strokeStyle = 'rgba(0, 210, 255, 0.25)';
-        ctx.lineWidth = 1.5 * dpr;
-        ctx.setLineDash([4 * dpr, 3 * dpr]);
-        ctx.beginPath(); ctx.arc(motorCenterX, motorCenterY, motorRadius, 0, 2 * Math.PI); ctx.stroke();
-        ctx.setLineDash([]);
-
-        ctx.font = `bold ${7.5 * dpr}px sans-serif`;
-        ctx.fillStyle = 'rgba(0, 210, 255, 0.7)';
-        ctx.textAlign = 'center';
-        ctx.fillText('PMSM', motorCenterX, motorCenterY - motorRadius - 4 * dpr);
-
-        // Neutral Star Node (N_motor)
-        ctx.fillStyle = '#00ff88';
-        ctx.beginPath(); ctx.arc(motorCenterX, motorCenterY, 4 * dpr, 0, 2 * Math.PI); ctx.fill();
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1 * dpr;
-        ctx.stroke();
-        ctx.font = `bold ${7 * dpr}px monospace`;
-        ctx.fillStyle = '#00ff88';
-        ctx.fillText('N*', motorCenterX, motorCenterY + 12 * dpr);
-
-        // 3 Stator Coils positions (angles: Phase A = -135 deg, Phase B = 135 deg, Phase C = 0 deg)
-        const coilAngles = [-Math.PI * 0.75, Math.PI * 0.75, 0];
-        const coilTerminals = coilAngles.map(ang => ({
-            x: motorCenterX + Math.cos(ang) * (motorRadius * 0.85),
-            y: motorCenterY + Math.sin(ang) * (motorRadius * 0.85)
-        }));
-
-        // --- Phase Connection Wires (Inverter Midpoint to Motor Coils) ---
-        // Phase A
-        drawConnectingWire(ctx, legX[0], midY, coilTerminals[0].x, coilTerminals[0].y, '#00d2ff', legCurrents[0], circuitParticlePhase, dpr);
-        drawCoil(ctx, coilTerminals[0].x, coilTerminals[0].y, motorCenterX, motorCenterY, '#00d2ff', dpr, asymPercent > 0);
-
-        // Phase B
-        drawConnectingWire(ctx, legX[1], midY, coilTerminals[1].x, coilTerminals[1].y, '#f6d365', legCurrents[1], circuitParticlePhase, dpr);
-        drawCoil(ctx, coilTerminals[1].x, coilTerminals[1].y, motorCenterX, motorCenterY, '#f6d365', dpr, false);
-
-        // Phase C
-        drawConnectingWire(ctx, legX[2], midY, coilTerminals[2].x, coilTerminals[2].y, '#ff6b81', legCurrents[2], circuitParticlePhase, dpr);
-        drawCoil(ctx, coilTerminals[2].x, coilTerminals[2].y, motorCenterX, motorCenterY, '#ff6b81', dpr, false);
-
-        // --- Neutral Return Wire (Motor N* to Inverter Leg N) ---
-        const neutralY = midY;
-        if (leg4Fault) {
-            // Faulted neutral: drawn dashed red with an open fault marker
-            ctx.strokeStyle = 'rgba(255, 71, 87, 0.4)';
-            ctx.lineWidth = 1.4 * dpr;
-            ctx.setLineDash([4 * dpr, 4 * dpr]);
-            ctx.beginPath(); ctx.moveTo(legX[3], neutralY); ctx.lineTo(motorCenterX, neutralY); ctx.stroke();
-            ctx.setLineDash([]);
-
-            // Fault Cross
-            const crossX = (legX[3] + motorCenterX) / 2;
+        // If Leg 4 is faulted: draw fault cross
+        if (isLeg4Fault) {
+            const lx4 = legX[3];
             ctx.strokeStyle = '#ff4757';
             ctx.lineWidth = 2.2 * dpr;
             ctx.beginPath();
-            ctx.moveTo(crossX - 6 * dpr, neutralY - 6 * dpr); ctx.lineTo(crossX + 6 * dpr, neutralY + 6 * dpr);
-            ctx.moveTo(crossX + 6 * dpr, neutralY - 6 * dpr); ctx.lineTo(crossX - 6 * dpr, neutralY + 6 * dpr);
+            ctx.moveTo(lx4 - 8 * dpr, midY - 8 * dpr); ctx.lineTo(lx4 + 8 * dpr, midY + 8 * dpr);
+            ctx.moveTo(lx4 + 8 * dpr, midY - 8 * dpr); ctx.lineTo(lx4 - 8 * dpr, midY + 8 * dpr);
             ctx.stroke();
 
-            ctx.font = `bold ${7 * dpr}px sans-serif`;
+            ctx.font = `bold ${6.8 * dpr}px sans-serif`;
             ctx.fillStyle = '#ff6b81';
             ctx.textAlign = 'center';
-            ctx.fillText('⚠️ תקלת ענף 4 (מנותק)', crossX, neutralY - 9 * dpr);
-        } else {
-            // Healthy neutral conductor with current flow animation
-            drawConnectingWire(ctx, motorCenterX, neutralY, legX[3], neutralY, '#00ff88', curIzsc * 2, circuitParticlePhase, dpr);
-            ctx.font = `${6.8 * dpr}px sans-serif`;
-            ctx.fillStyle = 'rgba(0, 255, 136, 0.75)';
-            ctx.textAlign = 'center';
-            ctx.fillText('מוליך נייטרל (ענף 4)', (legX[3] + motorCenterX) / 2, neutralY - 6 * dpr);
+            ctx.fillText('⚠️ תקלת ענף L4 (מנותק)', lx4, midY + 16 * dpr);
         }
 
-        // 4. VOLTAGE POLARITY HUD & TELEMETRY
-        const vA = activeSwitches[0];
-        const vB = activeSwitches[1];
-        const vC = activeSwitches[2];
-        const vN = leg4Fault ? 0 : activeSwitches[3];
+        // 3. SERIES MOTOR WINDINGS (Between Consecutive Midpoints - Fig. 2):
+        // Winding A (Za): Connected between v1 (legX[0]) and v2 (legX[1])
+        drawSeriesWinding(ctx, legX[0], legX[1], midY, 'Z_a', 'v_a', legColors[0], curIa, circuitParticlePhase, dpr, false);
 
-        const van_val = (vA - vN) * 400;
-        const vbn_val = (vB - vN) * 400;
-        const vcn_val = (vC - vN) * 400;
+        // Winding B (Zb): Connected between v2 (legX[1]) and v3 (legX[2])
+        drawSeriesWinding(ctx, legX[1], legX[2], midY, 'Z_b', 'v_b', legColors[1], curIb, circuitParticlePhase, dpr, isAsymActive);
+
+        // Winding C (Zc): Connected between v3 (legX[2]) and v4 (legX[3])
+        drawSeriesWinding(ctx, legX[2], legX[3], midY, 'Z_c', 'v_c', legColors[2], curIc, circuitParticlePhase, dpr, false);
+
+        // 4. VOLTAGE POLARITY HUD & TELEMETRY (Fig. 2 equations)
+        const v1 = activeSwitches[0];
+        const v2 = activeSwitches[1];
+        const v3 = activeSwitches[2];
+        const v4 = isLeg4Fault ? 0 : activeSwitches[3];
+
+        const va_val = (v1 - v2) * 400;
+        const vb_val = (v2 - v3) * 400;
+        const vc_val = (v3 - v4) * 400;
+        const zsc_calc = (curIa + curIb + curIc) / 3;
 
         const elVan = document.getElementById('circuit-hud-van');
         const elVbn = document.getElementById('circuit-hud-vbn');
         const elVcn = document.getElementById('circuit-hud-vcn');
         const elIz = document.getElementById('circuit-hud-izsc');
-        if (elVan) elVan.textContent = `v_an: ${van_val >= 0 ? '+' : ''}${van_val}V`;
-        if (elVbn) elVbn.textContent = `v_bn: ${vbn_val >= 0 ? '+' : ''}${vbn_val}V`;
-        if (elVcn) elVcn.textContent = `v_cn: ${vcn_val >= 0 ? '+' : ''}${vcn_val}V`;
-        if (elIz) elIz.textContent = `i_zsc: ${curIzsc >= 0 ? '+' : ''}${curIzsc.toFixed(2)}A`;
+        if (elVan) elVan.textContent = `v_a: ${va_val >= 0 ? '+' : ''}${va_val}V`;
+        if (elVbn) elVbn.textContent = `v_b: ${vb_val >= 0 ? '+' : ''}${vb_val}V`;
+        if (elVcn) elVcn.textContent = `v_c: ${vc_val >= 0 ? '+' : ''}${vc_val}V`;
+        if (elIz) elIz.textContent = `i_0: ${zsc_calc >= 0 ? '+' : ''}${zsc_calc.toFixed(2)}A`;
 
         ctx.restore();
     }
@@ -4712,7 +4688,7 @@ function updateDemoUI() {
     function drawTransistorSwitch(ctx, x, yTop, yBot, state, color, dpr, isFaulted) {
         ctx.save();
         const midY = (yTop + yBot) / 2;
-        const armLen = Math.max(4 * dpr, (yBot - yTop) * 0.55);
+        const armLen = (yBot - yTop) * 0.55;
 
         // Fixed terminal dots
         ctx.fillStyle = state === 1 ? '#00ff88' : 'rgba(255,255,255,0.4)';
@@ -4737,13 +4713,13 @@ function updateDemoUI() {
             ctx.stroke();
         }
 
-        // Mini Antiparallel Diode beside switch
-        const dx = x + 8 * dpr;
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+        // Antiparallel Diode beside switch
+        const dx = x + 7 * dpr;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
         ctx.lineWidth = 1 * dpr;
         ctx.beginPath(); ctx.moveTo(x, yTop + 2 * dpr); ctx.lineTo(dx, yTop + 2 * dpr); ctx.lineTo(dx, yBot - 2 * dpr); ctx.lineTo(x, yBot - 2 * dpr); ctx.stroke();
-        // Diode triangle
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        // Diode triangle (pointing upward for antiparallel)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
         ctx.beginPath();
         ctx.moveTo(dx - 3 * dpr, midY + 3 * dpr);
         ctx.lineTo(dx + 3 * dpr, midY + 3 * dpr);
@@ -4754,52 +4730,94 @@ function updateDemoUI() {
         ctx.restore();
     }
 
-    // Helper: Draw Connecting Wire with Animated Moving Current Particles
-    function drawConnectingWire(ctx, x1, y1, x2, y2, color, currentVal, particleT, dpr) {
+    // Helper: Draw Series Motor Winding (Za, Zb, Zc) between consecutive legs
+    function drawSeriesWinding(ctx, x1, x2, y, zName, vName, color, currentVal, particleT, dpr, isAsym) {
         ctx.save();
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1.4 * dpr;
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        const segLen = x2 - x1;
+        const boxW = Math.min(28 * dpr, segLen * 0.38);
+        const boxH = 13 * dpr;
+        const midX = (x1 + x2) / 2;
 
-        // Draw animated flowing current particles
+        const leftConnEnd = midX - boxW / 2;
+        const rightConnStart = midX + boxW / 2;
+
+        // 1. Connecting horizontal conductors
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.6 * dpr;
+        ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(leftConnEnd, y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(rightConnStart, y); ctx.lineTo(x2, y); ctx.stroke();
+
+        // 2. Winding impedance box / coil (Fig. 2 rectangular box with coil loops)
+        ctx.fillStyle = isAsym ? 'rgba(246, 211, 101, 0.18)' : 'rgba(0, 210, 255, 0.12)';
+        ctx.strokeStyle = isAsym ? '#f6d365' : color;
+        ctx.lineWidth = 1.4 * dpr;
+        ctx.fillRect(leftConnEnd, y - boxH / 2, boxW, boxH);
+        ctx.strokeRect(leftConnEnd, y - boxH / 2, boxW, boxH);
+
+        // Internal inductor coils inside box
+        ctx.beginPath();
+        const loops = 3;
+        const step = boxW / (loops + 1);
+        for (let l = 1; l <= loops; l++) {
+            const lx = leftConnEnd + l * step;
+            ctx.arc(lx, y, 3 * dpr, 0, Math.PI, true);
+        }
+        ctx.stroke();
+
+        // 3. Winding Label (Za, Zb, Zc)
+        ctx.font = `bold ${7.2 * dpr}px sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.fillText(zName, midX, y + boxH / 2 + 10 * dpr);
+
+        // 4. Voltage Polarity Label: "+ va -"
+        ctx.font = `bold ${7.2 * dpr}px monospace`;
+        ctx.fillStyle = '#f6d365';
+        ctx.textAlign = 'center';
+        ctx.fillText(`+  ${vName}  -`, midX, y - boxH / 2 - 4 * dpr);
+
+        // 5. Directional reference arrow (i ->)
+        ctx.font = `${6.5 * dpr}px sans-serif`;
+        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.fillText(`i_${zName.slice(-1)} →`, midX, y - boxH / 2 - 12 * dpr);
+
+        // Asymmetry badge
+        if (isAsym) {
+            ctx.fillStyle = 'rgba(246, 211, 101, 0.95)';
+            ctx.font = `bold ${6.5 * dpr}px sans-serif`;
+            ctx.fillText('+35% ΔL', midX, y + boxH / 2 + 19 * dpr);
+        }
+
+        // 6. Flowing Animated Current Particles along winding
         const absI = Math.abs(currentVal);
         if (absI > 0.05) {
-            const numParticles = Math.min(6, Math.max(2, Math.round(absI * 1.5)));
             const isForward = currentVal > 0;
+            const numParticles = Math.min(5, Math.max(2, Math.round(absI * 1.5)));
 
             for (let i = 0; i < numParticles; i++) {
                 let frac = ((i / numParticles) + (isForward ? particleT : (1 - particleT))) % 1.0;
-                const px = x1 + (x2 - x1) * frac;
-                const py = y1 + (y2 - y1) * frac;
+                const px = x1 + segLen * frac;
 
-                // Flow particle dot
+                // Particle dot
                 ctx.fillStyle = '#ffffff';
                 ctx.shadowColor = color;
                 ctx.shadowBlur = 4 * dpr;
-                ctx.beginPath(); ctx.arc(px, py, 2.2 * dpr, 0, 2 * Math.PI); ctx.fill();
+                ctx.beginPath(); ctx.arc(px, y, 2.2 * dpr, 0, 2 * Math.PI); ctx.fill();
                 ctx.shadowBlur = 0;
             }
         }
+
         ctx.restore();
     }
 
-    // Helper: Draw Inductor Coil with Asymmetry Alert Badge
-    function drawCoil(ctx, x1, y1, x2, y2, color, dpr, isAsym) {
+    // Helper: Draw flowing current particles through switch to midpoint
+    function drawSwitchCurrentParticles(ctx, x1, y1, x2, y2, color, particleT, dpr) {
         ctx.save();
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 2 * dpr;
-
-        const mx = (x1 + x2) / 2;
-        const my = (y1 + y2) / 2;
-
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(mx, my); ctx.lineTo(x2, y2); ctx.stroke();
-
-        if (isAsym) {
-            ctx.fillStyle = 'rgba(246, 211, 101, 0.95)';
-            ctx.font = `bold ${6.8 * dpr}px sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.fillText('+35% ΔL', mx, my - 5 * dpr);
-        }
+        const py = y1 + (y2 - y1) * ((particleT) % 1.0);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 3 * dpr;
+        ctx.beginPath(); ctx.arc(x1, py, 1.8 * dpr, 0, 2 * Math.PI); ctx.fill();
         ctx.restore();
     }
 
