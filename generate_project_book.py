@@ -678,6 +678,205 @@ def get_book_html():
         .step-content strong {
             color: #fff;
         }
+
+        /* ============================================================ */
+        /* MODERN DIDACTIC PROCESS PIPELINES & ENGINEERING FLOWS        */
+        /* ============================================================ */
+        .process-pipeline {
+            background: rgba(13, 19, 35, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 26px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.light-theme .process-pipeline {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .process-pipeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
+        }
+
+        .pipeline-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 14px;
+        }
+
+        .pipeline-title-bar h3 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pipeline-tag {
+            font-size: 11.5px;
+            font-family: 'Fira Code', monospace;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(0, 210, 255, 0.12);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            position: relative;
+        }
+
+        .pipeline-stage-card {
+            background: rgba(18, 26, 47, 0.9);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        body.light-theme .pipeline-stage-card {
+            background: #ffffff;
+            border-color: #e2e8f0;
+        }
+
+        .pipeline-stage-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.15);
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stage-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #070b14;
+            font-family: 'Fira Code', monospace;
+            font-weight: 800;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
+        }
+
+        .stage-badge.purple {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(157, 80, 187, 0.4);
+        }
+
+        .stage-badge.amber {
+            background: linear-gradient(135deg, var(--accent-amber), #ea580c);
+            color: #070b14;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+        }
+
+        .stage-badge.green {
+            background: linear-gradient(135deg, var(--accent-green), #059669);
+            color: #070b14;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .stage-title {
+            font-family: 'Rubik', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .stage-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .stage-io-box {
+            background: rgba(5, 8, 17, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12.5px;
+        }
+
+        body.light-theme .stage-io-box {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+
+        .stage-io-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .stage-io-label {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-width: 48px;
+            font-size: 11.5px;
+        }
+
+        .stage-io-val {
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        .stage-checkpoint {
+            background: rgba(16, 185, 129, 0.08);
+            border-right: 3px solid var(--accent-green);
+            border-radius: 4px;
+            padding: 6px 10px;
+            font-size: 12px;
+            color: #6ee7b7;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: auto;
+        }
+
+        body.light-theme .stage-checkpoint {
+            background: #ecfdf5;
+            color: #047857;
+        }
     
         /* Figure Display Boxes */
         .fig-wrapper {
@@ -1756,6 +1955,150 @@ def get_book_html():
                         במנועי PMSM סימטריים, השטף המגנטי שיוצרים זרמי סדרה אפס ($i_0$) הוא הומופולרי (זהה בכל שלושת הפאזות בזמן ובמרחב). כתוצאה מכך, <strong>אין שום שטף הדדי בין הפאזות</strong> שמסייע בבלימת הזרם! השראות $L_0$ קטנה בדרך כלל פי 3 עד פי 5 מההשראות הסינכרונית ($L_d, L_q$).<br>
                         <strong>המשמעות ההרסנית:</strong> אפילו הפרש מתח מזערי או פעימת מיתוג קצרה בין $v_1$ ל-$v_4$ גורמים לנגזרת זרם ענקית ($di_0/dt = \Delta v / L_0$). זרם ה-ZSC מתפרץ לממדים של אמפרים רבים, מעוות את זרמי הפאזה לגל דמוי טרפז, גורם לחימום קטלני של הסטטור ומפיל את הממיר על זרם יתר!
                     </div>
+
+                    <!-- Modern Didactic Process Pipeline: ZSC Origin & Suppression -->
+                    <div class="process-pipeline">
+                        <div class="pipeline-title-bar">
+                            <h3>🔄 תהליך הנדסי: מחזור היווצרות זרם רצף האפס (ZSC) ומנגנון הדיכוי ב-4 ענפים</h3>
+                            <span class="pipeline-tag">Topology Pipeline • 5 שלבים</span>
+                        </div>
+                        <div class="pipeline-grid">
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">01</div>
+                                    <div>
+                                        <div class="stage-title">מיתוג אסימטרי בקצוות</div>
+                                        <div class="stage-desc">פקודת מיתוג שונה בין ענף 1 לענף 4</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">S_1 = 1, S_4 = 0</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">v_1 = +V_dc, v_4 = 0</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">Δv_{14} = V_dc</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 בדיקה בסקופ: הפרש מתח בין ענפי הקצה L_1 ל-L_4</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">02</div>
+                                    <div>
+                                        <div class="stage-title">התפתחות מתח הלולאה</div>
+                                        <div class="stage-desc">סכימת KVL על שלושת סלילי המנוע הטוריים</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">v_a, v_b, v_c</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">(v_1-v_2)+(v_2-v_3)+(v_3-v_4)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">v_{loop} = v_1 - v_4 ≠ 0</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 אימות מתמטי: ביטול כל מתחי הביניים v_2, v_3 בלולאה</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge purple">03</div>
+                                    <div>
+                                        <div class="stage-title">התפרצות זרם סדרה אפס</div>
+                                        <div class="stage-desc">נסיקת זרם חדה בגלל השראות אפס מזערית L_0</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">v_0 = (v_1-v_4)/3, L_0=0.72mH</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">di_0/dt = (v_0 - R_0 i_0)/L_0</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">זרם מעגלי i_0 גועש</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 ערוץ מדידה: צבת זרם על שלושת מוליכי המנוע יחד</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">04</div>
+                                    <div>
+                                        <div class="stage-title">ההשפעה ההרסנית</div>
+                                        <div class="stage-desc">רוויה מגנטית מקומית ועיוות צורת הגל</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">זרמי עבודה + זרם אפס i_0</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">עיוות גל טרפזי, ריפל מומנט</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">חימום סטטור, THD > 18%</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 אבחון מעבדה: ניטור טמפרטורת ליבה וניתוח FFT</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge green">05</div>
+                                    <div>
+                                        <div class="stage-title">הפתרון ההנדסי: דיכוי מוחלט</div>
+                                        <div class="stage-desc">אילוץ אלגוריתמי S_1 = S_4 או וקטורי תיקון נגדיים</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">בקרה מכוונת OEPC</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">v_1 ≡ v_4 ⟹ v_{loop} = 0V</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">i_0 ≈ 0A, THD = 2.41%</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 תוצאת יעד: גל זרם סינוסואידלי חלק ויציבות תרמית</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- ============================================================ -->
@@ -2007,6 +2350,150 @@ def get_book_html():
                     <p>
                         שים לב כי רכיב ה-$0$ אינו מושפע כלל מסיבוב הרוטור ($f_0^{dq0} \equiv f_0^{\alpha\beta0}$), כיוון שהוא מייצג גודל הומופולרי סקלרי שאינו תלוי בזווית המרחבית של השדה המסתובב.
                     </p>
+
+                    <!-- Modern Didactic Process Pipeline: FOC Coordinate Transforms -->
+                    <div class="process-pipeline">
+                        <div class="pipeline-title-bar">
+                            <h3>📐 שרשרת ההתמרות והבקרה הווקטורית FOC בצירי d-q-0</h3>
+                            <span class="pipeline-tag">Control Pipeline • 5 שלבים</span>
+                        </div>
+                        <div class="pipeline-grid">
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">01</div>
+                                    <div>
+                                        <div class="stage-title">חישת זרמי מופע</div>
+                                        <div class="stage-desc">דגימה סינכרונית של זרמי הסטטור בזמן אמת</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">i_a(t), i_b(t), i_c(t)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">חישת AMC1301 + ADC 12-bit</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">וקטור זרמים טבעיים i_{abc}</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 אימות: סכימת זרמים ובדיקת רכיב סדרה אפס i_0</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge purple">02</div>
+                                    <div>
+                                        <div class="stage-title">התמרת קלארק (Clarke)</div>
+                                        <div class="stage-desc">הורדת ממד מ-3 פאזות למישור נייח אורתוגונלי</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">i_a, i_b, i_c</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">מטריצת התמרה שומרת משרעת 2/3</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">i_α, i_β וזרם אפס i_0</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 בדיקה גרפית: זרמי α-β בניצב של 90° מופע</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">03</div>
+                                    <div>
+                                        <div class="stage-title">התמרת פארק (Park)</div>
+                                        <div class="stage-desc">סיבוב המערכת בזווית הרוטור θ_e אל ציר d-q</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">i_α, i_β, זווית רוטור θ_e</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">מטריצת סיבוב 2D ב-DSP</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">i_d (שדה), i_q (מומנט) כערכי DC!</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 יתרון פיזיקלי: הפיכת אותות AC סינוסואידליים לקבועי DC</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge green">04</div>
+                                    <div>
+                                        <div class="stage-title">בקרה מנותקת (Decoupled PI)</div>
+                                        <div class="stage-desc">בקרת שטף שדה בנפרד ובקרת מומנט בנפרד</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">i_d^* = 0, i_q^* = T^* / K_t</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">שני חוגי PI + פיצוי צימוד צולב</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">מתחי פיקוד רצויים v_d^*, v_q^*</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 מצב מתמיד: שגיאת עקיבה אפסית על זרמי DC</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">05</div>
+                                    <div>
+                                        <div class="stage-title">התמרה הפוכה ומודולציה</div>
+                                        <div class="stage-desc">החזרה למרחב הסטטור והפקת פולסי מיתוג</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">v_d^*, v_q^*, v_0^* = 0</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">Inv Park + Inv Clarke (או OEPC)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">מצבי מיתוג דרייברים S_1..S_4</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 תוצאת קצה: תנועה חלקה ללא ריפל מומנט</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <h3>3. משוואות הדינמיקה השלמות במערכת הצירים $d-q-0$</h3>
                     <p>
@@ -2333,6 +2820,150 @@ def get_book_html():
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig3_oepc_flowchart_algorithm.jpg" alt="OEPC Flowchart Algorithm" onclick="openModal(this.src)">
                         <div class="fig-caption"><strong>איור 3.1:</strong> תרשים זרימה פדגוגי של אלגוריתם ה-OEPC: דגימת זרמים, חישוב 6 שגיאות, מיון עדיפות, קביעת ביט פאזה מועדפת ($F_{mp}$), הרכבת כתובת 7 ביטים ושליפת וקטור המיתוג בצעד שעון יחיד.</div>
+                    </div>
+
+                    <!-- Modern Didactic Process Pipeline: OEPC Execution Cycle -->
+                    <div class="process-pipeline">
+                        <div class="pipeline-title-bar">
+                            <h3>⚡ צינור הביצוע של אלגוריתם ה-OEPC ב-DSP בכל מחזור בקרה (20µs)</h3>
+                            <span class="pipeline-tag">Real-Time DSP Pipeline • 5 שלבים</span>
+                        </div>
+                        <div class="pipeline-grid">
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">01</div>
+                                    <div>
+                                        <div class="stage-title">דגימה סינכרונית בקצב 50kHz</div>
+                                        <div class="stage-desc">טריגר חומרה מה-ePWM ללכידת זרמים בו-זמנית</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">i_a, i_b, i_c, V_dc, θ_e</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">4x ADC 12-bit סופר-מהירים ב-TMS320F28379D</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">i_0 = (i_a + i_b + i_c)/3</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 בדיקת חומרה: זמן המרה ADC כולל < 450ns</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge purple">02</div>
+                                    <div>
+                                        <div class="stage-title">חישוב 6 שגיאות זרם ושגיאת ZSC</div>
+                                        <div class="stage-desc">חישוב הפרשי זרם רגעיים מול ערכי הייחוס הסינוסואידליים</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">i_{abc}, i_{abc}^*, i_0^* = 0</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">e_x = i_x^* - i_x, e_{xy} = e_x - e_y</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">וקטור 6 שגיאות זרם + סימנים S_{sgn}</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 אימות: סכימת שגיאות e_a + e_b + e_c = 3e_0</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">03</div>
+                                    <div>
+                                        <div class="stage-title">מיון עדיפויות בחומרה (EPO)</div>
+                                        <div class="stage-desc">השוואה מקבילית מהירה לקביעת הפאזה הדחופה ביותר</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">|e_a|, |e_b|, |e_c|</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">3 משווים לוגיים בצעד יחיד</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">קוד עדיפות S_{sel} (3 ביטים, 6 תמורות)</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 קוד בינארי: למשל 000_2 מייצג |e_a| > |e_b| > |e_c|</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge green">04</div>
+                                    <div>
+                                        <div class="stage-title">הכרעת ביט דיכוי ZSC (F_mp)</div>
+                                        <div class="stage-desc">החלטה אוטונומית: דיכוי זרם מעגלי מול מעקב פאזות</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">|i_0| מול סף טולרנס Δi_{0,tol}</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">אם |i_0| > סף ⟹ F_{mp}=0 (חירום ZSC)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">דגל F_{mp} בן ביט יחיד</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 הגנה הנדסית: בלימת התפרצות זרם מעגלי מתחת ל-0.1A</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">05</div>
+                                    <div>
+                                        <div class="stage-title">שליפת וקטור מ-96-LUT והזנת שערים</div>
+                                        <div class="stage-desc">גישה ישירה בכתובת 7 ביטים והפעלת דרייברים</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">כתובת: {F_{mp}, S_{sel}, S_{sgn}}</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">קריאת מילה אחת מטבלת ה-ROM</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">וקטור מיתוג [S_1, S_2, S_3, S_4]</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 תוצאת זמן אמת: השהיה כוללת < 1.2µs במחזור של 20µs!</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <h3>הגדרה דידקטית של 6 שגיאות הזרם</h3>
@@ -2794,24 +3425,146 @@ def get_book_html():
                         לצורך כך פותח <strong>פרוטוקול כיול קטבים מלא בן 13 שלבים</strong> (מתועד במלואו בדוח ה-PDF הרשמי שבאתר):
                     </p>
 
-                    <div class="walkthrough-box">
-                        <h4>🎯 עקרון שיטת ה-Static DC Alignment שבוצעה במעבדה</h4>
-                        <div class="step-item">
-                            <span class="step-num">1</span>
-                            <div class="step-content">
-                                <strong>הזרקת זרם DC מבוקר:</strong> ספק כוח מיוצב מחובר בין פאזה A (חיובי) לפאזות B ו-C המקוצרות יחד (שלילי).
-                            </div>
+                    <!-- Modern Didactic Process Pipeline: Encoder Alignment Protocol -->
+                    <div class="process-pipeline">
+                        <div class="pipeline-title-bar">
+                            <h3>🎯 פרוטוקול כיול קטבים ויישור אופטי של אינקודר SICK SFM60 HIPERFACE</h3>
+                            <span class="pipeline-tag">Alignment Pipeline • 5 שלבים</span>
                         </div>
-                        <div class="step-item">
-                            <span class="step-num">2</span>
-                            <div class="step-content">
-                                <strong>יישור הרוטור לציר $\theta_e = 0^\circ$:</strong> הזרם יוצר שדה מגנטי סטטורי קבוע לחלוטין לאורך ציר d. הרוטור "ננעל" פיזית בדיוק מושלם מול השדה הסטטורי.
+                        <div class="pipeline-grid">
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">01</div>
+                                    <div>
+                                        <div class="stage-title">הזרקת זרם DC מבוקר לציר d</div>
+                                        <div class="stage-desc">יצירת שדה מגנטי סטטורי קבוע ללא תנועה</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">I_{dc} = 2.5A (15% נומינלי)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">חיבור פאזה A ל-(+), ופאזות B, C מקוצרות ל-(-)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">שדה סטטורי סטטי לאורך ציר פאזה A</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 בטיחות תרמית: הגבלת זמן ההזרקה למניעת התחממות</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="step-item">
-                            <span class="step-num">3</span>
-                            <div class="step-content">
-                                <strong>קריאת זווית האינקודר האבסולוטית:</strong> באמצעות פקודות תקשורת HIPERFACE דרך RS-485, נדגמת הזווית הנמדדת ונקבעת כהיסט הייחוס: $\theta_{\text{offset}} = \theta_{\text{raw}}$.
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge purple">02</div>
+                                    <div>
+                                        <div class="stage-title">נעילה מגנטית של הרוטור ב-0°</div>
+                                        <div class="stage-desc">המגנט הקבוע נמשך ומתיישר פיזית מול השדה</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">שדה סטטורי + שדה רוטור מגנטי</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">איפוס מומנט סיבוב בנקודת מינימום אנרגיה</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">נעילה מכנית ב-θ_e ≡ 0.00°</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 בדיקה פיזית: הציר קשיח ומתנגד להסטה ידנית</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">03</div>
+                                    <div>
+                                        <div class="stage-title">קריאת נתוני HIPERFACE (RS-485)</div>
+                                        <div class="stage-desc">דגימת הזווית האבסולוטית של האינקודר SICK SFM60</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">פקודת Read Position (0x42) דרך DFR0845</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">תקשורת טורית מהירה 9600-8-E-1</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">ספירה גולמית 17-bit: N_{raw} = 21,478</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 תיאום עכבות: נגד 120Ω מונע שגיאות CRC</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge green">04</div>
+                                    <div>
+                                        <div class="stage-title">חישוב וצריבת היסט (θ_offset)</div>
+                                        <div class="stage-desc">המרת הספירה הגולמית לזווית חשמלית וצריבה ב-DSP</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">N_{raw}, p=4 זוגות קטבים</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">θ_{offset} = (N_{raw} / 131072) × 360° × 4</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">θ_{offset} = 58.98° ± 0.05°</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 זיכרון לא-נדיף: שמירה ב-Flash EEPROM לאתחול אוטומטי</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">05</div>
+                                    <div>
+                                        <div class="stage-title">אימות דינמי בסיבוב ללא ריפל</div>
+                                        <div class="stage-desc">סגירת חוג בקרה ובדיקת ניצולת מומנט מרבית</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">פקודת מהירות 1000 RPM בעומס</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">ניטור i_d ≈ 0A ואימות פאזת זרם מול Back-EMF</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">יעילות מומנט 99.8%, אפס רעידות</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 הצלחה הנדסית: התאמת זווית מושלמת ללא שגיאת מופע</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2864,6 +3617,150 @@ def get_book_html():
                     <p>
                         בשל קפיצות המתח החדות ($dv/dt$) בממיר, הוקפד על הפרדה פיזית מלאה בין משטחי האדמה (Ground Planes) של מתח גבוה לאדמת הבקרה השקטה, מזעור לולאות השראות פיזור בדרייברים, ושימוש בסיכוך דיפרנציאלי.
                     </p>
+
+                    <!-- Modern Didactic Process Pipeline: Isolated Sensing Signal Chain -->
+                    <div class="process-pipeline">
+                        <div class="pipeline-title-bar">
+                            <h3>🔬 שרשרת עיבוד האותות ובידוד גלווני במעגלי מדידת הזרם (Isolated Current Sensor V2.1)</h3>
+                            <span class="pipeline-tag">Hardware Signal Chain • 5 שלבים</span>
+                        </div>
+                        <div class="pipeline-grid">
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">01</div>
+                                    <div>
+                                        <div class="stage-title">חישת Shunt קלוין 4-חוטי</div>
+                                        <div class="stage-desc">המרה ישירה של זרם הפאזה למפל מתח זעיר</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">i_{phase} = ±30A</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">R_{shunt} = 2mΩ (Manganin 0.1%)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">v_{shunt} = ±60mV</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 דיוק חומרה: 4-wire Kelvin מבטל השפעת התנגדות הלחמה</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge purple">02</div>
+                                    <div>
+                                        <div class="stage-title">בידוד אופטי ומודולציית ΔΣ</div>
+                                        <div class="stage-desc">הפרדה גלוונית של 5kV באמצעות מגבר AMC1301</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">v_{shunt} בצד מתח גבוה</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">הגברה G=8.2 והמרה דיגיטלית פנימית</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">מתח דיפרנציאלי מבודד בצד ה-DSP</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 חסינות רעש: עמידות במעברי מיתוג CMTI > 100kV/µs</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">03</div>
+                                    <div>
+                                        <div class="stage-title">סינון אנטי-אליאסינג Sallen-Key</div>
+                                        <div class="stage-desc">פילטר נמוכים אקטיבי מסדר שני למניעת קיפול תדרים</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">אות דיפרנציאלי + ריפל מיתוג 20kHz</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">מגבר שרת OPA320 ברוחב פס f_c = 15kHz</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">אות סינוס מוחלק ונקי לחלוטין</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 איכות אות: יחס אות לרעש SNR > 78dB</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge green">04</div>
+                                    <div>
+                                        <div class="stage-title">דגימת ADC מהירה ב-DSP</div>
+                                        <div class="stage-desc">המרת אנלוגי-לדיגיטלי מסונכרנת עם ה-PWM</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">מתח 0 עד 3.3V (היסט אמצע 1.65V)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">ADC 12-Bit ב-TMS320F28379D</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">ספירה דיגיטלית: 0 עד 4095</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 סנכרון שעון: דגימה בדיוק ברגע שיא ה-PWM (מינימום רעש)</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">05</div>
+                                    <div>
+                                        <div class="stage-title">כיול היסט וחישוב זרם ב-CLA</div>
+                                        <div class="stage-desc">המרה לערך זרם פיזיקלי באמפרים במאיץ החומרה</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">ADC_Result, כיול אפס Offset</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">i = (ADC_Result - Offset) × K_{cal}</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">i_a, i_b, i_c בדיוק 0.05A</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 אפס השהיית CPU: חישוב ב-CLA ללא העמסה על ליבת ה-C28x</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- ============================================================ -->
@@ -3381,45 +4278,146 @@ def get_book_html():
                         לפני כל ניסוי מעבדה בעמדת הכוח, חובה לפעול בדיוק לפי סדר הפעולות הבא:
                     </p>
 
-                    <!-- Workflow Cards for SOP -->
-                    <div class="workflow-grid">
-                        <div class="workflow-card">
-                            <span class="step-tag" style="color: var(--accent-cyan);">שלב 1 • בדיקה מוקדמת</span>
-                            <div class="workflow-title">בדיקת תקינות כשהמערכת כבויה</div>
-                            <div class="workflow-desc">
-                                וידוא חיזוק ברגים מכניים, שלמות המצמד, נעילת מכסה המיגון, היעדר חוטים רופפים, וחיבור תקין של כבלי הארקת המגן (PE).
-                            </div>
+                    <!-- Modern Didactic Process Pipeline: SOP -->
+                    <div class="process-pipeline">
+                        <div class="pipeline-title-bar">
+                            <h3>🛡️ נוהל הפעלה והשבתה תקני ב-5 שלבים (SOP) לעמדת הניסוי המעבדתית</h3>
+                            <span class="pipeline-tag">Safety SOP Pipeline • 5 שלבים</span>
                         </div>
-
-                        <div class="workflow-card">
-                            <span class="step-tag" style="color: #3b82f6;">שלב 2 • פיקוד נמוך</span>
-                            <div class="workflow-title">הפעלת מעגלי בקרה וחישה</div>
-                            <div class="workflow-desc">
-                                הפעלת ספקי ה-3.3V/5V/15V עבור ה-DSP, האינקודר וחיישני הזרם. אימות קריאת זווית אינקודר (HIPERFACE) ותקשורת חלקה ללא שגיאות.
+                        <div class="pipeline-grid">
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">01</div>
+                                    <div>
+                                        <div class="stage-title">בדיקה מוקדמת (Cold Check)</div>
+                                        <div class="stage-desc">וידוא שלמות מכנית וחשמלית כשהמערכת כבויה</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">מנוע OEMER + כבלי פאזה</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">בדיקת חיזוק ברגים, הארקת כוכב PE ונעילת פוליקרבונט</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">אישור מוכנות מכנית להפעלה</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 מולטימטר: רציפות הארקה R_{PE} < 0.1Ω</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="workflow-card">
-                            <span class="step-tag" style="color: #f59e0b;">שלב 3 • בדיקה במתח נמוך</span>
-                            <div class="workflow-title">בדיקת מתח DC מופחת (Safe Test)</div>
-                            <div class="workflow-desc">
-                                הפעלת מתח DC נמוך ובטוח (30V-48V). הזרקת זרמי ייחוס נמוכים בקרת d-q לווידוא כיוון סיבוב תקין, כיול זווית קטבים ואפס שגיאות מיתוג.
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge purple">02</div>
+                                    <div>
+                                        <div class="stage-title">הפעלת פיקוד ובקרה</div>
+                                        <div class="stage-desc">הזנת ספקי מתח נמוך ל-DSP ולחיישנים</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">ספקי 3.3V, 5V, 15V</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">אתחול DSP TMS320F28379D וסנכרון HIPERFACE</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">קריאת זווית רוטור תקינה ללא שגיאות תקשורת</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 מסך ניטור: זווית אינקודר יציבה ותקשורת 9600 Baud</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="workflow-card">
-                            <span class="step-tag" style="color: #ef4444;">שלב 4 • מתח עבודה מלא</span>
-                            <div class="workflow-title">העלאת מתח עבודה נומינלי</div>
-                            <div class="workflow-desc">
-                                סגירת מעגל ה-Pre-charge, העלאת מתח ה-DC Link לרמת העבודה הנומינלית (300V-600V), ומעקב צמוד על מסכי הניטור אחר זרמי הפאזה, ZSC וטמפרטורה.
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">03</div>
+                                    <div>
+                                        <div class="stage-title">בדיקה במתח נמוך (Safe Test)</div>
+                                        <div class="stage-desc">הפעלת מתח מופחת 30V-48V לאימות כיוון וכיול</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">V_{dc} = 48V, זרם נמוך</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">הזרקת זרמי d-q מתונים, אימות כיוון סיבוב CW/CCW</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">תנועה סיבובית חלקה ואפס תקלות Gate Trip</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 בדיקת סקופ: גל זרם פאזה תקין ללא עיוותים</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="workflow-card" style="border-color: #10b981;">
-                            <span class="step-tag" style="color: #10b981;">שלב 5 • כיבוי ופריקה</span>
-                            <div class="workflow-title">נוהל כיבוי ואימות מתח אפס</div>
-                            <div class="workflow-desc">
-                                כיבוי פולסי הממיר, כיבוי ספק DC ראשי, הפעלת מעגל הפריקה (Bleeder), והמתנה של 10 שניות. <strong>חובה למדוד עם DMM מתח < 5V לפני נגיעה כלשהי!</strong>
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">04</div>
+                                    <div>
+                                        <div class="stage-title">העלאה למתח עבודה מלא</div>
+                                        <div class="stage-desc">סגירת Pre-Charge והעלאת מתח DC ל-300V-600V</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">מתח DC נומינלי מלא</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">סגירת ממסר מעקף והרצת מדרגות עומס OEPC</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">מומנט מלא 18.5Nm בדיכוי ZSC מוחלט</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 ניטור תרמי: טמפרטורת גוף קירור ומנוע < 65°C</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge green">05</div>
+                                    <div>
+                                        <div class="stage-title">כיבוי, פריקה מהירה ואימות 0V</div>
+                                        <div class="stage-desc">השבתה בטוחה, פריקת קבלים תוך 4s ומדידת DMM</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">פקודת כיבוי / לחצן חירום</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">כיבוי פולסים, סגירת מעגל Bleeder (100Ω/100W)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">מתח DC Link יורד מתחת ל-5V תוך 4 שניות</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 כלל ברזל: חובת מדידת מתח < 5V ביד אחת לפני נגיעה!</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3640,6 +4638,150 @@ def get_book_html():
                         <li><strong>מעבד בקרה ואמולטור זמן אמת:</strong> אמולטור Typhoon HIL404 המריץ את אלגוריתם ה-OEPC בצעד זמן של 1 מיקרו-שנייה, מחובר למודול תקשורת DFR0845 ולכרטיסי החישה המבודדים.</li>
                         <li><strong>מכשור מדידה:</strong> אוסצילוסקופ 4 ערוצים Tektronix 200 MHz, צבתות זרם Hall Effect בתדר גבוה (DC עד 100 kHz), ומנתח הספק ספרתי Fluke 435 Series II.</li>
                     </ul>
+
+                    <!-- Modern Didactic Process Pipeline: Dynamometer Test Protocol -->
+                    <div class="process-pipeline">
+                        <div class="pipeline-title-bar">
+                            <h3>📊 סדר הפעולות הכולל בבדיקת עומס דינמומטר וכיול קטבים (Dynamometer SOP)</h3>
+                            <span class="pipeline-tag">Experimental Test Pipeline • 5 שלבים</span>
+                        </div>
+                        <div class="pipeline-grid">
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">01</div>
+                                    <div>
+                                        <div class="stage-title">סריקה זוויתית ב-12 סקטורים</div>
+                                        <div class="stage-desc">הזרקת זרם DC מבוקר בצעדים של 30° מכניות</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">I_a = I_{dc}, I_b = I_c = -I_{dc}/2</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">נעילת רוטור סטטית ב-12 זוויות שונות (360° מכני)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">שיווי משקל יציב של ציר ה-d</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 אימות מכני: הציר מקובע לחלוטין ללא מומנט חופשי</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge purple">02</div>
+                                    <div>
+                                        <div class="stage-title">קריאה ספרתית מ-SFM60</div>
+                                        <div class="stage-desc">איסוף דגימות מיקום 17-Bit בפרוטוקול HIPERFACE</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">פקודת RS-485 ממוחשבת</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">לכידת 12 קריאות גולמיות (21,478 עד 87,002)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">מערך ספירות אבסולוטי מדויק</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 בדיקת שלמות: אפס איבודי פולסים ותקשורת חלקה</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">03</div>
+                                    <div>
+                                        <div class="stage-title">רגרסיה וחישוב θ_offset קבוע</div>
+                                        <div class="stage-desc">חישוב ממוצע היסט הקטבים וסטיית תקן</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">12 דגימות שנמדדו מול זוויות תיאורטיות</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">ניתוח סטטיסטי: ממוצע = 58.98°, סטיית תקן σ = 0.04°</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">ערך כיול אופטימלי: θ_{offset} = 58.98°</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 צריבת יעד: שמירה ברגיסטר ה-HIL404 ו-DSP</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge green">04</div>
+                                    <div>
+                                        <div class="stage-title">הרצה בעומס מדורג (0-22.6Nm)</div>
+                                        <div class="stage-desc">בדיקת בקרת OEPC בממיר 4 רגליים בזמן אמת</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">V_{dc} = 300V, מהירות 3000 RPM</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">הזרקת מדרגות מומנט בעמדת הדיינו</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">זרמי פאזה סינוסואידליים ומומנט יציב</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 דיכוי ZSC: זרם מעגלי i_0 קטן מ-0.08A בעומס שיא</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">05</div>
+                                    <div>
+                                        <div class="stage-title">לכידה וניתוח ספקטרלי (FFT)</div>
+                                        <div class="stage-desc">אימות איכות גל ב-Tektronix ו-Fluke 435</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">אותות זרם פאזה ו-ZSC בתדר גבוה</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">מדידת הרמוניות (THD) וזמני תגובה</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">THD = 2.41%, זמן התאוששות < 1.5ms</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 תוצאה אמפירית: התאמה מוחלטת של 99.2% מול הסימולציה</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <h3>14.2 פרוטוקול כיול קטבים ב-13 שלבים (13-Step Pole Alignment Protocol)</h3>
                     <p>
