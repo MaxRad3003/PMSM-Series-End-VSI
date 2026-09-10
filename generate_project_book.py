@@ -1942,20 +1942,20 @@ def get_book_html():
             <ul class="sidebar-menu" id="sidebar-nav">
                 <li><a href="#ch-cover" class="active"><span class="ch-num">00</span> שער ותקציר מנהלים</a></li>
                 <li><a href="#ch-01"><span class="ch-num">01</span> רקע וטופולוגיית Series-End</a></li>
-                <li><a href="#ch-02"><span class="ch-num">02</span> מידול מתמטי של PMSM ומערכת d-q-0</a></li>
-                <li><a href="#ch-03"><span class="ch-num">03</span> אלגוריתם OEPC וטבלת 96 המצבים</a></li>
-                <li><a href="#ch-04"><span class="ch-num">04</span> מעבדה אינטראקטיבית חיה</a></li>
-                <li><a href="#ch-05"><span class="ch-num">05</span> אימות סימולטיבי ו-HIL בזמן אמת</a></li>
+                <li><a href="#ch-02"><span class="ch-num">02</span> אנטומיה פיזיקלית והדמיית 4 רגלים</a></li>
+                <li><a href="#ch-03"><span class="ch-num">03</span> מידול מתמטי ומערכת d-q-0</a></li>
+                <li><a href="#ch-04"><span class="ch-num">04</span> אלגוריתם OEPC וטבלת 96 המצבים</a></li>
+                <li><a href="#ch-05"><span class="ch-num">05</span> מעבדה אינטראקטיבית חיה</a></li>
                 <li><a href="#ch-06"><span class="ch-num">06</span> חסינות לתקלות פנימיות (ITSC)</a></li>
-                <li><a href="#ch-07"><span class="ch-num">07</span> כיול מנוע OEMER ואינקודר</a></li>
+                <li><a href="#ch-07"><span class="ch-num">07</span> אימות סימולטיבי ו-HIL בזמן אמת</a></li>
                 <li><a href="#ch-08"><span class="ch-num">08</span> תכנון כרטיסי חומרה ב-Altium</a></li>
-                <li><a href="#ch-09"><span class="ch-num">09</span> מכלול מכני (CAD) ועמדת דיינו</a></li>
-                <li><a href="#ch-10"><span class="ch-num">10</span> השוואת ביצועים וסיכום</a></li>
-                <li><a href="#ch-11"><span class="ch-num">11</span> סביבת פיתוח, Git ו-GitHub Pages</a></li>
-                <li><a href="#ch-12"><span class="ch-num">12</span> פרוטוקול בטיחות וגהות במעבדה</a></li>
-                <li><a href="#ch-13"><span class="ch-num">13</span> תכנון מגנטי וסלילי חניקה ל-ZSC</a></li>
+                <li><a href="#ch-09"><span class="ch-num">09</span> תכנון מגנטי וסלילי חניקה ל-ZSC</a></li>
+                <li><a href="#ch-10"><span class="ch-num">10</span> כיול מנוע OEMER ואינקודר</a></li>
+                <li><a href="#ch-11"><span class="ch-num">11</span> מכלול מכני (CAD) ועמדת דיינו</a></li>
+                <li><a href="#ch-12"><span class="ch-num">12</span> סביבת פיתוח, Git ו-GitHub Pages</a></li>
+                <li><a href="#ch-13"><span class="ch-num">13</span> פרוטוקול בטיחות וגהות במעבדה</a></li>
                 <li><a href="#ch-14"><span class="ch-num">14</span> פרוטוקול ניסויי מעבדה ומדידות</a></li>
-                <li><a href="#ch-15"><span class="ch-num">15</span> אנטומיה פיזיקלית והדמיית מנוע וממיר</a></li>
+                <li><a href="#ch-15"><span class="ch-num">15</span> השוואת ביצועים ומסקנות</a></li>
                 <li><a href="#ch-appendices"><span class="ch-num">16</span> נספחים ואינדקס דוחות</a></li>
             </ul>
 
@@ -2057,11 +2057,104 @@ def get_book_html():
                             <p>שמירה על איזון זרמים מושלם גם תחת חוסר איזון פיזי קיצוני של מעל $\pm 25\%$ בעכבות הפאזות.</p>
                         </div>
                     </div>
+
+                    <!-- Didactic Roadmap & Table of Contents -->
+                    <div class="process-pipeline" style="margin-top: 32px;">
+                        <div class="pipeline-title-bar">
+                            <h3>🗺️ מפת פרקי הספר והמהלך הפדגוגי-דידקטי של המחקר</h3>
+                            <span class="pipeline-tag">סדר כרונולוגי דידקטי • 6 חטיבות ידע • 16 פרקים</span>
+                        </div>
+                        <p style="margin-bottom: 20px; color: var(--text-muted);">
+                            ספר זה נבנה במהלך הנדסי ומדעי קפדני המוביל את הקורא מהיסודות הפיזיקליים והאנטומיה של המנוע והממיר, דרך פיתוח אלגוריתמי מבוסס תעדוף שגיאה, אימות סימולטיבי ב-HIL, תכנון כרטיסי החומרה והמגנטיקה, ועד לניסויי מעבדה מעשיים והשוואת ביצועים סופית:
+                        </p>
+                        <div class="pipeline-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">חלק א'</div>
+                                    <div>
+                                        <div class="stage-title">יסודות, פיזיקה ומידול מתמטי</div>
+                                        <div class="stage-desc">פרקים 01 עד 03</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row"><strong>01:</strong> רקע, אתגרי הנע וטופולוגיית Series-End VSI</div>
+                                    <div class="stage-io-row"><strong>02:</strong> אנטומיה פיזיקלית והדמיית חיבור ל-4 רגלים (איור 1.2)</div>
+                                    <div class="stage-io-row"><strong>03:</strong> מידול מתמטי מעמיק, משוואות מצב ומערכת d-q-0</div>
+                                </div>
+                            </div>
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">חלק ב'</div>
+                                    <div>
+                                        <div class="stage-title">בקרת OEPC, דיכוי ZSC ומעבדה</div>
+                                        <div class="stage-desc">פרקים 04 עד 06</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row"><strong>04:</strong> אלגוריתם תעדוף שגיאה OEPC וטבלת 96 המצבים</div>
+                                    <div class="stage-io-row"><strong>05:</strong> מעבדה אינטראקטיבית מובנית ואוסצילוסקופ חי</div>
+                                    <div class="stage-io-row"><strong>06:</strong> חסינות אינהרנטית לקצר פנימי בסלילים (ITSC)</div>
+                                </div>
+                            </div>
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">חלק ג'</div>
+                                    <div>
+                                        <div class="stage-title">אימות סימולטיבי ו-HIL בזמן-אמת</div>
+                                        <div class="stage-desc">פרק 07</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row"><strong>07:</strong> סימולציות מספריות ב-PSIM ובקרת HIL בזמן-אמת ב-Typhoon</div>
+                                    <div class="stage-io-row" style="color:var(--text-dim);">אימות זמני מיתוג 50kHz ותגובת מעבר לעומס פתאומי</div>
+                                </div>
+                            </div>
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">חלק ד'</div>
+                                    <div>
+                                        <div class="stage-title">תכנון חומרה, מגנטיקה ומכניקה</div>
+                                        <div class="stage-desc">פרקים 08 עד 11</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row"><strong>08:</strong> תכנון כרטיסי חומרה, ממירי GaN ודגימה ב-Altium</div>
+                                    <div class="stage-io-row"><strong>09:</strong> תכנון מגנטי ומידול סלילי חניקה לסינון פסיבי של ZSC</div>
+                                    <div class="stage-io-row"><strong>10:</strong> כיול מנוע OEMER ואינקודר אופטי מדויק SICK</div>
+                                    <div class="stage-io-row"><strong>11:</strong> מכלול מכני בתלת-ממד (CAD) ועמדת דיינו</div>
+                                </div>
+                            </div>
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">חלק ה'</div>
+                                    <div>
+                                        <div class="stage-title">פיתוח תוכנה, בטיחות ומדידות</div>
+                                        <div class="stage-desc">פרקים 12 עד 14</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row"><strong>12:</strong> סביבת פיתוח DSP, ניהול גרסאות Git וענן</div>
+                                    <div class="stage-io-row"><strong>13:</strong> פרוטוקול בטיחות, גהות ונוהל מתח גבוה (SOP)</div>
+                                    <div class="stage-io-row"><strong>14:</strong> פרוטוקול ניסויי מעבדה מלא ותוצאות מדידה בפועל</div>
+                                </div>
+                            </div>
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">חלק ו'</div>
+                                    <div>
+                                        <div class="stage-title">השוואת ביצועים, מסקנות ונספחים</div>
+                                        <div class="stage-desc">פרקים 15 ו-16</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row"><strong>15:</strong> השוואת ביצועים כוללת (Benchmarking) ומסקנות</div>
+                                    <div class="stage-io-row"><strong>16:</strong> נספחים, קוד מקור מלא של ה-LUT ואינדקס דוחות</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 1: BACKGROUND & TOPOLOGY                             -->
-                <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-01">
                     <span class="chapter-badge">פרק 01</span>
                     <h2>רקע מדעי, אתגרי הנע חשמלי וטופולוגיית Series-End VSI</h2>
@@ -2340,14 +2433,172 @@ def get_book_html():
                     </div>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 3: OEPC ALGORITHM & 96-LUT                           -->
-                <!-- ============================================================ -->
-                                <!-- ============================================================ -->
-                <!-- CHAPTER 2: FULL MATHEMATICAL MODELING OF PMSM & D-Q-0 IN SE-VSI-->
-                <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-02">
                     <span class="chapter-badge">פרק 02</span>
+                    <h2>אנטומיה פיזיקלית והדמיה אינטראקטיבית: רוטור מגנטים, סלילי סטטור וחיבור ל-4 רגלי ממיר Series-End VSI (סכמת איור 1.2)</h2>
+
+                    <p class="lead-text">
+                        כדי לחבר בין התאוריה המתמטית של בקרת השדה המכוון ($d-q$), מודל ה-OEPC וטבלת המצבים, לבין סכמת המעגל המחקרית שהוצגה בפרק 1 (איור 1.2 מהמאמר), פותחה הדמיה זו המציגה חתך דו-ממדי דינמי (Cross-Section) של מנוע ה-PMSM (מבוסס מנוע ה-OEMER QS 100S בעל 4 קטבים) במקביל למעגל הכוח של ממיר ה-Series-End VSI בעל 4 ענפים ($L_1, L_2, L_3, L_4$). ההדמיה ממחישה בזמן אמת כיצד מיתוג 4 רגלי הממיר מזרים זרמים בשלושת סלילי הסטטור הפתוחים המחוברים בטור ישיר, כיצד נוצר שדה מגנטי מסתובב באוויר הרווח ($B_s$), וכיצד דיכוי מצב המפסקים ($S_1 = S_4$) מונע את התפתחות זרם סדרה אפס (ZSC) בלולאה הסגורה!
+                    </p>
+
+                    <!-- Interactive Simulation Card -->
+                    <div class="sim-embed-card" id="sim3-card">
+                        <div class="sim-embed-header">
+                            <div>
+                                <h3>🔬 הדמיה 3: מודל חתך מנוע PMSM (4 קטבים) וחיבור ל-4 ענפי ממיר Series-End VSI (לפי איור 1.2)</h3>
+                                <p style="color:var(--text-muted); font-size:13px; margin-top:4px;">
+                                    צפה ברוטור המגנטים המסתובב, זרימת זרמי הפאזות בסלילים הטוריים, ומצבי ההולכה של 4 ענפי הממיר ($L_1-L_4$) עם המחשת מסלול ה-ZSC בזמן אמת.
+                                </p>
+                            </div>
+                            <span class="badge" style="background:rgba(0,210,255,0.15); color:var(--accent-cyan); border:1px solid var(--accent-cyan); padding:4px 10px; border-radius:20px; font-size:12px;">
+                                60FPS 4-Leg Series-End VSI Core
+                            </span>
+                        </div>
+
+                        <div class="sim-container-grid">
+                            <!-- Controls Panel -->
+                            <div class="sim-controls-panel">
+                                <h4 style="color:var(--accent-cyan); margin:0 0 8px 0; font-size:14px; border-bottom:1px solid var(--border-subtle); padding-bottom:6px;">🎛️ לוח בקרה להדמיית מנוע ו-4 ענפי ממיר</h4>
+
+                                <div class="control-group">
+                                    <label><span>מהירות סיבוב מנוע (RPM):</span> <span id="val-motor-rpm" class="en-term" style="color:var(--accent-cyan); font-weight:700;">600 RPM</span></label>
+                                    <input type="range" id="slider-motor-rpm" min="0" max="1800" step="50" value="600" oninput="updateMotorParams()">
+                                </div>
+
+                                <div class="control-group">
+                                    <label><span>זווית מומנט עומס ($\delta$):</span> <span id="val-motor-delta" class="en-term" style="color:#10b981; font-weight:700;">90° (MTPA)</span></label>
+                                    <input type="range" id="slider-motor-delta" min="0" max="150" step="5" value="90" oninput="updateMotorParams()">
+                                </div>
+
+                                <div class="control-group" style="display:flex; flex-direction:column; gap:8px;">
+                                    <label style="margin-bottom:0;"><span>בקרת ZSC ושדות:</span></label>
+                                    <div style="display:flex; gap:8px;">
+                                        <button class="btn-toggle active" id="btn-toggle-zsc" onclick="toggleZscSuppression()" style="flex:1; font-size:11.5px;">🛡️ דיכוי ZSC (S1=S4)</button>
+                                        <button class="btn-toggle active" id="btn-toggle-flux" onclick="toggleFluxLines()" style="flex:1; font-size:11.5px;">🧲 קווי שטף</button>
+                                    </div>
+                                    <button class="btn-toggle active" id="btn-toggle-dq" onclick="toggleDqVectors()" style="width:100%; font-size:11.5px;">🧭 צירי d-q ו-Bs</button>
+                                </div>
+
+                                <div class="control-group" style="display:flex; gap:8px;">
+                                    <button class="btn-toggle" onclick="stepMotor(-15)" style="flex:1; font-size:12px;">◀ פסיעה -15°</button>
+                                    <button class="btn-toggle" onclick="stepMotor(15)" style="flex:1; font-size:12px;">פסיעה +15° ▶</button>
+                                </div>
+
+                                <div class="control-group" style="display:flex; gap:8px; margin-top:4px;">
+                                    <button class="btn-toggle active" id="btn-motor-run" onclick="toggleMotorSim()" style="flex:1;">⏸️ השהה / הפעל</button>
+                                    <button class="btn-toggle" onclick="resetMotorSim()" style="flex:1;">🔄 איפוס</button>
+                                </div>
+
+                                <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle); border-radius:8px; padding:10px; font-size:11.5px; color:var(--text-muted); line-height:1.5;">
+                                    <strong style="color:#fff; display:block; margin-bottom:4px;">חיבור 4 ענפים (איור 1.2):</strong>
+                                    <div><span style="color:#ef4444; font-weight:700;">פאזה A ($Z_a$):</span> בין ענף 1 לבין ענף 2 ($v_a = v_1 - v_2$)</div>
+                                    <div><span style="color:#10b981; font-weight:700;">פאזה B ($Z_b$):</span> בין ענף 2 לבין ענף 3 ($v_b = v_2 - v_3$)</div>
+                                    <div><span style="color:#38bdf8; font-weight:700;">פאזה C ($Z_c$):</span> בין ענף 3 לבין ענף 4 ($v_c = v_3 - v_4$)</div>
+                                    <div style="margin-top:4px; border-top:1px dashed var(--border-subtle); padding-top:4px;"><span style="color:#f43f5e; font-weight:700;">לולאת ZSC:</span> סכום המתחים $v_1 - v_4$. מדוכא כאשר $S_1 = S_4$.</div>
+                                </div>
+                            </div>
+
+                            <!-- Canvas and Telemetry View -->
+                            <div class="sim-view-panel">
+                                <div style="position:relative; width:100%; height:460px; background:#050811; border:1px solid var(--border-subtle); border-radius:12px; overflow:hidden;">
+                                    <canvas id="motor-inverter-canvas" style="position:absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
+                                    <div class="canvas-title-badge" style="left:12px; right:auto; direction:ltr;">4-Leg Series-End VSI & PMSM Core (Fig 1.2)</div>
+                                </div>
+
+                                <div class="telemetry-strip">
+                                    <div class="telemetry-item">
+                                        <span class="lbl">זווית מכנית ($\theta_m$)</span>
+                                        <span class="val" id="disp-motor-thetam">0.0°</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">זווית חשמלית ($\theta_e$)</span>
+                                        <span class="val" id="disp-motor-thetae">0.0°</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">4 ענפים $[S_1 S_2 S_3 S_4]$</span>
+                                        <span class="val" id="disp-motor-sw" style="font-size:12.5px;">[1 0 1 1]</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">מתח ZSC ($v_1 - v_4$)</span>
+                                        <span class="val" id="disp-motor-v0" style="color:#10b981; font-size:12.5px;">0 V (מדוכא)</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">מומנט אלקטרומגנטי ($T_e$)</span>
+                                        <span class="val" id="disp-motor-te">14.2 Nm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>15.1 אנטומיה פיזיקלית של מנוע ה-OEMER QS 100S</h3>
+                    <p>
+                        המנוע הנבדק במעבדה הוא מנוע סינכרוני עם מגנטים קבועים תעשייתי בעל מבנה ייעודי:
+                    </p>
+
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin: 20px 0;">
+                        <div class="card" style="border-right: 3px solid #ef4444;">
+                            <h4 style="color:#ef4444; margin-top:0;">רוטור בעל 4 קטבים (p=2 Pole Pairs)</h4>
+                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                                הרוטור כולל 4 מגנטים קבועים מניאודימיום (NdFeB) בעלי צפיפות אנרגיה גבוהה המסודרים לסירוגין סביב הציר: <strong>צפון (N) $\rightarrow$ דרום (S) $\rightarrow$ צפון (N) $\rightarrow$ דרום (S)</strong>. כתוצאה מכך, על כל סיבוב מכני יחיד ($360^\circ$ מכניות), השדה המגנטי משלים <strong>שני מחזורים חשמליים מלאים</strong> ($\theta_e = 2 \cdot \theta_m$).
+                            </p>
+                        </div>
+                        <div class="card" style="border-right: 3px solid #38bdf8;">
+                            <h4 style="color:#38bdf8; margin-top:0;">סטטור עם סלילים פתוחים (Open-Ended Winding)</h4>
+                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                                עוגן הסטטור בנוי מלמינציות פלדת סיליקון (Silicon Steel) בעלות הפסדי היסטרזיס נמוכים. בניגוד למנוע סטנדרטי שבו קצוות הפאזות מחוברים יחד בתוך המנוע לנקודת ניוטרל כוכב, במנוע ה-OEMER כל 6 הקצוות של שלושת הסלילים ($A_1-A_2, B_1-B_2, C_1-C_2$) מוצאים החוצה לחיבור ישיר לענפי הממיר.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>15.2 חיבור קצוות הסלילים בטור בין 4 ענפי הממיר ($L_1-L_4$) ומסלול ה-ZSC (לפי איור 1.2)</h3>
+                    <p>
+                        טופולוגיית ה-Series-End VSI (המוגדרת במלואה באיור 1.2 מהמאמר) עושה שימוש בממיר מתח יחיד בעל <strong>4 ענפי חצי-גשר ($L_1, L_2, L_3, L_4$)</strong> המחוברים במשותף לאותו פס מתח DC ראשי ($+V_{dc}$ ו-$0\text{V}/\text{GND}$):
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>סליל פאזה A ($Z_a$):</strong> מחובר בטור בין אמצע ענף 1 ($v_1$) לבין אמצע ענף 2 ($v_2$). מתח הפאזה הנופל עליו הינו:
+                            <div class="math-block" style="font-size:14px;">$$v_a(t) = v_1(t) - v_2(t)$$</div>
+                        </li>
+                        <li><strong>סליל פאזה B ($Z_b$):</strong> מחובר בטור בין אמצע ענף 2 ($v_2$) לבין אמצע ענף 3 ($v_3$). מתח הפאזה הנופל עליו הינו:
+                            <div class="math-block" style="font-size:14px;">$$v_b(t) = v_2(t) - v_3(t)$$</div>
+                        </li>
+                        <li><strong>סליל פאזה C ($Z_c$):</strong> מחובר בטור בין אמצע ענף 3 ($v_3$) לבין אמצע ענף 4 ($v_4$). מתח הפאזה הנופל עליו הינו:
+                            <div class="math-block" style="font-size:14px;">$$v_c(t) = v_3(t) - v_4(t)$$</div>
+                        </li>
+                        <li><strong>צומתי השיתוף הטוריים:</strong>
+                            ענף 2 ($L_2$) מהווה צומת משותף המחבר יחד את סיום סליל פאזה A ותחילת סליל פאזה B ($A_2$ עם $B_1$). ענף 3 ($L_3$) מהווה צומת משותף המחבר יחד את סיום סליל פאזה B ותחילת סליל פאזה C ($B_2$ עם $C_1$). ענפים $L_1$ ו-$L_4$ מהווים את סגירת הקצוות החיצוניים של המערכת.
+                        </li>
+                        <li><strong>סכום מתחי הלולאה והתפתחות ה-ZSC:</strong>
+                            חיבור סכום שלושת מתחי הפאזה חושף תכונה יסודית ומפתיעה:
+                            <div class="math-block" style="font-size:15px;">
+                                $$\sum_{x \in \{a,b,c\}} v_x = v_a + v_b + v_c = (v_1 - v_2) + (v_2 - v_3) + (v_3 - v_4) = v_1 - v_4$$
+                            </div>
+                        </li>
+                        <li><strong>התנאי לדיכוי מוחלט של זרם סדרה אפס ($i_0$):</strong>
+                            מתח הלולאה תלוי אך ורק בהפרש הפוטנציאלים בין הענף הראשון ($L_1$) לענף האחרון ($L_4$). כאשר בקרת ה-OEPC בוחרת מצבי מיתוג שבהם מתקיים <strong>$S_1 = S_4$</strong>, מתקבל $v_1 - v_4 = 0$ ומתח ה-ZSC מתאפס כליל! לעומת זאת, כאשר $S_1 \neq S_4$, נופל על הסלילים מתח לולאה של $\pm V_{dc}$ הדוחף זרם סדרה אפס הרסני בלולאה סגורה (הקו האדום באיור 1.2 ובהדמיה).
+                        </li>
+                    </ul>
+
+                    <h3>15.3 יצירת המומנט האלקטרומגנטי ואינטראקציית צירי d-q</h3>
+                    <p>
+                        כאשר רגלי הממיר ממתגות את זרמי הפאזה הסינוסואידליים $i_a(t), i_b(t), i_c(t)$, הם מייצרים באוויר הרווח של הסטטור שדה מגנטי מסתובב ($B_s$). 
+                    </p>
+                    <p>
+                        שדה זה מפעיל כוח לורנץ מגנטי משיכתי על המגנטים הקבועים של הרוטור ($B_r$). בבקרת השדה המכוון (FOC) ובקרת ה-OEPC:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>ציר d (Direct Axis):</strong> מיושר ישירות עם ציר השטף המגנטי של מגנטי הרוטור. זרם בציר זה ($i_d$) מייצר רק כוח הצמדה רדיאלי ואינו מייצר מומנט סיבובי.</li>
+                        <li><strong>ציר q (Quadrature Axis):</strong> ניצב ב-$90^\circ$ חשמליות לציר ה-d. זרם בציר זה ($i_q$) פועל בזווית אופטימלית של $90^\circ$ מול המגנטים ומייצר את מלוא המומנט הסיבובי:
+                            <div class="math-block">
+                                $$T_e = \frac{3}{2} \cdot p \cdot \psi_{pm} \cdot i_q + \frac{3}{2} \cdot p \cdot (L_d - L_q) \cdot i_d \cdot i_q$$
+                            </div>
+                        </li>
+                        <li>במנוע PMSM בעל מגנטים מודבקים על פני הרוטור (SPMSM) שבו $L_d \approx L_q$, בקרת ה-OEPC שומרת על $i_d = 0$ (זווית עומס $\delta = 90^\circ$), מה שמבטיח פעולה בנצילות שיא ובמומנט מקסימלי לכל אמפר (MTPA).</li>
+                    </ul>
+                </section>
+
+                <section class="chapter-section" id="ch-03">
+                    <span class="chapter-badge">פרק 03</span>
                     <h2>מידול מתמטי מלא ומעמיק של מנוע ה-PMSM ומערכת הצירים d-q בטופולוגיית Series-End VSI</h2>
                     
                     <p>
@@ -3039,8 +3290,8 @@ def get_book_html():
                     </div>
                 </section>
 
-<section class="chapter-section" id="ch-03">
-                    <span class="chapter-badge">פרק 03</span>
+                <section class="chapter-section" id="ch-04">
+                    <span class="chapter-badge">פרק 04</span>
                     <h2>אלגוריתם בקרת שגיאה אופטימלית (OEPC) ומבנה טבלת 96 המצבים</h2>
 
                     <h3>המגבלות של שיטות הבקרה הקיימות: מדוע נדרש OEPC?</h3>
@@ -3474,11 +3725,8 @@ def get_book_html():
                     </div>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 3: INTERACTIVE LAB                                   -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-04">
-                    <span class="chapter-badge">פרק 04</span>
+                <section class="chapter-section" id="ch-05">
+                    <span class="chapter-badge">פרק 05</span>
                     <h2>מעבדה אינטראקטיבית מובנית: סימולציות חיות בלייב</h2>
 
                     <p>
@@ -3621,11 +3869,28 @@ def get_book_html():
                     </div>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 4: PSIM & TYPHOON HIL REAL-TIME VALIDATION           -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-05">
-                    <span class="chapter-badge">פרק 05</span>
+                <section class="chapter-section" id="ch-06">
+                    <span class="chapter-badge">פרק 06</span>
+                    <h2>חסינות אינהרנטית לתקלות קצר פנימיות במנוע (ITSC)</h2>
+
+                    <h3>הסכנה בתקלת קצר בין כריכות (Inter-Turn Short Circuit - ITSC)</h3>
+                    <p>
+                        תקלת ITSC היא התקלה הפנימית השכיחה והמסוכנת ביותר במנועי PMSM. כאשר בידוד הכריכות נפרץ ונוצר קצר בין מספר ליפופים באותה פאזה, נוצרת לולאת קצר מקומית שבה זורם זרם עצום המושרה מהמגנטים הקבועים. זרם זה מאיץ את שריפת המנוע, גורם לאי-סימטריה חריפה בעכבות הסטטור, ויוצר תנודות מומנט עזות.
+                    </p>
+
+                    <div class="fig-wrapper">
+                        <img src="presentation_assets/fig13_fault_tolerance_itsc_oepc_vs_cbpwm.jpg" alt="Fault Tolerance ITSC: OEPC vs CBPWM" onclick="openModal(this.src)">
+                        <div class="fig-caption"><strong>איור 6.1:</strong> השוואה ישירה תחת תקלת ITSC קשה: בקרת CBPWM רגילה (משמאל) מפתחת עיוות קיצוני בזרמים וזרם ZSC ענק; לעומתה בקרת OEPC (מימין) שומרת על מסלול מעגלי מושלם ומרסנת את הזרם התקול!</div>
+                    </div>
+
+                    <div class="didactic-box didactic-lab">
+                        <h4>🔬 תובנה מדעית מתוצאות הניסוי באיור 5.1</h4>
+                        בקרת OEPC אינה דורשת זיהוי מפורש (Fault Diagnosis) של התקלה כדי לפעול! מעצם הגדרתה, כאשר פאזה מקצרת וזרמה מתעוות, שגיאת הזרם של אותה פאזה מזנקת מיד ומקבלת עדיפות עליונה ב-LUT ($S_{sel}$). הממיר "מזריק" מתח נגדי שמאלץ את הזרם להישאר סינוסואידלי ומגן על המנוע מהתחממות קטסטרופלית!
+                    </div>
+                </section>
+
+                <section class="chapter-section" id="ch-07">
+                    <span class="chapter-badge">פרק 07</span>
                     <h2>אימות סימולטיבי ב-PSIM ו-Typhoon C-HIL בזמן אמת</h2>
 
                     <h3>ארכיטקטורת מערך ה-C-HIL המעבדתי בזמן אמת</h3>
@@ -3666,34 +3931,344 @@ def get_book_html():
                     </div>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 5: FAULT TOLERANCE (ITSC)                            -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-06">
-                    <span class="chapter-badge">פרק 06</span>
-                    <h2>חסינות אינהרנטית לתקלות קצר פנימיות במנוע (ITSC)</h2>
+                <section class="chapter-section" id="ch-08">
+                    <span class="chapter-badge">פרק 08</span>
+                    <h2>תכנון ומימוש כרטיסי החומרה ב-Altium Designer</h2>
 
-                    <h3>הסכנה בתקלת קצר בין כריכות (Inter-Turn Short Circuit - ITSC)</h3>
+                    <h3>שלושת כרטיסי החומרה שתוכננו לפרויקט</h3>
                     <p>
-                        תקלת ITSC היא התקלה הפנימית השכיחה והמסוכנת ביותר במנועי PMSM. כאשר בידוד הכריכות נפרץ ונוצר קצר בין מספר ליפופים באותה פאזה, נוצרת לולאת קצר מקומית שבה זורם זרם עצום המושרה מהמגנטים הקבועים. זרם זה מאיץ את שריפת המנוע, גורם לאי-סימטריה חריפה בעכבות הסטטור, ויוצר תנודות מומנט עזות.
+                        להשלמת הפלטפורמה המעבדתית תוכננו, נותחו ועוצבו 3 כרטיסי מעגלים מודפסים (PCB) רב-שכבתיים בתוכנת <strong>Altium Designer</strong>:
                     </p>
 
                     <div class="fig-wrapper">
-                        <img src="presentation_assets/fig13_fault_tolerance_itsc_oepc_vs_cbpwm.jpg" alt="Fault Tolerance ITSC: OEPC vs CBPWM" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 6.1:</strong> השוואה ישירה תחת תקלת ITSC קשה: בקרת CBPWM רגילה (משמאל) מפתחת עיוות קיצוני בזרמים וזרם ZSC ענק; לעומתה בקרת OEPC (מימין) שומרת על מסלול מעגלי מושלם ומרסנת את הזרם התקול!</div>
+                        <img src="presentation_assets/hardware_setup_photo.jpg" alt="Laboratory Inverter & Altium Modules" onclick="openModal(this.src)">
+                        <div class="fig-caption"><strong>איור 8.1:</strong> מודולי החומרה המעבדתיים, כרטיסי המדידה המבודדים ועמדת הניסוי של ממיר ההספק.</div>
                     </div>
 
-                    <div class="didactic-box didactic-lab">
-                        <h4>🔬 תובנה מדעית מתוצאות הניסוי באיור 5.1</h4>
-                        בקרת OEPC אינה דורשת זיהוי מפורש (Fault Diagnosis) של התקלה כדי לפעול! מעצם הגדרתה, כאשר פאזה מקצרת וזרמה מתעוות, שגיאת הזרם של אותה פאזה מזנקת מיד ומקבלת עדיפות עליונה ב-LUT ($S_{sel}$). הממיר "מזריק" מתח נגדי שמאלץ את הזרם להישאר סינוסואידלי ומגן על המנוע מהתחממות קטסטרופלית!
+                    <div class="grid-3col">
+                        <div class="info-card">
+                            <h4>⚡ 1. כרטיס מתח מבודד</h4>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                <strong>Isolated HV Measurement V2.1:</strong> מודד מתחי DC גבוהים עד $800\text{V}$ באמצעות מגבר בידוד אופטי ומחלק מתח נגדי מדויק ($0.1\%$), עם מתח בידוד גלווני של $5\text{kV}$ להגנה על כרטיסי המיקרו-בקר.
+                            </p>
+                        </div>
+                        <div class="info-card">
+                            <h4>🧲 2. כרטיס חיישן זרם</h4>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                <strong>Isolated Current Sensor V2.1:</strong> מבוסס חיישני אפקט הול (Hall Effect) מהירים ברוחב פס של $200\text{kHz}$, לדגימה מדויקת של זרמי הפאזות ורכיב ה-ZSC ללא הפרעות ומגע חשמלי.
+                            </p>
+                        </div>
+                        <div class="info-card">
+                            <h4>🔌 3. כרטיס מיתוג הספק</h4>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                <strong>Power Switch - GUN V2:</strong> ענף מיתוג הספק מהיר מבוסס מוליכים מתקדמים (GaN/SiC) ודרייברים מבודדים עם הגנות קצר, Dead-time מובנה וניתוב זרמי פריקה מהירים.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>שיקולי Layout וניתוב אותות מהירים</h3>
+                    <p>
+                        בשל קפיצות המתח החדות ($dv/dt$) בממיר, הוקפד על הפרדה פיזית מלאה בין משטחי האדמה (Ground Planes) של מתח גבוה לאדמת הבקרה השקטה, מזעור לולאות השראות פיזור בדרייברים, ושימוש בסיכוך דיפרנציאלי.
+                    </p>
+
+                    <!-- Modern Didactic Process Pipeline: Isolated Sensing Signal Chain -->
+                    <div class="process-pipeline">
+                        <div class="pipeline-title-bar">
+                            <h3>🔬 שרשרת עיבוד האותות ובידוד גלווני במעגלי מדידת הזרם (Isolated Current Sensor V2.1)</h3>
+                            <span class="pipeline-tag">Hardware Signal Chain • 5 שלבים</span>
+                        </div>
+                        <div class="pipeline-grid">
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">01</div>
+                                    <div>
+                                        <div class="stage-title">חישת Shunt קלוין 4-חוטי</div>
+                                        <div class="stage-desc">המרה ישירה של זרם הפאזה למפל מתח זעיר</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">i_{phase} = ±30A</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">R_{shunt} = 2mΩ (Manganin 0.1%)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">v_{shunt} = ±60mV</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 דיוק חומרה: 4-wire Kelvin מבטל השפעת התנגדות הלחמה</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge purple">02</div>
+                                    <div>
+                                        <div class="stage-title">בידוד אופטי ומודולציית ΔΣ</div>
+                                        <div class="stage-desc">הפרדה גלוונית של 5kV באמצעות מגבר AMC1301</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">v_{shunt} בצד מתח גבוה</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">הגברה G=8.2 והמרה דיגיטלית פנימית</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">מתח דיפרנציאלי מבודד בצד ה-DSP</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 חסינות רעש: עמידות במעברי מיתוג CMTI > 100kV/µs</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge amber">03</div>
+                                    <div>
+                                        <div class="stage-title">סינון אנטי-אליאסינג Sallen-Key</div>
+                                        <div class="stage-desc">פילטר נמוכים אקטיבי מסדר שני למניעת קיפול תדרים</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">אות דיפרנציאלי + ריפל מיתוג 20kHz</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">מגבר שרת OPA320 ברוחב פס f_c = 15kHz</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">אות סינוס מוחלק ונקי לחלוטין</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 איכות אות: יחס אות לרעש SNR > 78dB</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge green">04</div>
+                                    <div>
+                                        <div class="stage-title">דגימת ADC מהירה ב-DSP</div>
+                                        <div class="stage-desc">המרת אנלוגי-לדיגיטלי מסונכרנת עם ה-PWM</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">מתח 0 עד 3.3V (היסט אמצע 1.65V)</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">ADC 12-Bit ב-TMS320F28379D</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">ספירה דיגיטלית: 0 עד 4095</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 סנכרון שעון: דגימה בדיוק ברגע שיא ה-PWM (מינימום רעש)</span>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-stage-card">
+                                <div class="stage-header">
+                                    <div class="stage-badge">05</div>
+                                    <div>
+                                        <div class="stage-title">כיול היסט וחישוב זרם ב-CLA</div>
+                                        <div class="stage-desc">המרה לערך זרם פיזיקלי באמפרים במאיץ החומרה</div>
+                                    </div>
+                                </div>
+                                <div class="stage-io-box">
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">קלט:</span>
+                                        <span class="stage-io-val">ADC_Result, כיול אפס Offset</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">הליך:</span>
+                                        <span class="stage-io-val">i = (ADC_Result - Offset) × K_{cal}</span>
+                                    </div>
+                                    <div class="stage-io-row">
+                                        <span class="stage-io-label">פלט:</span>
+                                        <span class="stage-io-val">i_a, i_b, i_c בדיוק 0.05A</span>
+                                    </div>
+                                </div>
+                                <div class="stage-checkpoint">
+                                    <span>🔍 אפס השהיית CPU: חישוב ב-CLA ללא העמסה על ליבת ה-C28x</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 6: MOTOR CHARACTERIZATION & POLE ALIGNMENT           -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-07">
-                    <span class="chapter-badge">פרק 07</span>
+                <section class="chapter-section" id="ch-09">
+                    <span class="chapter-badge">פרק 09</span>
+                    <h2>תכנון מגנטי, מידול סלילי חניקה וסינון זרם סדרה אפס פסיבי</h2>
+
+                    <p class="lead-text">
+                        אחד ממוקדי החדשנות והחיסכון המרכזיים בטופולוגיית Series-End VSI עם בקרת OEPC הוא החיסכון החומרתי ברכיבים מגנטיים פסיביים כבדים ויקרים. בממירי כוח קונבנציונליים המוזנים ממקור DC יחיד, מתח סדרה אפס ($v_0$) מניע זרם ZSC גבוה בחוג סגור דרך שני הממירים וסלילי המנוע. כדי לבלום זרם זה ללא בקרה אקטיבית, נדרש שילוב של סלילי חניקה Common-Mode (CM Chokes) מסיביים. פרק זה מנתח את התכנון המגנטי של רכיבים פסיביים אלו וממחיש באופן כמותי את החיסכון במשקל, בנפח ובהפסדים המושג הודות לאלגוריתם ה-OEPC.
+                    </p>
+
+                    <div class="alert-box alert-info">
+                        <div class="alert-icon">🧲</div>
+                        <div>
+                            <strong>הרעיון המדעי המרכזי של מאמר ה-IEEE TIE:</strong><br>
+                            אלגוריתם ה-OEPC מבטל את הצורך בסלילי חניקה מגנטיים כבדים (Common-Mode Chokes) בעזרת בחירה חכמה מתוך טבלת 96 וקטורי המתח המרחביים, תוך שקלול מתמיד של שגיאת ה-ZSC בפונקציית העלות האופטימלית ($W_{zsc}$).
+                        </div>
+                    </div>
+
+                    <h3>13.1 מקור מתח סדרה אפס בממיר Series-End VSI</h3>
+                    <p>
+                        בטופולוגיית Series-End VSI בעלת ספק DC יחיד וסלילי מנוע פתוחים, מתח סדרה אפס מוגדר כממוצע מתחי הפאזה מול נקודת האמצע הווירטואלית של ה-DC Link:
+                    </p>
+
+                    <div class="math-block">
+                        $$v_0(t) = \frac{v_{an}(t) + v_{bn}(t) + v_{cn}(t)}{3}$$
+                    </div>
+
+                    <p>
+                        משוואת המתח והזרם בלולאת סדרה אפס נתונה על ידי:
+                    </p>
+
+                    <div class="math-block">
+                        $$v_0(t) = R_0 \cdot i_0(t) + L_0 \cdot \frac{d i_0(t)}{dt}$$
+                    </div>
+
+                    <p>
+                        במנוע PMSM בעל סלילים שווים ומפוזרים באופן סימטרי, השראות סדרה אפס הטבעית של המנוע ($L_0 = L_\sigma$) נמוכה מאוד (כרבע עד עשירית מהשראות ה-d וה-q). כתוצאה מכך, מתח סדרה אפס בתדרי המיתוג יוצר זרמי $i_0$ הרסניים המגיעים לאמפרים רבים, הגורמים לחימום חריף של עוגן המנוע, הפסדי נחושת מיותרים, ותנודות מומנט פועמות.
+                    </p>
+
+                    <h3>13.2 מידול מתמטי ותכנון סליל חניקה Common-Mode פסיבי</h3>
+                    <p>
+                        בגישה הפסיבית הקונבנציונלית, מותקן סליל חניקה טורואידלי בעל 3 ליפופים זהים המלופפים באותו כיוון על גבי ליבה מגנטית אחת. זרמי הפאזה הסימטריים ($i_a + i_b + i_c = 0$) מבטלים את השטף המגנטי אחד של השני בליבה, אך זרם סדרה אפס רואה השראות גבוהה פי 3.
+                    </p>
+
+                    <h4>משוואות התכנון המגנטי:</h4>
+                    <div class="math-block">
+                        $$L_{cm} = \frac{\mu_0 \cdot \mu_r \cdot N^2 \cdot A_e}{l_e}$$
+                    </div>
+                    <ul class="bullet-list">
+                        <li>$\mu_0 = 4\pi \times 10^{-7} \, \text{H/m}$ — פרמאביליות הריק.</li>
+                        <li>$\mu_r$ — פרמאביליות יחסית של הליבה (בד"כ ננו-קריסטליין $\mu_r \approx 30,000$ או פריט $\mu_r \approx 5,000$).</li>
+                        <li>$N$ — מספר הליפופים לכל פאזה.</li>
+                        <li>$A_e$ — שטח החתך האפקטיבי של הליבה המגנטית ($\text{m}^2$).</li>
+                        <li>$l_e$ — אורך המסלול המגנטי הממוצע ($\text{m}$).</li>
+                    </ul>
+
+                    <h4>מניעת רוויה מגנטית (Saturation Prevention):</h4>
+                    <div class="math-block">
+                        $$B_{max} = \frac{V_{0,peak}}{2 \pi \cdot f_{sw} \cdot N \cdot A_e} \le B_{sat}$$
+                    </div>
+                    <p>
+                        כדי למנוע רוויה של הליבה המגנטית במיתוג תדר גבוה (18-25 kHz) עם צפיפות שטף רוויה $B_{sat} \approx 1.2 \, \text{T}$ (ננו-קריסטליין) או $0.4 \, \text{T}$ (פריט), שטח החתך $A_e$ ומספר הליפופים $N$ חייבים להיות גדולים באופן משמעותי, מה שמגדיל ישירות את נפח הליבה ומשקלה.
+                    </p>
+
+                    <h3>13.3 ניתוח הפסדים וגודל פיזי (Core & Copper Losses)</h3>
+                    <p>
+                        שילוב סליל חניקה פסיבי גובה מחיר כבד בנצילות המערכת בגלל שני מנגנוני הפסדים עיקריים:
+                    </p>
+
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin: 20px 0;">
+                        <div class="card">
+                            <h4 style="color:#f59e0b; margin-top:0;">הפסדי ליבה מגנטית (Core Losses - $P_{fe}$)</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                מחושבים באמצעות מודל שטיינמץ המוכלל (iGSE):
+                            </p>
+                            <div class="math-block" style="font-size:14px;">
+                                $$P_{fe} = k \cdot f_{sw}^\alpha \cdot B_{max}^\beta \cdot V_e$$
+                            </div>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                בתדרי מיתוג של 20 kHz עם הרמוניות תלולות, הפסדי ההיסטרזיס וזרמי המערבולת בליבה מייצרים חום של כ-28W עד 42W ברציפות.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:#ef4444; margin-top:0;">הפסדי נחושת (Copper Losses - $P_{cu}$)</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                נובעים מהתנגדות הליפופים במעבר זרם הפאזה הנומינלי ($I_{rms} = 15.2 \, \text{A}$):
+                            </p>
+                            <div class="math-block" style="font-size:14px;">
+                                $$P_{cu} = 3 \cdot I_{rms}^2 \cdot R_{ac}(f)$$
+                            </div>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                בגלל אפקט העור (Skin Effect) ואפקט הקרבה (Proximity Effect), התנגדות ה-AC גדלה פי 1.8 מהתנגדות ה-DC, ומוסיפה עוד 18W-24W הפסדים.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>13.4 השוואה כמותית: סינון פסיבי מול אלגוריתם OEPC אקטיבי</h3>
+                    <p>
+                        הטבלה שלהלן מסכמת את ההשוואה ההנדסית הכמותית בין פתרון הסינון הפסיבי המקובל לבין פתרון הבקרה האופטימלי שפותח בפרויקט עבור מנוע OEMER QS 100S (7.1 kW):
+                    </p>
+
+                    <div class="table-container">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>פרמטר הנדסי</th>
+                                    <th>פתרון פסיבי (סליל חניקה CM Choke)</th>
+                                    <th>בקרת OEPC אקטיבית (פרויקט זה)</th>
+                                    <th>החיסכון / היתרון המושג</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="highlight-row">
+                                    <td><strong>משקל רכיבי הסינון</strong></td>
+                                    <td>4.65 ק"ג (ליבת פריט/ננו-קריסטליין + נחושת)</td>
+                                    <td><strong>0.00 ק"ג (ללא שום סליל)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">חיסכון של 100% במשקל הסינון!</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>נפח חומרה (Volume)</strong></td>
+                                    <td>1,280 סמ"ק (דורש מקום ייעודי במארז)</td>
+                                    <td><strong>0 סמ"ק (מימוש תוכנתי ב-DSP)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">מארז ממיר קומפקטי וקל משקל</span></td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>הפסדי הספק נוספים</strong></td>
+                                    <td>46W עד 66W חום ברציפות</td>
+                                    <td><strong>0W (אפס הפסדים מגנטיים)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">שיפור נצילות הממיר ב-0.85%</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>דיכוי זרם ZSC בפועל</strong></td>
+                                    <td>86.5% (מוגבל ע"י רוויה והשראות זליגה)</td>
+                                    <td><strong>98.4% (דעיכה כמעט מושלמת)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">דיכוי מדויק וחסין רוויה</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>עלות ייצור חומרה (BOM)</strong></td>
+                                    <td>גבוהה (ליבות ננו-קריסטליין יקרות)</td>
+                                    <td><strong>נמוכה ביותר (מימוש באלגוריתם קיים)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">חיסכון כספי משמעותי במערכת</span></td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>זמן תגובה דינמי</strong></td>
+                                    <td>תלוי בקבוע הזמן המגנטי $\tau = L_0/R_0$</td>
+                                    <td><strong>תגובה מיידית (0.45 ms במחזור הבא)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">דינמיקה סופר-מהירה לשינויי עומס</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="chapter-section" id="ch-10">
+                    <span class="chapter-badge">פרק 10</span>
                     <h2>אפיון, כיול מנוע OEMER QS 100S ופענוח אינקודר SICK HIPERFACE</h2>
 
                     <h3>מפרט טכני של מנוע ה-PMSM המעבדתי (OEMER Motori Elettrici)</h3>
@@ -3880,199 +4455,8 @@ def get_book_html():
                     </p>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 7: ALTIUM HARDWARE DESIGN                            -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-08">
-                    <span class="chapter-badge">פרק 08</span>
-                    <h2>תכנון ומימוש כרטיסי החומרה ב-Altium Designer</h2>
-
-                    <h3>שלושת כרטיסי החומרה שתוכננו לפרויקט</h3>
-                    <p>
-                        להשלמת הפלטפורמה המעבדתית תוכננו, נותחו ועוצבו 3 כרטיסי מעגלים מודפסים (PCB) רב-שכבתיים בתוכנת <strong>Altium Designer</strong>:
-                    </p>
-
-                    <div class="fig-wrapper">
-                        <img src="presentation_assets/hardware_setup_photo.jpg" alt="Laboratory Inverter & Altium Modules" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 8.1:</strong> מודולי החומרה המעבדתיים, כרטיסי המדידה המבודדים ועמדת הניסוי של ממיר ההספק.</div>
-                    </div>
-
-                    <div class="grid-3col">
-                        <div class="info-card">
-                            <h4>⚡ 1. כרטיס מתח מבודד</h4>
-                            <p style="font-size:13px; color:var(--text-muted);">
-                                <strong>Isolated HV Measurement V2.1:</strong> מודד מתחי DC גבוהים עד $800\text{V}$ באמצעות מגבר בידוד אופטי ומחלק מתח נגדי מדויק ($0.1\%$), עם מתח בידוד גלווני של $5\text{kV}$ להגנה על כרטיסי המיקרו-בקר.
-                            </p>
-                        </div>
-                        <div class="info-card">
-                            <h4>🧲 2. כרטיס חיישן זרם</h4>
-                            <p style="font-size:13px; color:var(--text-muted);">
-                                <strong>Isolated Current Sensor V2.1:</strong> מבוסס חיישני אפקט הול (Hall Effect) מהירים ברוחב פס של $200\text{kHz}$, לדגימה מדויקת של זרמי הפאזות ורכיב ה-ZSC ללא הפרעות ומגע חשמלי.
-                            </p>
-                        </div>
-                        <div class="info-card">
-                            <h4>🔌 3. כרטיס מיתוג הספק</h4>
-                            <p style="font-size:13px; color:var(--text-muted);">
-                                <strong>Power Switch - GUN V2:</strong> ענף מיתוג הספק מהיר מבוסס מוליכים מתקדמים (GaN/SiC) ודרייברים מבודדים עם הגנות קצר, Dead-time מובנה וניתוב זרמי פריקה מהירים.
-                            </p>
-                        </div>
-                    </div>
-
-                    <h3>שיקולי Layout וניתוב אותות מהירים</h3>
-                    <p>
-                        בשל קפיצות המתח החדות ($dv/dt$) בממיר, הוקפד על הפרדה פיזית מלאה בין משטחי האדמה (Ground Planes) של מתח גבוה לאדמת הבקרה השקטה, מזעור לולאות השראות פיזור בדרייברים, ושימוש בסיכוך דיפרנציאלי.
-                    </p>
-
-                    <!-- Modern Didactic Process Pipeline: Isolated Sensing Signal Chain -->
-                    <div class="process-pipeline">
-                        <div class="pipeline-title-bar">
-                            <h3>🔬 שרשרת עיבוד האותות ובידוד גלווני במעגלי מדידת הזרם (Isolated Current Sensor V2.1)</h3>
-                            <span class="pipeline-tag">Hardware Signal Chain • 5 שלבים</span>
-                        </div>
-                        <div class="pipeline-grid">
-                            <div class="pipeline-stage-card">
-                                <div class="stage-header">
-                                    <div class="stage-badge">01</div>
-                                    <div>
-                                        <div class="stage-title">חישת Shunt קלוין 4-חוטי</div>
-                                        <div class="stage-desc">המרה ישירה של זרם הפאזה למפל מתח זעיר</div>
-                                    </div>
-                                </div>
-                                <div class="stage-io-box">
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">קלט:</span>
-                                        <span class="stage-io-val">i_{phase} = ±30A</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">הליך:</span>
-                                        <span class="stage-io-val">R_{shunt} = 2mΩ (Manganin 0.1%)</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">פלט:</span>
-                                        <span class="stage-io-val">v_{shunt} = ±60mV</span>
-                                    </div>
-                                </div>
-                                <div class="stage-checkpoint">
-                                    <span>🔍 דיוק חומרה: 4-wire Kelvin מבטל השפעת התנגדות הלחמה</span>
-                                </div>
-                            </div>
-
-                            <div class="pipeline-stage-card">
-                                <div class="stage-header">
-                                    <div class="stage-badge purple">02</div>
-                                    <div>
-                                        <div class="stage-title">בידוד אופטי ומודולציית ΔΣ</div>
-                                        <div class="stage-desc">הפרדה גלוונית של 5kV באמצעות מגבר AMC1301</div>
-                                    </div>
-                                </div>
-                                <div class="stage-io-box">
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">קלט:</span>
-                                        <span class="stage-io-val">v_{shunt} בצד מתח גבוה</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">הליך:</span>
-                                        <span class="stage-io-val">הגברה G=8.2 והמרה דיגיטלית פנימית</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">פלט:</span>
-                                        <span class="stage-io-val">מתח דיפרנציאלי מבודד בצד ה-DSP</span>
-                                    </div>
-                                </div>
-                                <div class="stage-checkpoint">
-                                    <span>🔍 חסינות רעש: עמידות במעברי מיתוג CMTI > 100kV/µs</span>
-                                </div>
-                            </div>
-
-                            <div class="pipeline-stage-card">
-                                <div class="stage-header">
-                                    <div class="stage-badge amber">03</div>
-                                    <div>
-                                        <div class="stage-title">סינון אנטי-אליאסינג Sallen-Key</div>
-                                        <div class="stage-desc">פילטר נמוכים אקטיבי מסדר שני למניעת קיפול תדרים</div>
-                                    </div>
-                                </div>
-                                <div class="stage-io-box">
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">קלט:</span>
-                                        <span class="stage-io-val">אות דיפרנציאלי + ריפל מיתוג 20kHz</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">הליך:</span>
-                                        <span class="stage-io-val">מגבר שרת OPA320 ברוחב פס f_c = 15kHz</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">פלט:</span>
-                                        <span class="stage-io-val">אות סינוס מוחלק ונקי לחלוטין</span>
-                                    </div>
-                                </div>
-                                <div class="stage-checkpoint">
-                                    <span>🔍 איכות אות: יחס אות לרעש SNR > 78dB</span>
-                                </div>
-                            </div>
-
-                            <div class="pipeline-stage-card">
-                                <div class="stage-header">
-                                    <div class="stage-badge green">04</div>
-                                    <div>
-                                        <div class="stage-title">דגימת ADC מהירה ב-DSP</div>
-                                        <div class="stage-desc">המרת אנלוגי-לדיגיטלי מסונכרנת עם ה-PWM</div>
-                                    </div>
-                                </div>
-                                <div class="stage-io-box">
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">קלט:</span>
-                                        <span class="stage-io-val">מתח 0 עד 3.3V (היסט אמצע 1.65V)</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">הליך:</span>
-                                        <span class="stage-io-val">ADC 12-Bit ב-TMS320F28379D</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">פלט:</span>
-                                        <span class="stage-io-val">ספירה דיגיטלית: 0 עד 4095</span>
-                                    </div>
-                                </div>
-                                <div class="stage-checkpoint">
-                                    <span>🔍 סנכרון שעון: דגימה בדיוק ברגע שיא ה-PWM (מינימום רעש)</span>
-                                </div>
-                            </div>
-
-                            <div class="pipeline-stage-card">
-                                <div class="stage-header">
-                                    <div class="stage-badge">05</div>
-                                    <div>
-                                        <div class="stage-title">כיול היסט וחישוב זרם ב-CLA</div>
-                                        <div class="stage-desc">המרה לערך זרם פיזיקלי באמפרים במאיץ החומרה</div>
-                                    </div>
-                                </div>
-                                <div class="stage-io-box">
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">קלט:</span>
-                                        <span class="stage-io-val">ADC_Result, כיול אפס Offset</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">הליך:</span>
-                                        <span class="stage-io-val">i = (ADC_Result - Offset) × K_{cal}</span>
-                                    </div>
-                                    <div class="stage-io-row">
-                                        <span class="stage-io-label">פלט:</span>
-                                        <span class="stage-io-val">i_a, i_b, i_c בדיוק 0.05A</span>
-                                    </div>
-                                </div>
-                                <div class="stage-checkpoint">
-                                    <span>🔍 אפס השהיית CPU: חישוב ב-CLA ללא העמסה על ליבת ה-C28x</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- ============================================================ -->
-                <!-- CHAPTER 8: MECHANICAL BENCH & DYNO                           -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-09">
-                    <span class="chapter-badge">פרק 09</span>
+                <section class="chapter-section" id="ch-11">
+                    <span class="chapter-badge">פרק 11</span>
                     <h2>המכלול המכני (SolidWorks CAD) ועמדת הדיינו</h2>
 
                     <p>
@@ -4092,89 +4476,8 @@ def get_book_html():
                     </ul>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 9: BENCHMARKING & CONCLUSIONS                        -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-10">
-                    <span class="chapter-badge">פרק 10</span>
-                    <h2>השוואת ביצועים כוללת (Benchmarking) ומסקנות</h2>
-
-                    <p>
-                        להלן טבלת השוואה כמותית מקיפה המרכזת את תוצאות הביצועים שנמדדו במעבדה וב-C-HIL עבור שיטת ה-OEPC המוצעת מול השיטות המקובלות בספרות המדעית:
-                    </p>
-
-                    <div class="table-container">
-                        <table class="styled-table">
-                            <thead>
-                                <tr>
-                                    <th>מדד ביצועים</th>
-                                    <th>בקרת OEPC המוצעת</th>
-                                    <th>שיטת TDM (חיתוך בזמן)</th>
-                                    <th>CBPWM (מודולציה קלאסית)</th>
-                                    <th>Dual Inverter (ספק כפול)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="highlight-row">
-                                    <td><strong>תכולת הרמוניות בזרם (THD)</strong></td>
-                                    <td><strong>1.85%</strong></td>
-                                    <td>4.12%</td>
-                                    <td>3.45%</td>
-                                    <td>2.10%</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>דיכוי זרם סדרה אפס (ZSC)</strong></td>
-                                    <td><strong>98.4% (זניח לחלוטין)</strong></td>
-                                    <td>86.5%</td>
-                                    <td>0% (דורש סלילי חניקה כבדים)</td>
-                                    <td>אינו קיים (בגלל ספק מבודד)</td>
-                                </tr>
-                                <tr class="highlight-row">
-                                    <td><strong>זמן תגובה בצעד מומנט</strong></td>
-                                    <td><strong>0.45 ms</strong></td>
-                                    <td>2.10 ms</td>
-                                    <td>1.80 ms</td>
-                                    <td>1.50 ms</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>תדר מיתוג ממוצע למפסק</strong></td>
-                                    <td><strong>18.4 kHz (משתנה)</strong></td>
-                                    <td>25.0 kHz (קבוע)</td>
-                                    <td>20.0 kHz (קבוע)</td>
-                                    <td>20.0 kHz (קבוע)</td>
-                                </tr>
-                                <tr class="highlight-row">
-                                    <td><strong>מורכבות החומרה (עלות)</strong></td>
-                                    <td><strong>נמוכה ביותר (ספק DC בודד)</strong></td>
-                                    <td>נמוכה (ספק DC בודד)</td>
-                                    <td>גבוהה (סלילי חניקה יקרים)</td>
-                                    <td>גבוהה מאוד (שני ספקי DC מבודדים)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>חסינות לקצר פנימי (ITSC)</strong></td>
-                                    <td><strong>אינהרנטית ומיידית</strong></td>
-                                    <td>מוגבלת</td>
-                                    <td>ללא חסינות (התפתחות כשל)</td>
-                                    <td>דורש בקר תקלה ייעודי</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h3>תרומה אקדמית ופרסום מדעי</h3>
-                    <p>
-                        תוצאות המחקר סוכמו במאמר מדעי מקיף שהוגש לפרסום בכתב העת היוקרתי <strong>IEEE Transactions on Industrial Electronics (IEEE TIE, 2026)</strong> תחת הכותרת:
-                    </p>
-                    <div class="math-block" style="direction: ltr; text-align: left;">
-                        "Hardware-Efficient Optimal Error-Priority Control for Series-End VSI With ZSC Suppression"
-                    </div>
-                </section>
-
-                <!-- ============================================================ -->
-                <!-- CHAPTER 11: GIT, GITHUB & WORKFLOW INFRASTRUCTURE            -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-11">
-                    <span class="chapter-badge">פרק 11</span>
+                <section class="chapter-section" id="ch-12">
+                    <span class="chapter-badge">פרק 12</span>
                     <h2>סביבת פיתוח, ניהול גרסאות ב-Git ופרסום ענן ב-GitHub Pages</h2>
 
                     <p class="lead-text">
@@ -4430,11 +4733,8 @@ def get_book_html():
                     </ul>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 12: LAB SAFETY, HIGH VOLTAGE & DYNO PROTOCOLS        -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-12">
-                    <span class="chapter-badge">פרק 12</span>
+                <section class="chapter-section" id="ch-13">
+                    <span class="chapter-badge">פרק 13</span>
                     <h2>פרוטוקול בטיחות, גהות ונוהל הפעלת מתח גבוה בעמדת הניסוי</h2>
 
                     <p class="lead-text">
@@ -4756,163 +5056,6 @@ def get_book_html():
                     </div>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 13: MAGNETIC DESIGN & PASSIVE ZSC CHOKE MODELING     -->
-                <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-13">
-                    <span class="chapter-badge">פרק 13</span>
-                    <h2>תכנון מגנטי, מידול סלילי חניקה וסינון זרם סדרה אפס פסיבי</h2>
-
-                    <p class="lead-text">
-                        אחד ממוקדי החדשנות והחיסכון המרכזיים בטופולוגיית Series-End VSI עם בקרת OEPC הוא החיסכון החומרתי ברכיבים מגנטיים פסיביים כבדים ויקרים. בממירי כוח קונבנציונליים המוזנים ממקור DC יחיד, מתח סדרה אפס ($v_0$) מניע זרם ZSC גבוה בחוג סגור דרך שני הממירים וסלילי המנוע. כדי לבלום זרם זה ללא בקרה אקטיבית, נדרש שילוב של סלילי חניקה Common-Mode (CM Chokes) מסיביים. פרק זה מנתח את התכנון המגנטי של רכיבים פסיביים אלו וממחיש באופן כמותי את החיסכון במשקל, בנפח ובהפסדים המושג הודות לאלגוריתם ה-OEPC.
-                    </p>
-
-                    <div class="alert-box alert-info">
-                        <div class="alert-icon">🧲</div>
-                        <div>
-                            <strong>הרעיון המדעי המרכזי של מאמר ה-IEEE TIE:</strong><br>
-                            אלגוריתם ה-OEPC מבטל את הצורך בסלילי חניקה מגנטיים כבדים (Common-Mode Chokes) בעזרת בחירה חכמה מתוך טבלת 96 וקטורי המתח המרחביים, תוך שקלול מתמיד של שגיאת ה-ZSC בפונקציית העלות האופטימלית ($W_{zsc}$).
-                        </div>
-                    </div>
-
-                    <h3>13.1 מקור מתח סדרה אפס בממיר Series-End VSI</h3>
-                    <p>
-                        בטופולוגיית Series-End VSI בעלת ספק DC יחיד וסלילי מנוע פתוחים, מתח סדרה אפס מוגדר כממוצע מתחי הפאזה מול נקודת האמצע הווירטואלית של ה-DC Link:
-                    </p>
-
-                    <div class="math-block">
-                        $$v_0(t) = \frac{v_{an}(t) + v_{bn}(t) + v_{cn}(t)}{3}$$
-                    </div>
-
-                    <p>
-                        משוואת המתח והזרם בלולאת סדרה אפס נתונה על ידי:
-                    </p>
-
-                    <div class="math-block">
-                        $$v_0(t) = R_0 \cdot i_0(t) + L_0 \cdot \frac{d i_0(t)}{dt}$$
-                    </div>
-
-                    <p>
-                        במנוע PMSM בעל סלילים שווים ומפוזרים באופן סימטרי, השראות סדרה אפס הטבעית של המנוע ($L_0 = L_\sigma$) נמוכה מאוד (כרבע עד עשירית מהשראות ה-d וה-q). כתוצאה מכך, מתח סדרה אפס בתדרי המיתוג יוצר זרמי $i_0$ הרסניים המגיעים לאמפרים רבים, הגורמים לחימום חריף של עוגן המנוע, הפסדי נחושת מיותרים, ותנודות מומנט פועמות.
-                    </p>
-
-                    <h3>13.2 מידול מתמטי ותכנון סליל חניקה Common-Mode פסיבי</h3>
-                    <p>
-                        בגישה הפסיבית הקונבנציונלית, מותקן סליל חניקה טורואידלי בעל 3 ליפופים זהים המלופפים באותו כיוון על גבי ליבה מגנטית אחת. זרמי הפאזה הסימטריים ($i_a + i_b + i_c = 0$) מבטלים את השטף המגנטי אחד של השני בליבה, אך זרם סדרה אפס רואה השראות גבוהה פי 3.
-                    </p>
-
-                    <h4>משוואות התכנון המגנטי:</h4>
-                    <div class="math-block">
-                        $$L_{cm} = \frac{\mu_0 \cdot \mu_r \cdot N^2 \cdot A_e}{l_e}$$
-                    </div>
-                    <ul class="bullet-list">
-                        <li>$\mu_0 = 4\pi \times 10^{-7} \, \text{H/m}$ — פרמאביליות הריק.</li>
-                        <li>$\mu_r$ — פרמאביליות יחסית של הליבה (בד"כ ננו-קריסטליין $\mu_r \approx 30,000$ או פריט $\mu_r \approx 5,000$).</li>
-                        <li>$N$ — מספר הליפופים לכל פאזה.</li>
-                        <li>$A_e$ — שטח החתך האפקטיבי של הליבה המגנטית ($\text{m}^2$).</li>
-                        <li>$l_e$ — אורך המסלול המגנטי הממוצע ($\text{m}$).</li>
-                    </ul>
-
-                    <h4>מניעת רוויה מגנטית (Saturation Prevention):</h4>
-                    <div class="math-block">
-                        $$B_{max} = \frac{V_{0,peak}}{2 \pi \cdot f_{sw} \cdot N \cdot A_e} \le B_{sat}$$
-                    </div>
-                    <p>
-                        כדי למנוע רוויה של הליבה המגנטית במיתוג תדר גבוה (18-25 kHz) עם צפיפות שטף רוויה $B_{sat} \approx 1.2 \, \text{T}$ (ננו-קריסטליין) או $0.4 \, \text{T}$ (פריט), שטח החתך $A_e$ ומספר הליפופים $N$ חייבים להיות גדולים באופן משמעותי, מה שמגדיל ישירות את נפח הליבה ומשקלה.
-                    </p>
-
-                    <h3>13.3 ניתוח הפסדים וגודל פיזי (Core & Copper Losses)</h3>
-                    <p>
-                        שילוב סליל חניקה פסיבי גובה מחיר כבד בנצילות המערכת בגלל שני מנגנוני הפסדים עיקריים:
-                    </p>
-
-                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin: 20px 0;">
-                        <div class="card">
-                            <h4 style="color:#f59e0b; margin-top:0;">הפסדי ליבה מגנטית (Core Losses - $P_{fe}$)</h4>
-                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
-                                מחושבים באמצעות מודל שטיינמץ המוכלל (iGSE):
-                            </p>
-                            <div class="math-block" style="font-size:14px;">
-                                $$P_{fe} = k \cdot f_{sw}^\alpha \cdot B_{max}^\beta \cdot V_e$$
-                            </div>
-                            <p style="font-size:13px; color:var(--text-muted);">
-                                בתדרי מיתוג של 20 kHz עם הרמוניות תלולות, הפסדי ההיסטרזיס וזרמי המערבולת בליבה מייצרים חום של כ-28W עד 42W ברציפות.
-                            </p>
-                        </div>
-                        <div class="card">
-                            <h4 style="color:#ef4444; margin-top:0;">הפסדי נחושת (Copper Losses - $P_{cu}$)</h4>
-                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
-                                נובעים מהתנגדות הליפופים במעבר זרם הפאזה הנומינלי ($I_{rms} = 15.2 \, \text{A}$):
-                            </p>
-                            <div class="math-block" style="font-size:14px;">
-                                $$P_{cu} = 3 \cdot I_{rms}^2 \cdot R_{ac}(f)$$
-                            </div>
-                            <p style="font-size:13px; color:var(--text-muted);">
-                                בגלל אפקט העור (Skin Effect) ואפקט הקרבה (Proximity Effect), התנגדות ה-AC גדלה פי 1.8 מהתנגדות ה-DC, ומוסיפה עוד 18W-24W הפסדים.
-                            </p>
-                        </div>
-                    </div>
-
-                    <h3>13.4 השוואה כמותית: סינון פסיבי מול אלגוריתם OEPC אקטיבי</h3>
-                    <p>
-                        הטבלה שלהלן מסכמת את ההשוואה ההנדסית הכמותית בין פתרון הסינון הפסיבי המקובל לבין פתרון הבקרה האופטימלי שפותח בפרויקט עבור מנוע OEMER QS 100S (7.1 kW):
-                    </p>
-
-                    <div class="table-container">
-                        <table class="styled-table">
-                            <thead>
-                                <tr>
-                                    <th>פרמטר הנדסי</th>
-                                    <th>פתרון פסיבי (סליל חניקה CM Choke)</th>
-                                    <th>בקרת OEPC אקטיבית (פרויקט זה)</th>
-                                    <th>החיסכון / היתרון המושג</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="highlight-row">
-                                    <td><strong>משקל רכיבי הסינון</strong></td>
-                                    <td>4.65 ק"ג (ליבת פריט/ננו-קריסטליין + נחושת)</td>
-                                    <td><strong>0.00 ק"ג (ללא שום סליל)</strong></td>
-                                    <td><span style="color:#10b981; font-weight:700;">חיסכון של 100% במשקל הסינון!</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>נפח חומרה (Volume)</strong></td>
-                                    <td>1,280 סמ"ק (דורש מקום ייעודי במארז)</td>
-                                    <td><strong>0 סמ"ק (מימוש תוכנתי ב-DSP)</strong></td>
-                                    <td><span style="color:#10b981; font-weight:700;">מארז ממיר קומפקטי וקל משקל</span></td>
-                                </tr>
-                                <tr class="highlight-row">
-                                    <td><strong>הפסדי הספק נוספים</strong></td>
-                                    <td>46W עד 66W חום ברציפות</td>
-                                    <td><strong>0W (אפס הפסדים מגנטיים)</strong></td>
-                                    <td><span style="color:#10b981; font-weight:700;">שיפור נצילות הממיר ב-0.85%</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>דיכוי זרם ZSC בפועל</strong></td>
-                                    <td>86.5% (מוגבל ע"י רוויה והשראות זליגה)</td>
-                                    <td><strong>98.4% (דעיכה כמעט מושלמת)</strong></td>
-                                    <td><span style="color:#10b981; font-weight:700;">דיכוי מדויק וחסין רוויה</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>עלות ייצור חומרה (BOM)</strong></td>
-                                    <td>גבוהה (ליבות ננו-קריסטליין יקרות)</td>
-                                    <td><strong>נמוכה ביותר (מימוש באלגוריתם קיים)</strong></td>
-                                    <td><span style="color:#10b981; font-weight:700;">חיסכון כספי משמעותי במערכת</span></td>
-                                </tr>
-                                <tr class="highlight-row">
-                                    <td><strong>זמן תגובה דינמי</strong></td>
-                                    <td>תלוי בקבוע הזמן המגנטי $\tau = L_0/R_0$</td>
-                                    <td><strong>תגובה מיידית (0.45 ms במחזור הבא)</strong></td>
-                                    <td><span style="color:#10b981; font-weight:700;">דינמיקה סופר-מהירה לשינויי עומס</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <!-- ============================================================ -->
-                <!-- CHAPTER 14: EXPERIMENTAL TEST BENCH PROTOCOL & RESULTS       -->
-                <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-14">
                     <span class="chapter-badge">פרק 14</span>
                     <h2>פרוטוקול ניסויי מעבדה מקיף ותוצאות מדידה בפועל</h2>
@@ -5257,178 +5400,81 @@ def get_book_html():
                     </div>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 15: INTERACTIVE PMSM MOTOR & INVERTER LEGS ANATOMY   -->
-                <!-- ============================================================ -->
-                <!-- CHAPTER 15: INTERACTIVE PMSM MOTOR & 4-LEG INVERTER ANATOMY    -->
-                <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-15">
                     <span class="chapter-badge">פרק 15</span>
-                    <h2>אנטומיה פיזיקלית והדמיה אינטראקטיבית: רוטור מגנטים, סלילי סטטור וחיבור ל-4 רגלי ממיר Series-End VSI (סכמת איור 1.2)</h2>
+                    <h2>השוואת ביצועים כוללת (Benchmarking) ומסקנות</h2>
 
-                    <p class="lead-text">
-                        כדי לחבר בין התאוריה המתמטית של בקרת השדה המכוון ($d-q$), מודל ה-OEPC וטבלת המצבים, לבין סכמת המעגל המחקרית שהוצגה בפרק 1 (איור 1.2 מהמאמר), פותחה הדמיה זו המציגה חתך דו-ממדי דינמי (Cross-Section) של מנוע ה-PMSM (מבוסס מנוע ה-OEMER QS 100S בעל 4 קטבים) במקביל למעגל הכוח של ממיר ה-Series-End VSI בעל 4 ענפים ($L_1, L_2, L_3, L_4$). ההדמיה ממחישה בזמן אמת כיצד מיתוג 4 רגלי הממיר מזרים זרמים בשלושת סלילי הסטטור הפתוחים המחוברים בטור ישיר, כיצד נוצר שדה מגנטי מסתובב באוויר הרווח ($B_s$), וכיצד דיכוי מצב המפסקים ($S_1 = S_4$) מונע את התפתחות זרם סדרה אפס (ZSC) בלולאה הסגורה!
+                    <p>
+                        להלן טבלת השוואה כמותית מקיפה המרכזת את תוצאות הביצועים שנמדדו במעבדה וב-C-HIL עבור שיטת ה-OEPC המוצעת מול השיטות המקובלות בספרות המדעית:
                     </p>
 
-                    <!-- Interactive Simulation Card -->
-                    <div class="sim-embed-card" id="sim3-card">
-                        <div class="sim-embed-header">
-                            <div>
-                                <h3>🔬 הדמיה 3: מודל חתך מנוע PMSM (4 קטבים) וחיבור ל-4 ענפי ממיר Series-End VSI (לפי איור 1.2)</h3>
-                                <p style="color:var(--text-muted); font-size:13px; margin-top:4px;">
-                                    צפה ברוטור המגנטים המסתובב, זרימת זרמי הפאזות בסלילים הטוריים, ומצבי ההולכה של 4 ענפי הממיר ($L_1-L_4$) עם המחשת מסלול ה-ZSC בזמן אמת.
-                                </p>
-                            </div>
-                            <span class="badge" style="background:rgba(0,210,255,0.15); color:var(--accent-cyan); border:1px solid var(--accent-cyan); padding:4px 10px; border-radius:20px; font-size:12px;">
-                                60FPS 4-Leg Series-End VSI Core
-                            </span>
-                        </div>
-
-                        <div class="sim-container-grid">
-                            <!-- Controls Panel -->
-                            <div class="sim-controls-panel">
-                                <h4 style="color:var(--accent-cyan); margin:0 0 8px 0; font-size:14px; border-bottom:1px solid var(--border-subtle); padding-bottom:6px;">🎛️ לוח בקרה להדמיית מנוע ו-4 ענפי ממיר</h4>
-
-                                <div class="control-group">
-                                    <label><span>מהירות סיבוב מנוע (RPM):</span> <span id="val-motor-rpm" class="en-term" style="color:var(--accent-cyan); font-weight:700;">600 RPM</span></label>
-                                    <input type="range" id="slider-motor-rpm" min="0" max="1800" step="50" value="600" oninput="updateMotorParams()">
-                                </div>
-
-                                <div class="control-group">
-                                    <label><span>זווית מומנט עומס ($\delta$):</span> <span id="val-motor-delta" class="en-term" style="color:#10b981; font-weight:700;">90° (MTPA)</span></label>
-                                    <input type="range" id="slider-motor-delta" min="0" max="150" step="5" value="90" oninput="updateMotorParams()">
-                                </div>
-
-                                <div class="control-group" style="display:flex; flex-direction:column; gap:8px;">
-                                    <label style="margin-bottom:0;"><span>בקרת ZSC ושדות:</span></label>
-                                    <div style="display:flex; gap:8px;">
-                                        <button class="btn-toggle active" id="btn-toggle-zsc" onclick="toggleZscSuppression()" style="flex:1; font-size:11.5px;">🛡️ דיכוי ZSC (S1=S4)</button>
-                                        <button class="btn-toggle active" id="btn-toggle-flux" onclick="toggleFluxLines()" style="flex:1; font-size:11.5px;">🧲 קווי שטף</button>
-                                    </div>
-                                    <button class="btn-toggle active" id="btn-toggle-dq" onclick="toggleDqVectors()" style="width:100%; font-size:11.5px;">🧭 צירי d-q ו-Bs</button>
-                                </div>
-
-                                <div class="control-group" style="display:flex; gap:8px;">
-                                    <button class="btn-toggle" onclick="stepMotor(-15)" style="flex:1; font-size:12px;">◀ פסיעה -15°</button>
-                                    <button class="btn-toggle" onclick="stepMotor(15)" style="flex:1; font-size:12px;">פסיעה +15° ▶</button>
-                                </div>
-
-                                <div class="control-group" style="display:flex; gap:8px; margin-top:4px;">
-                                    <button class="btn-toggle active" id="btn-motor-run" onclick="toggleMotorSim()" style="flex:1;">⏸️ השהה / הפעל</button>
-                                    <button class="btn-toggle" onclick="resetMotorSim()" style="flex:1;">🔄 איפוס</button>
-                                </div>
-
-                                <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle); border-radius:8px; padding:10px; font-size:11.5px; color:var(--text-muted); line-height:1.5;">
-                                    <strong style="color:#fff; display:block; margin-bottom:4px;">חיבור 4 ענפים (איור 1.2):</strong>
-                                    <div><span style="color:#ef4444; font-weight:700;">פאזה A ($Z_a$):</span> בין ענף 1 לבין ענף 2 ($v_a = v_1 - v_2$)</div>
-                                    <div><span style="color:#10b981; font-weight:700;">פאזה B ($Z_b$):</span> בין ענף 2 לבין ענף 3 ($v_b = v_2 - v_3$)</div>
-                                    <div><span style="color:#38bdf8; font-weight:700;">פאזה C ($Z_c$):</span> בין ענף 3 לבין ענף 4 ($v_c = v_3 - v_4$)</div>
-                                    <div style="margin-top:4px; border-top:1px dashed var(--border-subtle); padding-top:4px;"><span style="color:#f43f5e; font-weight:700;">לולאת ZSC:</span> סכום המתחים $v_1 - v_4$. מדוכא כאשר $S_1 = S_4$.</div>
-                                </div>
-                            </div>
-
-                            <!-- Canvas and Telemetry View -->
-                            <div class="sim-view-panel">
-                                <div style="position:relative; width:100%; height:460px; background:#050811; border:1px solid var(--border-subtle); border-radius:12px; overflow:hidden;">
-                                    <canvas id="motor-inverter-canvas" style="position:absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
-                                    <div class="canvas-title-badge" style="left:12px; right:auto; direction:ltr;">4-Leg Series-End VSI & PMSM Core (Fig 1.2)</div>
-                                </div>
-
-                                <div class="telemetry-strip">
-                                    <div class="telemetry-item">
-                                        <span class="lbl">זווית מכנית ($\theta_m$)</span>
-                                        <span class="val" id="disp-motor-thetam">0.0°</span>
-                                    </div>
-                                    <div class="telemetry-item">
-                                        <span class="lbl">זווית חשמלית ($\theta_e$)</span>
-                                        <span class="val" id="disp-motor-thetae">0.0°</span>
-                                    </div>
-                                    <div class="telemetry-item">
-                                        <span class="lbl">4 ענפים $[S_1 S_2 S_3 S_4]$</span>
-                                        <span class="val" id="disp-motor-sw" style="font-size:12.5px;">[1 0 1 1]</span>
-                                    </div>
-                                    <div class="telemetry-item">
-                                        <span class="lbl">מתח ZSC ($v_1 - v_4$)</span>
-                                        <span class="val" id="disp-motor-v0" style="color:#10b981; font-size:12.5px;">0 V (מדוכא)</span>
-                                    </div>
-                                    <div class="telemetry-item">
-                                        <span class="lbl">מומנט אלקטרומגנטי ($T_e$)</span>
-                                        <span class="val" id="disp-motor-te">14.2 Nm</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="table-container">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>מדד ביצועים</th>
+                                    <th>בקרת OEPC המוצעת</th>
+                                    <th>שיטת TDM (חיתוך בזמן)</th>
+                                    <th>CBPWM (מודולציה קלאסית)</th>
+                                    <th>Dual Inverter (ספק כפול)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="highlight-row">
+                                    <td><strong>תכולת הרמוניות בזרם (THD)</strong></td>
+                                    <td><strong>1.85%</strong></td>
+                                    <td>4.12%</td>
+                                    <td>3.45%</td>
+                                    <td>2.10%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>דיכוי זרם סדרה אפס (ZSC)</strong></td>
+                                    <td><strong>98.4% (זניח לחלוטין)</strong></td>
+                                    <td>86.5%</td>
+                                    <td>0% (דורש סלילי חניקה כבדים)</td>
+                                    <td>אינו קיים (בגלל ספק מבודד)</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>זמן תגובה בצעד מומנט</strong></td>
+                                    <td><strong>0.45 ms</strong></td>
+                                    <td>2.10 ms</td>
+                                    <td>1.80 ms</td>
+                                    <td>1.50 ms</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>תדר מיתוג ממוצע למפסק</strong></td>
+                                    <td><strong>18.4 kHz (משתנה)</strong></td>
+                                    <td>25.0 kHz (קבוע)</td>
+                                    <td>20.0 kHz (קבוע)</td>
+                                    <td>20.0 kHz (קבוע)</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>מורכבות החומרה (עלות)</strong></td>
+                                    <td><strong>נמוכה ביותר (ספק DC בודד)</strong></td>
+                                    <td>נמוכה (ספק DC בודד)</td>
+                                    <td>גבוהה (סלילי חניקה יקרים)</td>
+                                    <td>גבוהה מאוד (שני ספקי DC מבודדים)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>חסינות לקצר פנימי (ITSC)</strong></td>
+                                    <td><strong>אינהרנטית ומיידית</strong></td>
+                                    <td>מוגבלת</td>
+                                    <td>ללא חסינות (התפתחות כשל)</td>
+                                    <td>דורש בקר תקלה ייעודי</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <h3>15.1 אנטומיה פיזיקלית של מנוע ה-OEMER QS 100S</h3>
+                    <h3>תרומה אקדמית ופרסום מדעי</h3>
                     <p>
-                        המנוע הנבדק במעבדה הוא מנוע סינכרוני עם מגנטים קבועים תעשייתי בעל מבנה ייעודי:
+                        תוצאות המחקר סוכמו במאמר מדעי מקיף שהוגש לפרסום בכתב העת היוקרתי <strong>IEEE Transactions on Industrial Electronics (IEEE TIE, 2026)</strong> תחת הכותרת:
                     </p>
-
-                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin: 20px 0;">
-                        <div class="card" style="border-right: 3px solid #ef4444;">
-                            <h4 style="color:#ef4444; margin-top:0;">רוטור בעל 4 קטבים (p=2 Pole Pairs)</h4>
-                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
-                                הרוטור כולל 4 מגנטים קבועים מניאודימיום (NdFeB) בעלי צפיפות אנרגיה גבוהה המסודרים לסירוגין סביב הציר: <strong>צפון (N) $\rightarrow$ דרום (S) $\rightarrow$ צפון (N) $\rightarrow$ דרום (S)</strong>. כתוצאה מכך, על כל סיבוב מכני יחיד ($360^\circ$ מכניות), השדה המגנטי משלים <strong>שני מחזורים חשמליים מלאים</strong> ($\theta_e = 2 \cdot \theta_m$).
-                            </p>
-                        </div>
-                        <div class="card" style="border-right: 3px solid #38bdf8;">
-                            <h4 style="color:#38bdf8; margin-top:0;">סטטור עם סלילים פתוחים (Open-Ended Winding)</h4>
-                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
-                                עוגן הסטטור בנוי מלמינציות פלדת סיליקון (Silicon Steel) בעלות הפסדי היסטרזיס נמוכים. בניגוד למנוע סטנדרטי שבו קצוות הפאזות מחוברים יחד בתוך המנוע לנקודת ניוטרל כוכב, במנוע ה-OEMER כל 6 הקצוות של שלושת הסלילים ($A_1-A_2, B_1-B_2, C_1-C_2$) מוצאים החוצה לחיבור ישיר לענפי הממיר.
-                            </p>
-                        </div>
+                    <div class="math-block" style="direction: ltr; text-align: left;">
+                        "Hardware-Efficient Optimal Error-Priority Control for Series-End VSI With ZSC Suppression"
                     </div>
-
-                    <h3>15.2 חיבור קצוות הסלילים בטור בין 4 ענפי הממיר ($L_1-L_4$) ומסלול ה-ZSC (לפי איור 1.2)</h3>
-                    <p>
-                        טופולוגיית ה-Series-End VSI (המוגדרת במלואה באיור 1.2 מהמאמר) עושה שימוש בממיר מתח יחיד בעל <strong>4 ענפי חצי-גשר ($L_1, L_2, L_3, L_4$)</strong> המחוברים במשותף לאותו פס מתח DC ראשי ($+V_{dc}$ ו-$0\text{V}/\text{GND}$):
-                    </p>
-                    <ul class="bullet-list">
-                        <li><strong>סליל פאזה A ($Z_a$):</strong> מחובר בטור בין אמצע ענף 1 ($v_1$) לבין אמצע ענף 2 ($v_2$). מתח הפאזה הנופל עליו הינו:
-                            <div class="math-block" style="font-size:14px;">$$v_a(t) = v_1(t) - v_2(t)$$</div>
-                        </li>
-                        <li><strong>סליל פאזה B ($Z_b$):</strong> מחובר בטור בין אמצע ענף 2 ($v_2$) לבין אמצע ענף 3 ($v_3$). מתח הפאזה הנופל עליו הינו:
-                            <div class="math-block" style="font-size:14px;">$$v_b(t) = v_2(t) - v_3(t)$$</div>
-                        </li>
-                        <li><strong>סליל פאזה C ($Z_c$):</strong> מחובר בטור בין אמצע ענף 3 ($v_3$) לבין אמצע ענף 4 ($v_4$). מתח הפאזה הנופל עליו הינו:
-                            <div class="math-block" style="font-size:14px;">$$v_c(t) = v_3(t) - v_4(t)$$</div>
-                        </li>
-                        <li><strong>צומתי השיתוף הטוריים:</strong>
-                            ענף 2 ($L_2$) מהווה צומת משותף המחבר יחד את סיום סליל פאזה A ותחילת סליל פאזה B ($A_2$ עם $B_1$). ענף 3 ($L_3$) מהווה צומת משותף המחבר יחד את סיום סליל פאזה B ותחילת סליל פאזה C ($B_2$ עם $C_1$). ענפים $L_1$ ו-$L_4$ מהווים את סגירת הקצוות החיצוניים של המערכת.
-                        </li>
-                        <li><strong>סכום מתחי הלולאה והתפתחות ה-ZSC:</strong>
-                            חיבור סכום שלושת מתחי הפאזה חושף תכונה יסודית ומפתיעה:
-                            <div class="math-block" style="font-size:15px;">
-                                $$\sum_{x \in \{a,b,c\}} v_x = v_a + v_b + v_c = (v_1 - v_2) + (v_2 - v_3) + (v_3 - v_4) = v_1 - v_4$$
-                            </div>
-                        </li>
-                        <li><strong>התנאי לדיכוי מוחלט של זרם סדרה אפס ($i_0$):</strong>
-                            מתח הלולאה תלוי אך ורק בהפרש הפוטנציאלים בין הענף הראשון ($L_1$) לענף האחרון ($L_4$). כאשר בקרת ה-OEPC בוחרת מצבי מיתוג שבהם מתקיים <strong>$S_1 = S_4$</strong>, מתקבל $v_1 - v_4 = 0$ ומתח ה-ZSC מתאפס כליל! לעומת זאת, כאשר $S_1 \neq S_4$, נופל על הסלילים מתח לולאה של $\pm V_{dc}$ הדוחף זרם סדרה אפס הרסני בלולאה סגורה (הקו האדום באיור 1.2 ובהדמיה).
-                        </li>
-                    </ul>
-
-                    <h3>15.3 יצירת המומנט האלקטרומגנטי ואינטראקציית צירי d-q</h3>
-                    <p>
-                        כאשר רגלי הממיר ממתגות את זרמי הפאזה הסינוסואידליים $i_a(t), i_b(t), i_c(t)$, הם מייצרים באוויר הרווח של הסטטור שדה מגנטי מסתובב ($B_s$). 
-                    </p>
-                    <p>
-                        שדה זה מפעיל כוח לורנץ מגנטי משיכתי על המגנטים הקבועים של הרוטור ($B_r$). בבקרת השדה המכוון (FOC) ובקרת ה-OEPC:
-                    </p>
-                    <ul class="bullet-list">
-                        <li><strong>ציר d (Direct Axis):</strong> מיושר ישירות עם ציר השטף המגנטי של מגנטי הרוטור. זרם בציר זה ($i_d$) מייצר רק כוח הצמדה רדיאלי ואינו מייצר מומנט סיבובי.</li>
-                        <li><strong>ציר q (Quadrature Axis):</strong> ניצב ב-$90^\circ$ חשמליות לציר ה-d. זרם בציר זה ($i_q$) פועל בזווית אופטימלית של $90^\circ$ מול המגנטים ומייצר את מלוא המומנט הסיבובי:
-                            <div class="math-block">
-                                $$T_e = \frac{3}{2} \cdot p \cdot \psi_{pm} \cdot i_q + \frac{3}{2} \cdot p \cdot (L_d - L_q) \cdot i_d \cdot i_q$$
-                            </div>
-                        </li>
-                        <li>במנוע PMSM בעל מגנטים מודבקים על פני הרוטור (SPMSM) שבו $L_d \approx L_q$, בקרת ה-OEPC שומרת על $i_d = 0$ (זווית עומס $\delta = 90^\circ$), מה שמבטיח פעולה בנצילות שיא ובמומנט מקסימלי לכל אמפר (MTPA).</li>
-                    </ul>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- APPENDICES & DOCUMENTS HUB                                   -->
-                <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-appendices">
                     <span class="chapter-badge">פרק 16</span>
                     <h2>נספחים, קובצי תזה ואינדקס דוחות הפרויקט</h2>
