@@ -1136,6 +1136,321 @@
             direction: ltr;
         }
 
+        /* Git & Workflow Components (Chapter 11) */
+        .badge-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(0, 210, 255, 0.12);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            color: var(--accent-cyan);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .quick-links-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 18px 0;
+            padding: 14px 18px;
+            background: rgba(10, 16, 30, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+        }
+
+        body.light-theme .quick-links-bar {
+            background: #f8fafc;
+        }
+
+        .qlink-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        body.light-theme .qlink-btn {
+            background: #ffffff;
+            color: var(--text-main);
+        }
+
+        .qlink-btn:hover {
+            background: rgba(0, 210, 255, 0.15);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .flow-diagram {
+            background: rgba(8, 13, 24, 0.9);
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            border-radius: 14px;
+            padding: 22px 18px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            position: relative;
+        }
+
+        body.light-theme .flow-diagram {
+            background: #f1f5f9;
+        }
+
+        .flow-step {
+            flex: 1;
+            min-width: 160px;
+            background: rgba(16, 24, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 16px 12px;
+            text-align: center;
+            position: relative;
+        }
+
+        body.light-theme .flow-step {
+            background: #ffffff;
+            border-color: #cbd5e1;
+        }
+
+        .flow-step.active {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+        }
+
+        .flow-step-num {
+            position: absolute;
+            top: -10px;
+            right: 12px;
+            background: var(--accent-cyan);
+            color: #000;
+            font-size: 0.72rem;
+            font-weight: 900;
+            padding: 1px 7px;
+            border-radius: 10px;
+        }
+
+        .flow-step-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .flow-step-cmd {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: #10b981;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 3px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 6px;
+            direction: ltr;
+        }
+
+        .flow-arrow {
+            color: var(--accent-cyan);
+            font-size: 1.4rem;
+            font-weight: 900;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .workflow-card {
+            background: rgba(10, 16, 30, 0.8);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        body.light-theme .workflow-card {
+            background: #ffffff;
+        }
+
+        .workflow-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-cyan);
+        }
+
+        .step-tag {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 2px;
+        }
+
+        .workflow-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .workflow-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .cmd-block {
+            background: #050811;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            margin: 12px 0;
+            overflow: hidden;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .cmd-header {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 8px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            direction: ltr;
+        }
+
+        .cmd-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .cmd-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+        }
+
+        .cmd-body {
+            padding: 12px 14px;
+            direction: ltr;
+            text-align: left;
+            color: #e2e8f0;
+            font-size: 0.86rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .cmd-comment {
+            color: #64748b;
+        }
+
+        .cmd-keyword {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .cmd-arg {
+            color: #f59e0b;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-muted);
+            border-radius: 6px;
+            padding: 3px 9px;
+            font-size: 0.75rem;
+            font-family: 'Heebo', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            border-color: var(--accent-cyan);
+        }
+
+        .alert-box {
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 18px 0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .alert-info {
+            background: rgba(0, 210, 255, 0.08);
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            color: #e0f2fe;
+        }
+
+        .alert-warn {
+            background: rgba(246, 211, 101, 0.08);
+            border: 1px solid rgba(246, 211, 101, 0.25);
+            color: #fef3c7;
+        }
+
+        .alert-success {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            color: #dcfce7;
+        }
+
+        body.light-theme .alert-info {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        body.light-theme .alert-warn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        body.light-theme .alert-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .alert-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .table-cmd {
+            font-family: 'Fira Code', monospace;
+            color: #10b981;
+            direction: ltr;
+            text-align: left;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 7px;
+            border-radius: 4px;
+        }
+
         /* Modal Lightbox for Images */
         #img-modal {
             display: none;
@@ -1241,7 +1556,8 @@
                 <li><a href="#ch-08"><span class="ch-num">08</span> תכנון כרטיסי חומרה ב-Altium</a></li>
                 <li><a href="#ch-09"><span class="ch-num">09</span> מכלול מכני (CAD) ועמדת דיינו</a></li>
                 <li><a href="#ch-10"><span class="ch-num">10</span> השוואת ביצועים וסיכום</a></li>
-                <li><a href="#ch-appendices"><span class="ch-num">11</span> נספחים ואינדקס דוחות</a></li>
+                <li><a href="#ch-11"><span class="ch-num">11</span> סביבת פיתוח, Git ו-GitHub Pages</a></li>
+                <li><a href="#ch-appendices"><span class="ch-num">12</span> נספחים ואינדקס דוחות</a></li>
             </ul>
 
             <div class="sidebar-footer">
@@ -2632,11 +2948,271 @@
                 </section>
 
                 <!-- ============================================================ -->
+                <!-- CHAPTER 11: GIT, GITHUB & WORKFLOW INFRASTRUCTURE            -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-11">
+                    <span class="chapter-badge">פרק 11</span>
+                    <h2>סביבת פיתוח, ניהול גרסאות ב-Git ופרסום ענן ב-GitHub Pages</h2>
+
+                    <p class="lead-text">
+                        פרויקט מחקר רב-תחומי במערכות הנעה ובקרה ספרתית מתקדמת משלב שכבות פיתוח מגוונות: קוד C לבקרה בזמן אמת ב-DSP, מודלים סימולטיביים ב-PSIM ו-Typhoon HIL, שרטוטי מעגלים מודפסים ב-Altium Designer, ומודלים מכניים ב-SolidWorks. ניהול תצורה (Configuration Management) קפדני ובקרת גרסאות מודרנית הם תנאי סף לשחזור תוצאות מחקר (Reproducibility), גיבוי מאובטח, ושיתוף ממצאים רציף ואוטומטי עם מנחה המחקר.
+                    </p>
+
+                    <div class="quick-links-bar">
+                        <a href="https://github.com/MaxRad3003/PMSM-Series-End-VSI" target="_blank" class="qlink-btn">
+                            📂 מאגר GitHub הרשמי
+                        </a>
+                        <a href="https://maxrad3003.github.io/PMSM-Series-End-VSI/" target="_blank" class="qlink-btn" style="border-color:var(--accent-cyan); color:var(--accent-cyan);">
+                            🌐 אתר הפורטל החי (GitHub Pages)
+                        </a>
+                        <a href="GitHub_Guide_and_Workflow.html" target="_blank" class="qlink-btn">
+                            🛠️ מדריך עבודה ייעודי נפרד
+                        </a>
+                        <a href="OEPC_SE_VSI_PMSM_Presentation_HE.html" target="_blank" class="qlink-btn">
+                            ⚡ מצגת אינטראקטיבית
+                        </a>
+                    </div>
+
+                    <h3>11.1 מה ההבדל ההנדסי בין Git ל-GitHub?</h3>
+                    <p>
+                        בעבודה על פרויקט גמר הנדסי, קיימת הפרדה ברורה בין הכלי המקומי לניהול גרסאות לבין פלטפורמת הענן המשמשת להפצה ואירוח:
+                    </p>
+
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin: 20px 0;">
+                        <div class="card" style="border-right: 3px solid var(--accent-cyan);">
+                            <h4 style="color:var(--accent-cyan); margin-top:0;">💻 Git (תוכנה מקומית במחשב הפיתוח)</h4>
+                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                                מנוע מבוזר לניהול גרסאות (VCS) הפועל מקומית על גבי קובץ <code>.git</code> בתיקיית העבודה. Git עוקב אחרי כל שינוי נקודתי בקוד המקור, בשרטוטים ובמסמכים, מאפשר חזרה לאחור לכל נקודת זמן, ויוצר נקודות ביקורת חתומות (Commits). פעולתו מהירה ואינה תלויה בחיבור רשת.
+                            </p>
+                        </div>
+                        <div class="card" style="border-right: 3px solid #a855f7;">
+                            <h4 style="color:#a855f7; margin-top:0;">☁️ GitHub (פלטפורמת שיתוף ענן ואירוח CI/CD)</h4>
+                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                                שרת ענן המארח את מאגר ה-Git המרוחק של הפרויקט. הוא מספק גיבוי שריד, שיתוף הרשאות עם מנחה הפרויקט, ומפעיל שירות <strong>GitHub Pages</strong> המתרגם את קבצי ה-HTML והדוחות לאתר אינטרנט חי ונגיש מכל מקום בעולם ללא צורך בהתקנת תוכנות מקומיות.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>11.2 מחזור העבודה היומי (שמירה ופרסום ב-3 צעדים)</h3>
+                    <p>
+                        בכל פעם שנערך קוד בקרת המנוע, עודכן פרק בספר הפרויקט, נוספה הדמיה חדשה או נערך שקף במצגת — עדכון אתר הפורטל של המנחה מתבצע במחזור מובנה וקבוע:
+                    </p>
+
+                    <!-- Flow Diagram -->
+                    <div class="flow-diagram">
+                        <div class="flow-step active">
+                            <span class="flow-step-num">1</span>
+                            <div class="flow-step-title">שינויים במחשב</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Working Directory</div>
+                            <div class="flow-step-cmd">git add .</div>
+                        </div>
+                        <div class="flow-arrow">←</div>
+                        <div class="flow-step active">
+                            <span class="flow-step-num">2</span>
+                            <div class="flow-step-title">שמירת גרסה מקומית</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Local Commit</div>
+                            <div class="flow-step-cmd">git commit -m "..."</div>
+                        </div>
+                        <div class="flow-arrow">←</div>
+                        <div class="flow-step active">
+                            <span class="flow-step-num">3</span>
+                            <div class="flow-step-title">דחיפה לענן</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">GitHub Remote</div>
+                            <div class="flow-step-cmd">git push</div>
+                        </div>
+                        <div class="flow-arrow">←</div>
+                        <div class="flow-step active" style="border-color: #10b981;">
+                            <span class="flow-step-num" style="background: #10b981;">LIVE</span>
+                            <div class="flow-step-title" style="color: #10b981;">אתר פעיל</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">GitHub Pages</div>
+                            <div style="font-size:0.75rem; color:#10b981; margin-top:6px;">עדכון אוטומטי תוך 30 שנ'</div>
+                        </div>
+                    </div>
+
+                    <!-- Workflow Cards -->
+                    <div class="workflow-grid">
+                        <div class="workflow-card">
+                            <span class="step-tag" style="color: var(--accent-cyan);">שלב 1 • איסוף</span>
+                            <div class="workflow-title">בדיקה והוספת השינויים</div>
+                            <div class="workflow-desc">
+                                סקירת הקבצים ששונו בעזרת <code>git status</code> וצירופם לאזור ההכנה לשמירה (Staging Area) באמצעות <code>git add</code>.
+                            </div>
+                            <div class="cmd-block">
+                                <div class="cmd-header">
+                                    <div class="cmd-dots">
+                                        <div class="cmd-dot" style="background:#ff5f56;"></div>
+                                        <div class="cmd-dot" style="background:#ffbd2e;"></div>
+                                        <div class="cmd-dot" style="background:#27c93f;"></div>
+                                    </div>
+                                    <button class="copy-btn" onclick="copyText('git status\ngit add .')">העתק</button>
+                                </div>
+                                <div class="cmd-body">
+                                    <span class="cmd-comment"># בדיקת סטטוס קבצים</span><br>
+                                    <span class="cmd-keyword">git</span> status<br><br>
+                                    <span class="cmd-comment"># צירוף כל השינויים</span><br>
+                                    <span class="cmd-keyword">git</span> add .
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="workflow-card">
+                            <span class="step-tag" style="color: #f59e0b);">שלב 2 • תיעוד</span>
+                            <div class="workflow-title">יצירת נקודת שמירה (Commit)</div>
+                            <div class="workflow-desc">
+                                אריזת השינויים לגרסה מוגדרת וסגורה בליווי הודעת הסבר הנדסית ברורה המתעדת את מהות השינוי שבוצע.
+                            </div>
+                            <div class="cmd-block">
+                                <div class="cmd-header">
+                                    <div class="cmd-dots">
+                                        <div class="cmd-dot" style="background:#ff5f56;"></div>
+                                        <div class="cmd-dot" style="background:#ffbd2e;"></div>
+                                        <div class="cmd-dot" style="background:#27c93f;"></div>
+                                    </div>
+                                    <button class="copy-btn" onclick="copyText('git commit -m \"Update project book and simulation parameters\"')">העתק</button>
+                                </div>
+                                <div class="cmd-body">
+                                    <span class="cmd-comment"># שמירת גרסה עם תיאור</span><br>
+                                    <span class="cmd-keyword">git</span> commit -m <span class="cmd-arg">"Update project book"</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="workflow-card">
+                            <span class="step-tag" style="color: #10b981;">שלב 3 • פרסום</span>
+                            <div class="workflow-title">דחיפה לענן ול-GitHub Pages</div>
+                            <div class="workflow-desc">
+                                סנכרון השינויים לשרתי GitHub. המערכת מזהה את הדחיפה ומעדכנת אוטומטית את אתר הפורטל של המנחה תוך חצי דקה.
+                            </div>
+                            <div class="cmd-block">
+                                <div class="cmd-header">
+                                    <div class="cmd-dots">
+                                        <div class="cmd-dot" style="background:#ff5f56;"></div>
+                                        <div class="cmd-dot" style="background:#ffbd2e;"></div>
+                                        <div class="cmd-dot" style="background:#27c93f;"></div>
+                                    </div>
+                                    <button class="copy-btn" onclick="copyText('git push')">העתק</button>
+                                </div>
+                                <div class="cmd-body">
+                                    <span class="cmd-comment"># דחיפה לענן</span><br>
+                                    <span class="cmd-keyword">git</span> push
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert-box alert-success">
+                        <div class="alert-icon">⚡</div>
+                        <div>
+                            <strong>פקודת שורה אחת מהירה (One-Liner):</strong><br>
+                            לביצוע שמירה, תיעוד ופרסום מיידי של כל השינויים בפקודה יחידה:
+                            <div style="direction:ltr; text-align:left; margin-top:6px;">
+                                <code style="font-family:'Fira Code', monospace; color:#10b981; background:rgba(0,0,0,0.3); padding:4px 8px; border-radius:4px;">git add . && git commit -m "Update project" && git push</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>11.3 ארכיטקטורת ההפצה בשירות GitHub Pages</h3>
+                    <p>
+                        שירות <strong>GitHub Pages</strong> מוגדר לסרוק את ענף <code>master</code> הראשי של המאגר ולפרוס אותו כאתר אינטרנט מאובטח ב-HTTPS הפועל מול רשת הפצת תוכן (CDN) עולמית:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>דף השער הראשי (Landing Portal):</strong> הקובץ <code>index.html</code> מתפקד כמרכז הבקרה והניווט הראשי של הפרויקט, ומציג למנחה גישה מהירה לכל מודולי הפרויקט.</li>
+                        <li><strong>כתובת האתר הרשמית:</strong> <a href="https://maxrad3003.github.io/PMSM-Series-End-VSI/" target="_blank" style="color:var(--accent-cyan); font-family:'Fira Code', monospace;">https://maxrad3003.github.io/PMSM-Series-End-VSI/</a></li>
+                        <li><strong>גישה ישירה לקבצים ייעודיים:</strong> כל קובץ HTML, PDF או דוח טכני מקבל כתובת ישירה:
+                            <ul style="margin-top:6px; margin-right:20px;">
+                                <li>ספר הפרויקט המלא: <code>/PMSM_Project_Book.html</code></li>
+                                <li>המצגת האינטראקטיבית בעברית: <code>/OEPC_SE_VSI_PMSM_Presentation_HE.html</code></li>
+                                <li>מדריך העבודה עם GitHub: <code>/GitHub_Guide_and_Workflow.html</code></li>
+                                <li>מאמר התזה המדעי: <code>/Hardware-Efficient_Optimal_Error-Priority_Control_for_Series-End_VSI_With_ZSC_Suppression.pdf</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>זמן הפצה וסנכרון עולמי:</strong> מרגע ביצוע פקודת <code>git push</code>, שרתי GitHub משלימים את ה-Build וההפצה תוך <strong>20 עד 45 שניות</strong>.</li>
+                    </ul>
+
+                    <h3>11.4 ניהול הרשאות, מפתחים ופתרון שגיאת 403</h3>
+                    <div class="alert-box alert-warn">
+                        <div class="alert-icon">⚠️</div>
+                        <div>
+                            <strong>פתרון שגיאת "403 Permission Denied":</strong><br>
+                            שגיאה זו מתרחשת כאשר כלי ה-CLI המקומי במחשב מחובר תחת חשבון משתמש אחד (למשל <code>MaxRad3003</code>), בעוד המאגר בענן נוצר תחת חשבון אחר (למשל <code>maximr3003</code>). במצב כזה GitHub דוחה את ההרשאות.<br>
+                            <strong>הפתרון שהוטמע:</strong> המאגר הוגדר ישירות תחת החשבון המורשה <code>MaxRad3003</code>, כך שכל פעולות הדחיפה והסנכרון מתבצעות אוטומטית וללא חסימות.
+                        </div>
+                    </div>
+
+                    <p>
+                        להוספת שותף מחקר או משתמש נוסף כבעל הרשאת עריכה ישירה (Collaborator) במאגר:
+                    </p>
+                    <ol style="margin-right:25px; color:var(--text-muted); font-size:14px; line-height:1.8;">
+                        <li>כניסה להגדרות המאגר ב-GitHub: <a href="https://github.com/MaxRad3003/PMSM-Series-End-VSI/settings/access" target="_blank" style="color:var(--accent-cyan);">Settings &rarr; Collaborators</a></li>
+                        <li>לחיצה על הכפתור הירוק <strong>Add people</strong>.</li>
+                        <li>הזנת שם המשתמש או כתובת הדוא"ל של השותף ושליחת הזמנה.</li>
+                        <li>אישור ההזמנה בחשבון השותף מקנה הרשאות Commit ו-Push מלאות.</li>
+                    </ol>
+
+                    <h3>11.5 טבלת פקודות Git שימושיות לשמירה ובקרה</h3>
+                    <div class="table-container">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 35%;">פעולה מבוקשת</th>
+                                    <th style="width: 45%;">הפקודה להרצה</th>
+                                    <th style="width: 20%;">העתקה</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>בדיקת סטטוס:</strong> מה שונה או נוסף</td>
+                                    <td><span class="table-cmd">git status</span></td>
+                                    <td><button class="copy-btn" onclick="copyText('git status')">העתק</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>הוספת כל הקבצים:</strong> הכנה לשמירה</td>
+                                    <td><span class="table-cmd">git add .</span></td>
+                                    <td><button class="copy-btn" onclick="copyText('git add .')">העתק</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>שמירת גרסה (Commit):</strong> עם הערה מפורטת</td>
+                                    <td><span class="table-cmd">git commit -m "הערה כאן"</span></td>
+                                    <td><button class="copy-btn" onclick="copyText('git commit -m \"Update\"')">העתק</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>דחיפה לענן:</strong> פרסום לאתר החי</td>
+                                    <td><span class="table-cmd">git push</span></td>
+                                    <td><button class="copy-btn" onclick="copyText('git push')">העתק</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>משיכת עדכונים:</strong> אם נערכו קבצים מהדפדפן</td>
+                                    <td><span class="table-cmd">git pull</span></td>
+                                    <td><button class="copy-btn" onclick="copyText('git pull')">העתק</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>היסטוריית שמירות:</strong> צפייה ב-5 ה-Commits האחרונים</td>
+                                    <td><span class="table-cmd">git log --oneline -n 5</span></td>
+                                    <td><button class="copy-btn" onclick="copyText('git log --oneline -n 5')">העתק</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ביטול שינויים בקובץ:</strong> חזרה לגרסה השמורה</td>
+                                    <td><span class="table-cmd">git restore [filename]</span></td>
+                                    <td><button class="copy-btn" onclick="copyText('git restore .')">העתק</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>11.6 כללי זהב ובטיחות לעבודה עם GitHub בפרויקט הנדסי</h3>
+                    <ul class="bullet-list">
+                        <li><strong>סינון קבצים כבדים וקובץ <code>.gitignore</code>:</strong> קבצי שרטוט מכניים כבדים (SolidWorks 400MB) או ספריות זמניות של Altium Designer מוגדרים להחרגה בקובץ <code>.gitignore</code>, כדי לשמור על מאגר רזה, מהיר ולמנוע חריגה ממגבלות הנפח של GitHub.</li>
+                        <li><strong>שמות קבצים באנגלית תקנית (ASCII):</strong> עבור קבצים המיועדים לקישור ברשת (כגון <code>PMSM_Project_Book.html</code>), יש להקפיד על שמות באנגלית ללא רווחים, כדי להבטיח תאימות מלאה לכל הדפדפנים ומערכות ההפעלה.</li>
+                        <li><strong>אימות רענון נקי (Hard Refresh):</strong> דפדפנים נוטים לשמור קבצי עיצוב ומודלים בזיכרון מטמון (Cache). לאחר דחיפת גרסה חדשה לענן, מומלץ לבצע רענון עמוק באמצעות <code>Ctrl + F5</code> כדי לוודא צפייה בגרסה המעודכנת ביותר.</li>
+                    </ul>
+                </section>
+
+                <!-- ============================================================ -->
                 <!-- APPENDICES & DOCUMENTS HUB                                   -->
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-appendices">
-                    <span class="chapter-badge">פרק 11</span>
-                    <h2>נספחים ואינדקס דוחות הפרויקט</h2>
+                    <span class="chapter-badge">פרק 12</span>
+                    <h2>נספחים, קובצי תזה ואינדקס דוחות הפרויקט</h2>
 
                     <p>
                         לעיון מעמיק בכל אחד מהמודולים הספציפיים, להלן גישה ישירה ל-11 הדוחות הטכניים המפורטים בפורמט HTML הזמינים בתיקיית הפרויקט:
@@ -3159,6 +3735,15 @@
             xyCtx.fillText('מסלול α-β Orbit', 10, 20);
 
             requestAnimationFrame(oscStep);
+        }
+
+        // Copy text to clipboard helper
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('הפקודה הועתקה ללוח:\n' + text);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
         }
 
         // Initialize on load
