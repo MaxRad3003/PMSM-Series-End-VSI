@@ -1574,7 +1574,8 @@ def get_book_html():
                 <li><a href="#ch-09"><span class="ch-num">09</span> מכלול מכני (CAD) ועמדת דיינו</a></li>
                 <li><a href="#ch-10"><span class="ch-num">10</span> השוואת ביצועים וסיכום</a></li>
                 <li><a href="#ch-11"><span class="ch-num">11</span> סביבת פיתוח, Git ו-GitHub Pages</a></li>
-                <li><a href="#ch-appendices"><span class="ch-num">12</span> נספחים ואינדקס דוחות</a></li>
+                <li><a href="#ch-12"><span class="ch-num">12</span> פרוטוקול בטיחות וגהות במעבדה</a></li>
+                <li><a href="#ch-appendices"><span class="ch-num">13</span> נספחים ואינדקס דוחות</a></li>
             </ul>
 
             <div class="sidebar-footer">
@@ -3225,10 +3226,235 @@ def get_book_html():
                 </section>
 
                 <!-- ============================================================ -->
+                <!-- CHAPTER 12: LAB SAFETY, HIGH VOLTAGE & DYNO PROTOCOLS        -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-12">
+                    <span class="chapter-badge">פרק 12</span>
+                    <h2>פרוטוקול בטיחות, גהות ונוהל הפעלת מתח גבוה בעמדת הניסוי</h2>
+
+                    <p class="lead-text">
+                        ניסויי מעבדה במערכות הינע חשמלי מבוססות ממירי Series-End VSI ומנועי PMSM תעשייתיים (דוגמת OEMER QS 100S בהספק 7.1 kW) משלבים סיכונים חשמליים ומכניים מורכבים: מתחי DC Link גבוהים (עד 600V DC), זרמי מיתוג רגעיים העולים על 100A, אנרגיה אלקטרוסטטית גבוהה האגורה בקבלי הסינון, ומומנטים מכניים דינמיים במהירויות של אלפי סל"ד. פרק זה מגדיר את פרוטוקול הבטיחות, מנגנוני ההגנה החומרתיים, ונהלי העבודה התקניים (SOP) הנדרשים להבטחת שלומם של החוקרים ותקינות הציוד.
+                    </p>
+
+                    <div class="alert-box alert-warn">
+                        <div class="alert-icon">⚡</div>
+                        <div>
+                            <strong>הנחיית בטיחות קריטית לעבודה עם מתח מסוכן:</strong><br>
+                            מתח מעל 50V DC מוגדר כמתח מסוכן למגע אדם לפי תקני IEC 61010-1 ו-NFPA 70E. אין לבצע חיבור, ניתוק או שינוי חיווט בעמדת הניסוי כאשר ספק הכוח הראשי פועל, או בטרם אומתה פריקה מלאה של קבלי ה-DC Link לרמה הנמוכה מ-5V באמצעות מד-מתח דיגיטלי (DMM).
+                        </div>
+                    </div>
+
+                    <h3>12.1 מיפוי והערכת סיכונים הנדסית (Hazard Identification & Risk Assessment)</h3>
+                    <p>
+                        להלן ניתוח הנדסי של מוקדי הסיכון המרכזיים בעמדת הניסוי ואמצעי המנע וההגנה שתוכננו לנטרולם:
+                    </p>
+
+                    <div class="table-container">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>מוקד הסיכון</th>
+                                    <th>מקור ואנרגיה אגורה</th>
+                                    <th>רמת סיכון</th>
+                                    <th>מנגנון הגנה הנדסי מובנה</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="highlight-row">
+                                    <td><strong>התחשמלות ממתח DC גבוה</strong></td>
+                                    <td>ספק DC ראשי ופסי צבירה (300V - 600V DC)</td>
+                                    <td><span style="color:#ef4444; font-weight:700;">קריטי (High)</span></td>
+                                    <td>בידוד גלווני מלא (5kV), מרווחי Creepage תקניים, ומארז מוגן מגע (IP2X)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>אנרגיה אלקטרוסטטית שיורית</strong></td>
+                                    <td>בנק קבלי DC Link ($E = \frac{1}{2} C V_{dc}^2$)</td>
+                                    <td><span style="color:#f59e0b; font-weight:700;">גבוה (Moderate)</span></td>
+                                    <td>מעגל פריקה מהירה (Active Bleeder) הפורק את הקבלים תוך פחות מ-5 שניות</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>פגיעה מכנית מחלקים סובבים</strong></td>
+                                    <td>ציר מנוע, מצמד דינמי ועמדת דיינו (עד 6000 RPM)</td>
+                                    <td><span style="color:#ef4444; font-weight:700;">קריטי (High)</span></td>
+                                    <td>מעטפת מיגון פוליקרבונט (5 מ"מ) עם חיישן אינטרלוק מגנטי המנתק הזנה</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>זרמי Inrush הרסניים בטעינה</strong></td>
+                                    <td>חיבור פתאומי של ספק DC לקבלים פרוקים</td>
+                                    <td><span style="color:#f59e0b; font-weight:700;">בינוני (Medium)</span></td>
+                                    <td>מעגל Soft-Start / Pre-Charge עם נגד הגבלת זרם וממסר מעקף מושהה</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>הפרעות EMI וקפיצות זרם ZSC</strong></td>
+                                    <td>מיתוג PWM מהיר (18-25 kHz, $dv/dt$ תלול)</td>
+                                    <td><span style="color:#3b82f6; font-weight:700;">בינוני (Medium)</span></td>
+                                    <td>אלגוריתם OEPC חסין ZSC, סיכוך כבלי פאזה וסלילי חניקה טבעתיים</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>התחממות יתר וכשל תרמי</strong></td>
+                                    <td>מפסק IGBT/MOSFET תקול או קצר פנימי (ITSC)</td>
+                                    <td><span style="color:#f59e0b; font-weight:700;">גבוה (Moderate)</span></td>
+                                    <td>חיישני טמפרטורה (NTC/PT100) על גוף הקירור וכיבוי חומרה אוטומטי</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>12.2 בידוד גלווני, מעגלי חישה והארקות מגן (Galvanic Isolation & PE Architecture)</h3>
+                    <p>
+                        העיקרון הבסיסי בתכנון כרטיסי החומרה בפרויקט הוא הפרדה גלוונית מוחלטת בין מעגלי הבקרה והעיבוד (DSP, מיקרו-בקר, מחשב ניהול הפועלים במתחי 3.3V ו-5V) לבין מעגלי הכוח הממותגים במתח גבוה:
+                    </p>
+
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin: 20px 0;">
+                        <div class="card" style="border-right: 3px solid var(--accent-cyan);">
+                            <h4 style="color:var(--accent-cyan); margin-top:0;">כרטיס מדידת מתח גבוה מבודד (Isolated HV Sensor V2.1)</h4>
+                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                                פותח ב-Altium Designer ומבוסס על מגבר בידוד אופטי (Optical Isolation Amplifier) עם מתח פריצה של 5000V RMS. כולל מרווחי בידוד (Creepage & Clearance) של 6.3 מ"מ בין הצד הראשוני למשני, בהתאם לתקן IEC 61010-1.
+                            </p>
+                        </div>
+                        <div class="card" style="border-right: 3px solid #10b981;">
+                            <h4 style="color:#10b981; margin-top:0;">כרטיס חישת זרם מבודד (Isolated Current Sensor V2.1)</h4>
+                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                                משלב חיישני Hall Effect בחוג סגור (Closed-Loop) המבטיחים אפס צימוד חשמלי ישיר בין זרמי הפאזה הגבוהים של המנוע לקווי ה-ADC של מעבד ה-DSP, עם תגובה דינמית מהירה של פחות מ-1 מיקרו-שנייה להגנת קצר.
+                            </p>
+                        </div>
+                        <div class="card" style="border-right: 3px solid #f59e0b;">
+                            <h4 style="color:#f59e0b; margin-top:0;">מתג כוח ראשי מבודד (Power Switch - GUN V2)</h4>
+                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                                דרייברים מבודדים אופטית לשערי המפסקים (Isolated Gate Drivers) עם ספקי כוח מבודדים DC/DC (בידוד 3kV), למניעת זליגת רעשי מיתוג מסיביים ($dv/dt$) אל קווי האדמה של מעבד הבקרה.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h4>מערך הארקות מגן (Protective Earth - PE):</h4>
+                    <ul class="bullet-list">
+                        <li><strong>הארקת כוכב יחידה (Star Grounding):</strong> שלדת מנוע ה-PMSM, מארז עמדת הדינמומטר, גופי הקירור של הממירים וספקי הכוח מחוברים כולם לנקודת הארקת מגן יחידה (Main PE Stud) באמצעות כבלי הארקה תקניים (חתך 6 ממ"ר ירוק-צהוב).</li>
+                        <li><strong>מניעת לולאות אדמה (Ground Loops):</strong> אדמת הסיגנל (Analog Ground - AGND) ואדמת הכוח (Power Ground - PGND) מופרדות פיזית ומחוברות אך ורק בנקודת כוכב בודדת, למניעת הזרקת רעשי מיתוג למדידות ה-ADC והאינקודר.</li>
+                    </ul>
+
+                    <h3>12.3 מעגלי הגנה חומרתיים, טעינה מוקדמת ופריקה אקטיבית</h3>
+                    <p>
+                        בנוסף להגנות התוכנה הרצות ב-DSP (בדיקת זרם יתר ב-OEPC, הגבלת מהירות), המערכת מצוידת בשלושה מעגלי הגנה חומרתיים אוטונומיים שאינם תלויים בפעולת התוכנה:
+                    </p>
+
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin: 20px 0;">
+                        <div class="card">
+                            <h4 style="color:#00d2ff; margin-top:0;">1. מעגל טעינה מוקדמת (Pre-Charge Circuit)</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                בעת הפעלת מתח DC ראשוני, זרם הטעינה מוגבל דרך נגדי כוח מיוחדים (נגדי קרמיקה 47Ω / 50W). לאחר שמתח הקבלים מגיע ל-90% מערכו הנומינלי, ממסר מעקף (Bypass Contactor) נסגר ומחבר את הקו הישיר, תוך הגנה על ספקי הכוח והקבלים מפני זעזוע זרם.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:#ef4444; margin-top:0;">2. מעגל פריקה מהירה (Active Bleeder)</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                בעת לחיצה על לחצן החירום או כיבוי ההזנה הראשית, ממסר בטחון Normal-Closed (NC) נסגר אוטומטית ומחבר בנק נגדי פריקה בהספק גבוה (100Ω / 100W) במקביל לקבלים. האנרגיה האגורה נפרקת תוך פחות מ-4 שניות, בניגוד לפריקה טבעית איטית הנמשכת דקות ארוכות.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:#10b981; margin-top:0;">3. לחצן חירום פטרייתי (Emergency Stop - E-Stop)</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                לחצן חירום אדום בולט בעל מגע כפול מותקן בחזית עמדת הניסוי. לחיצה עליו מנתקת באופן מכני-חשמלי מיידי את ממסר ה-DC הראשי, ובמקביל שולחת אות חומרתי לדרייברים (Hardware Trip/Disable) המכבה את כל שערי המפסקים תוך פחות מ-200 ננו-שניות.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>12.4 בטיחות מכנית ואינטרלוק בעמדת הדינמומטר (Dyno Safety)</h3>
+                    <div class="alert-box alert-info">
+                        <div class="alert-icon">🛡️</div>
+                        <div>
+                            <strong>מיגון מכני בתקן מכונות:</strong><br>
+                            עמדת הבדיקה כוללת מעטפת מיגון מודולרית מפוליקרבונט שקוף בעובי 5 מ"מ (עמיד בפני פגיעה מכנית והעפת שבבים). המיגון מקיף את ציר המנוע, המצמד האלסטי (Flexible Coupling) וגלגלות עמדת הבלימה.
+                        </div>
+                    </div>
+
+                    <ul class="bullet-list">
+                        <li><strong>מפסק אינטרלוק בטיחותי (Safety Interlock Switch):</strong> מפסק מגנטי מותקן על מכסה המיגון המכני. הרמת המכסה פותחת את המעגל החשמלי של פיקוד ההזנה ומונעת כל אפשרות להפעלת המנוע כשהחלקים המסתובבים חשופים למגע יד.</li>
+                        <li><strong>הגנת מהירות יתר (Overspeed Hardware Watchdog):</strong> מנגנון הגנה כפול – ברמת התוכנה ב-DSP וברמת החומרה במודל ה-HIL. אם מהירות הסיבוב חורגת מ-4500 RPM (או 120% ממהירות הבסיס), נשלחת פקודת Trip מיידית המכבה את הממיר ומפעילה בלם מכני/עומס התנגדותי.</li>
+                        <li><strong>עיגון ושיכוך רעידות:</strong> מנוע ה-OEMER ועמדת הדיינו מקובעים למשטח פלדה כבד (בסיס אופטי/מכני) באמצעות בולמי זעזועים אלסטומריים למניעת תהודה מכנית ורעידות מסוכנות בעומס מלא.</li>
+                    </ul>
+
+                    <h3>12.5 נוהל הפעלה והשבתה תקני ב-5 שלבים (Standard Operating Procedure - SOP)</h3>
+                    <p>
+                        לפני כל ניסוי מעבדה בעמדת הכוח, חובה לפעול בדיוק לפי סדר הפעולות הבא:
+                    </p>
+
+                    <!-- Workflow Cards for SOP -->
+                    <div class="workflow-grid">
+                        <div class="workflow-card">
+                            <span class="step-tag" style="color: var(--accent-cyan);">שלב 1 • בדיקה מוקדמת</span>
+                            <div class="workflow-title">בדיקת תקינות כשהמערכת כבויה</div>
+                            <div class="workflow-desc">
+                                וידוא חיזוק ברגים מכניים, שלמות המצמד, נעילת מכסה המיגון, היעדר חוטים רופפים, וחיבור תקין של כבלי הארקת המגן (PE).
+                            </div>
+                        </div>
+
+                        <div class="workflow-card">
+                            <span class="step-tag" style="color: #3b82f6;">שלב 2 • פיקוד נמוך</span>
+                            <div class="workflow-title">הפעלת מעגלי בקרה וחישה</div>
+                            <div class="workflow-desc">
+                                הפעלת ספקי ה-3.3V/5V/15V עבור ה-DSP, האינקודר וחיישני הזרם. אימות קריאת זווית אינקודר (HIPERFACE) ותקשורת חלקה ללא שגיאות.
+                            </div>
+                        </div>
+
+                        <div class="workflow-card">
+                            <span class="step-tag" style="color: #f59e0b;">שלב 3 • בדיקה במתח נמוך</span>
+                            <div class="workflow-title">בדיקת מתח DC מופחת (Safe Test)</div>
+                            <div class="workflow-desc">
+                                הפעלת מתח DC נמוך ובטוח (30V-48V). הזרקת זרמי ייחוס נמוכים בקרת d-q לווידוא כיוון סיבוב תקין, כיול זווית קטבים ואפס שגיאות מיתוג.
+                            </div>
+                        </div>
+
+                        <div class="workflow-card">
+                            <span class="step-tag" style="color: #ef4444;">שלב 4 • מתח עבודה מלא</span>
+                            <div class="workflow-title">העלאת מתח עבודה נומינלי</div>
+                            <div class="workflow-desc">
+                                סגירת מעגל ה-Pre-charge, העלאת מתח ה-DC Link לרמת העבודה הנומינלית (300V-600V), ומעקב צמוד על מסכי הניטור אחר זרמי הפאזה, ZSC וטמפרטורה.
+                            </div>
+                        </div>
+
+                        <div class="workflow-card" style="border-color: #10b981;">
+                            <span class="step-tag" style="color: #10b981;">שלב 5 • כיבוי ופריקה</span>
+                            <div class="workflow-title">נוהל כיבוי ואימות מתח אפס</div>
+                            <div class="workflow-desc">
+                                כיבוי פולסי הממיר, כיבוי ספק DC ראשי, הפעלת מעגל הפריקה (Bleeder), והמתנה של 10 שניות. <strong>חובה למדוד עם DMM מתח < 5V לפני נגיעה כלשהי!</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>12.6 ציוד מגן אישי (PPE) ונהלי חירום במעבדה</h3>
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin: 20px 0;">
+                        <div class="card">
+                            <h4 style="color:#00d2ff; margin-top:0;">👓 מיגון עיניים (Eye Protection)</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                חובת הרכבת משקפי מגן תקניים (EN166 / ANSI Z87.1) בעלי הגנת צד בכל עת שנמצאים בקרבת עמדת הניסוי הפעילה, להגנה מפני קשת חשמלית (Arc Flash) או כשל פיזי של רכיב מוליך למחצה.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:#10b981; margin-top:0;">🧤 בידוד אישי ומשטח עבודה</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                עבודה על גבי שטיח גומי מבודד תקני (Dielectric Mat עד 1000V). בעת עבודה בסביבת מתח גבוה חל איסור מוחלט על ענידת תכשיטי מתכת, שעונים או חפצים מוליכים.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:#f59e0b; margin-top:0;">✋ כלל היד האחת (One-Hand Rule)</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                בעת ביצוע בדיקות מתח במכשיר מדידה או מולטימטר במעגל פעיל, יש להשתמש ביד אחת בלבד כאשר היד השנייה מאחורי הגב או בכיס, כדי למנוע יצירת מסלול זרם מסוכן דרך בית החזה והלב במקרה של מגע מקרי.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:#ef4444; margin-top:0;">🧯 ציוד כיבוי וחירום</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                במעבדה מוצב מטף פחמן דו-חמצני (CO2) ייעודי לציוד אלקטרוני ומערכות מתח. <strong>איסור מוחלט על שימוש במים או במטפי קצף</strong> על ציוד חשמלי חי! במקרה חירום יש ללחוץ על מפסק ה-E-Stop הראשי של המעבדה.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
                 <!-- APPENDICES & DOCUMENTS HUB                                   -->
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-appendices">
-                    <span class="chapter-badge">פרק 12</span>
+                    <span class="chapter-badge">פרק 13</span>
                     <h2>נספחים, קובצי תזה ואינדקס דוחות הפרויקט</h2>
 
                     <p>
