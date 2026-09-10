@@ -211,8 +211,8 @@ def get_chapter2_html():
 
                     <div class="math-block">
                         $$\begin{aligned}
-                        e_a &= i_a^* - i_a, \quad &e_b &= i_b^* - i_b, \quad &e_c &= i_c^* - i_c \quad &\text{[שגיאות פאזה ישירות]} \\
-                        e_{ab} &= e_a - e_b, \quad &e_{bc} &= e_b - e_c, \quad &e_{ca} &= e_c - e_a \quad &\text{[שגיאות דיפרנציאליות בין פאזות]}
+                        e_a &= i_a^* - i_a, \quad &e_b &= i_b^* - i_b, \quad &e_c &= i_c^* - i_c \quad &\text{[Phase Errors]} \\
+                        e_{ab} &= e_a - e_b, \quad &e_{bc} &= e_b - e_c, \quad &e_{ca} &= e_c - e_a \quad &\text{[Line-to-Line Errors]}
                         \end{aligned}$$
                     </div>
 

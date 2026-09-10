@@ -1550,7 +1550,7 @@ def get_book_html():
                     </p>
 
                     <div class="math-block">
-                        $$P_{in} = \underbrace{\frac{3}{2} R_s (i_d^2 + i_q^2) + 3 R_0 i_0^2}_{P_{cu}\text{ (הפסדי נחושת)}} + \underbrace{\frac{3}{2}\left(i_d \frac{d\lambda_d}{dt} + i_q \frac{d\lambda_q}{dt}\right) + 3 i_0 \frac{d\lambda_0}{dt}}_{P_{mag}\text{ (קצב שינוי אנרגיה מגנטית)}} + \underbrace{\frac{3}{2} \omega_e (\lambda_d i_q - \lambda_q i_d)}_{P_{em}\text{ (הספק אלקטרומכני)}}$$
+                        $$P_{in} = \underbrace{\frac{3}{2} R_s (i_d^2 + i_q^2) + 3 R_0 i_0^2}_{P_{cu}\text{ (Copper Losses)}} + \underbrace{\frac{3}{2}\left(i_d \frac{d\lambda_d}{dt} + i_q \frac{d\lambda_q}{dt}\right) + 3 i_0 \frac{d\lambda_0}{dt}}_{P_{mag}\text{ (Magnetic Energy)}} + \underbrace{\frac{3}{2} \omega_e (\lambda_d i_q - \lambda_q i_d)}_{P_{em}\text{ (Electromechanical Power)}}$$
                     </div>
 
                     <p>
@@ -1824,10 +1824,15 @@ def get_book_html():
 
                     <div class="math-block">
                         $$\begin{aligned}
-                        e_a &= i_a^* - i_a, \quad &e_b &= i_b^* - i_b, \quad &e_c &= i_c^* - i_c \quad &\text{[שגיאות פאזה ישירות]} \\
-                        e_{ab} &= e_a - e_b, \quad &e_{bc} &= e_b - e_c, \quad &e_{ca} &= e_c - e_a \quad &\text{[שגיאות דיפרנציאליות בין פאזות]}
+                        e_a &= i_a^* - i_a, \quad &e_b &= i_b^* - i_b, \quad &e_c &= i_c^* - i_c \quad &\text{[Phase Errors]} \\
+                        e_{ab} &= e_a - e_b, \quad &e_{bc} &= e_b - e_c, \quad &e_{ca} &= e_c - e_a \quad &\text{[Line-to-Line Errors]}
                         \end{aligned}$$
                     </div>
+
+                    <ul class="bullet-list">
+                        <li><strong>שלוש שגיאות פאזה ישירות ($e_a, e_b, e_c$):</strong> מודדות את הסטייה הרגעית בין זרם הייחוס הסינוסואידלי לזרם הדגום בפועל בכל פאזה ($e_x = i_x^* - i_x$).</li>
+                        <li><strong>שלוש שגיאות דיפרנציאליות בין פאזות ($e_{ab}, e_{bc}, e_{ca}$):</strong> מייצגות את הפרשי השגיאות בין כל זוג פאזות עוקבות ($e_{xy} = e_x - e_y$), ומאפשרות לבקר ישירות את מתח הקו ואת מעברי המיתוג בין ענפי הממיר.</li>
+                    </ul>
 
                     <h3>מיון עדיפויות בחומרה (Hardware Priority Sorting)</h3>
                     <p>
