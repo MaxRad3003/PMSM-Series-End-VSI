@@ -3414,7 +3414,7 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                 const rect = canvas.getBoundingClientRect();
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
                 const w = Math.max(rect.width, 300);
-                const h = Math.max(rect.height, 420);
+                const h = Math.max(rect.height, 460);
 
                 if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
                     canvas.width = Math.round(w * dpr);
@@ -3429,7 +3429,7 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                 ctx.fillStyle = '#050811';
                 ctx.fillRect(0, 0, w, h);
 
-                // Grid lines
+                // Subtle Grid lines
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
                 ctx.lineWidth = 1;
                 for (let x = 0; x < w; x += 30) {
@@ -3439,35 +3439,29 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
                 }
 
-                // Vertical Layout Geometries (Spacious, No Overlap!)
-                const busTopY = 72;
-                const busBotY = h - 55;
+                // Vertical Layout Geometries
+                const busTopY = 70;
+                const busBotY = h - 68;
                 const midY = Math.round((busTopY + busBotY) / 2);
 
-                const leftX = 28;
-                const dcX = leftX + 48;
-                const legStart = dcX + 70;
-                const availableLegW = Math.min(w * 0.44, 340);
-                const legSpacing = availableLegW / 3;
+                const dcX = 65;
+                const legStart = 175;
+                const legEnd = w - 65;
+                const legSpacing = (legEnd - legStart) / 3;
                 const legXs = [
                     legStart,
                     legStart + legSpacing,
                     legStart + legSpacing * 2,
-                    legStart + legSpacing * 3
+                    legEnd
                 ];
 
-                const rightLegX = legXs[3];
-                const motorStartX = Math.max(rightLegX + 80, w * 0.58);
-                const motorEndX = w - 30;
-                const motorWidth = motorEndX - motorStartX;
-
-                // 1. Top & Bottom DC Power Rails
+                // 1. Top (+Vdc) and Bottom (0V/GND) Power Rails
                 // Top Rail (+Vdc)
                 ctx.strokeStyle = '#ef4444';
-                ctx.lineWidth = 3;
+                ctx.lineWidth = 3.5;
                 ctx.beginPath();
                 ctx.moveTo(dcX, busTopY);
-                ctx.lineTo(rightLegX + 25, busTopY);
+                ctx.lineTo(legXs[3] + 25, busTopY);
                 ctx.stroke();
 
                 ctx.fillStyle = '#ef4444';
@@ -3477,10 +3471,10 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
 
                 // Bottom Rail (0V / GND)
                 ctx.strokeStyle = '#3b82f6';
-                ctx.lineWidth = 3;
+                ctx.lineWidth = 3.5;
                 ctx.beginPath();
                 ctx.moveTo(dcX, busBotY);
-                ctx.lineTo(rightLegX + 25, busBotY);
+                ctx.lineTo(legXs[3] + 25, busBotY);
                 ctx.stroke();
 
                 ctx.fillStyle = '#3b82f6';
@@ -3489,7 +3483,7 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                 ctx.fillText('0V / GND', dcX - 10, busBotY + 18);
 
                 // Ground Earth Symbol on Bottom Rail
-                const gndX = dcX + 25;
+                const gndX = dcX + 22;
                 ctx.strokeStyle = '#3b82f6';
                 ctx.lineWidth = 2;
                 ctx.beginPath();
@@ -3524,7 +3518,7 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                 drawCap(dcX, busTopY + 38, 'C1');
                 drawCap(dcX, busBotY - 38, 'C2');
 
-                // Midpoint Neutral O
+                // Neutral Point O
                 ctx.fillStyle = '#00d2ff';
                 ctx.beginPath();
                 ctx.arc(dcX, midY, 5, 0, Math.PI * 2);
@@ -3534,13 +3528,60 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                 ctx.textAlign = 'right';
                 ctx.fillText('Neutral O', dcX - 10, midY + 4);
 
+                // Helper for Drawing Arrows
+                function drawArrow(x1, y1, x2, y2, color, size = 6) {
+                    const angle = Math.atan2(y2 - y1, x2 - x1);
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    ctx.moveTo(x2, y2);
+                    ctx.lineTo(x2 - size * Math.cos(angle - Math.PI / 6), y2 - size * Math.sin(angle - Math.PI / 6));
+                    ctx.lineTo(x2 - size * Math.cos(angle + Math.PI / 6), y2 - size * Math.sin(angle + Math.PI / 6));
+                    ctx.closePath();
+                    ctx.fill();
+                }
+
+                // Helper for Drawing Switch
+                function drawSwitch(x, y, isClosed, name) {
+                    ctx.fillStyle = '#050811';
+                    ctx.fillRect(x - 10, y - 20, 20, 40);
+
+                    ctx.strokeStyle = isClosed ? '#10b981' : '#f59e0b';
+                    ctx.lineWidth = isClosed ? 3 : 1.8;
+                    ctx.beginPath();
+                    ctx.moveTo(x, y - 16);
+                    if (isClosed) {
+                        ctx.lineTo(x, y + 16);
+                    } else {
+                        ctx.lineTo(x + 12, y + 8);
+                        ctx.moveTo(x, y + 16);
+                        ctx.lineTo(x, y + 8);
+                    }
+                    ctx.stroke();
+
+                    // Terminals
+                    ctx.fillStyle = isClosed ? '#10b981' : '#f59e0b';
+                    ctx.beginPath();
+                    ctx.arc(x, y - 16, 2.5, 0, Math.PI * 2);
+                    ctx.arc(x, y + 16, 2.5, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Switch Name
+                    ctx.fillStyle = isClosed ? '#10b981' : '#94a3b8';
+                    ctx.font = 'bold 9px Fira Code';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(name, x + 14, y + 3);
+                }
+
                 // 3. Draw 4 Inverter Legs (L1, L2, L3, L4)
+                const swH_Y = busTopY + (midY - busTopY) / 2;
+                const swL_Y = midY + (busBotY - midY) / 2;
+
                 for (let i = 0; i < 4; i++) {
                     const lx = legXs[i];
                     const swVal = fig2Sw[i];
 
-                    // Leg Title Card above Top Bus (y=16..40) - Cleanly separated!
-                    ctx.fillStyle = 'rgba(18, 26, 47, 0.9)';
+                    // Leg Title Card above Top Bus (y=16..42)
+                    ctx.fillStyle = 'rgba(18, 26, 47, 0.95)';
                     ctx.strokeStyle = swVal ? '#10b981' : '#64748b';
                     ctx.lineWidth = 1.2;
                     ctx.beginPath();
@@ -3548,52 +3589,47 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                     ctx.fill(); ctx.stroke();
 
                     ctx.fillStyle = swVal ? '#10b981' : '#f0f4fc';
-                    ctx.font = 'bold 11px Fira Code';
+                    ctx.font = 'bold 11.5px Fira Code';
                     ctx.textAlign = 'center';
                     ctx.fillText(`L${i+1}`, lx, 33);
 
-                    // Vertical Leg Conductor Lines
+                    // Conductor vertical lines
                     ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
                     ctx.lineWidth = 1.8;
                     ctx.beginPath();
                     ctx.moveTo(lx, busTopY); ctx.lineTo(lx, busBotY);
                     ctx.stroke();
 
-                    // Switch Contact Y locations
-                    const swH_Y = busTopY + (midY - busTopY) / 2;
-                    const swL_Y = midY + (busBotY - midY) / 2;
-
-                    function drawSwitch(x, y, isClosed, name) {
-                        ctx.fillStyle = '#050811';
-                        ctx.fillRect(x - 10, y - 20, 20, 40);
-
-                        ctx.strokeStyle = isClosed ? '#10b981' : '#f59e0b';
-                        ctx.lineWidth = isClosed ? 3 : 1.8;
+                    // Active Switch Highlights and Animated Conduction Current Flow
+                    if (swVal === 1) {
+                        // Top Switch is ON: Conduction from +Vdc down to node vk
+                        ctx.strokeStyle = 'rgba(16, 185, 129, 0.6)';
+                        ctx.lineWidth = 2.5;
                         ctx.beginPath();
-                        ctx.moveTo(x, y - 16);
-                        if (isClosed) {
-                            ctx.lineTo(x, y + 16);
-                        } else {
-                            ctx.lineTo(x + 12, y + 8);
-                            ctx.moveTo(x, y + 16);
-                            ctx.lineTo(x, y + 8);
-                        }
+                        ctx.moveTo(lx, busTopY); ctx.lineTo(lx, midY);
                         ctx.stroke();
 
-                        // Terminals
-                        ctx.fillStyle = isClosed ? '#10b981' : '#f59e0b';
+                        // Animated Current Particles Downward
+                        const pY = busTopY + ((fig2AnimTime * 140 + i * 35) % (midY - busTopY));
+                        ctx.fillStyle = '#10b981';
+                        ctx.beginPath(); ctx.arc(lx, pY, 3.5, 0, Math.PI * 2); ctx.fill();
+                        drawArrow(lx, pY - 5, lx, pY + 5, '#10b981', 5);
+                    } else {
+                        // Bottom Switch is ON: Conduction between node vk and 0V/GND
+                        ctx.strokeStyle = 'rgba(59, 130, 246, 0.6)';
+                        ctx.lineWidth = 2.5;
                         ctx.beginPath();
-                        ctx.arc(x, y - 16, 2.5, 0, Math.PI * 2);
-                        ctx.arc(x, y + 16, 2.5, 0, Math.PI * 2);
-                        ctx.fill();
+                        ctx.moveTo(lx, midY); ctx.lineTo(lx, busBotY);
+                        ctx.stroke();
 
-                        // Label
-                        ctx.fillStyle = isClosed ? '#10b981' : '#94a3b8';
-                        ctx.font = '9px Fira Code';
-                        ctx.textAlign = 'left';
-                        ctx.fillText(name, x + 14, y + 3);
+                        // Animated Current Particles Downward to Ground
+                        const pY = midY + ((fig2AnimTime * 140 + i * 35) % (busBotY - midY));
+                        ctx.fillStyle = '#3b82f6';
+                        ctx.beginPath(); ctx.arc(lx, pY, 3.5, 0, Math.PI * 2); ctx.fill();
+                        drawArrow(lx, pY - 5, lx, pY + 5, '#3b82f6', 5);
                     }
 
+                    // Draw Switches
                     drawSwitch(lx, swH_Y, swVal === 1, `S${i+1}H`);
                     drawSwitch(lx, swL_Y, swVal === 0, `S${i+1}L`);
 
@@ -3603,12 +3639,13 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                     ctx.arc(lx, midY, 6, 0, Math.PI * 2);
                     ctx.fill();
 
+                    // Node Title (vk)
                     ctx.fillStyle = '#ffffff';
                     ctx.font = 'bold 12px Fira Code';
                     ctx.textAlign = 'center';
                     ctx.fillText(`v${i+1}`, lx, midY - 14);
 
-                    // Pole Voltage Badge below Midpoint
+                    // Pole Voltage Badge
                     const vPole = swVal ? '+300V' : '0V';
                     ctx.fillStyle = swVal ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.05)';
                     ctx.strokeStyle = swVal ? '#10b981' : 'rgba(255, 255, 255, 0.15)';
@@ -3622,134 +3659,131 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                     ctx.fillText(vPole, lx, midY + 25);
                 }
 
-                // 4. Draw 3 Series-Connected Stator Windings (Za, Zb, Zc)
-                const coilY_A = midY - 110;
-                const coilY_B = midY;
-                const coilY_C = midY + 110;
-
-                const coilCardW = Math.max(motorWidth - 20, 200);
-                const coilCardX = motorStartX;
-
-                const coils = [
-                    { key: 'A', name: 'סליל פאזה A (Za)', vName: 'va = v1 - v2', cy: coilY_A, fromLeg: 0, toLeg: 1, color: '#00d2ff' },
-                    { key: 'B', name: 'סליל פאזה B (Zb)', vName: 'vb = v2 - v3', cy: coilY_B, fromLeg: 1, toLeg: 2, color: '#3b82f6' },
-                    { key: 'C', name: 'סליל פאזה C (Zc)', vName: 'vc = v3 - v4', cy: coilY_C, fromLeg: 2, toLeg: 3, color: '#9d50bb' }
+                // 4. DRAW 3 PHASE COILS DIRECTLY BETWEEN THE LEGS (Za: L1-L2, Zb: L2-L3, Zc: L3-L4)
+                const phaseConfigs = [
+                    { name: 'Za (Phase A)', fromLeg: 0, toLeg: 1, vName: 'va', color: '#00d2ff' },
+                    { name: 'Zb (Phase B)', fromLeg: 1, toLeg: 2, vName: 'vb', color: '#3b82f6' },
+                    { name: 'Zc (Phase C)', fromLeg: 2, toLeg: 3, vName: 'vc', color: '#a855f7' }
                 ];
 
                 for (let c = 0; c < 3; c++) {
-                    const coil = coils[c];
-                    const cy = coil.cy;
+                    const cfg = phaseConfigs[c];
+                    const xLeft = legXs[cfg.fromLeg];
+                    const xRight = legXs[cfg.toLeg];
+                    const span = xRight - xLeft;
+                    const cx = (xLeft + xRight) / 2;
 
-                    // Background Box
-                    ctx.fillStyle = 'rgba(18, 26, 47, 0.92)';
-                    ctx.strokeStyle = coil.color;
-                    ctx.lineWidth = 1.5;
+                    const vDiff = (fig2Sw[cfg.fromLeg] - fig2Sw[cfg.toLeg]) * fig2Vdc;
+
+                    // Horizontal Conductor Wire between nodes
+                    ctx.strokeStyle = cfg.color;
+                    ctx.lineWidth = 2.2;
                     ctx.beginPath();
-                    ctx.roundRect(coilCardX, cy - 24, coilCardW, 48, 6);
+                    ctx.moveTo(xLeft, midY);
+                    ctx.lineTo(xRight, midY);
+                    ctx.stroke();
+
+                    // Coil Box Background in Center of Span
+                    const boxW = Math.min(span * 0.62, 130);
+                    const boxH = 50;
+                    const boxX = cx - boxW / 2;
+                    const boxY = midY - boxH / 2;
+
+                    ctx.fillStyle = 'rgba(10, 16, 32, 0.95)';
+                    ctx.strokeStyle = (vDiff !== 0) ? cfg.color : 'rgba(255, 255, 255, 0.2)';
+                    ctx.lineWidth = (vDiff !== 0) ? 2 : 1.2;
+                    ctx.beginPath();
+                    ctx.roundRect(boxX, boxY, boxW, boxH, 8);
                     ctx.fill(); ctx.stroke();
 
-                    // Inductor Spiral Arches
-                    ctx.strokeStyle = coil.color;
-                    ctx.lineWidth = 2;
-                    const indX = coilCardX + 22;
-                    for (let a = 0; a < 4; a++) {
+                    // Draw Inductor Coils (3 spiral loops)
+                    const indStartX = cx - 36;
+                    ctx.strokeStyle = cfg.color;
+                    ctx.lineWidth = 2.2;
+                    for (let a = 0; a < 3; a++) {
                         ctx.beginPath();
-                        ctx.arc(indX + a * 12 + 6, cy, 7, Math.PI, 0, false);
+                        ctx.arc(indStartX + a * 14 + 7, midY, 6, Math.PI, 0, false);
                         ctx.stroke();
                     }
 
-                    // Series Resistor symbol
-                    ctx.beginPath();
-                    const rX = indX + 58;
-                    ctx.rect(rX, cy - 6, 22, 12);
-                    ctx.stroke();
+                    // Series Resistance Box symbol
+                    const resX = indStartX + 46;
+                    ctx.strokeStyle = cfg.color;
+                    ctx.lineWidth = 1.8;
+                    ctx.strokeRect(resX, midY - 6, 22, 12);
 
-                    // Titles & Live Voltage Calculation
-                    const vPhVal = (fig2Sw[coil.fromLeg] - fig2Sw[coil.toLeg]) * fig2Vdc;
+                    // Phase Label above Box
                     ctx.fillStyle = '#ffffff';
-                    ctx.font = 'bold 12px Heebo, sans-serif';
-                    ctx.textAlign = 'right';
-                    ctx.fillText(coil.name, coilCardX + coilCardW - 14, cy - 4);
+                    ctx.font = 'bold 11px Heebo, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(cfg.name, cx, boxY - 8);
 
-                    ctx.fillStyle = '#00d2ff';
-                    ctx.font = 'bold 10.5px Fira Code';
-                    ctx.fillText(`${coil.vName} = ${vPhVal > 0 ? '+' : ''}${vPhVal}V`, coilCardX + coilCardW - 14, cy + 15);
+                    // Instantaneous Voltage Badge below/inside Box
+                    const vText = `${cfg.vName} = ${vDiff > 0 ? '+' : ''}${vDiff}V`;
+                    ctx.fillStyle = (vDiff > 0) ? '#10b981' : (vDiff < 0) ? '#f59e0b' : '#94a3b8';
+                    ctx.font = 'bold 10px Fira Code';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(vText, cx, boxY + boxH - 6);
+
+                    // ANIMATED CURRENT DIRECTION FLOW THROUGH THIS PHASE COIL
+                    if (vDiff !== 0) {
+                        const flowRight = (vDiff > 0);
+                        const flowDir = flowRight ? 1 : -1;
+                        const flowSpd = 120;
+                        const particleCount = 4;
+
+                        // Flowing Current Particles along the horizontal line
+                        for (let p = 0; p < particleCount; p++) {
+                            const offset = ((fig2AnimTime * flowSpd + p * (span / particleCount)) % span);
+                            const px = flowRight ? (xLeft + offset) : (xRight - offset);
+                            
+                            // Don't draw over the center label box for clean look
+                            if (px < boxX - 4 || px > boxX + boxW + 4) {
+                                ctx.fillStyle = cfg.color;
+                                ctx.beginPath();
+                                ctx.arc(px, midY, 3.5, 0, Math.PI * 2);
+                                ctx.fill();
+                            }
+                        }
+
+                        // Prominent Directional Arrow indicator above the coil
+                        const arrowY = boxY - 22;
+                        const arrowStartX = cx - (flowRight ? 24 : -24);
+                        const arrowEndX = cx + (flowRight ? 24 : -24);
+
+                        ctx.strokeStyle = (vDiff > 0) ? '#10b981' : '#f59e0b';
+                        ctx.lineWidth = 2.2;
+                        ctx.beginPath();
+                        ctx.moveTo(arrowStartX, arrowY);
+                        ctx.lineTo(arrowEndX, arrowY);
+                        ctx.stroke();
+                        drawArrow(arrowStartX, arrowY, arrowEndX, arrowY, (vDiff > 0) ? '#10b981' : '#f59e0b', 6);
+
+                        ctx.fillStyle = (vDiff > 0) ? '#10b981' : '#f59e0b';
+                        ctx.font = 'bold 9px Fira Code';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(`i_${cfg.vName.slice(1)} ${flowRight ? '➔' : '⬅'}`, cx, arrowY - 6);
+                    } else {
+                        // vDiff == 0 (no differential current flow)
+                        ctx.fillStyle = '#64748b';
+                        ctx.font = '9px Fira Code';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('i = 0A (איזון)', cx, boxY - 20);
+                    }
                 }
 
-                // 5. ORTHOGONAL BUS ROUTING (Professional Ladder Routing - No diagonal line crossings!)
-                const ch_v1 = rightLegX + 22;
-                const ch_v2 = rightLegX + 42;
-                const ch_v3 = rightLegX + 62;
-                const ch_v4 = rightLegX + 22;
-
-                const topTermY_A = coilY_A - 10;
-                const botTermY_A = coilY_A + 10;
-                const topTermY_B = coilY_B - 10;
-                const botTermY_B = coilY_B + 10;
-                const topTermY_C = coilY_C - 10;
-                const botTermY_C = coilY_C + 10;
-
-                // --- v1 connects to top of Za ---
-                ctx.strokeStyle = '#00d2ff';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(legXs[0], midY);
-                ctx.lineTo(ch_v1, midY);
-                ctx.lineTo(ch_v1, topTermY_A);
-                ctx.lineTo(coilCardX, topTermY_A);
-                ctx.stroke();
-
-                // --- v2 connects to bottom of Za AND top of Zb ---
-                ctx.strokeStyle = '#3b82f6';
-                ctx.beginPath();
-                ctx.moveTo(legXs[1], midY);
-                ctx.lineTo(ch_v2, midY);
-                ctx.lineTo(ch_v2, botTermY_A);
-                ctx.lineTo(coilCardX, botTermY_A);
-                ctx.moveTo(ch_v2, midY);
-                ctx.lineTo(ch_v2, topTermY_B);
-                ctx.lineTo(coilCardX, topTermY_B);
-                ctx.stroke();
-
-                ctx.fillStyle = '#3b82f6';
-                ctx.beginPath(); ctx.arc(ch_v2, midY, 3.5, 0, Math.PI * 2); ctx.fill();
-
-                // --- v3 connects to bottom of Zb AND top of Zc ---
-                ctx.strokeStyle = '#9d50bb';
-                ctx.beginPath();
-                ctx.moveTo(legXs[2], midY);
-                ctx.lineTo(ch_v3, midY);
-                ctx.lineTo(ch_v3, botTermY_B);
-                ctx.lineTo(coilCardX, botTermY_B);
-                ctx.moveTo(ch_v3, midY);
-                ctx.lineTo(ch_v3, topTermY_C);
-                ctx.lineTo(coilCardX, topTermY_C);
-                ctx.stroke();
-
-                ctx.fillStyle = '#9d50bb';
-                ctx.beginPath(); ctx.arc(ch_v3, midY, 3.5, 0, Math.PI * 2); ctx.fill();
-
-                // --- v4 connects to bottom of Zc ---
-                ctx.strokeStyle = '#10b981';
-                ctx.beginPath();
-                ctx.moveTo(legXs[3], midY);
-                ctx.lineTo(ch_v4, midY);
-                ctx.lineTo(ch_v4, botTermY_C);
-                ctx.lineTo(coilCardX, botTermY_C);
-                ctx.stroke();
-
-                // 6. ZSC Circulating Loop Indicator & Animated Flow
+                // 5. ZSC CIRCULATING LOOP (When S1 != S4)
                 const isZscActive = (fig2Sw[0] !== fig2Sw[3]);
                 if (isZscActive) {
                     ctx.save();
                     ctx.strokeStyle = '#ef4444';
                     ctx.lineWidth = 3;
-                    ctx.setLineDash([6, 6]);
+                    ctx.setLineDash([7, 6]);
                     ctx.shadowColor = 'rgba(239, 68, 68, 0.85)';
-                    ctx.shadowBlur = 14;
+                    ctx.shadowBlur = 12;
 
-                    const loopLeft = legXs[0] - 14;
-                    const loopRight = motorEndX + 8;
+                    const loopLeft = legXs[0] - 18;
+                    const loopRight = legXs[3] + 18;
                     const loopTop = busTopY - 14;
                     const loopBot = busBotY + 14;
 
@@ -3757,47 +3791,68 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
                     ctx.roundRect(loopLeft, loopTop, loopRight - loopLeft, loopBot - loopTop, 16);
                     ctx.stroke();
 
-                    // Dedicated Non-Overlapping Bottom Warning Ribbon
-                    const warnY = h - 26;
-                    ctx.fillStyle = 'rgba(239, 68, 68, 0.18)';
-                    ctx.strokeStyle = '#ef4444';
-                    ctx.lineWidth = 1.2;
-                    ctx.setLineDash([]);
-                    ctx.beginPath();
-                    ctx.roundRect(w / 2 - 240, warnY - 14, 480, 24, 4);
-                    ctx.fill(); ctx.stroke();
-
-                    const vLoopVal = (fig2Sw[0] - fig2Sw[3]) * fig2Vdc;
-                    ctx.fillStyle = '#ef4444';
-                    ctx.font = 'bold 11.5px Heebo, sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(`⚠️ מסלול זרם מעגלי סדרה אפס (ZSC) פעיל! v_loop = v1 - v4 = ${vLoopVal > 0 ? '+' : ''}${vLoopVal}V (קו אדום מקווקו)`, w / 2, warnY + 3);
-
-                    // Flowing Red Dots along the Loop
-                    const loopLen = 1400;
+                    // Circulating Animated Red Dots along Closed Path
+                    const loopPerim = 2 * ((loopRight - loopLeft) + (loopBot - loopTop));
                     const loopSpd = 160;
-                    for (let p = 0; p < 12; p++) {
-                        const offset = ((fig2AnimTime * loopSpd + p * 115) % loopLen);
-                        let px = loopLeft + offset * 0.75;
-                        let py = loopTop;
-                        if (px > loopRight) {
-                            px = loopRight;
-                            py = loopBot;
+                    const dirClockwise = (fig2Sw[0] === 1); // If S1=1, flows down L1 -> right across Za,Zb,Zc -> up L4
+                    
+                    for (let p = 0; p < 16; p++) {
+                        const dist = ((fig2AnimTime * loopSpd + p * (loopPerim / 16)) % loopPerim);
+                        let px, py;
+                        const wL = loopRight - loopLeft;
+                        const hL = loopBot - loopTop;
+
+                        if (dirClockwise) {
+                            if (dist < wL) {
+                                px = loopLeft + dist; py = loopTop;
+                            } else if (dist < wL + hL) {
+                                px = loopRight; py = loopTop + (dist - wL);
+                            } else if (dist < 2 * wL + hL) {
+                                px = loopRight - (dist - (wL + hL)); py = loopBot;
+                            } else {
+                                px = loopLeft; py = loopBot - (dist - (2 * wL + hL));
+                            }
+                        } else {
+                            if (dist < wL) {
+                                px = loopRight - dist; py = loopTop;
+                            } else if (dist < wL + hL) {
+                                px = loopLeft; py = loopTop + (dist - wL);
+                            } else if (dist < 2 * wL + hL) {
+                                px = loopLeft + (dist - (wL + hL)); py = loopBot;
+                            } else {
+                                px = loopRight; py = loopBot - (dist - (2 * wL + hL));
+                            }
                         }
+
                         ctx.fillStyle = '#ff3333';
                         ctx.beginPath();
                         ctx.arc(px, py, 4.5, 0, Math.PI * 2);
                         ctx.fill();
                     }
                     ctx.restore();
+
+                    // Non-Overlapping Bottom Warning Ribbon
+                    const warnY = h - 28;
+                    ctx.fillStyle = 'rgba(239, 68, 68, 0.18)';
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.lineWidth = 1.2;
+                    ctx.beginPath();
+                    ctx.roundRect(w / 2 - 260, warnY - 14, 520, 24, 4);
+                    ctx.fill(); ctx.stroke();
+
+                    const vLoopVal = (fig2Sw[0] - fig2Sw[3]) * fig2Vdc;
+                    ctx.fillStyle = '#ef4444';
+                    ctx.font = 'bold 11.5px Heebo, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`⚠️ לולאת זרם סדרה אפס פעילה (ZSC)! v_loop = v1 - v4 = ${vLoopVal > 0 ? '+' : ''}${vLoopVal}V (זרימה מעגלית הרסנית)`, w / 2, warnY + 3);
                 } else {
                     // Non-Overlapping Bottom Suppression Confirmation Ribbon
-                    const suppY = h - 26;
+                    const suppY = h - 28;
                     ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
                     ctx.strokeStyle = '#10b981';
                     ctx.lineWidth = 1.2;
                     ctx.beginPath();
-                    ctx.roundRect(w / 2 - 250, suppY - 14, 500, 24, 4);
+                    ctx.roundRect(w / 2 - 260, suppY - 14, 520, 24, 4);
                     ctx.fill(); ctx.stroke();
 
                     ctx.fillStyle = '#10b981';
@@ -3810,129 +3865,6 @@ inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
             }
 
             requestAnimationFrame(drawFig2Step);
-        }
-
-        /* ==========================================================================
-           FIGURE 3.1: INTERACTIVE OEPC FLOWCHART & 96-LUT EXECUTION ENGINE
-           ========================================================================== */
-        let fcPreset = 'phaseA';
-        let fcCurrentStep = 0; // 0: Start, 1: Sample, 2: Errors, 3: Sort, 4: Decision, 5: 96-LUT, 6: Apply
-        let fcRunning = true;
-        let fcLastStepTime = 0;
-        const fcStepDuration = 1500; // ms per step in auto mode
-
-        const fcPresets = {
-            phaseA: {
-                name: "תרחיש 1: שגיאה דומיננטית בפאזה A (|ea| מקסימלי)",
-                currents: "ia = +4.82A, ib = -2.40A, ic = -2.41A | i0 = +0.003A (נומינלי)",
-                errors: "ea = +0.42A (מקסימלי), eb = -0.18A, ec = -0.24A | eab = +0.60A",
-                priority: "|ea| > |ec| > |eb| ➔ S_sel = [0 0 0] (Permutation 1)",
-                decision: "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)",
-                lut: "Addr: {F_mp=1, S_sel=000, S_sgn=100} ➔ State: [1 0 1 1] (V23) ➔ va=+Vdc",
-                status: "שלב ביצוע: תיקון דיפרנציאלי לפאזה A | דיכוי מוחלט של ZSC (S1=S4=1)"
-            },
-            zsc: {
-                name: "תרחיש 2: חירום דיכוי ZSC (|i0| > Tol)",
-                currents: "ia = +3.10A, ib = +1.20A, ic = -3.76A | i0 = +0.180A (חריגת ZSC קיצונית!)",
-                errors: "ea = +0.15A, eb = +0.10A, ec = -0.25A | e0 = +0.180A",
-                priority: "|ec| > |ea| > |eb| ➔ S_sel = [0 1 0] (Permutation 3)",
-                decision: "|i0| = 0.180A > 0.05A (Tol) ➔ YES! ➔ F_mp = 0 (EMERGENCY ZSC TRIGGER!)",
-                lut: "Addr: {F_mp=0, S_sel=010, S_sgn=001} ➔ State: [1 1 0 1] (V25) ➔ v0=-Vdc",
-                status: "שלב ביצוע: הפעלת מצב חירום ZSC! F_mp=0 מדכא את הזרם המעגלי במחזור שעון יחיד"
-            },
-            phaseB: {
-                name: "תרחיש 3: שגיאה דומיננטית בפאזה B (|eb| מקסימלי)",
-                currents: "ia = -2.15A, ib = +4.70A, ic = -2.54A | i0 = +0.003A (נומינלי)",
-                errors: "ea = -0.12A, eb = +0.49A (מקסימלי), ec = -0.37A | ebc = +0.86A",
-                priority: "|eb| > |ec| > |ea| ➔ S_sel = [0 1 0] (Permutation 2)",
-                decision: "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)",
-                lut: "Addr: {F_mp=1, S_sel=010, S_sgn=010} ➔ State: [0 1 1 0] (V12) ➔ vb=+Vdc",
-                status: "שלב ביצוע: תיקון דיפרנציאלי לפאזה B | דיכוי מוחלט של ZSC (S1=S4=0)"
-            }
-        };
-
-        const fcNodes = [
-            { id: 0, title: "01: טריגר חומרה ePWM", sub: "הפעלת פסיקה בכל מחזור (50kHz / 20µs)", y: 15, h: 48, type: 'rect' },
-            { id: 1, title: "02: דגימת זרמים וחישוב i_0", sub: "דגימת ia, ib, ic וחישוב זרם סכום i_0", y: 78, h: 48, type: 'rect' },
-            { id: 2, title: "03: חישוב 6 שגיאות זרם", sub: "ea, eb, ec (פאזות) ו-eab, ebc, eca (קווים)", y: 141, h: 48, type: 'rect' },
-            { id: 3, title: "04: מיון גודל שגיאות", sub: "מיון לפי ערך מוחלט ➔ בחירת S_sel (3 ביטים)", y: 204, h: 48, type: 'rect' },
-            { id: 4, title: "05: החלטת פאזה מועדפת (F_mp)", sub: "האם |i_0| > Tol ? (דיכוי ZSC מול DM)", y: 267, h: 56, type: 'diamond' },
-            { id: 5, title: "06: שליפת וקטור מ-96-LUT", sub: "כתובת 7 ביט {F_mp, S_sel, S_sgn} ➔ [S1..S4]", y: 338, h: 48, type: 'rect' },
-            { id: 6, title: "07: הפעלת פסיקת מיתוג ePWM", sub: "הוצאת פולסים לדרייברים + Dead-time 1.5µs", y: 401, h: 48, type: 'rect' }
-        ];
-
-        function switchFig3Tab(tab) {
-            const btnInt = document.getElementById('tab-fig3-interactive');
-            const btnOrig = document.getElementById('tab-fig3-original');
-            const viewInt = document.getElementById('fig3-view-interactive');
-            const viewOrig = document.getElementById('fig3-view-original');
-            if (tab === 'interactive') {
-                btnInt.classList.add('active');
-                btnOrig.classList.remove('active');
-                viewInt.style.display = 'block';
-                viewOrig.style.display = 'none';
-            } else {
-                btnInt.classList.remove('active');
-                btnOrig.classList.add('active');
-                viewInt.style.display = 'none';
-                viewOrig.style.display = 'block';
-            }
-        }
-
-        function setFcPreset(preset) {
-            fcPreset = preset;
-            document.getElementById('btn-fc-preset-a').classList.toggle('active', preset === 'phaseA');
-            document.getElementById('btn-fc-preset-zsc').classList.toggle('active', preset === 'zsc');
-            document.getElementById('btn-fc-preset-b').classList.toggle('active', preset === 'phaseB');
-            updateFcTelemetry();
-        }
-
-        function toggleFcRun() {
-            fcRunning = !fcRunning;
-            const btn = document.getElementById('btn-fc-run');
-            if (btn) {
-                btn.innerText = fcRunning ? "⏸️ השהה הרצה" : "▶️ הרצה רציפה";
-                btn.classList.toggle('active', fcRunning);
-            }
-        }
-
-        function stepFcFlow() {
-            fcCurrentStep = (fcCurrentStep + 1) % fcNodes.length;
-            updateFcTelemetry();
-        }
-
-        function resetFcFlow() {
-            fcCurrentStep = 0;
-            updateFcTelemetry();
-        }
-
-        function updateFcTelemetry() {
-            const p = fcPresets[fcPreset];
-            const elStatus = document.getElementById('fig3-status-pill');
-            const elCurr = document.getElementById('fig3-val-currents');
-            const elErr = document.getElementById('fig3-val-errors');
-            const elPrio = document.getElementById('fig3-val-priority');
-            const elLut = document.getElementById('fig3-val-lut');
-
-            if (elStatus) {
-                const node = fcNodes[fcCurrentStep];
-                elStatus.innerText = `${node.title}: ${p.status}`;
-                elStatus.style.borderColor = (fcPreset === 'zsc') ? 'rgba(239, 68, 68, 0.6)' : 'rgba(0, 210, 255, 0.6)';
-                elStatus.style.color = (fcPreset === 'zsc') ? '#ef4444' : '#00d2ff';
-            }
-
-            if (elCurr) elCurr.innerText = (fcCurrentStep >= 1) ? p.currents : "ממתין לדגימה...";
-            if (elErr) elErr.innerText = (fcCurrentStep >= 2) ? p.errors : "טרם חושב";
-            if (elPrio) elPrio.innerText = (fcCurrentStep >= 3) ? p.priority : "טרם מוין";
-            if (elLut) {
-                if (fcCurrentStep >= 5) {
-                    elLut.innerText = p.lut;
-                    elLut.style.color = (fcPreset === 'zsc') ? '#ef4444' : 'var(--accent-cyan)';
-                } else {
-                    elLut.innerText = "טרם נשלף וקטור";
-                    elLut.style.color = '#94a3b8';
-                }
-            }
         }
 
         function initFig3() {
