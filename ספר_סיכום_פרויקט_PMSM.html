@@ -1030,8 +1030,7 @@
             }
         }
     </style>
-    <script src="auth_guard.js"></script>
-</head>
+    <script src="auth_guard.js"></script>\n</head>
 <body>
 
     <!-- Reading Progress Bar -->
@@ -1066,15 +1065,16 @@
             <ul class="sidebar-menu" id="sidebar-nav">
                 <li><a href="#ch-cover" class="active"><span class="ch-num">00</span> שער ותקציר מנהלים</a></li>
                 <li><a href="#ch-01"><span class="ch-num">01</span> רקע וטופולוגיית Series-End</a></li>
-                <li><a href="#ch-02"><span class="ch-num">02</span> אלגוריתם OEPC וטבלת LUT</a></li>
-                <li><a href="#ch-03"><span class="ch-num">03</span> מעבדה אינטראקטיבית חיה</a></li>
-                <li><a href="#ch-04"><span class="ch-num">04</span> אימות סימולטיבי ו-HIL בזמן אמת</a></li>
-                <li><a href="#ch-05"><span class="ch-num">05</span> חסינות לתקלות פנימיות (ITSC)</a></li>
-                <li><a href="#ch-06"><span class="ch-num">06</span> כיול מנוע OEMER ואינקודר</a></li>
-                <li><a href="#ch-07"><span class="ch-num">07</span> תכנון כרטיסי חומרה ב-Altium</a></li>
-                <li><a href="#ch-08"><span class="ch-num">08</span> מכלול מכני (CAD) ועמדת דיינו</a></li>
-                <li><a href="#ch-09"><span class="ch-num">09</span> השוואת ביצועים וסיכום</a></li>
-                <li><a href="#ch-appendices"><span class="ch-num">10</span> נספחים ואינדקס דוחות</a></li>
+                <li><a href="#ch-02"><span class="ch-num">02</span> מידול מתמטי של PMSM ומערכת d-q-0</a></li>
+                <li><a href="#ch-03"><span class="ch-num">03</span> אלגוריתם OEPC וטבלת 96 המצבים</a></li>
+                <li><a href="#ch-04"><span class="ch-num">04</span> מעבדה אינטראקטיבית חיה</a></li>
+                <li><a href="#ch-05"><span class="ch-num">05</span> אימות סימולטיבי ו-HIL בזמן אמת</a></li>
+                <li><a href="#ch-06"><span class="ch-num">06</span> חסינות לתקלות פנימיות (ITSC)</a></li>
+                <li><a href="#ch-07"><span class="ch-num">07</span> כיול מנוע OEMER ואינקודר</a></li>
+                <li><a href="#ch-08"><span class="ch-num">08</span> תכנון כרטיסי חומרה ב-Altium</a></li>
+                <li><a href="#ch-09"><span class="ch-num">09</span> מכלול מכני (CAD) ועמדת דיינו</a></li>
+                <li><a href="#ch-10"><span class="ch-num">10</span> השוואת ביצועים וסיכום</a></li>
+                <li><a href="#ch-appendices"><span class="ch-num">11</span> נספחים ואינדקס דוחות</a></li>
             </ul>
 
             <div class="sidebar-footer">
@@ -1255,10 +1255,530 @@
                 </section>
 
                 <!-- ============================================================ -->
-                <!-- CHAPTER 2: OEPC ALGORITHM & 96-LUT                           -->
+                <!-- CHAPTER 3: OEPC ALGORITHM & 96-LUT                           -->
+                <!-- ============================================================ -->
+                                <!-- ============================================================ -->
+                <!-- CHAPTER 2: FULL MATHEMATICAL MODELING OF PMSM & D-Q-0 IN SE-VSI-->
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-02">
                     <span class="chapter-badge">פרק 02</span>
+                    <h2>מידול מתמטי מלא ומעמיק של מנוע ה-PMSM ומערכת הצירים d-q בטופולוגיית Series-End VSI</h2>
+                    
+                    <p>
+                        תכנון מערכת בקרה אופטימלית עבור מנוע סינכרוני בעל מגנטים קבועים (<span class="en-term">PMSM</span>) המוזן מממיר <span class="en-term">Series-End VSI</span> מחייב פיתוח מודל מתמטי מדויק, רב-ממדי וקוהרנטי. בניגוד למנוע תלת-פאזי סטנדרטי בעל נקודת כוכב צפה ומבודדת (שבה מתקיים תמיד $i_a+i_b+i_c=0$ וציר האפס מנוון לחלוטין), בטופולוגיית ה-Series-End סלילי המנוע מחוברים בטור בין ענפי הממיר. כתוצאה מכך, <strong>ערוץ הסדרה האפס ($0$-axis) פעיל פיזיקלית ודינמית</strong>, ומהווה חלק בלתי נפרד ממרחב המצבים של המערכת.
+                    </p>
+
+                    <div class="didactic-box didactic-intuition">
+                        <h4>💡 אינטואיציה פיזיקלית: מדוע עוברים ממערכת הפאזות a-b-c למערכת הצירים d-q?</h4>
+                        סלילי הסטטור מקובעים במרחב הפיזי של המנוע בזוויות גאומטריות של $120^\circ$, והזרמים הזורמים בהם הינם גלי סינוס חילופיים (AC) בתדר משתנה התלוי במהירות הסיבוב. לעומת זאת, הרוטור והמגנטים הקבועים מסתובבים במהירות $\omega_e$. התמרת פארק "מציבה צופה וירטואלי" המסתובב יחד עם הרוטור: מנקודת מבט זו, <strong>השדות המגנטיים והזרמים נראים כגדלי זרם ישר (DC) קבועים בזמן</strong>! מעבר זה מאפשר להפריד לחלוטין בין ייצור השטף המגנטי (ציר $d$) לבין ייצור המומנט המכני (ציר $q$), ולשלוט במנוע AC מורכב בדיוק כמו במנוע DC קלאסי בעל עירור נפרד.
+                    </div>
+
+                    <h3>1. משוואות המנוע במישור הפאזות הטבעי ($a-b-c$ Domain)</h3>
+                    <p>
+                        על פי חוק פאראדיי וחוקי קירכהוף, מתח כל פאזה בסלילי הסטטור מוגדר כסכום מפל המתח האוהמי ונגזרת השטף המגנטי הכולל הנקשר בסליל:
+                    </p>
+
+                    <div class="math-block">
+                        $$\mathbf{v}_{abc} = \begin{bmatrix} v_a \\ v_b \\ v_c \end{bmatrix} = R_s \begin{bmatrix} i_a \\ i_b \\ i_c \end{bmatrix} + \frac{d}{dt}\begin{bmatrix} \lambda_a \\ \lambda_b \\ \lambda_c \end{bmatrix} = R_s \mathbf{i}_{abc} + \frac{d\boldsymbol{\lambda}_{abc}}{dt}$$
+                    </div>
+
+                    <p>
+                        כאשר $R_s$ הינה התנגדות סליל הסטטור לכל פאזה, ו-$\boldsymbol{\lambda}_{abc}$ הוא וקטור השטפים המגנטיים הכוללים. השטף המגנטי מורכב הן מהשראות העצמית וההדדית בין הסלילים והן משטף המגנטים הקבועים של הרוטור הנקשר בהם:
+                    </p>
+
+                    <div class="math-block">
+                        $$\boldsymbol{\lambda}_{abc} = \mathbf{L}_{abc}(\theta_e)\,\mathbf{i}_{abc} + \boldsymbol{\lambda}_{pm}^{abc}(\theta_e)$$
+                    </div>
+
+                    <p>
+                        בשל המבנה הגאומטרי של קטבי הרוטור (Salient Poles), חלחלות הרווח האווירי משתנה כפונקציה של הזווית החשמלית של הרוטור $\theta_e = p \theta_m$ (כאשר $p$ הוא מספר זוגות הקטבים ו-$\theta_m$ היא הזווית המכנית). מטריצת ההשראויות תלויה בזמן ובזווית:
+                    </p>
+
+                    <div class="math-block">
+                        $$\mathbf{L}_{abc}(\theta_e) = \begin{bmatrix} 
+                        L_{ls} + L_A - L_B \cos(2\theta_e) & -\frac{1}{2}L_A - L_B \cos\left(2\theta_e - \frac{2\pi}{3}\right) & -\frac{1}{2}L_A - L_B \cos\left(2\theta_e + \frac{2\pi}{3}\right) \\
+                        -\frac{1}{2}L_A - L_B \cos\left(2\theta_e - \frac{2\pi}{3}\right) & L_{ls} + L_A - L_B \cos\left(2\theta_e + \frac{2\pi}{3}\right) & -\frac{1}{2}L_A - L_B \cos(2\theta_e) \\
+                        -\frac{1}{2}L_A - L_B \cos\left(2\theta_e + \frac{2\pi}{3}\right) & -\frac{1}{2}L_A - L_B \cos(2\theta_e) & L_{ls} + L_A - L_B \cos\left(2\theta_e - \frac{2\pi}{3}\right)
+                        \end{bmatrix}$$
+                    </div>
+
+                    <p>
+                        ווקטור שטף המגנט הקבוע הנקשר בסלילים נתון על-ידי:
+                    </p>
+
+                    <div class="math-block">
+                        $$\boldsymbol{\lambda}_{pm}^{abc}(\theta_e) = \lambda_{pm} \begin{bmatrix} \cos(\theta_e) \\ \cos\left(\theta_e - \frac{2\pi}{3}\right) \\ \cos\left(\theta_e + \frac{2\pi}{3}\right) \end{bmatrix}$$
+                    </div>
+
+                    <div class="didactic-box didactic-pitfall">
+                        <h4>⚠️ המלכודת החישובית: מדוע בלתי אפשרי לבצע בקרה ישירה במערכת a-b-c?</h4>
+                        גזירה ישירה של השטף $\frac{d\boldsymbol{\lambda}_{abc}}{dt} = \mathbf{L}_{abc}\frac{d\mathbf{i}_{abc}}{dt} + \frac{d\mathbf{L}_{abc}}{d\theta_e}\omega_e \mathbf{i}_{abc} + \frac{d\boldsymbol{\lambda}_{pm}^{abc}}{d\theta_e}\omega_e$ מייצרת מערכת משוואות דיפרנציאליות לא-ליניאריות מסדר גבוה בעלות מקדמים משתנים בזמן (Time-Varying). במערכת כזו, כל שינוי בזרם של פאזה אחת גורר תגובת שרשרת ושינוי בשאר הפאזות, ובקר PI פשוט אינו מסוגל לעקוב אחר סיגנלים סינוסואידליים מהירים ללא שגיאת מצב-מתמיד במשרעת ובמופע!
+                    </div>
+
+                    <h3>2. התמרות מערכות צירים: קלארק ופארק ($abc \to \alpha\beta0 \to dq0$)</h3>
+                    <p>
+                        כדי לפשט את הטיפול במערכת ולהפוך את המקדמים לקבועים, מבוצעות שתי התמרות מרחביות עוקבות:
+                    </p>
+
+                    <div class="fig-wrapper">
+                        <!-- Vector SVG Diagram of Coordinate Frames -->
+                        <svg viewBox="0 0 760 380" style="max-width: 100%; height: auto; border-radius: 10px; background: rgba(10, 16, 30, 0.95); border: 1px solid rgba(0, 210, 255, 0.3); padding: 10px;">
+                            <defs>
+                                <marker id="arr-c" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                                    <path d="M1,1 L7,4 L1,7 Z" fill="#00d2ff"/>
+                                </marker>
+                                <marker id="arr-m" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                                    <path d="M1,1 L7,4 L1,7 Z" fill="#ec4899"/>
+                                </marker>
+                                <marker id="arr-y" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                                    <path d="M1,1 L7,4 L1,7 Z" fill="#f59e0b"/>
+                                </marker>
+                                <marker id="arr-g" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                                    <path d="M1,1 L7,4 L1,7 Z" fill="#10b981"/>
+                                </marker>
+                                <marker id="arr-w" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                                    <path d="M1,1 L7,4 L1,7 Z" fill="#ffffff"/>
+                                </marker>
+                            </defs>
+
+                            <!-- Background Grid Circles -->
+                            <circle cx="260" cy="190" r="140" fill="none" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4"/>
+                            <circle cx="260" cy="190" r="80" fill="none" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2"/>
+
+                            <!-- Stationary Alpha - Beta Axes -->
+                            <!-- Alpha Axis -->
+                            <line x1="80" y1="190" x2="430" y2="190" stroke="#00d2ff" stroke-width="2" marker-end="url(#arr-c)"/>
+                            <text x="440" y="195" fill="#00d2ff" font-family="'Fira Code', monospace" font-size="14" font-weight="bold">α (Alpha)</text>
+                            <!-- Beta Axis -->
+                            <line x1="260" y1="340" x2="260" y2="40" stroke="#00d2ff" stroke-width="2" marker-end="url(#arr-c)"/>
+                            <text x="265" y="32" fill="#00d2ff" font-family="'Fira Code', monospace" font-size="14" font-weight="bold">β (Beta)</text>
+
+                            <!-- Natural Stator Axes a, b, c (120 deg apart) -->
+                            <!-- Phase a: aligns with Alpha -->
+                            <line x1="260" y1="190" x2="410" y2="190" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arr-y)"/>
+                            <text x="415" y="210" fill="#f59e0b" font-family="'Rubik', sans-serif" font-size="13" font-weight="bold">ציר פאזה a (0°)</text>
+
+                            <!-- Phase b: 120 deg -->
+                            <!-- cos(120)=-0.5, sin(120)=0.866 -> x=260-150*0.5=185, y=190-150*0.866=60 -->
+                            <line x1="260" y1="190" x2="185" y2="60" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-y)"/>
+                            <text x="130" y="52" fill="#f59e0b" font-family="'Rubik', sans-serif" font-size="13" font-weight="bold">ציר פאזה b (120°)</text>
+
+                            <!-- Phase c: 240 deg -->
+                            <!-- cos(240)=-0.5, sin(240)=-0.866 -> x=185, y=190+130=320 -->
+                            <line x1="260" y1="190" x2="185" y2="320" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-y)"/>
+                            <text x="125" y="335" fill="#f59e0b" font-family="'Rubik', sans-serif" font-size="13" font-weight="bold">ציר פאזה c (240°)</text>
+
+                            <!-- Rotating Synchronous Axes d - q (at theta_e = 32 deg) -->
+                            <!-- theta = 32 deg -> rad = 0.5585 -> cos=0.848, sin=0.530 -->
+                            <!-- d-axis length = 155 -> dx = 131, dy = -82 -> x=391, y=108 -->
+                            <line x1="260" y1="190" x2="391" y2="108" stroke="#ec4899" stroke-width="2.8" marker-end="url(#arr-m)"/>
+                            <text x="402" y="105" fill="#ec4899" font-family="'Fira Code', monospace" font-size="14" font-weight="bold">d (Direct Axis || λ_pm)</text>
+
+                            <!-- q-axis: theta + 90 = 122 deg -> cos=-0.530, sin=0.848 -> dx=-82, dy=-131 -> x=178, y=59 -->
+                            <line x1="260" y1="190" x2="178" y2="59" stroke="#ec4899" stroke-width="2.8" marker-end="url(#arr-m)"/>
+                            <text x="110" y="85" fill="#ec4899" font-family="'Fira Code', monospace" font-size="14" font-weight="bold">q (Quadrature Axis)</text>
+
+                            <!-- Rotor flux vector on d-axis -->
+                            <circle cx="360" cy="127" r="5" fill="#ec4899"/>
+                            <text x="368" y="140" fill="#ec4899" font-size="12" font-weight="bold">λ_pm</text>
+
+                            <!-- Angle theta_e arc between Alpha and d -->
+                            <path d="M 330 190 A 70 70 0 0 0 319 153" fill="none" stroke="#ffffff" stroke-width="1.8"/>
+                            <text x="335" y="172" fill="#ffffff" font-family="'Fira Code', monospace" font-size="13" font-weight="bold">θ_e (ω_e·t)</text>
+
+                            <!-- Legend / Details Panel on the Right -->
+                            <rect x="490" y="40" width="250" height="300" rx="10" fill="rgba(18, 26, 47, 0.85)" stroke="rgba(64, 120, 240, 0.3)"/>
+                            <text x="505" y="68" fill="#00d2ff" font-family="'Rubik', sans-serif" font-size="15" font-weight="bold">מקרא מערכות הצירים:</text>
+                            
+                            <line x1="505" y1="95" x2="535" y2="95" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="4,2"/>
+                            <text x="545" y="99" fill="#f0f4fc" font-size="12">מערכת סטטור סטטית $a-b-c$</text>
+
+                            <line x1="505" y1="130" x2="535" y2="130" stroke="#00d2ff" stroke-width="2.5"/>
+                            <text x="545" y="134" fill="#f0f4fc" font-size="12">מערכת קרטזית נייחת $\alpha-\beta$</text>
+
+                            <line x1="505" y1="165" x2="535" y2="165" stroke="#ec4899" stroke-width="2.5"/>
+                            <text x="545" y="169" fill="#f0f4fc" font-size="12">מערכת רוטור סינכרונית $d-q$</text>
+
+                            <line x1="505" y1="200" x2="535" y2="200" stroke="#ffffff" stroke-width="1.5"/>
+                            <text x="545" y="204" fill="#f0f4fc" font-size="12">זווית הרוטור החשמלית $\theta_e$</text>
+
+                            <line x1="505" y1="230" x2="725" y2="230" stroke="rgba(255,255,255,0.1)"/>
+
+                            <text x="505" y="255" fill="#10b981" font-size="12" font-weight="bold">✓ ציר d: מקביל לשטף המגנט</text>
+                            <text x="505" y="278" fill="#10b981" font-size="12" font-weight="bold">✓ ציר q: מוביל ב-$90^\circ$ (מומנט)</text>
+                            <text x="505" y="301" fill="#f59e0b" font-size="12" font-weight="bold">✓ ציר 0: ניצב למישור (זרם ZSC)</text>
+                            <text x="505" y="324" fill="#94a3b8" font-size="11">טופולוגיית Series-End VSI</text>
+                        </svg>
+                        <div class="fig-caption"><strong>איור 2.1:</strong> מיפוי מרחבי של מערכות הקואורדינטות: מערכת הסטטור התלת-פאזית הטבעית $a-b-c$, מערכת הצירים הנייחת $\alpha-\beta$, ומערכת הצירים הסינכרונית המסתובבת $d-q$ בזווית $\theta_e$ ביחס לשטף הרוטור $\lambda_{pm}$.</div>
+                    </div>
+
+                    <h4>א. התמרת קלארק (Clarke Transformation - $abc \to \alpha\beta0$)</h4>
+                    <p>
+                        התמרה זו מעבירה את הוקטורים המרחביים ממישור שלושת הסלילים בזוויות $120^\circ$ למערכת צירים אורתוגונלית נייחת $\alpha-\beta$ וציר סדרה אפס $0$ (הניצב למישור). נשתמש במטריצת ההתמרה שומרת המשרעת (Amplitude-Invariant):
+                    </p>
+
+                    <div class="math-block">
+                        $$\begin{bmatrix} f_\alpha \\ f_\beta \\ f_0 \end{bmatrix} = \frac{2}{3} \begin{bmatrix} 
+                        1 & -\frac{1}{2} & -\frac{1}{2} \\ 
+                        0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2} \\ 
+                        \frac{1}{2} & \frac{1}{2} & \frac{1}{2} 
+                        \end{bmatrix} \begin{bmatrix} f_a \\ f_b \\ f_c \end{bmatrix}$$
+                    </div>
+
+                    <p>
+                        והמטריצה ההפוכה (Inverse Clarke Transformation):
+                    </p>
+
+                    <div class="math-block">
+                        $$\begin{bmatrix} f_a \\ f_b \\ f_c \end{bmatrix} = \begin{bmatrix} 
+                        1 & 0 & 1 \\ 
+                        -\frac{1}{2} & \frac{\sqrt{3}}{2} & 1 \\ 
+                        -\frac{1}{2} & -\frac{\sqrt{3}}{2} & 1 
+                        \end{bmatrix} \begin{bmatrix} f_\alpha \\ f_\beta \\ f_0 \end{bmatrix}$$
+                    </div>
+
+                    <p>
+                        <strong>תפקידו המכריע של ציר ה-0:</strong> מתוך השורה השלישית בהתמרה, מתקבל ישירות:
+                        $$f_0 = \frac{f_a + f_b + f_c}{3} \implies i_0 = \frac{i_a + i_b + i_c}{3}$$
+                        עבור זרמי הסטטור, $i_0$ הוא במדויק <strong>זרם הסדרה האפס (ZSC)</strong>!
+                    </p>
+
+                    <h4>ב. התמרת פארק הסינכרונית (Park Transformation - $\alpha\beta0 \to dq0$)</h4>
+                    <p>
+                        כעת מבוצע סיבוב של מערכת הצירים $\alpha-\beta$ בזווית הרוטור הרגעית $\theta_e$, כך שציר $d$ מתלכד עם וקטור שטף המגנטים של הרוטור, וציר $q$ ניצב לו ב-$90^\circ$ חשמליים קדימה:
+                    </p>
+
+                    <div class="math-block">
+                        $$\begin{bmatrix} f_d \\ f_q \\ f_0 \end{bmatrix} = \begin{bmatrix} 
+                        \cos\theta_e & \sin\theta_e & 0 \\ 
+                        -\sin\theta_e & \cos\theta_e & 0 \\ 
+                        0 & 0 & 1 
+                        \end{bmatrix} \begin{bmatrix} f_\alpha \\ f_\beta \\ f_0 \end{bmatrix}$$
+                    </div>
+
+                    <p>
+                        והמטריצה ההפוכה (Inverse Park Transformation):
+                    </p>
+
+                    <div class="math-block">
+                        $$\begin{bmatrix} f_\alpha \\ f_\beta \\ f_0 \end{bmatrix} = \begin{bmatrix} 
+                        \cos\theta_e & -\sin\theta_e & 0 \\ 
+                        \sin\theta_e & \cos\theta_e & 0 \\ 
+                        0 & 0 & 1 
+                        \end{bmatrix} \begin{bmatrix} f_d \\ f_q \\ f_0 \end{bmatrix}$$
+                    </div>
+
+                    <p>
+                        שים לב כי רכיב ה-$0$ אינו מושפע כלל מסיבוב הרוטור ($f_0^{dq0} \equiv f_0^{\alpha\beta0}$), כיוון שהוא מייצג גודל הומופולרי סקלרי שאינו תלוי בזווית המרחבית של השדה המסתובב.
+                    </p>
+
+                    <h3>3. משוואות הדינמיקה השלמות במערכת הצירים $d-q-0$</h3>
+                    <p>
+                        על ידי הצבת התמרות קלארק ופארק במשוואות הפאזות הטבעיות וביצוע גזירה מלאה לפי כלל המכפלה, מתקבלת מערכת משוואות הדינמיקה הקנונית של מנוע PMSM:
+                    </p>
+
+                    <div class="math-block">
+                        \begin{aligned}
+                        v_d &= R_s i_d + \frac{d\lambda_d}{dt} - \omega_e \lambda_q \\
+                        v_q &= R_s i_q + \frac{d\lambda_q}{dt} + \omega_e \lambda_d \\
+                        v_0 &= R_0 i_0 + \frac{d\lambda_0}{dt}
+                        \end{aligned}
+                    </div>
+
+                    <p>
+                        השטפים המגנטיים בצירים השונים מקושרים לזרמים על פי ההשראויות הסינכרוניות:
+                    </p>
+
+                    <div class="math-block">
+                        \begin{aligned}
+                        \lambda_d &= L_d i_d + \lambda_{pm} \\
+                        \lambda_q &= L_q i_q \\
+                        \lambda_0 &= L_0 i_0
+                        \end{aligned}
+                    </div>
+
+                    <p>
+                        כאשר $L_d$ היא ההשראות בציר הישיר, $L_q$ היא ההשראות בציר הריבועי, ו-$L_0$ היא השראות הסדרה האפס. הצבת משוואות השטף מניבה את <strong>משוואות המתחים הדינמיות המפורשות</strong>:
+                    </p>
+
+                    <div class="math-block">
+                        $$\begin{aligned}
+                        v_d &= R_s i_d + L_d \frac{di_d}{dt} - \omega_e L_q i_q \\
+                        v_q &= R_s i_q + L_q \frac{di_q}{dt} + \omega_e L_d i_d + \omega_e \lambda_{pm} \\
+                        v_0 &= R_0 i_0 + L_0 \frac{di_0}{dt}
+                        \end{aligned}$$
+                    </div>
+
+                    <p>
+                        ניתוח האיברים השונים במשוואות:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>מפלי מתח אוהמיים ($R_s i_d, R_s i_q, R_0 i_0$):</strong> הפסדי ג'אול בהתנגדות חוטי הנחושת של הסטטור.</li>
+                        <li><strong>מתחי השראה עצמית ($L_d \frac{di_d}{dt}, L_q \frac{di_q}{dt}, L_0 \frac{di_0}{dt}$):</strong> המתחים הדרושים לשינוי רגעי של הזרמים בצירים השונים.</li>
+                        <li><strong>איברי צימוד צולב (Cross-Coupling):</strong> האיבר $-\omega_e L_q i_q$ מייצג את המתח המושרה על ציר $d$ כתוצאה מסיבוב זרם ציר $q$, והאיבר $+\omega_e L_d i_d$ מייצג את המתח המושרה על ציר $q$ כתוצאה מזרם ציר $d$. ככל שמהירות הסיבוב $\omega_e$ גדלה, צימוד זה מתחזק ומחייב פיצוי מהיר.</li>
+                        <li><strong>כא"מ מגנטים נגדי (Back-EMF):</strong> האיבר $e_q = \omega_e \lambda_{pm}$ הינו המתח המושרה הנוצר מסיבוב המגנטים מול סלילי הסטטור. מתח זה מנוגד למתח הממיר וקובע את מגבלת המהירות המרבית עבור מתח DC נתון.</li>
+                    </ul>
+
+                    <h3>4. פיתוח המומנט האלקטרומגנטי ($T_e$) ואיזון הספקים</h3>
+                    <p>
+                        ההספק החשמלי הרגעי הנכנס למנוע תלת-פאזי מחושב כמכפלת המתחים והזרמים:
+                    </p>
+
+                    <div class="math-block">
+                        $$P_{in} = v_a i_a + v_b i_b + v_c i_c = \frac{3}{2} (v_d i_d + v_q i_q) + 3 v_0 i_0$$
+                    </div>
+
+                    <p>
+                        על ידי הצבת משוואות המתחים בביטוי ההספק והפרדת האיברים, מקבלים:
+                    </p>
+
+                    <div class="math-block">
+                        $$P_{in} = \underbrace{\frac{3}{2} R_s (i_d^2 + i_q^2) + 3 R_0 i_0^2}_{P_{cu}\text{ (הפסדי נחושת)}} + \underbrace{\frac{3}{2}\left(i_d \frac{d\lambda_d}{dt} + i_q \frac{d\lambda_q}{dt}\right) + 3 i_0 \frac{d\lambda_0}{dt}}_{P_{mag}\text{ (קצב שינוי אנרגיה מגנטית)}} + \underbrace{\frac{3}{2} \omega_e (\lambda_d i_q - \lambda_q i_d)}_{P_{em}\text{ (הספק אלקטרומכני)}}$$
+                    </div>
+
+                    <p>
+                        ההספק האלקטרומכני המומר למומנט סיבובי על גל המנוע נתון על-ידי $P_{em} = \omega_m T_e$. מכיוון ש-$\omega_e = p \omega_m$, המומנט האלקטרומגנטי הינו:
+                    </p>
+
+                    <div class="math-block">
+                        $$T_e = \frac{P_{em}}{\omega_m} = \frac{3}{2} p (\lambda_d i_q - \lambda_q i_d) = \frac{3}{2} p \left[ \lambda_{pm} i_q + (L_d - L_q) i_d i_q \right]$$
+                    </div>
+
+                    <div class="didactic-box didactic-math">
+                        <h4>📐 הוכחה מתמטית: השפעת זרם ה-ZSC על המומנט במכונה סימטרית</h4>
+                        נבחן היטב את ביטוי המומנט $T_e$: רכיב ה-ZSC ($i_0$) <strong>אינו מופיע כלל במשוואת המומנט האלקטרומגנטי!</strong><br>
+                        המשמעות הפיזיקלית מרחיקת לכת:
+                        <ol>
+                            <li>זרם ה-ZSC אינו מייצר שום מומנט ממוצע שימושי על גל המנוע.</li>
+                            <li>לעומת זאת, במשוואת הפסדי הנחושת מופיע האיבר $3 R_0 i_0^2$ — כלומר, זרם סדרה אפס מייצר <strong>אך ורק הפסדי חום הרסניים בסטטור</strong> ורוויה מגנטית מקומית!</li>
+                            <li>מכאן נובעת הדרישה הבלתי מתפשרת של אלגוריתם ה-OEPC: דיכוי מוחלט של $i_0$ לאפס ($i_0^* = 0$).</li>
+                        </ol>
+                    </div>
+
+                    <h4>חלוקת רכיבי המומנט: מגנטי מול רלקטנס</h4>
+                    <p>
+                        משוואת המומנט מורכבת משני רכיבים פיזיקליים נפרדים:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>מומנט המגנט הסינכרוני ($T_{mag} = \frac{3}{2} p \lambda_{pm} i_q$):</strong> נוצר כתוצאה מהאינטראקציה בין שטף המגנט הקבוע $\lambda_{pm}$ לבין זרם ציר הריבוע $i_q$.</li>
+                        <li><strong>מומנט רלקטנס ($T_{rel} = \frac{3}{2} p (L_d - L_q) i_d i_q$):</strong> נוצר מהפרש המגנטיות והחלחלות בין ציר $d$ לציר $q$. במנועי מגנטים פנימיים (IPMSM) שבהם $L_q > L_d$, רכיב זה מנוצל להגדלת המומנט על ידי הזרקת זרם שלילי בציר $d$ ($i_d < 0$).</li>
+                    </ul>
+
+                    <p>
+                        <strong>אפיון מנוע ה-OEMER QS 100S בפרויקט שלנו:</strong><br>
+                        המנוע שבעמדת הניסוי הינו מנוע מסוג <strong>Surface-Mounted PMSM (SPMSM)</strong> שבו המגנטים הקבועים מודבקים על פני השטח החיצוני של הרוטור. מכיוון שחלחלות המגנטים זהה כמעט לחלחלות האוויר ($\mu_r \approx 1.05$), מתקיים:
+                        $$L_d \approx L_q \implies L_d - L_q \approx 0 \implies T_{rel} \approx 0$$
+                        לפיכך, אסטרטגיית הבקרה האופטימלית להשגת מקסימום מומנט לזרם (<span class="en-term">MTPA - Maximum Torque Per Ampere</span>) הינה <strong>בקרת $i_d^* = 0$</strong>. כל זרם הסטטור מנותב לציר $q$, והמומנט נשלט ליניארית:
+                        $$T_e = \frac{3}{2} p \lambda_{pm} i_q = K_t \cdot i_q$$
+                    </p>
+
+                    <div class="fig-wrapper">
+                        <img src="presentation_assets/pmsm_motor_photo.jpeg" alt="OEMER QS 100S PMSM Motor" onclick="openModal(this.src)">
+                        <div class="fig-caption"><strong>איור 2.2:</strong> מנוע ה-PMSM הסינכרוני מדגם OEMER QS 100S בעמדת הניסוי המעבדתית, בעל מגנטים קבועים על פני השטח (SPMSM) עם פרמטרי $L_d \approx L_q$.</div>
+                    </div>
+
+                    <h3>5. שילוב מודל המנוע עם ממיר ה-Series-End VSI וצימוד ערוץ ה-ZSC</h3>
+                    <p>
+                        נחבר כעת את מודל המנוע למבנה הפיזי של ממיר ה-Series-End VSI בעל 4 ענפי המיתוג ($L_1, L_2, L_3, L_4$). מתחי הפאזות של המנוע נגזרים מהפרשי הפוטנציאלים בין הענפים:
+                    </p>
+
+                    <div class="math-block">
+                        $$\begin{bmatrix} v_a \\ v_b \\ v_c \end{bmatrix} = \begin{bmatrix} 
+                        1 & -1 & 0 & 0 \\ 
+                        0 & 1 & -1 & 0 \\ 
+                        0 & 0 & 1 & -1 
+                        \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \end{bmatrix}$$
+                    </div>
+
+                    <p>
+                        נפעיל את התמרת קלארק על מתחי הפאזות הללו כדי לחלץ את מתחי הצירים $v_\alpha, v_\beta, v_0$ כפונקציה ישירה של מתחי ענפי הממיר $v_1, v_2, v_3, v_4$:
+                    </p>
+
+                    <div class="math-block">
+                        $$\begin{aligned}
+                        v_\alpha &= \frac{2}{3}\left[ v_a - \frac{1}{2}v_b - \frac{1}{2}v_c \right] = \frac{1}{3} \left[ 2(v_1 - v_2) - (v_2 - v_3) - (v_3 - v_4) \right] = \frac{1}{3} (2v_1 - 3v_2 + v_3 + v_4) \\
+                        v_\beta &= \frac{2}{3}\left[ \frac{\sqrt{3}}{2}v_b - \frac{\sqrt{3}}{2}v_c \right] = \frac{1}{\sqrt{3}} \left[ (v_2 - v_3) - (v_3 - v_4) \right] = \frac{1}{\sqrt{3}} (v_2 - 2v_3 + v_4) \\
+                        v_0 &= \frac{1}{3} (v_a + v_b + v_c) = \frac{1}{3} \left[ (v_1 - v_2) + (v_2 - v_3) + (v_3 - v_4) \right] = \frac{1}{3} (v_1 - v_4)
+                        \end{aligned}$$
+                    </div>
+
+                    <div class="didactic-box didactic-intuition">
+                        <h4>💡 תובנת מפתח: הצימוד המבני של ה-ZSC בממיר Series-End</h4>
+                        הבט במשוואות לעיל:
+                        <ul>
+                            <li>המתחים המייצרים תנועה ומומנט ($v_\alpha, v_\beta$ ומכאן $v_d, v_q$) תלויים בצירופים של <strong>כל ארבעת ענפי הממיר</strong> ($v_1, v_2, v_3, v_4$).</li>
+                            <li>לעומת זאת, מתח הסדרה האפס $v_0$ תלוי <strong>אך ורק בהפרש הפוטנציאלים בין הענף הראשון לאחרון: $v_1 - v_4$</strong>!</li>
+                        </ul>
+                        זהו הבסיס התאורטי המבריק עליו נשענת שיטת ה-OEPC: בכל מחזור מיתוג, ניתן לבחור מצב עבור הענפים הפנימיים ($L_2, L_3$) שיספק את הזרמים הנדרשים למומנט, ובמקביל לבחור את הענפים החיצוניים ($L_1, L_4$) כך שיקזזו את שגיאת ה-ZSC!
+                    </div>
+
+                    <h3>6. מודל המנוע בזמן בדיד (Discrete-Time State Space) לקראת בקרה ב-FPGA</h3>
+                    <p>
+                        מערכת הבקרה הדיגיטלית ממומשת על גבי כרטיס FPGA ייעודי הפועל בקצב שעון מהיר עם זמן מחזור בקרה קבוע $T_s = 20\,\mu\text{s}$ (תדר דגימה ומיתוג של $50\,\text{kHz}$). כדי לחזות את התנהגות שגיאות הזרם בצעד הבא $[k+1]$, נבצע דיסקרטיזציה של משוואות הסטייט בשיטת Euler קדימה:
+                    </p>
+
+                    <div class="math-block">
+                        $$\frac{di_d}{dt} \approx \frac{i_d[k+1] - i_d[k]}{T_s}, \quad \frac{di_q}{dt} \approx \frac{i_q[k+1] - i_q[k]}{T_s}, \quad \frac{di_0}{dt} \approx \frac{i_0[k+1] - i_0[k]}{T_s}$$
+                    </div>
+
+                    <p>
+                        הצבת קירובי הנגזרות מניבה את <strong>משוואות המצב הבדידות (Discrete-Time State Space Equations)</strong>:
+                    </p>
+
+                    <div class="math-block">
+                        $$\begin{bmatrix} i_d[k+1] \\ i_q[k+1] \\ i_0[k+1] \end{bmatrix} = \begin{bmatrix} 
+                        1 - \frac{R_s T_s}{L_d} & \omega_e[k] T_s \frac{L_q}{L_d} & 0 \\ 
+                        -\omega_e[k] T_s \frac{L_d}{L_q} & 1 - \frac{R_s T_s}{L_q} & 0 \\ 
+                        0 & 0 & 1 - \frac{R_0 T_s}{L_0} 
+                        \end{bmatrix} \begin{bmatrix} i_d[k] \\ i_q[k] \\ i_0[k] \end{bmatrix} + \begin{bmatrix} 
+                        \frac{T_s}{L_d} & 0 & 0 \\ 
+                        0 & \frac{T_s}{L_q} & 0 \\ 
+                        0 & 0 & \frac{T_s}{L_0} 
+                        \end{bmatrix} \begin{bmatrix} v_d[k] \\ v_q[k] \\ v_0[k] \end{bmatrix} + \begin{bmatrix} 
+                        0 \\ -\frac{\omega_e[k]\lambda_{pm}T_s}{L_q} \\ 0 
+                        \end{bmatrix}$$
+                    </div>
+
+                    <p>
+                        עבור ערוץ ה-ZSC, הקשר בין מתחי הענפים לזרם הבא הינו ישיר:
+                    </p>
+
+                    <div class="math-block">
+                        $$i_0[k+1] = \left(1 - \frac{R_0 T_s}{L_0}\right) i_0[k] + \frac{T_s}{3 L_0} \left( v_1[k] - v_4[k] \right)$$
+                    </div>
+
+                    <p>
+                        משוואה זו ממחישה את נגזרת השיפוע: אם $i_0[k] > 0$, כדי להקטין את הזרם לכיוון אפס נדרש $v_1[k] < v_4[k]$ (כלומר $v_1=0, v_4=V_{dc}$). אם $i_0[k] < 0$, נדרש $v_1 > v_4$ ($v_1=V_{dc}, v_4=0$). עקרון פיזיקלי זה מוטמע ישירות בטבלת ה-LUT של ה-OEPC.
+                    </p>
+
+                    <h3>7. פרמטרים נומינליים של מנוע המעבדה OEMER QS 100S</h3>
+                    <p>
+                        להלן טבלת הפרמטרים המדויקת של המנוע שבו נעשה שימוש במחקר, בניסויי ה-C-HIL ובמעבדה הפיזית:
+                    </p>
+
+                    <div class="table-container">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>פרמטר פיזיקלי</th>
+                                    <th>סימול מתמטי</th>
+                                    <th>ערך נומינלי</th>
+                                    <th>יחידות</th>
+                                    <th>השפעה על מודל ה-d-q ובקרת ה-OEPC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>מתח קו נומינלי</strong></td>
+                                    <td><span class="en-term">V_{LL,nom}</span></td>
+                                    <td>380</td>
+                                    <td>$\text{V}_{rms}$</td>
+                                    <td>קובע את מתח ה-DC הדרוש בממיר ($V_{dc} \approx 540\,\text{V}$)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>זרם פאזה נומינלי</strong></td>
+                                    <td><span class="en-term">I_{nom}</span></td>
+                                    <td>7.5</td>
+                                    <td>$\text{A}_{rms}$</td>
+                                    <td>משרעת זרם מרבית לציר $q$: $i_{q,max} = 7.5\sqrt{2} = 10.6\,\text{A}$</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>מהירות סיבוב נומינלית</strong></td>
+                                    <td><span class="en-term">N_{nom}</span></td>
+                                    <td>3000</td>
+                                    <td>$\text{RPM}$</td>
+                                    <td>מהירות מכנית בסיסית: $\omega_m = 314.16\,\text{rad/s}$</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>מספר זוגות קטבים</strong></td>
+                                    <td><span class="en-term">p</span></td>
+                                    <td>4</td>
+                                    <td>-</td>
+                                    <td>יחס המרה חשמלי/מכני: $\omega_e = 4 \omega_m$, $\theta_e = 4 \theta_m$ ($f_{e,nom} = 200\,\text{Hz}$)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>התנגדות סטטור לפאזה</strong></td>
+                                    <td><span class="en-term">R_s</span></td>
+                                    <td>0.42</td>
+                                    <td>$\Omega$</td>
+                                    <td>קובעת את מפלי המתח האוהמיים והפסדי החום במנוע</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>התנגדות סדרה אפס</strong></td>
+                                    <td><span class="en-term">R_0</span></td>
+                                    <td>0.42</td>
+                                    <td>$\Omega$</td>
+                                    <td>התנגדות שיכוך טבעית עבור זרם ה-ZSC</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>השראות ציר d</strong></td>
+                                    <td><span class="en-term">L_d</span></td>
+                                    <td>2.45</td>
+                                    <td>$\text{mH}$</td>
+                                    <td>קובעת את דינמיקת עליית הזרם בציר השטף ואת שיפוע השגיאה</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>השראות ציר q</strong></td>
+                                    <td><span class="en-term">L_q</span></td>
+                                    <td>2.65</td>
+                                    <td>$\text{mH}$</td>
+                                    <td>השראות ציר המומנט ($L_q \approx L_d$, אפיון מובהק של SPMSM)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>השראות סדרה אפס</strong></td>
+                                    <td><span class="en-term">L_0</span></td>
+                                    <td>0.72</td>
+                                    <td>$\text{mH}$</td>
+                                    <td><strong>השראות נמוכה פי 3.4 מההשראות הסינכרונית!</strong> גורמת ל-ZSC להתפרץ במהירות</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>שטף מגנטים קבועים</strong></td>
+                                    <td><span class="en-term">\lambda_{pm}</span></td>
+                                    <td>0.082</td>
+                                    <td>$\text{V}\cdot\text{s}$</td>
+                                    <td>מקור הכא"מ הראשי ומייצר המומנט הסינכרוני במכונה</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>קבוע מומנט אלקטרומכני</strong></td>
+                                    <td><span class="en-term">K_t</span></td>
+                                    <td>0.587</td>
+                                    <td>$\text{N}\cdot\text{m}/\text{A}$</td>
+                                    <td>היחס הישיר בין זרם ציר $q$ למומנט: $K_t = \frac{3}{2} p \lambda_{pm} = 1.5 \cdot 4 \cdot 0.082 \cdot \sqrt{2/3}$</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>קבוע כא"מ מושרה</strong></td>
+                                    <td><span class="en-term">K_e</span></td>
+                                    <td>35.5</td>
+                                    <td>$\text{V}_{rms}/\text{kRPM}$</td>
+                                    <td>שיפוע עליית מתח ה-Back-EMF כפונקציה של מהירות הסיבוב</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>מומנט התמד רוטור</strong></td>
+                                    <td><span class="en-term">J</span></td>
+                                    <td>0.0028</td>
+                                    <td>$\text{kg}\cdot\text{m}^2$</td>
+                                    <td>קבוע זמן מכני ודינמיקת האצה: $\frac{d\omega_m}{dt} = \frac{T_e - T_L - B\omega_m}{J}$</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>מקדם חיכוך צמיג</strong></td>
+                                    <td><span class="en-term">B</span></td>
+                                    <td>0.00015</td>
+                                    <td>$\text{N}\cdot\text{m}\cdot\text{s/rad}$</td>
+                                    <td>הפסדי חיכוך מכני במיסבים וברווח האווירי</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="didactic-box didactic-lab">
+                        <h4>🔬 תובנת מעבדה: מדוע הנתון L_0 = 0.72 mH הוא החשוב ביותר לתכנון הבקרה?</h4>
+                        שים לב להבדל העצום: בעוד שההשראות בצירים $d$ ו-$q$ היא כ-$2.5\,\text{mH}$, השראות הסדרה האפס היא <strong>$0.72\,\text{mH}$ בלבד</strong>! מכיוון שקצב עליית הזרם נתון על-ידי $\frac{di_0}{dt} = \frac{\Delta v}{L_0}$, בכל מיקרו-שנייה שבה מתקיים $v_1 \neq v_4$, זרם ה-ZSC נוסק בקצב מהיר <strong>פי 3.5</strong> מזרמי הפאזות הרגילים!<br>
+                        זו הסיבה המדעית לכך ששיטות בקרה מבוססות חלוקת זמן (TDM) נכשלות במהירויות גבוהות, ומדוע נדרשת <strong>בקרת עדיפות שגיאה (OEPC)</strong> הדוגמת ומגיבה תוך עשרות ננו-שניות בחומרת FPGA.
+                    </div>
+                </section>
+
+<section class="chapter-section" id="ch-03">
+                    <span class="chapter-badge">פרק 03</span>
                     <h2>אלגוריתם בקרת שגיאה אופטימלית (OEPC) ומבנה טבלת 96 המצבים</h2>
 
                     <h3>המגבלות של שיטות הבקרה הקיימות: מדוע נדרש OEPC?</h3>
@@ -1276,7 +1796,7 @@
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig3_oepc_flowchart_algorithm.jpg" alt="OEPC Flowchart Algorithm" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 2.1:</strong> תרשים זרימה פדגוגי של אלגוריתם ה-OEPC: דגימת זרמים, חישוב 6 שגיאות, מיון עדיפות, קביעת ביט פאזה מועדפת ($F_{mp}$), הרכבת כתובת 7 ביטים ושליפת וקטור המיתוג בצעד שעון יחיד.</div>
+                        <div class="fig-caption"><strong>איור 3.1:</strong> תרשים זרימה פדגוגי של אלגוריתם ה-OEPC: דגימת זרמים, חישוב 6 שגיאות, מיון עדיפות, קביעת ביט פאזה מועדפת ($F_{mp}$), הרכבת כתובת 7 ביטים ושליפת וקטור המיתוג בצעד שעון יחיד.</div>
                     </div>
 
                     <h3>הגדרה דידקטית של 6 שגיאות הזרם</h3>
@@ -1480,8 +2000,8 @@
                 <!-- ============================================================ -->
                 <!-- CHAPTER 3: INTERACTIVE LAB                                   -->
                 <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-03">
-                    <span class="chapter-badge">פרק 03</span>
+                <section class="chapter-section" id="ch-04">
+                    <span class="chapter-badge">פרק 04</span>
                     <h2>מעבדה אינטראקטיבית מובנית: סימולציות חיות בלייב</h2>
 
                     <p>
@@ -1621,8 +2141,8 @@
                 <!-- ============================================================ -->
                 <!-- CHAPTER 4: PSIM & TYPHOON HIL REAL-TIME VALIDATION           -->
                 <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-04">
-                    <span class="chapter-badge">פרק 04</span>
+                <section class="chapter-section" id="ch-05">
+                    <span class="chapter-badge">פרק 05</span>
                     <h2>אימות סימולטיבי ב-PSIM ו-Typhoon C-HIL בזמן אמת</h2>
 
                     <h3>ארכיטקטורת מערך ה-C-HIL המעבדתי בזמן אמת</h3>
@@ -1636,7 +2156,7 @@
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig4_experimental_setups_chil_prototype.jpg" alt="Experimental Setups C-HIL & Prototype" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 4.1:</strong> עמדת הניסוי המעבדתית: מודל ה-C-HIL בזמן אמת עם סימולטור Typhoon HIL404, לוחות הבקרה הפיזיים, כרטיסי הבידוד והדיינו.</div>
+                        <div class="fig-caption"><strong>איור 5.1:</strong> עמדת הניסוי המעבדתית: מודל ה-C-HIL בזמן אמת עם סימולטור Typhoon HIL404, לוחות הבקרה הפיזיים, כרטיסי הבידוד והדיינו.</div>
                     </div>
 
                     <h3>תוצאות תגובה דינמית לשינויי מדרגת מומנט ומהירות</h3>
@@ -1645,12 +2165,12 @@
                     </p>
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig10_pmsm_dynamic_response_speed_torque.jpg" alt="Dynamic Response Speed & Torque" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 4.2:</strong> תגובה דינמית של מנוע ה-PMSM: זרמי פאזה $i_a, i_b, i_c$, מהירות הרוטור ומומנט אלקטרומגנטי תחת מדרגת עומס. הבקר מתייצב תוך פחות מ-2 מילי-שניות ללא שום תופעות מעבר מזיקות!</div>
+                        <div class="fig-caption"><strong>איור 5.2:</strong> תגובה דינמית של מנוע ה-PMSM: זרמי פאזה $i_a, i_b, i_c$, מהירות הרוטור ומומנט אלקטרומגנטי תחת מדרגת עומס. הבקר מתייצב תוך פחות מ-2 מילי-שניות ללא שום תופעות מעבר מזיקות!</div>
                     </div>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig12_chil_realtime_pmsm_results.jpg" alt="C-HIL Real-Time Results" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 4.3:</strong> מדידות C-HIL בזמן אמת: מעקב זרמי הפאזות ברוחב פס גבוה והוכחת דיכוי ה-ZSC לאפס מוחלט ($i_0 \approx 0.01\text{A}$).</div>
+                        <div class="fig-caption"><strong>איור 5.3:</strong> מדידות C-HIL בזמן אמת: מעקב זרמי הפאזות ברוחב פס גבוה והוכחת דיכוי ה-ZSC לאפס מוחלט ($i_0 \approx 0.01\text{A}$).</div>
                     </div>
 
                     <h3>אימות תחת חוסר איזון פיזי קיצוני בסלילים ($\pm 25\%$)</h3>
@@ -1659,15 +2179,15 @@
                     </p>
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig6_oepc_asymmetric_response.jpg" alt="OEPC Asymmetric Response" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 4.4:</strong> ביצועי OEPC תחת אי-סימטריה של 25%: זרמי הפאזה נשמרים עגולים וסימטריים לחלוטין, וזרם ה-ZSC מרוסן לגמרי!</div>
+                        <div class="fig-caption"><strong>איור 5.4:</strong> ביצועי OEPC תחת אי-סימטריה של 25%: זרמי הפאזה נשמרים עגולים וסימטריים לחלוטין, וזרם ה-ZSC מרוסן לגמרי!</div>
                     </div>
                 </section>
 
                 <!-- ============================================================ -->
                 <!-- CHAPTER 5: FAULT TOLERANCE (ITSC)                            -->
                 <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-05">
-                    <span class="chapter-badge">פרק 05</span>
+                <section class="chapter-section" id="ch-06">
+                    <span class="chapter-badge">פרק 06</span>
                     <h2>חסינות אינהרנטית לתקלות קצר פנימיות במנוע (ITSC)</h2>
 
                     <h3>הסכנה בתקלת קצר בין כריכות (Inter-Turn Short Circuit - ITSC)</h3>
@@ -1677,7 +2197,7 @@
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/fig13_fault_tolerance_itsc_oepc_vs_cbpwm.jpg" alt="Fault Tolerance ITSC: OEPC vs CBPWM" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 5.1:</strong> השוואה ישירה תחת תקלת ITSC קשה: בקרת CBPWM רגילה (משמאל) מפתחת עיוות קיצוני בזרמים וזרם ZSC ענק; לעומתה בקרת OEPC (מימין) שומרת על מסלול מעגלי מושלם ומרסנת את הזרם התקול!</div>
+                        <div class="fig-caption"><strong>איור 6.1:</strong> השוואה ישירה תחת תקלת ITSC קשה: בקרת CBPWM רגילה (משמאל) מפתחת עיוות קיצוני בזרמים וזרם ZSC ענק; לעומתה בקרת OEPC (מימין) שומרת על מסלול מעגלי מושלם ומרסנת את הזרם התקול!</div>
                     </div>
 
                     <div class="didactic-box didactic-lab">
@@ -1689,8 +2209,8 @@
                 <!-- ============================================================ -->
                 <!-- CHAPTER 6: MOTOR CHARACTERIZATION & POLE ALIGNMENT           -->
                 <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-06">
-                    <span class="chapter-badge">פרק 06</span>
+                <section class="chapter-section" id="ch-07">
+                    <span class="chapter-badge">פרק 07</span>
                     <h2>אפיון, כיול מנוע OEMER QS 100S ופענוח אינקודר SICK HIPERFACE</h2>
 
                     <h3>מפרט טכני של מנוע ה-PMSM המעבדתי (OEMER Motori Elettrici)</h3>
@@ -1700,7 +2220,7 @@
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/pmsm_motor_photo.jpeg" alt="OEMER QS100S Motor" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 6.1:</strong> מנוע ה-PMSM המעבדתי: OEMER QS 100S עם אינקודר אופטי אבסולוטי SICK SFM60.</div>
+                        <div class="fig-caption"><strong>איור 7.1:</strong> מנוע ה-PMSM המעבדתי: OEMER QS 100S עם אינקודר אופטי אבסולוטי SICK SFM60.</div>
                     </div>
 
                     <div class="table-container">
@@ -1758,8 +2278,8 @@
                 <!-- ============================================================ -->
                 <!-- CHAPTER 7: ALTIUM HARDWARE DESIGN                            -->
                 <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-07">
-                    <span class="chapter-badge">פרק 07</span>
+                <section class="chapter-section" id="ch-08">
+                    <span class="chapter-badge">פרק 08</span>
                     <h2>תכנון ומימוש כרטיסי החומרה ב-Altium Designer</h2>
 
                     <h3>שלושת כרטיסי החומרה שתוכננו לפרויקט</h3>
@@ -1769,7 +2289,7 @@
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/hardware_setup_photo.jpg" alt="Laboratory Inverter & Altium Modules" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 7.1:</strong> מודולי החומרה המעבדתיים, כרטיסי המדידה המבודדים ועמדת הניסוי של ממיר ההספק.</div>
+                        <div class="fig-caption"><strong>איור 8.1:</strong> מודולי החומרה המעבדתיים, כרטיסי המדידה המבודדים ועמדת הניסוי של ממיר ההספק.</div>
                     </div>
 
                     <div class="grid-3col">
@@ -1802,8 +2322,8 @@
                 <!-- ============================================================ -->
                 <!-- CHAPTER 8: MECHANICAL BENCH & DYNO                           -->
                 <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-08">
-                    <span class="chapter-badge">פרק 08</span>
+                <section class="chapter-section" id="ch-09">
+                    <span class="chapter-badge">פרק 09</span>
                     <h2>המכלול המכני (SolidWorks CAD) ועמדת הדיינו</h2>
 
                     <p>
@@ -1812,7 +2332,7 @@
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/motor_inverter_cap1.png" alt="SolidWorks Motor Bed Assembly" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 8.1:</strong> מכלול שולחן הבדיקה המכני (SolidWorks): מנוע ה-PMSM, עריסת ההתקנה, צימוד גמיש ומד מומנט.</div>
+                        <div class="fig-caption"><strong>איור 9.1:</strong> מכלול שולחן הבדיקה המכני (SolidWorks): מנוע ה-PMSM, עריסת ההתקנה, צימוד גמיש ומד מומנט.</div>
                     </div>
 
                     <h3>מרכיבי עמדת הבדיקה המכנית</h3>
@@ -1826,8 +2346,8 @@
                 <!-- ============================================================ -->
                 <!-- CHAPTER 9: BENCHMARKING & CONCLUSIONS                        -->
                 <!-- ============================================================ -->
-                <section class="chapter-section" id="ch-09">
-                    <span class="chapter-badge">פרק 09</span>
+                <section class="chapter-section" id="ch-10">
+                    <span class="chapter-badge">פרק 10</span>
                     <h2>השוואת ביצועים כוללת (Benchmarking) ומסקנות</h2>
 
                     <p>
@@ -1905,7 +2425,7 @@
                 <!-- APPENDICES & DOCUMENTS HUB                                   -->
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-appendices">
-                    <span class="chapter-badge">פרק 10</span>
+                    <span class="chapter-badge">פרק 11</span>
                     <h2>נספחים ואינדקס דוחות הפרויקט</h2>
 
                     <p>
