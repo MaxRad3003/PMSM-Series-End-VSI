@@ -704,6 +704,105 @@
             color: var(--accent-cyan);
         }
 
+                /* Vector Diagram 2-Column Responsive Layout */
+        .vector-diagram-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 28px 0;
+            box-shadow: var(--shadow-card);
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 24px;
+            align-items: center;
+        }
+        @media (max-width: 900px) {
+            .vector-diagram-card {
+                grid-template-columns: 1fr;
+            }
+        }
+        .vector-canvas-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.95), rgba(7, 11, 20, 0.98));
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            border-radius: 14px;
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .vector-canvas-wrap svg {
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+            direction: ltr;
+        }
+        .vector-legend-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: right;
+            direction: rtl;
+        }
+        .vector-legend-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin: 0 0 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .vector-legend-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 10px 14px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .vector-legend-item:hover {
+            border-color: var(--border-active);
+            transform: translateY(-2px);
+        }
+        .vector-legend-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 13.5px;
+            margin-bottom: 4px;
+        }
+        .legend-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        .legend-indicator.amber {
+            background: #f59e0b;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+        }
+        .legend-indicator.cyan {
+            background: #00d2ff;
+            box-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+        }
+        .legend-indicator.magenta {
+            background: #ec4899;
+            box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
+        }
+        .legend-indicator.green {
+            background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+        }
+        .vector-legend-desc {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 0;
+        }
+
         /* Tables */
         .table-container {
             width: 100%;
@@ -1320,96 +1419,128 @@
                         כדי לפשט את הטיפול במערכת ולהפוך את המקדמים לקבועים, מבוצעות שתי התמרות מרחביות עוקבות:
                     </p>
 
-                    <div class="fig-wrapper">
-                        <!-- Vector SVG Diagram of Coordinate Frames -->
-                        <svg viewBox="0 0 760 380" style="max-width: 100%; height: auto; border-radius: 10px; background: rgba(10, 16, 30, 0.95); border: 1px solid rgba(0, 210, 255, 0.3); padding: 10px;">
-                            <defs>
-                                <marker id="arr-c" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-                                    <path d="M1,1 L7,4 L1,7 Z" fill="#00d2ff"/>
-                                </marker>
-                                <marker id="arr-m" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-                                    <path d="M1,1 L7,4 L1,7 Z" fill="#ec4899"/>
-                                </marker>
-                                <marker id="arr-y" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-                                    <path d="M1,1 L7,4 L1,7 Z" fill="#f59e0b"/>
-                                </marker>
-                                <marker id="arr-g" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-                                    <path d="M1,1 L7,4 L1,7 Z" fill="#10b981"/>
-                                </marker>
-                                <marker id="arr-w" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-                                    <path d="M1,1 L7,4 L1,7 Z" fill="#ffffff"/>
-                                </marker>
-                            </defs>
+                                        <div class="vector-diagram-card">
+                        <!-- Canvas Column (Spacious Vector Diagram with explicit LTR) -->
+                        <div class="vector-canvas-wrap">
+                            <svg viewBox="0 0 490 440" dir="ltr" style="direction: ltr; font-family: 'Fira Code', monospace;">
+                                <defs>
+                                    <marker id="arr-c" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+                                        <path d="M1,1 L6,3.5 L1,6 Z" fill="#00d2ff"/>
+                                    </marker>
+                                    <marker id="arr-m" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+                                        <path d="M1,1 L6,3.5 L1,6 Z" fill="#ec4899"/>
+                                    </marker>
+                                    <marker id="arr-y" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+                                        <path d="M1,1 L6,3.5 L1,6 Z" fill="#f59e0b"/>
+                                    </marker>
+                                    <marker id="arr-w" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto">
+                                        <path d="M1,1 L5,3 L1,5 Z" fill="#ffffff"/>
+                                    </marker>
+                                </defs>
 
-                            <!-- Background Grid Circles -->
-                            <circle cx="260" cy="190" r="140" fill="none" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4"/>
-                            <circle cx="260" cy="190" r="80" fill="none" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2"/>
+                                <!-- Outer Stator Circle & Grid Rings -->
+                                <circle cx="240" cy="220" r="160" fill="none" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4,4"/>
+                                <circle cx="240" cy="220" r="95" fill="none" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
 
-                            <!-- Stationary Alpha - Beta Axes -->
-                            <!-- Alpha Axis -->
-                            <line x1="80" y1="190" x2="430" y2="190" stroke="#00d2ff" stroke-width="2" marker-end="url(#arr-c)"/>
-                            <text x="440" y="195" fill="#00d2ff" font-family="'Fira Code', monospace" font-size="14" font-weight="bold">α (Alpha)</text>
-                            <!-- Beta Axis -->
-                            <line x1="260" y1="340" x2="260" y2="40" stroke="#00d2ff" stroke-width="2" marker-end="url(#arr-c)"/>
-                            <text x="265" y="32" fill="#00d2ff" font-family="'Fira Code', monospace" font-size="14" font-weight="bold">β (Beta)</text>
+                                <!-- 1. Stationary Alpha - Beta Axes (Cyan) -->
+                                <!-- Alpha Axis (horizontal) -->
+                                <line x1="40" y1="220" x2="445" y2="220" stroke="#00d2ff" stroke-width="2" marker-end="url(#arr-c)"/>
+                                <rect x="425" y="196" width="32" height="18" rx="4" fill="#070b14" stroke="#00d2ff" stroke-width="1.2"/>
+                                <text x="441" y="209" fill="#00d2ff" font-size="12" font-weight="bold" text-anchor="middle">α</text>
 
-                            <!-- Natural Stator Axes a, b, c (120 deg apart) -->
-                            <!-- Phase a: aligns with Alpha -->
-                            <line x1="260" y1="190" x2="410" y2="190" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arr-y)"/>
-                            <text x="415" y="210" fill="#f59e0b" font-family="'Rubik', sans-serif" font-size="13" font-weight="bold">ציר פאזה a (0°)</text>
+                                <!-- Beta Axis (vertical) -->
+                                <line x1="240" y1="395" x2="240" y2="45" stroke="#00d2ff" stroke-width="2" marker-end="url(#arr-c)"/>
+                                <rect x="224" y="16" width="32" height="18" rx="4" fill="#070b14" stroke="#00d2ff" stroke-width="1.2"/>
+                                <text x="240" y="29" fill="#00d2ff" font-size="12" font-weight="bold" text-anchor="middle">β</text>
 
-                            <!-- Phase b: 120 deg -->
-                            <!-- cos(120)=-0.5, sin(120)=0.866 -> x=260-150*0.5=185, y=190-150*0.866=60 -->
-                            <line x1="260" y1="190" x2="185" y2="60" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-y)"/>
-                            <text x="130" y="52" fill="#f59e0b" font-family="'Rubik', sans-serif" font-size="13" font-weight="bold">ציר פאזה b (120°)</text>
+                                <!-- 2. Natural Stator Axes a, b, c (Amber dashed, 120 deg apart) -->
+                                <!-- Phase a: 0 deg (same line as +alpha) -->
+                                <line x1="240" y1="220" x2="385" y2="220" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arr-y)"/>
+                                <rect x="325" y="232" width="76" height="18" rx="3" fill="#070b14" stroke="#f59e0b" stroke-width="1"/>
+                                <text x="363" y="245" fill="#f59e0b" font-size="10.5" font-weight="bold" text-anchor="middle">Axis a (0°)</text>
 
-                            <!-- Phase c: 240 deg -->
-                            <!-- cos(240)=-0.5, sin(240)=-0.866 -> x=185, y=190+130=320 -->
-                            <line x1="260" y1="190" x2="185" y2="320" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-y)"/>
-                            <text x="125" y="335" fill="#f59e0b" font-family="'Rubik', sans-serif" font-size="13" font-weight="bold">ציר פאזה c (240°)</text>
+                                <!-- Phase b: 120 deg (arrow at 167, 94) -->
+                                <line x1="240" y1="220" x2="167" y2="94" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-y)"/>
+                                <rect x="85" y="108" width="84" height="18" rx="3" fill="#070b14" stroke="#f59e0b" stroke-width="1"/>
+                                <text x="127" y="121" fill="#f59e0b" font-size="10.5" font-weight="bold" text-anchor="middle">Axis b (120°)</text>
 
-                            <!-- Rotating Synchronous Axes d - q (at theta_e = 32 deg) -->
-                            <!-- theta = 32 deg -> rad = 0.5585 -> cos=0.848, sin=0.530 -->
-                            <!-- d-axis length = 155 -> dx = 131, dy = -82 -> x=391, y=108 -->
-                            <line x1="260" y1="190" x2="391" y2="108" stroke="#ec4899" stroke-width="2.8" marker-end="url(#arr-m)"/>
-                            <text x="402" y="105" fill="#ec4899" font-family="'Fira Code', monospace" font-size="14" font-weight="bold">d (Direct Axis || λ_pm)</text>
+                                <!-- Phase c: 240 deg (arrow at 167, 346) -->
+                                <line x1="240" y1="220" x2="167" y2="346" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-y)"/>
+                                <rect x="85" y="356" width="84" height="18" rx="3" fill="#070b14" stroke="#f59e0b" stroke-width="1"/>
+                                <text x="127" y="369" fill="#f59e0b" font-size="10.5" font-weight="bold" text-anchor="middle">Axis c (240°)</text>
 
-                            <!-- q-axis: theta + 90 = 122 deg -> cos=-0.530, sin=0.848 -> dx=-82, dy=-131 -> x=178, y=59 -->
-                            <line x1="260" y1="190" x2="178" y2="59" stroke="#ec4899" stroke-width="2.8" marker-end="url(#arr-m)"/>
-                            <text x="110" y="85" fill="#ec4899" font-family="'Fira Code', monospace" font-size="14" font-weight="bold">q (Quadrature Axis)</text>
+                                <!-- 3. Rotating Synchronous Axes d - q (Magenta, theta_e = 35 deg) -->
+                                <!-- d-axis: theta = 35 deg, len = 175 (arrow at 383, 120) -->
+                                <line x1="240" y1="220" x2="383" y2="120" stroke="#ec4899" stroke-width="2.8" marker-end="url(#arr-m)"/>
+                                <rect x="355" y="86" width="76" height="20" rx="4" fill="#070b14" stroke="#ec4899" stroke-width="1.5"/>
+                                <text x="393" y="100" fill="#ec4899" font-size="11.5" font-weight="bold" text-anchor="middle">d (Direct)</text>
 
-                            <!-- Rotor flux vector on d-axis -->
-                            <circle cx="360" cy="127" r="5" fill="#ec4899"/>
-                            <text x="368" y="140" fill="#ec4899" font-size="12" font-weight="bold">λ_pm</text>
+                                <!-- Rotor Flux Vector lambda_pm on d-axis at len = 110 (330, 157) -->
+                                <circle cx="330" cy="157" r="5" fill="#ec4899" stroke="#ffffff" stroke-width="1.5"/>
+                                <rect x="300" y="130" width="46" height="16" rx="3" fill="#070b14" stroke="#ec4899" stroke-width="1"/>
+                                <text x="323" y="142" fill="#ec4899" font-size="10.5" font-weight="bold" text-anchor="middle">λ_pm</text>
 
-                            <!-- Angle theta_e arc between Alpha and d -->
-                            <path d="M 330 190 A 70 70 0 0 0 319 153" fill="none" stroke="#ffffff" stroke-width="1.8"/>
-                            <text x="335" y="172" fill="#ffffff" font-family="'Fira Code', monospace" font-size="13" font-weight="bold">θ_e (ω_e·t)</text>
+                                <!-- q-axis: theta + 90 = 125 deg, len = 175 (arrow at 137, 77) -->
+                                <line x1="240" y1="220" x2="137" y2="77" stroke="#ec4899" stroke-width="2.8" marker-end="url(#arr-m)"/>
+                                <rect x="42" y="42" width="105" height="20" rx="4" fill="#070b14" stroke="#ec4899" stroke-width="1.5"/>
+                                <text x="94" y="56" fill="#ec4899" font-size="11.5" font-weight="bold" text-anchor="middle">q (Quadrature)</text>
 
-                            <!-- Legend / Details Panel on the Right -->
-                            <rect x="490" y="40" width="250" height="300" rx="10" fill="rgba(18, 26, 47, 0.85)" stroke="rgba(64, 120, 240, 0.3)"/>
-                            <text x="505" y="68" fill="#00d2ff" font-family="'Rubik', sans-serif" font-size="15" font-weight="bold">מקרא מערכות הצירים:</text>
-                            
-                            <line x1="505" y1="95" x2="535" y2="95" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="4,2"/>
-                            <text x="545" y="99" fill="#f0f4fc" font-size="12">מערכת סטטור סטטית $a-b-c$</text>
+                                <!-- Angle theta_e Arc (from alpha-axis at 0 to d-axis at 35 deg, r = 65) -->
+                                <path d="M 305 220 A 65 65 0 0 0 293 183" fill="none" stroke="#ffffff" stroke-width="1.6" marker-end="url(#arr-w)"/>
+                                <rect x="305" y="187" width="28" height="18" rx="3" fill="#070b14" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                                <text x="319" y="200" fill="#ffffff" font-size="10.5" font-weight="bold" text-anchor="middle">θ_e</text>
+                            </svg>
+                        </div>
 
-                            <line x1="505" y1="130" x2="535" y2="130" stroke="#00d2ff" stroke-width="2.5"/>
-                            <text x="545" y="134" fill="#f0f4fc" font-size="12">מערכת קרטזית נייחת $\alpha-\beta$</text>
+                        <!-- Native HTML RTL Legend Column -->
+                        <div class="vector-legend-wrap">
+                            <h4 class="vector-legend-title">
+                                🧭 מקרא מערכות הקואורדינטות:
+                            </h4>
 
-                            <line x1="505" y1="165" x2="535" y2="165" stroke="#ec4899" stroke-width="2.5"/>
-                            <text x="545" y="169" fill="#f0f4fc" font-size="12">מערכת רוטור סינכרונית $d-q$</text>
+                            <div class="vector-legend-item">
+                                <div class="vector-legend-header">
+                                    <div class="legend-indicator amber"></div>
+                                    <span style="color: #f59e0b;">מערכת הסטטור הטבעית ($a-b-c$)</span>
+                                </div>
+                                <p class="vector-legend-desc">
+                                    סלילי הסטטור המקובעים במרחב הפיזי של המנוע בהזזה גאומטרית של $120^\circ$ זה מזה: פאזה $a$ ($0^\circ$), פאזה $b$ ($120^\circ$), ופאזה $c$ ($240^\circ$).
+                                </p>
+                            </div>
 
-                            <line x1="505" y1="200" x2="535" y2="200" stroke="#ffffff" stroke-width="1.5"/>
-                            <text x="545" y="204" fill="#f0f4fc" font-size="12">זווית הרוטור החשמלית $\theta_e$</text>
+                            <div class="vector-legend-item">
+                                <div class="vector-legend-header">
+                                    <div class="legend-indicator cyan"></div>
+                                    <span style="color: #00d2ff;">מערכת הצירים הנייחת ($\alpha-\beta$)</span>
+                                </div>
+                                <p class="vector-legend-desc">
+                                    מערכת קרטזית אורתוגונלית נייחת במישור הסטטור (התמרת קלארק). ציר $\alpha$ מתלכד עם פאזה $a$, וציר $\beta$ מוביל ב-$90^\circ$ חשמליים.
+                                </p>
+                            </div>
 
-                            <line x1="505" y1="230" x2="725" y2="230" stroke="rgba(255,255,255,0.1)"/>
+                            <div class="vector-legend-item">
+                                <div class="vector-legend-header">
+                                    <div class="legend-indicator magenta"></div>
+                                    <span style="color: #ec4899;">מערכת הרוטור הסינכרונית ($d-q$)</span>
+                                </div>
+                                <p class="vector-legend-desc">
+                                    מערכת מסתובבת במהירות השדה המגנטי $\omega_e$ בהסט זוויתי $\theta_e$ (התמרת פארק). <strong>ציר $d$</strong> מתלכד עם שטף המגנט $\lambda_{pm}$, ו<strong>ציר $q$</strong> מוביל ב-$90^\circ$ ומייצר את המומנט.
+                                </p>
+                            </div>
 
-                            <text x="505" y="255" fill="#10b981" font-size="12" font-weight="bold">✓ ציר d: מקביל לשטף המגנט</text>
-                            <text x="505" y="278" fill="#10b981" font-size="12" font-weight="bold">✓ ציר q: מוביל ב-$90^\circ$ (מומנט)</text>
-                            <text x="505" y="301" fill="#f59e0b" font-size="12" font-weight="bold">✓ ציר 0: ניצב למישור (זרם ZSC)</text>
-                            <text x="505" y="324" fill="#94a3b8" font-size="11">טופולוגיית Series-End VSI</text>
-                        </svg>
-                        <div class="fig-caption"><strong>איור 2.1:</strong> מיפוי מרחבי של מערכות הקואורדינטות: מערכת הסטטור התלת-פאזית הטבעית $a-b-c$, מערכת הצירים הנייחת $\alpha-\beta$, ומערכת הצירים הסינכרונית המסתובבת $d-q$ בזווית $\theta_e$ ביחס לשטף הרוטור $\lambda_{pm}$.</div>
+                            <div class="vector-legend-item">
+                                <div class="vector-legend-header">
+                                    <div class="legend-indicator green"></div>
+                                    <span style="color: #10b981;">ציר הסדרה האפס ($0$-Axis)</span>
+                                </div>
+                                <p class="vector-legend-desc">
+                                    ציר הניצב מרחבית למישור $\alpha-\beta$ ו-$d-q$. בטופולוגיית Series-End VSI מייצג את זרם הלולאה $i_0 = (i_a+i_b+i_c)/3$ המרוסן לאפס ע"י בקר ה-OEPC.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fig-caption" style="margin-top: -12px; margin-bottom: 24px; text-align: center;">
+                        <strong>איור 2.1:</strong> מיפוי מרחבי של מערכות הקואורדינטות: מערכת הסטטור התלת-פאזית הטבעית $a-b-c$, מערכת הצירים הנייחת $\alpha-\beta$, ומערכת הצירים הסינכרונית המסתובבת $d-q$ בזווית הרוטור $\theta_e$.
                     </div>
 
                     <h4>א. התמרת קלארק (Clarke Transformation - $abc \to \alpha\beta0$)</h4>
