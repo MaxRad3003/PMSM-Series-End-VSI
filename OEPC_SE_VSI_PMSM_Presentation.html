@@ -3301,7 +3301,7 @@ window.addEventListener('load', () => {
 });
 
 // =====================================================================
-// --- 2. DYNAMIC PMSM & OSCILLOSCOPE SIMULATOR (SLIDE 10) ---
+// --- 2. DYNAMIC PMSM & OSCILLOSCOPE SIMULATOR (SLIDE 9) ---
 // =====================================================================
 
 let simRunning = true;
@@ -3310,109 +3310,158 @@ let simScopeMode = 'trig'; // 'trig' = stationary triggered, 'slow' = gentle rol
 let simAnimId = null;
 
 let simAsym = 25; // % asymmetry (0 to 30)
-let simIref = 5.0; // A
-let simSpeed = 1500; // RPM
+let simIref = 5.0; // A (1.0 to 8.0)
+let simSpeed = 1500; // RPM (300 to 3000)
 let simTime = 0;
+let lastFrameTimestamp = performance.now();
 
 // Algorithm selection
 function setSimAlgo(algo, btn) {
     simAlgo = algo;
     document.querySelectorAll('#slide-dynamic-sim .sim-btn-group .sim-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
-
-    // Update explanation card
-    const titleEl = document.getElementById('algo-explain-title');
-    const descEl = document.getElementById('algo-explain-desc');
-    const oscTagEl = document.getElementById('osc-status-tag');
-    const orbTagEl = document.getElementById('orbit-status-tag');
-
-    const telIzsc = document.getElementById('tel-sim-izsc');
-    const telThd = document.getElementById('tel-sim-thd');
-    const telErr = document.getElementById('tel-sim-err');
-    const telLoss = document.getElementById('tel-sim-loss');
-
-    const isHe = document.documentElement.lang === 'he' || document.querySelector('html[dir="rtl"]') !== null;
-
-    if (algo === 'OEPC') {
-        if (titleEl) {
-            titleEl.textContent = isHe ? '🌟 בקרת OEPC (מוצעת): דיכוי ZSC אקטיבי ואיפוס הריפל' : '🌟 Proposed OEPC: Active ZSC Suppression & Zero Differential Ripple';
-            titleEl.style.color = '#00d2ff';
-        }
-        if (descEl) {
-            descEl.innerHTML = isHe 
-                ? 'האלגוריתם מנטר את חריגת ה-ZSC הנגרמת מאי-סימטריה של ' + simAsym + '%, ומפעיל את הענף הרביעי עם מתח נגדי מהיר. התוצאה: זרם סדרה אפס משוטח לאפס (<span class="math-term"><i>i</i><sub>zsc</sub> &lt; 0.04 A</span>), הזרמים סינוסיים טהורים, ומסלול ה-&alpha;-&beta; מעגלי לחלוטין ללא פעימות מומנט.'
-                : 'The algorithm monitors zero-sequence current anomalies caused by ' + simAsym + '% winding asymmetry and drives the 4th inverter leg with counter-voltage. Result: ZSC is clamped below 0.04 A, currents are pure sinusoids, and the &alpha;-&beta; hodograph is a perfect circle with zero torque ripple.';
-        }
-        if (oscTagEl) {
-            oscTagEl.textContent = simScopeMode === 'trig' ? 'TRIG LOCKED • 2 CYCLES' : 'SLOW ROLL 0.2X • CLEAN';
-            oscTagEl.style.color = '#00ff88';
-        }
-        if (orbTagEl) {
-            orbTagEl.textContent = 'HODOGRAPH: PURE CIRCLE';
-            orbTagEl.style.color = '#00d2ff';
-        }
-        if (telIzsc) { telIzsc.textContent = '0.04 A'; telIzsc.style.color = '#00ff88'; }
-        if (telThd) { telThd.textContent = '2.1%'; telThd.style.color = '#00d2ff'; }
-        if (telErr) { telErr.textContent = '0.09 A'; telErr.style.color = '#ffffff'; }
-        if (telLoss) { telLoss.textContent = '-28% vs PWM'; telLoss.style.color = '#f6d365'; }
-    } else if (algo === 'TDM') {
-        if (titleEl) {
-            titleEl.textContent = isHe ? '⏱️ שיטת TDM קלאסית: שגיאות פאזה וזרם סדרה אפס משמעותיים' : '⏱️ Conventional TDM: High ZSC Circulation & Phase Delay';
-            titleEl.style.color = '#f6d365';
-        }
-        if (descEl) {
-            descEl.innerHTML = isHe 
-                ? 'שיטת ה-TDM מתקנת פאזה בודדת בלבד בכל מחזור בקרה ומקפיאה את שאר הפאזות. אי-הסימטריה מייצרת זרם סדרה אפס מסוכן (<span class="math-term"><i>i</i><sub>zsc</sub> &approx; ' + (0.55 * (simAsym/25)).toFixed(2) + ' A</span>), עיוותי צורה בגלי הזרם ומסלול &alpha;-&beta; אליפטי מפותל.'
-                : 'Conventional TDM corrects only 1 phase per cycle and freezes the others. Asymmetry generates severe zero-sequence current ripple (~' + (0.55 * (simAsym/25)).toFixed(2) + ' A), noticeable waveform distortion, and an eccentric elliptic orbit.';
-        }
-        if (oscTagEl) {
-            oscTagEl.textContent = 'HIGH ZSC RIPPLE (0.65A)';
-            oscTagEl.style.color = '#f6d365';
-        }
-        if (orbTagEl) {
-            orbTagEl.textContent = 'HODOGRAPH: PULSATING ELLIPSE';
-            orbTagEl.style.color = '#f6d365';
-        }
-        if (telIzsc) { telIzsc.textContent = (0.55 * (simAsym/25)).toFixed(2) + ' A'; telIzsc.style.color = '#f6d365'; }
-        if (telThd) { telThd.textContent = '8.4%'; telThd.style.color = '#f6d365'; }
-        if (telErr) { telErr.textContent = '0.42 A'; telErr.style.color = '#ffffff'; }
-        if (telLoss) { telLoss.textContent = '-15% vs PWM'; telLoss.style.color = '#f6d365'; }
-    } else if (algo === 'PWM') {
-        if (titleEl) {
-            titleEl.textContent = isHe ? '⚠️ אפנון PWM קונבנציונלי: עיוות הרמוני חמור והפסדי הספק' : '⚠️ Conventional PWM: Severe Distortion & High Switching Losses';
-            titleEl.style.color = '#ff4757';
-        }
-        if (descEl) {
-            descEl.innerHTML = isHe 
-                ? 'בהיעדר בקרת ענף רביעי ייעודית, אי-הסימטריה של ' + simAsym + '% מפתחת לולאת זרם סדרה אפס עצומה (<span class="math-term"><i>i</i><sub>zsc</sub> &approx; ' + (1.15 * (simAsym/25)).toFixed(2) + ' A</span>). הדבר גורם לחימום מסוכן של סלילי המנוע, פעימות מומנט קשות ועיוות כולל.'
-                : 'Without dedicated 4th leg zero-sequence control, ' + simAsym + '% winding asymmetry causes massive zero-sequence circulating current (~' + (1.15 * (simAsym/25)).toFixed(2) + ' A), causing severe thermal stress and torque pulsations.';
-        }
-        if (oscTagEl) {
-            oscTagEl.textContent = 'DANGEROUS ZSC LOOP (1.25A)';
-            oscTagEl.style.color = '#ff4757';
-        }
-        if (orbTagEl) {
-            orbTagEl.textContent = 'HODOGRAPH: SEVERELY DISTORTED';
-            orbTagEl.style.color = '#ff4757';
-        }
-        if (telIzsc) { telIzsc.textContent = (1.15 * (simAsym/25)).toFixed(2) + ' A'; telIzsc.style.color = '#ff4757'; }
-        if (telThd) { telThd.textContent = '12.8%'; telThd.style.color = '#ff4757'; }
-        if (telErr) { telErr.textContent = '0.85 A'; telErr.style.color = '#ffffff'; }
-        if (telLoss) { telLoss.textContent = 'Reference (0%)'; telLoss.style.color = '#a0aec0'; }
+    else {
+        // Find matching button by id
+        const targetBtn = document.getElementById('btn-algo-' + algo.toLowerCase());
+        if (targetBtn) targetBtn.classList.add('active');
     }
+
+    updateSimTelemetryAndCards();
+    renderSingleSimulationFrame();
 }
 
 function setScopeMode(mode, btn) {
     simScopeMode = mode;
     document.querySelectorAll('.mode-toggle-group .mode-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
+    else {
+        const targetBtn = document.getElementById('btn-mode-' + mode);
+        if (targetBtn) targetBtn.classList.add('active');
+    }
 
+    updateScopeTags();
+    renderSingleSimulationFrame();
+}
+
+function updateScopeTags() {
     const oscTagEl = document.getElementById('osc-status-tag');
+    const orbTagEl = document.getElementById('orbit-status-tag');
+    const fe = Math.round((4 * simSpeed) / 60); // 4 pole pairs
+
     if (oscTagEl) {
-        if (simAlgo === 'OEPC') {
-            oscTagEl.textContent = mode === 'trig' ? 'TRIG LOCKED • 2 CYCLES' : 'SLOW ROLL 0.2X • CLEAN';
+        if (simScopeMode === 'trig') {
+            oscTagEl.textContent = `TRIG LOCKED • ${fe} Hz (${simSpeed} RPM)`;
+            oscTagEl.style.color = '#00ff88';
+        } else {
+            oscTagEl.textContent = `SLOW ROLL • ${fe} Hz (${simSpeed} RPM)`;
+            oscTagEl.style.color = '#00d2ff';
         }
     }
+
+    if (orbTagEl) {
+        if (simAlgo === 'OEPC') {
+            orbTagEl.textContent = `HODOGRAPH: PURE CIRCLE • R=${simIref.toFixed(1)}A`;
+            orbTagEl.style.color = '#00ff88';
+        } else if (simAlgo === 'TDM') {
+            orbTagEl.textContent = `HODOGRAPH: ELLIPSE (ΔZ=${simAsym}%)`;
+            orbTagEl.style.color = '#f6d365';
+        } else {
+            orbTagEl.textContent = `HODOGRAPH: DISTORTED (ZSC PEAK)`;
+            orbTagEl.style.color = '#ff4757';
+        }
+    }
+}
+
+function updateSimTelemetryAndCards() {
+    const titleEl = document.getElementById('algo-explain-title');
+    const descEl = document.getElementById('algo-explain-desc');
+    const telIzsc = document.getElementById('tel-sim-izsc');
+    const telThd = document.getElementById('tel-sim-thd');
+    const telErr = document.getElementById('tel-sim-err');
+    const telLoss = document.getElementById('tel-sim-loss');
+
+    const isHe = document.documentElement.lang === 'he' || document.querySelector('html[dir="rtl"]') !== null;
+    const asymFrac = simAsym / 25.0; // 1.0 at paper reference 25%
+    const currentRatio = simIref / 5.0; // 1.0 at nominal 5A
+    const fe = Math.round((4 * simSpeed) / 60);
+
+    let izscVal = 0;
+    let thdVal = 0;
+    let errVal = 0;
+    let lossStr = '';
+    let lossColor = '#f6d365';
+
+    if (simAlgo === 'OEPC') {
+        // OEPC clamps ZSC extremely low regardless of asymmetry
+        izscVal = 0.03 * currentRatio * (0.8 + 0.2 * asymFrac);
+        thdVal = 1.9 + 0.3 * asymFrac + 0.1 * currentRatio;
+        errVal = 0.08 * currentRatio;
+        lossStr = '-28% vs PWM';
+        lossColor = '#f6d365';
+
+        if (titleEl) {
+            titleEl.textContent = isHe ? '🌟 בקרת OEPC (מוצעת): דיכוי ZSC אקטיבי ואיפוס הריפל' : '🌟 Proposed OEPC: Active ZSC Suppression & Zero Differential Ripple';
+            titleEl.style.color = '#00d2ff';
+        }
+        if (descEl) {
+            descEl.innerHTML = isHe 
+                ? `האלגוריתם מנטר את חריגת ה-ZSC הנגרמת מאי-סימטריה של <b>${simAsym}%</b> בזרם עבודה של <b>${simIref.toFixed(1)} A</b> ובמהירות <b>${simSpeed} RPM (${fe} Hz)</b>, ומפעיל את הענף הרביעי עם מתח נגדי מהיר. התוצאה: זרם סדרה אפס משוטח ל-<b>${izscVal.toFixed(2)} A</b> בלבד, הזרמים סינוסיים טהורים, ומסלול ה-&alpha;-&beta; מעגלי לחלוטין ללא פעימות מומנט.`
+                : `The algorithm monitors zero-sequence current anomalies caused by <b>${simAsym}%</b> asymmetry at <b>${simIref.toFixed(1)} A</b> and <b>${simSpeed} RPM (${fe} Hz)</b>, driving the 4th leg with counter-voltage. Result: ZSC is clamped below <b>${izscVal.toFixed(2)} A</b>, currents are pure sinusoids, and &alpha;-&beta; hodograph is a perfect circle.`;
+        }
+    } else if (simAlgo === 'TDM') {
+        // TDM: uncompensated ZSC increases with asymmetry & current
+        izscVal = 0.55 * asymFrac * currentRatio;
+        thdVal = 5.8 + 3.2 * asymFrac + 0.5 * currentRatio;
+        errVal = 0.42 * currentRatio * (0.8 + 0.3 * asymFrac);
+        lossStr = '-15% vs PWM';
+        lossColor = '#f6d365';
+
+        if (titleEl) {
+            titleEl.textContent = isHe ? '⏱️ שיטת TDM קלאסית: שגיאות פאזה וזרם סדרה אפס משמעותיים' : '⏱️ Conventional TDM: High ZSC Circulation & Phase Delay';
+            titleEl.style.color = '#f6d365';
+        }
+        if (descEl) {
+            descEl.innerHTML = isHe 
+                ? `שיטת ה-TDM מתקנת פאזה בודדת בלבד בכל מחזור בקרה. אי-סימטריה של <b>${simAsym}%</b> מייצרת זרם סדרה אפס של <b>${izscVal.toFixed(2)} A</b>, עיוות הרמוני של <b>${thdVal.toFixed(1)}%</b> ומסלול &alpha;-&beta; אליפטי מפותל.`
+                : `Conventional TDM corrects only 1 phase per control step. Under <b>${simAsym}%</b> asymmetry, ZSC surges to <b>${izscVal.toFixed(2)} A</b>, THD reaches <b>${thdVal.toFixed(1)}%</b>, creating an eccentric pulsating hodograph.`;
+        }
+    } else if (simAlgo === 'PWM') {
+        // PWM: large circulating loop
+        izscVal = 1.15 * asymFrac * currentRatio;
+        thdVal = 9.2 + 4.8 * asymFrac + 0.8 * currentRatio;
+        errVal = 0.85 * currentRatio * (0.8 + 0.4 * asymFrac);
+        lossStr = 'Reference (0%)';
+        lossColor = '#a0aec0';
+
+        if (titleEl) {
+            titleEl.textContent = isHe ? '⚠️ אפנון PWM קונבנציונלי: עיוות הרמוני חמור והפסדי הספק' : '⚠️ Conventional PWM: Severe Distortion & High Switching Losses';
+            titleEl.style.color = '#ff4757';
+        }
+        if (descEl) {
+            descEl.innerHTML = isHe 
+                ? `ללא בקרת ענף רביעי, אי-הסימטריה של <b>${simAsym}%</b> מפתחת לולאת זרם סדרה אפס מסוכנת של <b>${izscVal.toFixed(2)} A</b> (עיוות THD של <b>${thdVal.toFixed(1)}%</b>). הדבר גורם לחימום חמור של המנוע ופעימות מומנט.`
+                : `Without dedicated 4th leg control, <b>${simAsym}%</b> winding asymmetry causes circulating ZSC of <b>${izscVal.toFixed(2)} A</b> and <b>${thdVal.toFixed(1)}%</b> THD, creating severe thermal stress and torque pulsations.`;
+        }
+    }
+
+    if (telIzsc) {
+        telIzsc.textContent = izscVal.toFixed(2) + ' A';
+        telIzsc.style.color = simAlgo === 'OEPC' ? '#00ff88' : (simAlgo === 'TDM' ? '#f6d365' : '#ff4757');
+    }
+    if (telThd) {
+        telThd.textContent = thdVal.toFixed(1) + '%';
+        telThd.style.color = simAlgo === 'OEPC' ? '#00d2ff' : (simAlgo === 'TDM' ? '#f6d365' : '#ff4757');
+    }
+    if (telErr) {
+        telErr.textContent = errVal.toFixed(2) + ' A';
+        telErr.style.color = '#ffffff';
+    }
+    if (telLoss) {
+        telLoss.textContent = lossStr;
+        telLoss.style.color = lossColor;
+    }
+
+    updateScopeTags();
 }
 
 function updateSimParams() {
@@ -3422,19 +3471,22 @@ function updateSimParams() {
 
     if (sAsym) {
         simAsym = parseFloat(sAsym.value);
-        document.getElementById('val-sim-asym').textContent = simAsym + '% ' + (simAsym === 25 ? '(ניסוי מאמר)' : '');
+        const valEl = document.getElementById('val-sim-asym');
+        if (valEl) valEl.textContent = simAsym + '% ' + (simAsym === 25 ? '(ניסוי מאמר)' : '');
     }
     if (sI) {
         simIref = parseFloat(sI.value);
-        document.getElementById('val-sim-i').textContent = simIref.toFixed(1) + ' A';
+        const valEl = document.getElementById('val-sim-i');
+        if (valEl) valEl.textContent = simIref.toFixed(1) + ' A';
     }
     if (sSpeed) {
         simSpeed = parseFloat(sSpeed.value);
-        document.getElementById('val-sim-speed').textContent = simSpeed + ' RPM';
+        const valEl = document.getElementById('val-sim-speed');
+        if (valEl) valEl.textContent = simSpeed + ' RPM';
     }
 
-    // Refresh algorithm badge text
-    setSimAlgo(simAlgo, null);
+    updateSimTelemetryAndCards();
+    renderSingleSimulationFrame();
 }
 
 function toggleSimPlay() {
@@ -3448,6 +3500,7 @@ function toggleSimPlay() {
         btn.style.background = simRunning ? 'rgba(0,210,255,0.18)' : 'rgba(0,255,136,0.25)';
     }
     if (simRunning) {
+        lastFrameTimestamp = performance.now();
         if (!simAnimId) {
             simAnimId = requestAnimationFrame(renderSimulationLoop);
         }
@@ -3459,58 +3512,32 @@ function toggleSimPlay() {
 
 function resetSimTime() {
     simTime = 0;
+    renderSingleSimulationFrame();
 }
 
-// Main Render Loop for Oscilloscope and Lissajous Orbit
-function renderSimulationLoop() {
+// Single frame renderer called directly when user tweaks sliders (even if paused!)
+function renderSingleSimulationFrame() {
     const oscCanvas = document.getElementById('osc-canvas');
     const orbitCanvas = document.getElementById('orbit-canvas');
-
     if (!oscCanvas || !orbitCanvas) return;
 
-    // Check if slide 10 is active
-    const slide10 = document.getElementById('slide-dynamic-sim');
-    const isActive = slide10 && slide10.classList.contains('active');
+    drawOscilloscope(oscCanvas);
+    drawOrbit(orbitCanvas);
+}
 
-    if (!isActive) {
-        // Paused while not on slide 10 to save CPU
-        simAnimId = null;
-        return;
-    }
-
+// Draw Oscilloscope Canvas
+function drawOscilloscope(oscCanvas) {
     const dpr = window.devicePixelRatio || 1;
-
-    // Size canvas to CSS container
-    if (oscCanvas.width !== oscCanvas.clientWidth * dpr) {
+    if (oscCanvas.width !== oscCanvas.clientWidth * dpr && oscCanvas.clientWidth > 0) {
         oscCanvas.width = oscCanvas.clientWidth * dpr;
         oscCanvas.height = oscCanvas.clientHeight * dpr;
     }
-    if (orbitCanvas.width !== orbitCanvas.clientWidth * dpr) {
-        orbitCanvas.width = orbitCanvas.clientWidth * dpr;
-        orbitCanvas.height = orbitCanvas.clientHeight * dpr;
-    }
 
     const oCtx = oscCanvas.getContext('2d');
-    const orbCtx = orbitCanvas.getContext('2d');
-
     const oW = oscCanvas.width;
     const oH = oscCanvas.height;
-    const orbW = orbitCanvas.width;
-    const orbH = orbitCanvas.height;
+    if (oW === 0 || oH === 0) return;
 
-    // Time advancement
-    if (simRunning) {
-        if (simScopeMode === 'slow') {
-            simTime += 0.0003 * (simSpeed / 1500);
-        } else {
-            // In stationary triggered mode, advance micro-time for subtle ripple pulsation
-            simTime += 0.0001;
-        }
-    }
-
-    // -------------------------------------------------------------
-    // 1. DRAW OSCILLOSCOPE (Time Domain Waves)
-    // -------------------------------------------------------------
     oCtx.save();
     oCtx.clearRect(0, 0, oW, oH);
 
@@ -3535,56 +3562,62 @@ function renderSimulationLoop() {
     }
 
     // Center Zero Line
-    oCtx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+    oCtx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
     oCtx.lineWidth = 1.5 * dpr;
     oCtx.beginPath();
     oCtx.moveTo(0, oH / 2);
     oCtx.lineTo(oW, oH / 2);
     oCtx.stroke();
 
-    // Fundamental angular frequency (2 cycles across screen width)
-    const points = 300;
-    const ampY = (oH / 2) * 0.72; // scale for amplitude
-    const asymFrac = simAsym / 100;
+    // Scale current amplitude: nominal 5A occupies ~55% of half-screen
+    const currentScale = simIref / 5.0; // 0.2 to 1.6
+    const ampY = (oH / 2) * 0.52 * currentScale;
+    const asymFrac = simAsym / 25.0;
 
-    // Arrays for waveforms
+    // Number of electrical cycles on screen
+    // At 1500 RPM (fe = 100 Hz), 20ms screen = 2.0 full cycles.
+    // At 3000 RPM (fe = 200 Hz), 20ms screen = 4.0 full cycles.
+    // At 300 RPM (fe = 20 Hz), 20ms screen = 0.4 cycles.
+    const cycles = (simSpeed / 1500) * 2.0;
+    const points = 320;
+
     const iaArr = [], ibArr = [], icArr = [], izscArr = [];
 
     for (let i = 0; i < points; i++) {
         const frac = i / points;
-        // theta spans exactly 2 cycles (4 * PI)
-        let theta = frac * 4 * Math.PI;
+        let theta = frac * cycles * 2 * Math.PI;
+
         if (simScopeMode === 'slow') {
-            theta += simTime * 200;
+            theta += simTime * (simSpeed / 1500) * 80;
         }
 
-        // Base signals
         let ia = Math.sin(theta);
         let ib = Math.sin(theta - (2 * Math.PI / 3));
         let ic = Math.sin(theta + (2 * Math.PI / 3));
         let izsc = 0;
 
         if (simAlgo === 'OEPC') {
-            // OEPC active suppression: pure sinusoids with tiny ripple (<0.04A)
-            const microNoise = 0.02 * Math.sin(theta * 18 + simTime * 50);
+            // OEPC active suppression: pure sinusoids with micro switching ripple
+            const microNoise = 0.02 * Math.sin(theta * 18 + simTime * 40);
             ia += microNoise;
             ib += microNoise * 0.8;
             ic -= microNoise * 1.8;
-            izsc = 0.03 * asymFrac * Math.sin(3 * theta);
+            // Clamped ZSC: tiny
+            izsc = 0.04 * asymFrac * Math.sin(3 * theta);
         } else if (simAlgo === 'TDM') {
-            // TDM: uncompensated asymmetry generates heavy 3rd harmonic ZSC
-            const tdmZsc = 0.45 * asymFrac * Math.sin(3 * theta + 0.3);
+            // TDM: noticeable uncompensated 3rd harmonic
+            const tdmZsc = 0.50 * asymFrac * Math.sin(3 * theta + 0.3);
             izsc = tdmZsc;
-            ia = (1 + 0.12 * asymFrac) * Math.sin(theta) + 0.1 * Math.sin(theta * 5);
+            ia = (1 + 0.14 * asymFrac) * Math.sin(theta) + 0.1 * Math.sin(theta * 5);
             ib = (1 - 0.28 * asymFrac) * Math.sin(theta - (2 * Math.PI / 3)) + tdmZsc * 0.7;
             ic = (1 + 0.16 * asymFrac) * Math.sin(theta + (2 * Math.PI / 3)) - tdmZsc * 0.7;
         } else if (simAlgo === 'PWM') {
-            // PWM: dangerous circulating ZSC loop & carrier ripple
-            const pwmZsc = 0.85 * asymFrac * Math.sin(theta - 0.5) + 0.15 * Math.sin(theta * 9);
+            // PWM: severe circulating zero sequence current
+            const pwmZsc = 1.05 * asymFrac * Math.sin(theta - 0.5) + 0.18 * Math.sin(theta * 7);
             izsc = pwmZsc;
-            ia = (1 + 0.25 * asymFrac) * Math.sin(theta) + 0.15 * Math.sin(theta * 12);
-            ib = (1 - 0.35 * asymFrac) * Math.sin(theta - (2 * Math.PI / 3)) + pwmZsc * 0.9;
-            ic = (1 + 0.10 * asymFrac) * Math.sin(theta + (2 * Math.PI / 3)) - pwmZsc * 0.9;
+            ia = (1 + 0.26 * asymFrac) * Math.sin(theta) + 0.15 * Math.sin(theta * 11);
+            ib = (1 - 0.36 * asymFrac) * Math.sin(theta - (2 * Math.PI / 3)) + pwmZsc * 0.9;
+            ic = (1 + 0.12 * asymFrac) * Math.sin(theta + (2 * Math.PI / 3)) - pwmZsc * 0.9;
         }
 
         iaArr.push(ia);
@@ -3593,7 +3626,6 @@ function renderSimulationLoop() {
         izscArr.push(izsc);
     }
 
-    // Helper to draw a single wave trace
     function drawTrace(arr, color, lineWidth, glowColor) {
         oCtx.strokeStyle = color;
         oCtx.lineWidth = lineWidth * dpr;
@@ -3614,13 +3646,30 @@ function renderSimulationLoop() {
     drawTrace(iaArr, '#00d2ff', 2.0, 'rgba(0, 210, 255, 0.4)');
     drawTrace(ibArr, '#9d50bb', 2.0, 'rgba(157, 80, 187, 0.4)');
     drawTrace(icArr, '#f6d365', 2.0, 'rgba(246, 211, 101, 0.4)');
-    drawTrace(izscArr, '#ff4757', 3.0, 'rgba(255, 71, 87, 0.8)');
+    drawTrace(izscArr, '#ff4757', 3.2, 'rgba(255, 71, 87, 0.9)');
+
+    // Overlay vertical scale tag (e.g., Amplitude: 5.0 A / div)
+    oCtx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+    oCtx.font = `${9 * dpr}px 'JetBrains Mono', monospace`;
+    oCtx.textAlign = 'left';
+    oCtx.fillText(`I_ref = ${simIref.toFixed(1)} A  |  f_e = ${Math.round((4 * simSpeed) / 60)} Hz`, 10 * dpr, oH - 8 * dpr);
 
     oCtx.restore();
+}
 
-    // -------------------------------------------------------------
-    // 2. DRAW ORBITAL LISSAJOUS HODOGRAPH (Alpha-Beta Plane)
-    // -------------------------------------------------------------
+// Draw Orbit Canvas (Alpha-Beta Hodograph)
+function drawOrbit(orbitCanvas) {
+    const dpr = window.devicePixelRatio || 1;
+    if (orbitCanvas.width !== orbitCanvas.clientWidth * dpr && orbitCanvas.clientWidth > 0) {
+        orbitCanvas.width = orbitCanvas.clientWidth * dpr;
+        orbitCanvas.height = orbitCanvas.clientHeight * dpr;
+    }
+
+    const orbCtx = orbitCanvas.getContext('2d');
+    const orbW = orbitCanvas.width;
+    const orbH = orbitCanvas.height;
+    if (orbW === 0 || orbH === 0) return;
+
     orbCtx.save();
     orbCtx.clearRect(0, 0, orbW, orbH);
 
@@ -3630,7 +3679,7 @@ function renderSimulationLoop() {
 
     const cX = orbW / 2;
     const cY = orbH / 2;
-    const maxR = Math.min(cX, cY) * 0.78;
+    const maxR = Math.min(cX, cY) * 0.82;
 
     // Concentric Circular Radar Grid
     orbCtx.strokeStyle = 'rgba(0, 210, 255, 0.08)';
@@ -3644,10 +3693,10 @@ function renderSimulationLoop() {
     // Axes Alpha & Beta
     orbCtx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
     orbCtx.beginPath();
-    orbCtx.moveTo(cX - maxR * 1.1, cY);
-    orbCtx.lineTo(cX + maxR * 1.1, cY);
-    orbCtx.moveTo(cX, cY - maxR * 1.1);
-    orbCtx.lineTo(cX, cY + maxR * 1.1);
+    orbCtx.moveTo(cX - maxR * 1.08, cY);
+    orbCtx.lineTo(cX + maxR * 1.08, cY);
+    orbCtx.moveTo(cX, cY - maxR * 1.08);
+    orbCtx.lineTo(cX, cY + maxR * 1.08);
     orbCtx.stroke();
 
     // Axis Labels
@@ -3659,13 +3708,21 @@ function renderSimulationLoop() {
     orbCtx.textAlign = 'center';
     orbCtx.fillText('β', cX + 10 * dpr, cY - maxR * 1.05);
 
-    // Generate Alpha-Beta Trajectory
+    // Trajectory radius scaled with current simIref
+    // Nominal 5.0A corresponds to 0.70 of maxR
+    const currentScale = (simIref / 5.0);
+    const orbitBaseRadius = maxR * 0.68 * Math.min(1.4, Math.max(0.3, currentScale));
+    const asymFrac = simAsym / 25.0;
+
     const orbSteps = 240;
     orbCtx.beginPath();
     let curTipX = cX, curTipY = cY;
 
-    // Instantaneous angle rotating smoothly (3.5s period)
-    const tRot = (Date.now() / 3500) * 2 * Math.PI;
+    // Instantaneous angle rotating with real motor speed
+    // fe = (4 * simSpeed) / 60. At 1500 RPM => 100 Hz.
+    // For smooth visual demonstration, rotate with angular speed proportional to simSpeed
+    const rotSpeed = (simSpeed / 1500) * 1.8; // rad/s
+    const tRot = (simTime * rotSpeed * 2 * Math.PI);
 
     for (let step = 0; step <= orbSteps; step++) {
         const phi = (step / orbSteps) * 2 * Math.PI;
@@ -3673,18 +3730,20 @@ function renderSimulationLoop() {
         let rBeta = Math.sin(phi);
 
         if (simAlgo === 'OEPC') {
-            // Pure circular hodograph
-            rAlpha *= maxR;
-            rBeta *= maxR;
+            // Pure circular hodograph, microscopic 4th-leg switching ripple
+            const microRipple = 0.015 * Math.sin(8 * phi);
+            rAlpha = (rAlpha + microRipple) * orbitBaseRadius;
+            rBeta = (rBeta + microRipple) * orbitBaseRadius;
         } else if (simAlgo === 'TDM') {
             // Eccentric, pulsating ellipse due to uncompensated ZSC
-            const ripple = 0.15 * asymFrac * Math.sin(3 * phi);
-            rAlpha = (1.18 * (1 + 0.1 * asymFrac) * Math.cos(phi) + ripple) * (maxR * 0.85);
-            rBeta = (0.82 * (1 - 0.2 * asymFrac) * Math.sin(phi) - ripple) * (maxR * 0.85);
+            const ripple = 0.18 * asymFrac * Math.sin(3 * phi);
+            rAlpha = ((1.22 + 0.12 * asymFrac) * Math.cos(phi) + ripple) * (orbitBaseRadius * 0.9);
+            rBeta = ((0.80 - 0.22 * asymFrac) * Math.sin(phi) - ripple) * (orbitBaseRadius * 0.9);
         } else if (simAlgo === 'PWM') {
-            // Severely squashed and skewed ellipse with noise
-            rAlpha = (1.30 * Math.cos(phi) + 0.1 * Math.sin(5 * phi)) * (maxR * 0.75);
-            rBeta = (0.65 * Math.sin(phi) + 0.08 * Math.cos(5 * phi)) * (maxR * 0.75);
+            // Severely squashed and skewed ellipse with severe harmonic noise
+            const pwmRipple = 0.15 * asymFrac * Math.sin(5 * phi);
+            rAlpha = ((1.35 + 0.20 * asymFrac) * Math.cos(phi) + pwmRipple) * (orbitBaseRadius * 0.85);
+            rBeta = ((0.65 - 0.30 * asymFrac) * Math.sin(phi) + pwmRipple) * (orbitBaseRadius * 0.85);
         }
 
         const px = cX + rAlpha;
@@ -3694,7 +3753,8 @@ function renderSimulationLoop() {
         else orbCtx.lineTo(px, py);
 
         // Find current instantaneous rotating tip
-        if (Math.abs(phi - (tRot % (2 * Math.PI))) < (2 * Math.PI / orbSteps)) {
+        const diff = Math.abs(phi - (tRot % (2 * Math.PI)));
+        if (diff < (2 * Math.PI / orbSteps) || diff > (2 * Math.PI - 2 * Math.PI / orbSteps)) {
             curTipX = px;
             curTipY = py;
         }
@@ -3727,38 +3787,70 @@ function renderSimulationLoop() {
     orbCtx.shadowBlur = 0;
 
     orbCtx.restore();
+}
 
-    // Schedule next frame
+// Main continuous animation loop
+function renderSimulationLoop(timestamp) {
+    const oscCanvas = document.getElementById('osc-canvas');
+    const orbitCanvas = document.getElementById('orbit-canvas');
+
+    if (!oscCanvas || !orbitCanvas) return;
+
+    // Check if slide 9 is active
+    const slideEl = document.getElementById('slide-dynamic-sim');
+    const isActive = slideEl && slideEl.classList.contains('active');
+
+    if (!isActive) {
+        simAnimId = null;
+        return;
+    }
+
+    if (!timestamp) timestamp = performance.now();
+    const dt = Math.min((timestamp - lastFrameTimestamp) / 1000, 0.1);
+    lastFrameTimestamp = timestamp;
+
+    if (simRunning) {
+        simTime += dt;
+    }
+
+    drawOscilloscope(oscCanvas);
+    drawOrbit(orbitCanvas);
+
     if (simRunning) {
         simAnimId = requestAnimationFrame(renderSimulationLoop);
+    } else {
+        simAnimId = null;
     }
 }
 
 // Hook into presentation slide change to trigger/pause simulation
-const prevSlideHook = updateSlide;
-updateSlide = function(newIdx) {
-    prevSlideHook(newIdx);
-    setTimeout(() => {
-        const slide10 = document.getElementById('slide-dynamic-sim');
-        if (slide10 && slide10.classList.contains('active')) {
-            if (!simAnimId && simRunning) {
-                renderSimulationLoop();
+const prevSlideHook = typeof updateSlide === 'function' ? updateSlide : null;
+if (prevSlideHook) {
+    updateSlide = function(newIdx) {
+        prevSlideHook(newIdx);
+        setTimeout(() => {
+            const slideEl = document.getElementById('slide-dynamic-sim');
+            if (slideEl && slideEl.classList.contains('active')) {
+                lastFrameTimestamp = performance.now();
+                updateSimTelemetryAndCards();
+                if (!simAnimId && simRunning) {
+                    renderSimulationLoop();
+                }
             }
-        }
-    }, 150);
-};
+        }, 150);
+    };
+}
 
-// Start immediately on load
+// Initialize on window load
 window.addEventListener('load', () => {
     setTimeout(() => {
         setSimAlgo('OEPC', null);
-        renderSimulationLoop();
-    }, 400);
+        updateSimParams();
+        renderSingleSimulationFrame();
+    }, 300);
 });
 
 
-
-// =====================================================================
 // =====================================================================
 // =====================================================================
 // --- 3. SLIDE 11: OEPC SWITCHING & CLOSED-LOOP ERROR CORRECTION ENGINE ---
