@@ -877,6 +877,185 @@ def get_book_html():
             background: #ecfdf5;
             color: #047857;
         }
+
+        /* ============================================================ */
+        /* INTERACTIVE FIGURES (FIG 1.1 ARCHITECTURE & FIG 3.1 FLOWCHART)*/
+        /* ============================================================ */
+        .interactive-fig-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-active);
+            border-radius: 18px;
+            padding: 24px;
+            margin: 32px 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), var(--glow-cyan);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        body.light-theme .interactive-fig-card {
+            background: #ffffff;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .fig-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .fig-card-header h3 {
+            margin: 0 0 6px 0;
+            font-size: 17.5px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fig-card-header p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .fig-badge {
+            display: inline-block;
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .fig-tab-group {
+            display: flex;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        body.light-theme .fig-tab-group {
+            background: #f1f5f9;
+        }
+
+        .fig-tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fig-tab-btn.active {
+            background: rgba(0, 210, 255, 0.2);
+            color: #fff;
+            border-color: rgba(0, 210, 255, 0.4);
+        }
+
+        body.light-theme .fig-tab-btn.active {
+            background: #e0f2fe;
+            color: #0369a1;
+            border-color: #0284c7;
+        }
+
+        .fig-controls-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .fig-status-pill {
+            font-size: 12px;
+            font-family: 'Fira Code', monospace;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(0, 210, 255, 0.08);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .fig-inspector-drawer {
+            background: rgba(5, 8, 17, 0.85);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        body.light-theme .fig-inspector-drawer {
+            background: #f8fafc;
+        }
+
+        .inspector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 8px;
+        }
+
+        .inspector-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .inspector-tag {
+            font-size: 11px;
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-cyan);
+            background: rgba(0, 210, 255, 0.12);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .inspector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+        }
+
+        .inspector-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .inspector-item .lbl {
+            font-size: 12px;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .inspector-item .val {
+            font-size: 13px;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
     
         /* Figure Display Boxes */
         .fig-wrapper {
@@ -1896,9 +2075,69 @@ def get_book_html():
                         <li><strong>מתחי Common-Mode וזרמי מיסבים:</strong> מיתוג מהיר גורם למתחי ציפה גבוהים בנקודת הנייטרל, המובילים לפריקות קשתיות במיסבי המנוע (Bearing Currents) וקיצור דרמטי באורך חיי המערכת.</li>
                     </ul>
 
-                    <div class="fig-wrapper">
-                        <img src="presentation_assets/fig1_se_vsi_system_overview.jpg" alt="SE-VSI System Architecture" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 1.1:</strong> ארכיטקטורת המערכת הכוללת: מנוע PMSM בעל קצוות סלילים פתוחים (Open-End Windings) המוזן מממיר Series-End VSI עם קבלי ציפה ובקרת OEPC.</div>
+                    <!-- Modern Interactive Figure 1.1 -->
+                    <div class="interactive-fig-card" id="fig1-1-card">
+                        <div class="fig-card-header">
+                            <div>
+                                <span class="fig-badge">איור 1.1 אינטראקטיבי</span>
+                                <h3>ארכיטקטורת המערכת הכוללת: ממיר Series-End VSI (4 ענפים), סלילים טוריים ובקרת OEPC</h3>
+                                <p>לחץ על כל רכיב במערכת לבחינת מפרט טכני ומשוואות, ובחר מצב פעולה (נומינלי מול כשל ZSC) לצפייה בזרימת האותות והזרמים.</p>
+                            </div>
+                            <div class="fig-tab-group">
+                                <button class="fig-tab-btn active" id="tab-fig1-interactive" onclick="switchFig1Tab('interactive')">🔬 תרשים אינטראקטיבי דינמי</button>
+                                <button class="fig-tab-btn" id="tab-fig1-original" onclick="switchFig1Tab('original')">🖼️ איור מקורי מהמאמר</button>
+                            </div>
+                        </div>
+
+                        <!-- View 1: Interactive Canvas -->
+                        <div class="fig-content-view" id="fig1-view-interactive">
+                            <div class="fig-controls-toolbar">
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle active" id="btn-fig1-mode-normal" onclick="setFig1Mode('normal')">🛡️ פעולה נומינלית (ZSC מדוכא - S1=S4)</button>
+                                    <button class="btn-toggle" id="btn-fig1-mode-fault" onclick="setFig1Mode('fault')">⚠️ ללא דיכוי ZSC (זרם מעגלי פעיל)</button>
+                                </div>
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle active" id="btn-fig1-anim" onclick="toggleFig1Anim()">⏸️ השהה/הפעל זרימה</button>
+                                    <button class="btn-toggle" onclick="resetFig1Selection()">🔄 איפוס בחירה</button>
+                                </div>
+                                <span class="fig-status-pill" id="fig1-status-pill">מצב פעולה: נומינלי (S1=S4, i_0 ≈ 0A)</span>
+                            </div>
+
+                            <div class="fig-canvas-container" style="position: relative; height: 440px; background: #050811; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle);">
+                                <canvas id="fig1-architecture-canvas" style="position: absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
+                                <div class="canvas-title-badge" style="left:12px; right:auto; direction:ltr;">Interactive Series-End VSI Architecture (Fig 1.1)</div>
+                            </div>
+
+                            <!-- Interactive Block Inspector Drawer -->
+                            <div class="fig-inspector-drawer" id="fig1-inspector">
+                                <div class="inspector-header">
+                                    <div class="inspector-title" id="fig1-inspect-title">🔌 ממיר 4 ענפים Series-End VSI (L1, L2, L3, L4)</div>
+                                    <span class="inspector-tag" id="fig1-inspect-tag">Power Stage</span>
+                                </div>
+                                <div class="inspector-grid">
+                                    <div class="inspector-item">
+                                        <span class="lbl">תפקיד במערכת:</span>
+                                        <span class="val" id="fig1-inspect-role">4 ענפי חצי-גשר המחוברים בטור לשלושת סלילי המנוע (איור 1.2 מהמאמר).</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">משוואה מרכזית:</span>
+                                        <span class="val en-term" id="fig1-inspect-eq">$$v_a = v_1 - v_2, \; v_b = v_2 - v_3, \; v_c = v_3 - v_4, \; v_{loop} = v_1 - v_4$$</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">מאפייני חומרה:</span>
+                                        <span class="val" id="fig1-inspect-spec">8 מפסקי הספק מהירים (GaN/SiC) עם דרייברים מבודדים אופטית ו-Dead-time של 1.5µs.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- View 2: Original Paper Image -->
+                        <div class="fig-content-view" id="fig1-view-original" style="display:none;">
+                            <div class="fig-wrapper" style="margin: 12px 0;">
+                                <img src="presentation_assets/fig1_se_vsi_system_overview.jpg" alt="SE-VSI System Architecture" onclick="openModal(this.src)">
+                                <div class="fig-caption"><strong>איור 1.1 המקורי מהמאמר:</strong> ארכיטקטורת המערכת הכוללת: מנוע PMSM בעל קצוות סלילים פתוחים (Open-End Windings) המוזן מממיר Series-End VSI עם קבלי ציפה ובקרת OEPC.</div>
+                            </div>
+                        </div>
                     </div>
 
                     <h3>טופולוגיית סלילים פתוחים בטור (Series-End VSI) — לא כוכב ולא משולש!</h3>
@@ -2817,9 +3056,75 @@ def get_book_html():
                         <strong>מהפכת ה-OEPC (Optimal Error-Priority Control):</strong> במקום להתפשר על חלוקת זמן או להגביל את הממיר, אלגוריתם ה-OEPC ממפה בזמן-אמת את <strong>כל שש שגיאות הזרם של המערכת</strong>, ממיין אותן לפי חומרתן, ובוחר פסיקת מיתוג יחידה מתוך טבלת 96-LUT שמתקנת <strong>בו-זמנית</strong> הן את הפאזה בעלת השגיאה הדחופה ביותר והן את זרם ה-ZSC!
                     </p>
 
-                    <div class="fig-wrapper">
-                        <img src="presentation_assets/fig3_oepc_flowchart_algorithm.jpg" alt="OEPC Flowchart Algorithm" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 3.1:</strong> תרשים זרימה פדגוגי של אלגוריתם ה-OEPC: דגימת זרמים, חישוב 6 שגיאות, מיון עדיפות, קביעת ביט פאזה מועדפת ($F_{mp}$), הרכבת כתובת 7 ביטים ושליפת וקטור המיתוג בצעד שעון יחיד.</div>
+                    <!-- Modern Interactive Figure 3.1 -->
+                    <div class="interactive-fig-card" id="fig3-1-card">
+                        <div class="fig-card-header">
+                            <div>
+                                <span class="fig-badge">איור 3.1 אינטראקטיבי</span>
+                                <h3>תרשים זרימה אינטראקטיבי של אלגוריתם ה-OEPC: דגימה, מיון עדיפות ושליפת וקטור מ-96-LUT</h3>
+                                <p>עקוב אחר מחזור החישוב בזמן-אמת (20µs), הרץ שלב-אחר-שלב או ברציפות, ובחר תרחישי שגיאה לבחינת מנגנון תעדוף ה-ZSC.</p>
+                            </div>
+                            <div class="fig-tab-group">
+                                <button class="fig-tab-btn active" id="tab-fig3-interactive" onclick="switchFig3Tab('interactive')">🔬 תרשים זרימה דינמי ואלגוריתמי</button>
+                                <button class="fig-tab-btn" id="tab-fig3-original" onclick="switchFig3Tab('original')">🖼️ איור מקורי מהמאמר</button>
+                            </div>
+                        </div>
+
+                        <!-- View 1: Interactive Flowchart Canvas & Telemetry -->
+                        <div class="fig-content-view" id="fig3-view-interactive">
+                            <div class="fig-controls-toolbar">
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle active" id="btn-fc-preset-a" onclick="setFcPreset('phaseA')">⚡ תרחיש 1: תיקון פאזה A (|e_a| מקסימלי)</button>
+                                    <button class="btn-toggle" id="btn-fc-preset-zsc" onclick="setFcPreset('zsc')">🛡️ תרחיש 2: חירום ZSC (|i_0| > Tol)</button>
+                                    <button class="btn-toggle" id="btn-fc-preset-b" onclick="setFcPreset('phaseB')">🌀 תרחיש 3: תיקון פאזה B (|e_b| מקסימלי)</button>
+                                </div>
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle active" id="btn-fc-run" onclick="toggleFcRun()">▶️ הרצה רציפה</button>
+                                    <button class="btn-toggle" id="btn-fc-step" onclick="stepFcFlow()">⏭️ צעד הבא (Step)</button>
+                                    <button class="btn-toggle" onclick="resetFcFlow()">🔄 איפוס שלבים</button>
+                                </div>
+                                <span class="fig-status-pill" id="fig3-status-pill">שלב 1: דגימת זרמי פאזות וחישוב i_0</span>
+                            </div>
+
+                            <div class="fig-canvas-container" style="position: relative; height: 480px; background: #050811; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle);">
+                                <canvas id="fig3-flowchart-canvas" style="position: absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
+                                <div class="canvas-title-badge" style="left:12px; right:auto; direction:ltr;">OEPC Real-Time Algorithmic Flowchart (Fig 3.1)</div>
+                            </div>
+
+                            <!-- Interactive Telemetry & Register Watch Drawer -->
+                            <div class="fig-inspector-drawer" id="fig3-inspector">
+                                <div class="inspector-header">
+                                    <div class="inspector-title" id="fig3-inspect-title">🧠 שעון מעבד DSP — אוגרי חישוב וכתובת LUT</div>
+                                    <span class="inspector-tag" id="fig3-inspect-tag">TMS320F28379D CLA / CPU</span>
+                                </div>
+                                <div class="inspector-grid">
+                                    <div class="inspector-item">
+                                        <span class="lbl">דגימות זרם ו-ZSC:</span>
+                                        <span class="val en-term" id="fig3-val-currents">ia = +4.82A, ib = -2.40A, ic = -2.41A | i0 = +0.003A</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">6 שגיאות זרם:</span>
+                                        <span class="val en-term" id="fig3-val-errors">ea = +0.42A, eb = -0.18A, ec = -0.24A | eab = +0.60A</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">דירוג עדיפות ו-Fmp:</span>
+                                        <span class="val en-term" id="fig3-val-priority">|ea| > |ec| > |eb| ➔ S_sel = [0 0 0] | F_mp = 1 (DM Priority)</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">כתובת 7 ביטים ומוצא LUT:</span>
+                                        <span class="val en-term" id="fig3-val-lut" style="color: var(--accent-cyan); font-weight:700;">Addr: {F_mp=1, S_sel=000, S_sgn=100} ➔ State: [1 0 1 1] (V23)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- View 2: Original Paper Flowchart Image -->
+                        <div class="fig-content-view" id="fig3-view-original" style="display:none;">
+                            <div class="fig-wrapper" style="margin: 12px 0;">
+                                <img src="presentation_assets/fig3_oepc_flowchart_algorithm.jpg" alt="OEPC Flowchart Algorithm" onclick="openModal(this.src)">
+                                <div class="fig-caption"><strong>איור 3.1 המקורי מהמאמר:</strong> תרשים זרימה של אלגוריתם בקרת ה-OEPC: קליטת זרמי המנוע, חישוב שש השגיאות, קביעת סדר העדיפות וביט הפאזה המועדפת, והרכבת כתובת 7 ביט לשליפת וקטור המיתוג מתוך טבלת 96-LUT.</div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Modern Didactic Process Pipeline: OEPC Execution Cycle -->
@@ -6365,6 +6670,886 @@ def get_book_html():
             requestAnimationFrame(drawMotorSimStep);
         }
 
+
+        /* ==========================================================================
+           FIGURE 1.1: INTERACTIVE SERIES-END VSI ARCHITECTURE (4-LEG TOPOLOGY)
+           ========================================================================== */
+        let fig1Mode = 'normal'; // 'normal' (ZSC suppressed S1=S4) or 'fault' (ZSC active S1!=S4)
+        let fig1AnimRunning = true;
+        let fig1SelectedBlock = 'inverter';
+        let fig1AnimTime = 0;
+        let fig1LastTime = 0;
+
+        const fig1BlockData = {
+            dc_source: {
+                title: "🔋 מקור מתח ראשי וקבל DC-Bus (Vdc = 300V)",
+                tag: "DC Power Source",
+                role: "הזנת הממיר במתח DC קבוע ומיוצב עם קבלי שיכוך (DC-Link Film Capacitors 680µF/450V).",
+                eq: "V_{dc} = 300\\,\\text{V}, \\quad E_{dc} = \\frac{1}{2} C_{dc} V_{dc}^2 = 30.6\\,\\text{J}",
+                spec: "מקור סוללות/ספק מעבדתי מיוצב 300V DC, זרם רציף עד 25A, הגנת קצר מהירה בתוך 2µs."
+            },
+            inverter: {
+                title: "🔌 ממיר 4 ענפים Series-End VSI (L1, L2, L3, L4)",
+                tag: "Power Switching Stage",
+                role: "4 ענפי חצי-גשר המחוברים בטור ישיר לשלושת סלילי המנוע (איור 1.2 מהמאמר). דיכוי ZSC מובטח כאשר S1 = S4.",
+                eq: "v_a = v_1 - v_2, \\; v_b = v_2 - v_3, \\; v_c = v_3 - v_4, \\; v_{loop} = v_1 - v_4",
+                spec: "8 מפסקי הספק GaN/SiC מהירים, מתח פריצה 650V, זרם שיא 60A, Dead-time קצר של 1.5µs."
+            },
+            stator: {
+                title: "⚙️ סלילי סטטור בטור פתוח (Series-End PMSM Stator)",
+                tag: "Actuator & Stator Winding",
+                role: "שלושה סלילים נפרדים בעלי קצוות פתוחים המחוברים בטור עוקב בין ענפי הממיר (ללא נקודת כוכב נייטרל משותפת).",
+                eq: "v_{loop} = \\sum_{k=a,b,c} v_k = v_1 - v_4 = 3 \\left( R_s i_0 + L_0 \\frac{di_0}{dt} \\right)",
+                spec: "מנוע סרוו תעשייתי (Oemer 3.8kW), זרם נומינלי 7.4A rms, השראות סליל 2.8mH, התנגדות פאזה 0.35Ω."
+            },
+            current_sensors: {
+                title: "📡 חיישני זרם מבודדים (AMC1301 + Hall Effect)",
+                tag: "Feedback Stage - Current",
+                role: "דגימה מבודדת גלוונית (Galvanic Isolation 5kV) של זרמי הפאזות ia, ib, ic להגנה ובקרה מהירה.",
+                eq: "i_0 = \\frac{i_a + i_b + i_c}{3}, \\quad V_{adc} = K_{iso} \\cdot R_{shunt} \\cdot i_{ph}",
+                spec: "רוחב פס 250kHz, זמן תגובה 1.8µs, דיוק 0.3%, דרגות סינון אנלוגי אנטי-אליאסינג מסדר 2."
+            },
+            encoder: {
+                title: "🎯 אנקודר אופטי מדויק (SFM60 1024 PPR)",
+                tag: "Feedback Stage - Position",
+                role: "מדידת מיקום זוויתי של הרוטור (θm) ומהירות הסיבוב עבור התמרת הפאזה וסנכרון שדה הסטטור.",
+                eq: "\\theta_e = p \\cdot \\theta_m = 2 \\cdot \\theta_m, \\quad \\omega_e = \\frac{d\\theta_e}{dt}",
+                spec: "אנקודר אינקרמנטלי אופטי 1024 פולסים לסיבוב, מוצא דיפרנציאלי RS-422, קריאה בחומרת eQEP של ה-DSP."
+            },
+            dsp: {
+                title: "🧠 בקר DSP ראשי (TI TMS320F28379D Dual-Core)",
+                tag: "Controller & 96-LUT Engine",
+                role: "חישוב אלגוריתם OEPC בזמן-אמת (20µs), מיון 6 שגיאות, שליפת וקטור מ-96-LUT והפקת אותות ePWM.",
+                eq: "\\text{Address} = \\{F_{mp}, S_{sel}, S_{sgn}\\} \\in [0 \\dots 95] \\implies [S_1, S_2, S_3, S_4]",
+                spec: "שני מעבדי C28x במהירות 200MHz + שני מאיצי CLA, 16 ערוצי PWM ברזולוציה גבוהה (HRPWM), 4 ממירי ADC 16-bit."
+            }
+        };
+
+        function switchFig1Tab(tab) {
+            const btnInt = document.getElementById('tab-fig1-interactive');
+            const btnOrig = document.getElementById('tab-fig1-original');
+            const viewInt = document.getElementById('fig1-view-interactive');
+            const viewOrig = document.getElementById('fig1-view-original');
+            if (tab === 'interactive') {
+                btnInt.classList.add('active');
+                btnOrig.classList.remove('active');
+                viewInt.style.display = 'block';
+                viewOrig.style.display = 'none';
+            } else {
+                btnInt.classList.remove('active');
+                btnOrig.classList.add('active');
+                viewInt.style.display = 'none';
+                viewOrig.style.display = 'block';
+            }
+        }
+
+        function setFig1Mode(mode) {
+            fig1Mode = mode;
+            const btnNorm = document.getElementById('btn-fig1-mode-normal');
+            const btnFault = document.getElementById('btn-fig1-mode-fault');
+            const statusPill = document.getElementById('fig1-status-pill');
+
+            if (mode === 'normal') {
+                btnNorm.classList.add('active');
+                btnFault.classList.remove('active');
+                statusPill.innerText = "מצב פעולה: נומינלי מוגן (S1=S4, v_loop=0, i_0 ≈ 0A)";
+                statusPill.style.borderColor = "rgba(16, 185, 129, 0.5)";
+                statusPill.style.color = "#10b981";
+            } else {
+                btnNorm.classList.remove('active');
+                btnFault.classList.add('active');
+                statusPill.innerText = "מצב פעולה: כשל דיכוי ZSC (S1≠S4, v_loop=±Vdc, זרם מעגלי פעיל!)";
+                statusPill.style.borderColor = "rgba(239, 68, 68, 0.6)";
+                statusPill.style.color = "#ef4444";
+            }
+        }
+
+        function toggleFig1Anim() {
+            fig1AnimRunning = !fig1AnimRunning;
+            const btn = document.getElementById('btn-fig1-anim');
+            if (btn) {
+                btn.innerText = fig1AnimRunning ? "⏸️ השהה זרימה" : "▶️ הפעל זרימה";
+                btn.classList.toggle('active', fig1AnimRunning);
+            }
+        }
+
+        function selectFig1Block(key) {
+            if (!fig1BlockData[key]) return;
+            fig1SelectedBlock = key;
+            const data = fig1BlockData[key];
+            const elTitle = document.getElementById('fig1-inspect-title');
+            const elTag = document.getElementById('fig1-inspect-tag');
+            const elRole = document.getElementById('fig1-inspect-role');
+            const elEq = document.getElementById('fig1-inspect-eq');
+            const elSpec = document.getElementById('fig1-inspect-spec');
+
+            if (elTitle) elTitle.innerText = data.title;
+            if (elTag) elTag.innerText = data.tag;
+            if (elRole) elRole.innerText = data.role;
+            if (elEq) elEq.innerHTML = `$$${data.eq}$$`;
+            if (elSpec) elSpec.innerText = data.spec;
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                const drawer = document.getElementById('fig1-inspector');
+                if (drawer) window.MathJax.typesetPromise([drawer]).catch(()=>{});
+            }
+        }
+
+        function resetFig1Selection() {
+            selectFig1Block('inverter');
+        }
+
+        function initFig1() {
+            const canvas = document.getElementById('fig1-architecture-canvas');
+            if (!canvas) return;
+
+            // Click listener for block selection
+            canvas.addEventListener('click', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const clickX = (e.clientX - rect.left) * scaleX / (window.devicePixelRatio || 1);
+                const clickY = (e.clientY - rect.top) * scaleY / (window.devicePixelRatio || 1);
+
+                if (fig1HitBoxes) {
+                    for (const [key, box] of Object.entries(fig1HitBoxes)) {
+                        if (clickX >= box.x && clickX <= box.x + box.w &&
+                            clickY >= box.y && clickY <= box.y + box.h) {
+                            selectFig1Block(key);
+                            break;
+                        }
+                    }
+                }
+            });
+
+            requestAnimationFrame(drawFig1Step);
+        }
+
+        let fig1HitBoxes = {};
+
+        function drawFig1Step(now) {
+            if (!fig1LastTime) fig1LastTime = now;
+            const dt = Math.min((now - fig1LastTime) / 1000, 0.05);
+            fig1LastTime = now;
+            if (fig1AnimRunning) {
+                fig1AnimTime += dt;
+            }
+
+            const canvas = document.getElementById('fig1-architecture-canvas');
+            if (canvas && canvas.offsetParent !== null) {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                const w = Math.max(rect.width, 300);
+                const h = Math.max(rect.height, 250);
+
+                if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+                    canvas.width = Math.round(w * dpr);
+                    canvas.height = Math.round(h * dpr);
+                }
+
+                const ctx = canvas.getContext('2d');
+                ctx.save();
+                ctx.scale(dpr, dpr);
+
+                // Background
+                ctx.fillStyle = '#050811';
+                ctx.fillRect(0, 0, w, h);
+
+                // Grid background
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < w; x += 30) {
+                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+                }
+                for (let y = 0; y < h; y += 30) {
+                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+                }
+
+                // Layout coordinates
+                const padX = 24;
+                const topY = 28;
+                const bottomY = h - 28;
+
+                // 1. DC Source Block (Left Top)
+                const dcBox = { x: padX, y: topY + 15, w: 90, h: 120 };
+                // 2. Inverter 4-Leg Block (Center-Left)
+                const invBox = { x: padX + 130, y: topY, w: 260, h: 155 };
+                // 3. Stator Windings Block (Center-Right)
+                const motorBox = { x: padX + 430, y: topY, w: 210, h: 155 };
+                // 4. Sensors Block (Middle-Bottom)
+                const sensBox = { x: padX + 430, y: topY + 195, w: 210, h: 70 };
+                // 5. Optical Encoder (Right-Bottom)
+                const encBox = { x: padX + 670, y: topY + 70, w: 95, h: 100 };
+                // 6. DSP Controller (Bottom-Center)
+                const dspBox = { x: padX + 130, y: topY + 195, w: 260, h: 80 };
+
+                fig1HitBoxes = {
+                    dc_source: dcBox,
+                    inverter: invBox,
+                    stator: motorBox,
+                    current_sensors: sensBox,
+                    encoder: encBox,
+                    dsp: dspBox
+                };
+
+                // Helper to draw modern card
+                function drawCard(box, key, title, subtitle, color) {
+                    const isSel = fig1SelectedBlock === key;
+                    ctx.save();
+                    ctx.fillStyle = isSel ? 'rgba(26, 38, 68, 0.95)' : 'rgba(18, 26, 47, 0.85)';
+                    ctx.strokeStyle = isSel ? 'var(--accent-cyan)' : 'rgba(64, 120, 240, 0.3)';
+                    ctx.lineWidth = isSel ? 2.5 : 1.2;
+                    if (isSel) {
+                        ctx.shadowColor = 'rgba(0, 210, 255, 0.4)';
+                        ctx.shadowBlur = 14;
+                    }
+                    ctx.beginPath();
+                    ctx.roundRect(box.x, box.y, box.w, box.h, 8);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.restore();
+
+                    // Header line
+                    ctx.fillStyle = color;
+                    ctx.font = 'bold 12px Rubik, Heebo, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(title, box.x + box.w / 2, box.y + 20);
+
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '10px Heebo, sans-serif';
+                    ctx.fillText(subtitle, box.x + box.w / 2, box.y + 36);
+                }
+
+                // Draw DC Source
+                drawCard(dcBox, 'dc_source', 'מקור Vdc', '300V DC Bus', '#3b82f6');
+                ctx.fillStyle = '#00d2ff';
+                ctx.font = 'bold 16px Fira Code';
+                ctx.textAlign = 'center';
+                ctx.fillText('+300V', dcBox.x + dcBox.w / 2, dcBox.y + 70);
+                ctx.fillStyle = '#64748b';
+                ctx.font = '10px Fira Code';
+                ctx.fillText('Cdc = 680µF', dcBox.x + dcBox.w / 2, dcBox.y + 92);
+
+                // Draw 4-Leg Inverter
+                drawCard(invBox, 'inverter', 'ממיר 4 ענפים Series-End VSI', 'L1, L2, L3, L4 (8x GaN Switches)', '#00d2ff');
+                // Draw 4 leg columns inside inverter
+                const legW = 50;
+                const legGap = 12;
+                const legStartX = invBox.x + 12;
+                for (let i = 0; i < 4; i++) {
+                    const lx = legStartX + i * (legW + legGap);
+                    const ly = invBox.y + 50;
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                    ctx.strokeStyle = 'rgba(0, 210, 255, 0.25)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.roundRect(lx, ly, legW, 85, 4);
+                    ctx.fill(); ctx.stroke();
+
+                    // Switch state
+                    let sVal = 0;
+                    if (fig1Mode === 'normal') {
+                        sVal = (i === 0 || i === 3) ? 1 : (i === 1 ? 0 : 1); // S1=1, S4=1 (S1=S4)
+                    } else {
+                        sVal = (i === 0) ? 1 : 0; // S1=1, S4=0 (Fault S1!=S4!)
+                    }
+                    ctx.fillStyle = sVal ? '#10b981' : '#f59e0b';
+                    ctx.font = 'bold 11px Fira Code';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`L${i+1}: S=${sVal}`, lx + legW / 2, ly + 22);
+
+                    // Midpoint tap dot
+                    const tapY = ly + 46;
+                    ctx.fillStyle = '#00d2ff';
+                    ctx.beginPath();
+                    ctx.arc(lx + legW / 2, tapY, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '9px Fira Code';
+                    ctx.fillText(`v${i+1}`, lx + legW / 2, tapY + 16);
+                }
+
+                // Draw Stator Series Windings
+                drawCard(motorBox, 'stator', 'סלילי סטטור PMSM', 'סלילים בטור פתוח Za, Zb, Zc', '#10b981');
+                const coilNames = ['סליל פאזה A (Za)', 'סליל פאזה B (Zb)', 'סליל פאזה C (Zc)'];
+                const coilEqs = ['va = v1 - v2', 'vb = v2 - v3', 'vc = v3 - v4'];
+                for (let i = 0; i < 3; i++) {
+                    const cy = motorBox.y + 48 + i * 32;
+                    ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
+                    ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.roundRect(motorBox.x + 10, cy, motorBox.w - 20, 26, 4);
+                    ctx.fill(); ctx.stroke();
+
+                    ctx.fillStyle = '#10b981';
+                    ctx.font = 'bold 10px Heebo, sans-serif';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(coilNames[i], motorBox.x + motorBox.w - 18, cy + 17);
+
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '10px Fira Code';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(coilEqs[i], motorBox.x + 16, cy + 17);
+                }
+
+                // Draw Current Sensors Block
+                drawCard(sensBox, 'current_sensors', 'דגימת זרם AMC1301', '3x Isolated Hall Sensors', '#f59e0b');
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '10px Fira Code';
+                ctx.textAlign = 'center';
+                ctx.fillText('ia, ib, ic ➔ i0 = (ia+ib+ic)/3', sensBox.x + sensBox.w / 2, sensBox.y + 54);
+
+                // Draw Encoder Block
+                drawCard(encBox, 'encoder', 'אנקודר', 'SFM60', '#9d50bb');
+                ctx.fillStyle = '#9d50bb';
+                ctx.font = 'bold 12px Fira Code';
+                ctx.textAlign = 'center';
+                ctx.fillText('θm, ωm', encBox.x + encBox.w / 2, encBox.y + 65);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '9px Heebo';
+                ctx.fillText('1024 PPR', encBox.x + encBox.w / 2, encBox.y + 82);
+
+                // Draw DSP Controller
+                drawCard(dspBox, 'dsp', 'בקר DSP TMS320F28379D', 'OEPC Engine (20µs) • 96-LUT in CLA', '#ef4444');
+                ctx.fillStyle = '#00d2ff';
+                ctx.font = 'bold 10px Fira Code';
+                ctx.textAlign = 'center';
+                ctx.fillText('{F_mp, S_sel, S_sgn} ➔ [S1, S2, S3, S4]', dspBox.x + dspBox.w / 2, dspBox.y + 54);
+                ctx.fillStyle = '#10b981';
+                ctx.font = '10px Heebo';
+                ctx.fillText('מנגנון חומרה דיגיטלי בזמן-אמת (Clock Cycle יחיד)', dspBox.x + dspBox.w / 2, dspBox.y + 68);
+
+                // Power Buses DC+ and DC-
+                ctx.strokeStyle = '#ef4444'; // DC+
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.moveTo(dcBox.x + dcBox.w, dcBox.y + 35);
+                ctx.lineTo(invBox.x, dcBox.y + 35);
+                ctx.stroke();
+
+                ctx.strokeStyle = '#3b82f6'; // DC-
+                ctx.beginPath();
+                ctx.moveTo(dcBox.x + dcBox.w, dcBox.y + 95);
+                ctx.lineTo(invBox.x, dcBox.y + 95);
+                ctx.stroke();
+
+                // Signal & Feedback Buses
+                // Sensor lines from motor windings down to Current Sensors
+                ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(motorBox.x + 40, motorBox.y + motorBox.h);
+                ctx.lineTo(sensBox.x + 40, sensBox.y);
+                ctx.moveTo(motorBox.x + motorBox.w / 2, motorBox.y + motorBox.h);
+                ctx.lineTo(sensBox.x + sensBox.w / 2, sensBox.y);
+                ctx.moveTo(motorBox.x + motorBox.w - 40, motorBox.y + motorBox.h);
+                ctx.lineTo(sensBox.x + sensBox.w - 40, sensBox.y);
+                ctx.stroke();
+
+                // From Sensors to DSP
+                ctx.beginPath();
+                ctx.moveTo(sensBox.x, sensBox.y + 35);
+                ctx.lineTo(dspBox.x + dspBox.w, dspBox.y + 35);
+                ctx.stroke();
+
+                // From Encoder to DSP
+                ctx.strokeStyle = 'rgba(157, 80, 187, 0.4)';
+                ctx.beginPath();
+                ctx.moveTo(encBox.x, encBox.y + 50);
+                ctx.lineTo(dspBox.x + dspBox.w, dspBox.y + 55);
+                ctx.stroke();
+
+                // From DSP to Inverter (ePWM Gate Pulses)
+                ctx.strokeStyle = 'rgba(0, 210, 255, 0.6)';
+                ctx.setLineDash([]);
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(dspBox.x + dspBox.w / 2, dspBox.y);
+                ctx.lineTo(invBox.x + invBox.w / 2, invBox.y + invBox.h);
+                ctx.stroke();
+                drawArrow(ctx, dspBox.x + dspBox.w / 2, dspBox.y + 10, invBox.x + invBox.w / 2, invBox.y + invBox.h, '#00d2ff', 2);
+
+                // Phase Interconnections between Inverter Legs and Motor Stator (Fig 1.2 exact topology)
+                const connY1 = invBox.y + 50 + 46;
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(invBox.x + invBox.w, connY1);
+                ctx.lineTo(motorBox.x, connY1);
+                ctx.stroke();
+
+                // Animated Flow Particles
+                const speed = 60; // px/sec
+                const particleCount = 8;
+                for (let p = 0; p < particleCount; p++) {
+                    const offset = ((fig1AnimTime * speed + p * 45) % 220);
+                    // Gate pulse particles from DSP to Inverter
+                    const gy = (dspBox.y - offset);
+                    if (gy > invBox.y + invBox.h && gy < dspBox.y) {
+                        ctx.fillStyle = '#00d2ff';
+                        ctx.beginPath();
+                        ctx.arc(dspBox.x + dspBox.w / 2, gy, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    // Phase current particles from Inverter to Motor
+                    const px = invBox.x + invBox.w + (offset % (motorBox.x - (invBox.x + invBox.w)));
+                    ctx.fillStyle = '#10b981';
+                    ctx.beginPath();
+                    ctx.arc(px, connY1, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // If in Fault mode, draw prominent Red/Amber Circulating ZSC Loop
+                if (fig1Mode === 'fault') {
+                    ctx.save();
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([6, 6]);
+                    ctx.shadowColor = 'rgba(239, 68, 68, 0.8)';
+                    ctx.shadowBlur = 12;
+
+                    // Draw circulating path outer loop: L1 -> Za -> Zb -> Zc -> L4 -> DC-Bus -> L1
+                    const loopY_top = invBox.y - 12;
+                    const loopY_bot = invBox.y + invBox.h + 12;
+                    ctx.beginPath();
+                    ctx.roundRect(invBox.x + 10, loopY_top, (motorBox.x + motorBox.w) - (invBox.x + 10), loopY_bot - loopY_top + 10, 14);
+                    ctx.stroke();
+
+                    // Circulating warning text
+                    ctx.fillStyle = '#ef4444';
+                    ctx.font = 'bold 13px Heebo, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('⚠️ זרם מעגלי פעיל ZSC: i_0 = 1.85A (S1 ≠ S4 ➔ v_loop = ±Vdc)', (invBox.x + motorBox.x + motorBox.w) / 2, loopY_top - 4);
+
+                    // Flowing red dots around the loop
+                    const loopLength = 900;
+                    const loopSpeed = 120;
+                    for (let d = 0; d < 10; d++) {
+                        const lOffset = ((fig1AnimTime * loopSpeed + d * 90) % loopLength);
+                        let dotX = invBox.x + 20 + lOffset * 0.7;
+                        let dotY = loopY_top;
+                        if (dotX > motorBox.x + motorBox.w) {
+                            dotX = motorBox.x + motorBox.w;
+                            dotY = loopY_bot;
+                        }
+                        ctx.fillStyle = '#ff4444';
+                        ctx.beginPath();
+                        ctx.arc(dotX, dotY, 4.5, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                }
+
+                ctx.restore();
+            }
+
+            requestAnimationFrame(drawFig1Step);
+        }
+
+
+        /* ==========================================================================
+           FIGURE 3.1: INTERACTIVE OEPC FLOWCHART & 96-LUT EXECUTION ENGINE
+           ========================================================================== */
+        let fcPreset = 'phaseA';
+        let fcCurrentStep = 0; // 0: Start, 1: Sample, 2: Errors, 3: Sort, 4: Decision, 5: 96-LUT, 6: Apply
+        let fcRunning = true;
+        let fcLastStepTime = 0;
+        const fcStepDuration = 1500; // ms per step in auto mode
+
+        const fcPresets = {
+            phaseA: {
+                name: "תרחיש 1: שגיאה דומיננטית בפאזה A (|ea| מקסימלי)",
+                currents: "ia = +4.82A, ib = -2.40A, ic = -2.41A | i0 = +0.003A (נומינלי)",
+                errors: "ea = +0.42A (מקסימלי), eb = -0.18A, ec = -0.24A | eab = +0.60A",
+                priority: "|ea| > |ec| > |eb| ➔ S_sel = [0 0 0] (Permutation 1)",
+                decision: "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)",
+                lut: "Addr: {F_mp=1, S_sel=000, S_sgn=100} ➔ State: [1 0 1 1] (V23) ➔ va=+Vdc",
+                status: "שלב ביצוע: תיקון דיפרנציאלי לפאזה A | דיכוי מוחלט של ZSC (S1=S4=1)"
+            },
+            zsc: {
+                name: "תרחיש 2: חירום דיכוי ZSC (|i0| > Tol)",
+                currents: "ia = +3.10A, ib = +1.20A, ic = -3.76A | i0 = +0.180A (חריגת ZSC קיצונית!)",
+                errors: "ea = +0.15A, eb = +0.10A, ec = -0.25A | e0 = +0.180A",
+                priority: "|ec| > |ea| > |eb| ➔ S_sel = [0 1 0] (Permutation 3)",
+                decision: "|i0| = 0.180A > 0.05A (Tol) ➔ YES! ➔ F_mp = 0 (EMERGENCY ZSC TRIGGER!)",
+                lut: "Addr: {F_mp=0, S_sel=010, S_sgn=001} ➔ State: [1 1 0 1] (V25) ➔ v0=-Vdc",
+                status: "שלב ביצוע: הפעלת מצב חירום ZSC! F_mp=0 מדכא את הזרם המעגלי במחזור שעון יחיד"
+            },
+            phaseB: {
+                name: "תרחיש 3: שגיאה דומיננטית בפאזה B (|eb| מקסימלי)",
+                currents: "ia = -2.15A, ib = +4.70A, ic = -2.54A | i0 = +0.003A (נומינלי)",
+                errors: "ea = -0.12A, eb = +0.49A (מקסימלי), ec = -0.37A | ebc = +0.86A",
+                priority: "|eb| > |ec| > |ea| ➔ S_sel = [0 1 0] (Permutation 2)",
+                decision: "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)",
+                lut: "Addr: {F_mp=1, S_sel=010, S_sgn=010} ➔ State: [0 1 1 0] (V12) ➔ vb=+Vdc",
+                status: "שלב ביצוע: תיקון דיפרנציאלי לפאזה B | דיכוי מוחלט של ZSC (S1=S4=0)"
+            }
+        };
+
+        const fcNodes = [
+            { id: 0, title: "01: טריגר חומרה ePWM", sub: "הפעלת פסיקה בכל מחזור (50kHz / 20µs)", y: 15, h: 48, type: 'rect' },
+            { id: 1, title: "02: דגימת זרמים וחישוב i_0", sub: "דגימת ia, ib, ic וחישוב זרם סכום i_0", y: 78, h: 48, type: 'rect' },
+            { id: 2, title: "03: חישוב 6 שגיאות זרם", sub: "ea, eb, ec (פאזות) ו-eab, ebc, eca (קווים)", y: 141, h: 48, type: 'rect' },
+            { id: 3, title: "04: מיון גודל שגיאות", sub: "מיון לפי ערך מוחלט ➔ בחירת S_sel (3 ביטים)", y: 204, h: 48, type: 'rect' },
+            { id: 4, title: "05: החלטת פאזה מועדפת (F_mp)", sub: "האם |i_0| > Tol ? (דיכוי ZSC מול DM)", y: 267, h: 56, type: 'diamond' },
+            { id: 5, title: "06: שליפת וקטור מ-96-LUT", sub: "כתובת 7 ביט {F_mp, S_sel, S_sgn} ➔ [S1..S4]", y: 338, h: 48, type: 'rect' },
+            { id: 6, title: "07: הפעלת פסיקת מיתוג ePWM", sub: "הוצאת פולסים לדרייברים + Dead-time 1.5µs", y: 401, h: 48, type: 'rect' }
+        ];
+
+        function switchFig3Tab(tab) {
+            const btnInt = document.getElementById('tab-fig3-interactive');
+            const btnOrig = document.getElementById('tab-fig3-original');
+            const viewInt = document.getElementById('fig3-view-interactive');
+            const viewOrig = document.getElementById('fig3-view-original');
+            if (tab === 'interactive') {
+                btnInt.classList.add('active');
+                btnOrig.classList.remove('active');
+                viewInt.style.display = 'block';
+                viewOrig.style.display = 'none';
+            } else {
+                btnInt.classList.remove('active');
+                btnOrig.classList.add('active');
+                viewInt.style.display = 'none';
+                viewOrig.style.display = 'block';
+            }
+        }
+
+        function setFcPreset(preset) {
+            fcPreset = preset;
+            document.getElementById('btn-fc-preset-a').classList.toggle('active', preset === 'phaseA');
+            document.getElementById('btn-fc-preset-zsc').classList.toggle('active', preset === 'zsc');
+            document.getElementById('btn-fc-preset-b').classList.toggle('active', preset === 'phaseB');
+            updateFcTelemetry();
+        }
+
+        function toggleFcRun() {
+            fcRunning = !fcRunning;
+            const btn = document.getElementById('btn-fc-run');
+            if (btn) {
+                btn.innerText = fcRunning ? "⏸️ השהה הרצה" : "▶️ הרצה רציפה";
+                btn.classList.toggle('active', fcRunning);
+            }
+        }
+
+        function stepFcFlow() {
+            fcCurrentStep = (fcCurrentStep + 1) % fcNodes.length;
+            updateFcTelemetry();
+        }
+
+        function resetFcFlow() {
+            fcCurrentStep = 0;
+            updateFcTelemetry();
+        }
+
+        function updateFcTelemetry() {
+            const p = fcPresets[fcPreset];
+            const elStatus = document.getElementById('fig3-status-pill');
+            const elCurr = document.getElementById('fig3-val-currents');
+            const elErr = document.getElementById('fig3-val-errors');
+            const elPrio = document.getElementById('fig3-val-priority');
+            const elLut = document.getElementById('fig3-val-lut');
+
+            if (elStatus) {
+                const node = fcNodes[fcCurrentStep];
+                elStatus.innerText = `${node.title}: ${p.status}`;
+                elStatus.style.borderColor = (fcPreset === 'zsc') ? 'rgba(239, 68, 68, 0.6)' : 'rgba(0, 210, 255, 0.6)';
+                elStatus.style.color = (fcPreset === 'zsc') ? '#ef4444' : '#00d2ff';
+            }
+
+            if (elCurr) elCurr.innerText = (fcCurrentStep >= 1) ? p.currents : "ממתין לדגימה...";
+            if (elErr) elErr.innerText = (fcCurrentStep >= 2) ? p.errors : "טרם חושב";
+            if (elPrio) elPrio.innerText = (fcCurrentStep >= 3) ? p.priority : "טרם מוין";
+            if (elLut) {
+                if (fcCurrentStep >= 5) {
+                    elLut.innerText = p.lut;
+                    elLut.style.color = (fcPreset === 'zsc') ? '#ef4444' : 'var(--accent-cyan)';
+                } else {
+                    elLut.innerText = "טרם נשלף וקטור";
+                    elLut.style.color = '#94a3b8';
+                }
+            }
+        }
+
+        function initFig3() {
+            const canvas = document.getElementById('fig3-flowchart-canvas');
+            if (!canvas) return;
+
+            canvas.addEventListener('click', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const clickX = (e.clientX - rect.left) * scaleX / (window.devicePixelRatio || 1);
+                const clickY = (e.clientY - rect.top) * scaleY / (window.devicePixelRatio || 1);
+
+                const colW = Math.min(canvas.width / (window.devicePixelRatio || 1) * 0.46, 320);
+                const leftColX = Math.min(canvas.width / (window.devicePixelRatio || 1) * 0.04, 30);
+
+                for (let i = 0; i < fcNodes.length; i++) {
+                    const n = fcNodes[i];
+                    if (clickX >= leftColX && clickX <= leftColX + colW &&
+                        clickY >= n.y && clickY <= n.y + n.h) {
+                        fcCurrentStep = i;
+                        updateFcTelemetry();
+                        break;
+                    }
+                }
+            });
+
+            updateFcTelemetry();
+            requestAnimationFrame(drawFig3Step);
+        }
+
+        function drawFig3Step(now) {
+            if (!fcLastStepTime) fcLastStepTime = now;
+            const elapsed = now - fcLastStepTime;
+
+            if (fcRunning && elapsed > fcStepDuration) {
+                fcCurrentStep = (fcCurrentStep + 1) % fcNodes.length;
+                fcLastStepTime = now;
+                updateFcTelemetry();
+            }
+
+            const canvas = document.getElementById('fig3-flowchart-canvas');
+            if (canvas && canvas.offsetParent !== null) {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                const w = Math.max(rect.width, 300);
+                const h = Math.max(rect.height, 460);
+
+                if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+                    canvas.width = Math.round(w * dpr);
+                    canvas.height = Math.round(h * dpr);
+                }
+
+                const ctx = canvas.getContext('2d');
+                ctx.save();
+                ctx.scale(dpr, dpr);
+
+                // Background
+                ctx.fillStyle = '#050811';
+                ctx.fillRect(0, 0, w, h);
+
+                // Subtle Grid
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < w; x += 30) {
+                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+                }
+                for (let y = 0; y < h; y += 30) {
+                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+                }
+
+                // Layout flowchart
+                const leftColX = Math.min(w * 0.04, 30);
+                const colW = Math.min(w * 0.46, 320);
+                const rightColX = leftColX + colW + 35;
+                const rightColW = Math.max(w - rightColX - 25, 210);
+
+                // Connector lines between nodes
+                for (let i = 0; i < fcNodes.length - 1; i++) {
+                    const fromN = fcNodes[i];
+                    const toN = fcNodes[i+1];
+                    const fromX = leftColX + colW / 2;
+                    const fromY = fromN.y + fromN.h;
+                    const toX = leftColX + colW / 2;
+                    const toY = toN.y;
+
+                    const isActiveConn = (fcCurrentStep === i + 1);
+                    ctx.strokeStyle = isActiveConn ? '#00d2ff' : 'rgba(64, 120, 240, 0.3)';
+                    ctx.lineWidth = isActiveConn ? 2.5 : 1.5;
+                    drawArrow(ctx, fromX, fromY, toX, toY, ctx.strokeStyle, ctx.lineWidth);
+                }
+
+                // Decision Diamond side branches (Node 4)
+                const decNode = fcNodes[4];
+                const decMidX = leftColX + colW / 2;
+                const decMidY = decNode.y + decNode.h / 2;
+
+                // Decision branch YES (Emergency ZSC) to right
+                ctx.strokeStyle = (fcPreset === 'zsc') ? '#ef4444' : 'rgba(239, 68, 68, 0.3)';
+                ctx.lineWidth = (fcPreset === 'zsc' && fcCurrentStep === 4) ? 2.5 : 1.5;
+                ctx.beginPath();
+                ctx.moveTo(leftColX + colW, decMidY);
+                ctx.lineTo(leftColX + colW + 28, decMidY);
+                ctx.stroke();
+
+                ctx.fillStyle = (fcPreset === 'zsc') ? '#ef4444' : '#64748b';
+                ctx.font = 'bold 9px Fira Code';
+                ctx.fillText("YES ➔ F_mp=0", leftColX + colW + 32, decMidY + 3);
+
+                // Draw each flowchart node
+                for (let i = 0; i < fcNodes.length; i++) {
+                    const n = fcNodes[i];
+                    const nx = leftColX;
+                    const ny = n.y;
+                    const nw = colW;
+                    const nh = n.h;
+                    const isCur = (fcCurrentStep === i);
+
+                    ctx.save();
+                    if (isCur) {
+                        ctx.fillStyle = (fcPreset === 'zsc' && i === 4) ? 'rgba(239, 68, 68, 0.25)' : 'rgba(0, 210, 255, 0.2)';
+                        ctx.strokeStyle = (fcPreset === 'zsc' && i === 4) ? '#ef4444' : '#00d2ff';
+                        ctx.lineWidth = 2.5;
+                        ctx.shadowColor = (fcPreset === 'zsc' && i === 4) ? 'rgba(239, 68, 68, 0.6)' : 'rgba(0, 210, 255, 0.6)';
+                        ctx.shadowBlur = 12;
+                    } else {
+                        ctx.fillStyle = 'rgba(18, 26, 47, 0.85)';
+                        ctx.strokeStyle = 'rgba(64, 120, 240, 0.25)';
+                        ctx.lineWidth = 1.2;
+                    }
+
+                    ctx.beginPath();
+                    if (n.type === 'diamond') {
+                        ctx.roundRect(nx, ny, nw, nh, 16);
+                    } else {
+                        ctx.roundRect(nx, ny, nw, nh, 6);
+                    }
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.restore();
+
+                    // Node Title & Subtitle
+                    ctx.fillStyle = isCur ? '#ffffff' : '#f0f4fc';
+                    ctx.font = isCur ? 'bold 11.5px Heebo, sans-serif' : '500 11px Heebo, sans-serif';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(n.title, nx + nw - 14, ny + 18);
+
+                    ctx.fillStyle = isCur ? '#00d2ff' : '#94a3b8';
+                    ctx.font = '9.5px Heebo, sans-serif';
+                    ctx.fillText(n.sub, nx + nw - 14, ny + 34);
+
+                    // Step Number Icon
+                    ctx.fillStyle = isCur ? '#00d2ff' : 'rgba(255, 255, 255, 0.15)';
+                    ctx.beginPath();
+                    ctx.arc(nx + 18, ny + nh / 2, 8, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = isCur ? '#050811' : '#ffffff';
+                    ctx.font = 'bold 8.5px Fira Code';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(i + 1, nx + 18, ny + nh / 2 + 3);
+                }
+
+                // Right Column: Live Explanatory Stage Details Card
+                const curN = fcNodes[fcCurrentStep];
+                const expBox = { x: rightColX, y: 15, w: rightColW, h: h - 30 };
+
+                ctx.save();
+                ctx.fillStyle = 'rgba(18, 26, 47, 0.85)';
+                ctx.strokeStyle = 'rgba(0, 210, 255, 0.3)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.roundRect(expBox.x, expBox.y, expBox.w, expBox.h, 10);
+                ctx.fill(); ctx.stroke();
+                ctx.restore();
+
+                // Explanatory Header
+                ctx.fillStyle = '#00d2ff';
+                ctx.font = 'bold 12.5px Heebo, sans-serif';
+                ctx.textAlign = 'right';
+                ctx.fillText(`🔍 ${curN.title}`, expBox.x + expBox.w - 16, expBox.y + 26);
+
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '10px Heebo, sans-serif';
+                ctx.fillText(`מחזור: 20µs (50kHz) • שלב ${fcCurrentStep + 1} מתוך 7`, expBox.x + expBox.w - 16, expBox.y + 44);
+
+                // Divider line
+                ctx.strokeStyle = 'rgba(64, 120, 240, 0.2)';
+                ctx.beginPath();
+                ctx.moveTo(expBox.x + 16, expBox.y + 54);
+                ctx.lineTo(expBox.x + expBox.w - 16, expBox.y + 54);
+                ctx.stroke();
+
+                // Dynamic detailed content based on active step
+                const p = fcPresets[fcPreset];
+                let descLines = [];
+                let highlightBox = "";
+
+                if (fcCurrentStep === 0) {
+                    descLines = [
+                        "• טיימר ה-ePWM הפנימי של ה-DSP מגיע לערך השיא (Period Match).",
+                        "• מופקת פסיקת SOCA לחומרת ה-ADC להתחלת המרה בו-זמנית.",
+                        "• זמן ריצת הפסיקה הכולל מוגבל בקשיחות לעד 12µs מתוך תקציב של 20µs."
+                    ];
+                    highlightBox = "Clock: 200MHz | Period: 4000 ticks | Jitter: < 10ns";
+                } else if (fcCurrentStep === 1) {
+                    descLines = [
+                        "• קליטת ערכי הזרם של שלושת הסלילים ia, ib, ic מחיישני ה-AMC1301.",
+                        "• חישוב מיידי של זרם הסדר האפסי (ZSC): i0 = (ia + ib + ic) / 3.",
+                        `• תוצאת חישוב נוכחית: ${p.currents}`
+                    ];
+                    highlightBox = `ZSC Current: i0 = ${fcPreset === 'zsc' ? '+0.180A (חריגה!)' : '+0.003A (תקין)'}`;
+                } else if (fcCurrentStep === 2) {
+                    descLines = [
+                        "• חישוב שגיאות פאזה: ea = ia* - ia, eb = ib* - ib, ec = ic* - ic.",
+                        "• חישוב שגיאות קו: eab = ea - eb, ebc = eb - ec, eca = ec - ea.",
+                        `• שגיאות מחושבות: ${p.errors}`
+                    ];
+                    highlightBox = "6 שגיאות זרם מעובדות במקביל ברגיסטרי ה-CLA";
+                } else if (fcCurrentStep === 3) {
+                    descLines = [
+                        "• מיון 3 שגיאות הפאזה לפי ערכן המוחלט: |ea|, |eb|, |ec|.",
+                        "• קביעת 3 ביטי בחירה (S_sel) מתוך 6 פרמוטציות אפשריות (000 עד 101).",
+                        `• דירוג עדיפות שנקבע: ${p.priority}`
+                    ];
+                    highlightBox = `S_sel = ${fcPreset === 'phaseA' ? '[0 0 0]' : '[0 1 0]'}`;
+                } else if (fcCurrentStep === 4) {
+                    descLines = [
+                        "• בדיקת סף חירום לזרם ה-ZSC: האם |i0| גדול מ-Δi0,tol (0.05A)?",
+                        "• אם כן ➔ F_mp = 0: עדיפות עליונה לדיכוי ZSC (תיקון הסדר האפסי).",
+                        "• אם לא ➔ F_mp = 1: עדיפות רגילה לתיקון הפאזה הדיפרנציאלית (DM).",
+                        `• החלטת האלגוריתם: ${p.decision}`
+                    ];
+                    highlightBox = (fcPreset === 'zsc') ? "🚨 EMERGENCY ZSC ACTIVATED! F_mp = 0" : "✅ NORMAL DM MODE: F_mp = 1";
+                } else if (fcCurrentStep === 5) {
+                    descLines = [
+                        "• הרכבת מילת כתובת באורך 7 ביטים: Address = {F_mp, S_sel, S_sgn}.",
+                        "• שליפת וקטור המיתוג האופטימלי [S1, S2, S3, S4] מתוך טבלת 96-LUT.",
+                        "• פעולה בצעד שעון יחיד (Single-Cycle Lookup) ללא לולאות איטרציה.",
+                        `• וקטור שנשלף: ${p.lut}`
+                    ];
+                    highlightBox = `LUT Output: ${p.lut.split('➔')[1] || ''}`;
+                } else if (fcCurrentStep === 6) {
+                    descLines = [
+                        "• טעינת מצבי המיתוג לרגיסטרי ה-CMPA/CMPB של 4 ענפי ה-ePWM.",
+                        "• יחידת ה-Dead-Time מחדירה השהיית ביטחון של 1.5µs למניעת Shoot-Through.",
+                        "• מעבר לענף הבא והמתנה לפסיקת השעון הבאה בעוד 20µs."
+                    ];
+                    highlightBox = "Gate Signals Dispatched ➔ 4-Leg Inverter Switched";
+                }
+
+                let curY = expBox.y + 75;
+                ctx.fillStyle = '#f0f4fc';
+                ctx.font = '10.5px Heebo, sans-serif';
+                ctx.textAlign = 'right';
+                for (const line of descLines) {
+                    ctx.fillText(line, expBox.x + expBox.w - 16, curY);
+                    curY += 22;
+                }
+
+                // Highlight box at bottom of explanatory card
+                const hlY = expBox.y + expBox.h - 55;
+                ctx.fillStyle = (fcPreset === 'zsc' && (fcCurrentStep === 4 || fcCurrentStep === 5)) ? 'rgba(239, 68, 68, 0.15)' : 'rgba(0, 210, 255, 0.1)';
+                ctx.strokeStyle = (fcPreset === 'zsc' && (fcCurrentStep === 4 || fcCurrentStep === 5)) ? '#ef4444' : 'var(--accent-cyan)';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.roundRect(expBox.x + 14, hlY, expBox.w - 28, 38, 6);
+                ctx.fill(); ctx.stroke();
+
+                ctx.fillStyle = (fcPreset === 'zsc' && (fcCurrentStep === 4 || fcCurrentStep === 5)) ? '#ef4444' : '#00d2ff';
+                ctx.font = 'bold 10px Fira Code';
+                ctx.textAlign = 'center';
+                ctx.fillText(highlightBox, expBox.x + expBox.w / 2, hlY + 23);
+
+                ctx.restore();
+            }
+
+            requestAnimationFrame(drawFig3Step);
+        }
+
         // Copy text to clipboard helper
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
@@ -6380,6 +7565,8 @@ def get_book_html():
             updateJsxSim();
             updateOscParams();
             updateMotorParams();
+            initFig1();
+            initFig3();
             requestAnimationFrame(oscStep);
             requestAnimationFrame(drawMotorSimStep);
         });
