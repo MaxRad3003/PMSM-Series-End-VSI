@@ -937,6 +937,10 @@
             padding: 24px;
             margin: 32px 0;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), var(--glow-cyan);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .sim-embed-header {
@@ -957,14 +961,81 @@
 
         .sim-container-grid {
             display: grid;
-            grid-template-columns: 360px 1fr;
+            grid-template-columns: 320px minmax(0, 1fr);
             gap: 20px;
+            align-items: start;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 960px) {
             .sim-container-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        .sim-view-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 0;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .osc-split-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr);
+            height: 350px;
+            position: relative;
+            overflow: hidden;
+            direction: ltr;
+            width: 100%;
+            border-radius: 12px;
+            background: #050811;
+            border: 1px solid var(--border-subtle);
+        }
+
+        @media (max-width: 780px) {
+            .osc-split-grid {
+                grid-template-columns: 1fr;
+                height: 520px;
+            }
+        }
+
+        .osc-canvas-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .osc-canvas-box canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        .canvas-title-badge {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: rgba(10, 16, 30, 0.85);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 11px;
+            color: var(--accent-cyan);
+            pointer-events: none;
+            z-index: 2;
+            font-family: 'Rubik', sans-serif;
+            direction: rtl;
         }
 
         .sim-controls-panel {
@@ -1021,25 +1092,19 @@
             box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
         }
 
-        .sim-view-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .sim-canvas-holder {
-            background: #050811;
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            min-height: 280px;
-            position: relative;
-            overflow: hidden;
-        }
-
         .telemetry-strip {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 10px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 640px) {
+            .telemetry-strip {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
 
         .telemetry-item {
@@ -1049,6 +1114,9 @@
             padding: 8px 12px;
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         body.light-theme .telemetry-item {
@@ -2247,9 +2315,15 @@
                             </div>
 
                             <div class="sim-view-panel">
-                                <div class="sim-canvas-holder" style="height: 340px; display: flex;">
-                                    <canvas id="osc-time-canvas" style="flex: 2; height: 100%; border-left: 1px solid var(--border-subtle);"></canvas>
-                                    <canvas id="osc-xy-canvas" style="flex: 1; height: 100%;"></canvas>
+                                <div class="osc-split-grid">
+                                    <div class="osc-canvas-box" style="border-right: 1px solid var(--border-subtle);">
+                                        <canvas id="osc-time-canvas"></canvas>
+                                        <div class="canvas-title-badge">תחום הזמן: 3 פאזות ו-ZSC</div>
+                                    </div>
+                                    <div class="osc-canvas-box">
+                                        <canvas id="osc-xy-canvas"></canvas>
+                                        <div class="canvas-title-badge">מישור α-β (Lissajous Orbit)</div>
+                                    </div>
                                 </div>
                                 <div class="telemetry-strip">
                                     <div class="telemetry-item">
@@ -2947,14 +3021,22 @@
                 return;
             }
 
-            // Canvas resizing
-            if (timeCanvas.width !== timeCanvas.clientWidth) {
-                timeCanvas.width = timeCanvas.clientWidth;
-                timeCanvas.height = timeCanvas.clientHeight;
+            // Canvas resizing using getBoundingClientRect (prevents flex/grid feedback explosion)
+            const rectT = timeCanvas.getBoundingClientRect();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const targetTW = Math.max(10, Math.round(rectT.width * dpr));
+            const targetTH = Math.max(10, Math.round(rectT.height * dpr));
+            if (timeCanvas.width !== targetTW || timeCanvas.height !== targetTH) {
+                timeCanvas.width = targetTW;
+                timeCanvas.height = targetTH;
             }
-            if (xyCanvas.width !== xyCanvas.clientWidth) {
-                xyCanvas.width = xyCanvas.clientWidth;
-                xyCanvas.height = xyCanvas.clientHeight;
+
+            const rectXY = xyCanvas.getBoundingClientRect();
+            const targetXW = Math.max(10, Math.round(rectXY.width * dpr));
+            const targetXH = Math.max(10, Math.round(rectXY.height * dpr));
+            if (xyCanvas.width !== targetXW || xyCanvas.height !== targetXH) {
+                xyCanvas.width = targetXW;
+                xyCanvas.height = targetXH;
             }
 
             const freq = (oscRpm / 60) * 2; // p=2
@@ -3042,26 +3124,31 @@
             xyCtx.fillStyle = '#060a15';
             xyCtx.fillRect(0, 0, xw, xh);
 
+            const orbitRadius = Math.min(xw, xh) * 0.36;
+
             xyCtx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            xyCtx.lineWidth = 1;
             xyCtx.beginPath();
-            xyCtx.arc(xw / 2, xh / 2, Math.min(xw, xh) * 0.38, 0, 2 * Math.PI);
+            xyCtx.arc(xw / 2, xh / 2, orbitRadius, 0, 2 * Math.PI);
             xyCtx.stroke();
 
             // Coordinate cross
+            xyCtx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
             xyCtx.beginPath(); xyCtx.moveTo(xw / 2, 0); xyCtx.lineTo(xw / 2, xh); xyCtx.stroke();
             xyCtx.beginPath(); xyCtx.moveTo(0, xh / 2); xyCtx.lineTo(xw, xh / 2); xyCtx.stroke();
 
             xyCtx.strokeStyle = '#00d2ff';
-            xyCtx.lineWidth = 2;
+            xyCtx.lineWidth = 2.2;
             xyCtx.beginPath();
+            const scale = orbitRadius * 0.72;
             for (let i = 0; i < timeBufferA.length; i++) {
                 const a = timeBufferA[i];
                 const b = timeBufferB[i];
                 const c = timeBufferC[i];
                 const alpha = a - 0.5 * (b + c);
                 const beta = (Math.sqrt(3) / 2) * (b - c);
-                const px = (xw / 2) + alpha * (xw * 0.28);
-                const py = (xh / 2) - beta * (xh * 0.28);
+                const px = (xw / 2) + alpha * scale;
+                const py = (xh / 2) - beta * scale;
                 if (i === 0) xyCtx.moveTo(px, py);
                 else xyCtx.lineTo(px, py);
             }
