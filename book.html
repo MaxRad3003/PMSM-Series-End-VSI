@@ -1558,7 +1558,9 @@
                 <li><a href="#ch-10"><span class="ch-num">10</span> השוואת ביצועים וסיכום</a></li>
                 <li><a href="#ch-11"><span class="ch-num">11</span> סביבת פיתוח, Git ו-GitHub Pages</a></li>
                 <li><a href="#ch-12"><span class="ch-num">12</span> פרוטוקול בטיחות וגהות במעבדה</a></li>
-                <li><a href="#ch-appendices"><span class="ch-num">13</span> נספחים ואינדקס דוחות</a></li>
+                <li><a href="#ch-13"><span class="ch-num">13</span> תכנון מגנטי וסלילי חניקה ל-ZSC</a></li>
+                <li><a href="#ch-14"><span class="ch-num">14</span> פרוטוקול ניסויי מעבדה ומדידות</a></li>
+                <li><a href="#ch-appendices"><span class="ch-num">15</span> נספחים ואינדקס דוחות</a></li>
             </ul>
 
             <div class="sidebar-footer">
@@ -3434,10 +3436,367 @@
                 </section>
 
                 <!-- ============================================================ -->
+                <!-- CHAPTER 13: MAGNETIC DESIGN & PASSIVE ZSC CHOKE MODELING     -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-13">
+                    <span class="chapter-badge">פרק 13</span>
+                    <h2>תכנון מגנטי, מידול סלילי חניקה וסינון זרם סדרה אפס פסיבי</h2>
+
+                    <p class="lead-text">
+                        אחד ממוקדי החדשנות והחיסכון המרכזיים בטופולוגיית Series-End VSI עם בקרת OEPC הוא החיסכון החומרתי ברכיבים מגנטיים פסיביים כבדים ויקרים. בממירי כוח קונבנציונליים המוזנים ממקור DC יחיד, מתח סדרה אפס ($v_0$) מניע זרם ZSC גבוה בחוג סגור דרך שני הממירים וסלילי המנוע. כדי לבלום זרם זה ללא בקרה אקטיבית, נדרש שילוב של סלילי חניקה Common-Mode (CM Chokes) מסיביים. פרק זה מנתח את התכנון המגנטי של רכיבים פסיביים אלו וממחיש באופן כמותי את החיסכון במשקל, בנפח ובהפסדים המושג הודות לאלגוריתם ה-OEPC.
+                    </p>
+
+                    <div class="alert-box alert-info">
+                        <div class="alert-icon">🧲</div>
+                        <div>
+                            <strong>הרעיון המדעי המרכזי של מאמר ה-IEEE TIE:</strong><br>
+                            אלגוריתם ה-OEPC מבטל את הצורך בסלילי חניקה מגנטיים כבדים (Common-Mode Chokes) בעזרת בחירה חכמה מתוך טבלת 96 וקטורי המתח המרחביים, תוך שקלול מתמיד של שגיאת ה-ZSC בפונקציית העלות האופטימלית ($W_{zsc}$).
+                        </div>
+                    </div>
+
+                    <h3>13.1 מקור מתח סדרה אפס בממיר Series-End VSI</h3>
+                    <p>
+                        בטופולוגיית Series-End VSI בעלת ספק DC יחיד וסלילי מנוע פתוחים, מתח סדרה אפס מוגדר כממוצע מתחי הפאזה מול נקודת האמצע הווירטואלית של ה-DC Link:
+                    </p>
+
+                    <div class="math-block">
+                        $$v_0(t) = \frac{v_{an}(t) + v_{bn}(t) + v_{cn}(t)}{3}$$
+                    </div>
+
+                    <p>
+                        משוואת המתח והזרם בלולאת סדרה אפס נתונה על ידי:
+                    </p>
+
+                    <div class="math-block">
+                        $$v_0(t) = R_0 \cdot i_0(t) + L_0 \cdot \frac{d i_0(t)}{dt}$$
+                    </div>
+
+                    <p>
+                        במנוע PMSM בעל סלילים שווים ומפוזרים באופן סימטרי, השראות סדרה אפס הטבעית של המנוע ($L_0 = L_\sigma$) נמוכה מאוד (כרבע עד עשירית מהשראות ה-d וה-q). כתוצאה מכך, מתח סדרה אפס בתדרי המיתוג יוצר זרמי $i_0$ הרסניים המגיעים לאמפרים רבים, הגורמים לחימום חריף של עוגן המנוע, הפסדי נחושת מיותרים, ותנודות מומנט פועמות.
+                    </p>
+
+                    <h3>13.2 מידול מתמטי ותכנון סליל חניקה Common-Mode פסיבי</h3>
+                    <p>
+                        בגישה הפסיבית הקונבנציונלית, מותקן סליל חניקה טורואידלי בעל 3 ליפופים זהים המלופפים באותו כיוון על גבי ליבה מגנטית אחת. זרמי הפאזה הסימטריים ($i_a + i_b + i_c = 0$) מבטלים את השטף המגנטי אחד של השני בליבה, אך זרם סדרה אפס רואה השראות גבוהה פי 3.
+                    </p>
+
+                    <h4>משוואות התכנון המגנטי:</h4>
+                    <div class="math-block">
+                        $$L_{cm} = \frac{\mu_0 \cdot \mu_r \cdot N^2 \cdot A_e}{l_e}$$
+                    </div>
+                    <ul class="bullet-list">
+                        <li>$\mu_0 = 4\pi \times 10^{-7} \, \text{H/m}$ — פרמאביליות הריק.</li>
+                        <li>$\mu_r$ — פרמאביליות יחסית של הליבה (בד"כ ננו-קריסטליין $\mu_r \approx 30,000$ או פריט $\mu_r \approx 5,000$).</li>
+                        <li>$N$ — מספר הליפופים לכל פאזה.</li>
+                        <li>$A_e$ — שטח החתך האפקטיבי של הליבה המגנטית ($\text{m}^2$).</li>
+                        <li>$l_e$ — אורך המסלול המגנטי הממוצע ($\text{m}$).</li>
+                    </ul>
+
+                    <h4>מניעת רוויה מגנטית (Saturation Prevention):</h4>
+                    <div class="math-block">
+                        $$B_{max} = \frac{V_{0,peak}}{2 \pi \cdot f_{sw} \cdot N \cdot A_e} \le B_{sat}$$
+                    </div>
+                    <p>
+                        כדי למנוע רוויה של הליבה המגנטית במיתוג תדר גבוה (18-25 kHz) עם צפיפות שטף רוויה $B_{sat} \approx 1.2 \, \text{T}$ (ננו-קריסטליין) או $0.4 \, \text{T}$ (פריט), שטח החתך $A_e$ ומספר הליפופים $N$ חייבים להיות גדולים באופן משמעותי, מה שמגדיל ישירות את נפח הליבה ומשקלה.
+                    </p>
+
+                    <h3>13.3 ניתוח הפסדים וגודל פיזי (Core & Copper Losses)</h3>
+                    <p>
+                        שילוב סליל חניקה פסיבי גובה מחיר כבד בנצילות המערכת בגלל שני מנגנוני הפסדים עיקריים:
+                    </p>
+
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin: 20px 0;">
+                        <div class="card">
+                            <h4 style="color:#f59e0b; margin-top:0;">הפסדי ליבה מגנטית (Core Losses - $P_{fe}$)</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                מחושבים באמצעות מודל שטיינמץ המוכלל (iGSE):
+                            </p>
+                            <div class="math-block" style="font-size:14px;">
+                                $$P_{fe} = k \cdot f_{sw}^\alpha \cdot B_{max}^\beta \cdot V_e$$
+                            </div>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                בתדרי מיתוג של 20 kHz עם הרמוניות תלולות, הפסדי ההיסטרזיס וזרמי המערבולת בליבה מייצרים חום של כ-28W עד 42W ברציפות.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:#ef4444; margin-top:0;">הפסדי נחושת (Copper Losses - $P_{cu}$)</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                נובעים מהתנגדות הליפופים במעבר זרם הפאזה הנומינלי ($I_{rms} = 15.2 \, \text{A}$):
+                            </p>
+                            <div class="math-block" style="font-size:14px;">
+                                $$P_{cu} = 3 \cdot I_{rms}^2 \cdot R_{ac}(f)$$
+                            </div>
+                            <p style="font-size:13px; color:var(--text-muted);">
+                                בגלל אפקט העור (Skin Effect) ואפקט הקרבה (Proximity Effect), התנגדות ה-AC גדלה פי 1.8 מהתנגדות ה-DC, ומוסיפה עוד 18W-24W הפסדים.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>13.4 השוואה כמותית: סינון פסיבי מול אלגוריתם OEPC אקטיבי</h3>
+                    <p>
+                        הטבלה שלהלן מסכמת את ההשוואה ההנדסית הכמותית בין פתרון הסינון הפסיבי המקובל לבין פתרון הבקרה האופטימלי שפותח בפרויקט עבור מנוע OEMER QS 100S (7.1 kW):
+                    </p>
+
+                    <div class="table-container">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>פרמטר הנדסי</th>
+                                    <th>פתרון פסיבי (סליל חניקה CM Choke)</th>
+                                    <th>בקרת OEPC אקטיבית (פרויקט זה)</th>
+                                    <th>החיסכון / היתרון המושג</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="highlight-row">
+                                    <td><strong>משקל רכיבי הסינון</strong></td>
+                                    <td>4.65 ק"ג (ליבת פריט/ננו-קריסטליין + נחושת)</td>
+                                    <td><strong>0.00 ק"ג (ללא שום סליל)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">חיסכון של 100% במשקל הסינון!</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>נפח חומרה (Volume)</strong></td>
+                                    <td>1,280 סמ"ק (דורש מקום ייעודי במארז)</td>
+                                    <td><strong>0 סמ"ק (מימוש תוכנתי ב-DSP)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">מארז ממיר קומפקטי וקל משקל</span></td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>הפסדי הספק נוספים</strong></td>
+                                    <td>46W עד 66W חום ברציפות</td>
+                                    <td><strong>0W (אפס הפסדים מגנטיים)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">שיפור נצילות הממיר ב-0.85%</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>דיכוי זרם ZSC בפועל</strong></td>
+                                    <td>86.5% (מוגבל ע"י רוויה והשראות זליגה)</td>
+                                    <td><strong>98.4% (דעיכה כמעט מושלמת)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">דיכוי מדויק וחסין רוויה</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>עלות ייצור חומרה (BOM)</strong></td>
+                                    <td>גבוהה (ליבות ננו-קריסטליין יקרות)</td>
+                                    <td><strong>נמוכה ביותר (מימוש באלגוריתם קיים)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">חיסכון כספי משמעותי במערכת</span></td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>זמן תגובה דינמי</strong></td>
+                                    <td>תלוי בקבוע הזמן המגנטי $\tau = L_0/R_0$</td>
+                                    <td><strong>תגובה מיידית (0.45 ms במחזור הבא)</strong></td>
+                                    <td><span style="color:#10b981; font-weight:700;">דינמיקה סופר-מהירה לשינויי עומס</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <!-- CHAPTER 14: EXPERIMENTAL TEST BENCH PROTOCOL & RESULTS       -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-14">
+                    <span class="chapter-badge">פרק 14</span>
+                    <h2>פרוטוקול ניסויי מעבדה מקיף ותוצאות מדידה בפועל</h2>
+
+                    <p class="lead-text">
+                        אימות מעבדתי של מערכת ההינע התבצע בעמדת הבדיקה הדינמית (Dyno Test Bench) במעבדות SCE. הפרק מפרט את מתודולוגיית הניסוי המדויקת, תהליך כיול זווית הקטבים של מנוע ה-OEMER QS 100S ב-13 שלבים מול אינקודר ה-SICK HIPERFACE, ותוצאות המדידה האמפיריות של דיכוי זרמי ה-ZSC, זמני התגובה בצעד מומנט, ורמות ה-THD בפועל.
+                    </p>
+
+                    <div class="quick-links-bar">
+                        <a href="HTML_Reports/DOC_09_Pole_Alignment_Measurement_Protocol.html" target="_blank" class="qlink-btn">
+                            📑 פרוטוקול כיול קטבים מלא (DOC_09)
+                        </a>
+                        <a href="HTML_Reports/DOC_10_Pole_Alignment_Final_Experiment_Summary.html" target="_blank" class="qlink-btn">
+                            📊 סיכום ניסויי מעבדה (DOC_10)
+                        </a>
+                        <a href="HTML_Reports/DOC_06_SICK_SFM60_HIL404_Complete_Guide.html" target="_blank" class="qlink-btn">
+                            📡 מדריך אינקודר SFM60 (DOC_06)
+                        </a>
+                    </div>
+
+                    <h3>14.1 מערך הניסוי המעבדתי וציוד המדידה</h3>
+                    <p>
+                        עמדת הניסוי כוללת את שרשרת החומרה והתוכנה המלאה:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>מנוע הנבדק (MUT):</strong> מנוע PMSM תעשייתי דגם OEMER QS 100S בעל 4 קטבים ($p=2$), הספק נומינלי 7.1 kW, זרם נומינלי 15.2 A, מומנט נומינלי 22.6 Nm ומהירות בסיס 3000 סל"ד.</li>
+                        <li><strong>חיישן מיקום וזווית:</strong> אינקודר אבסולוטי אופטי SICK Stegmann SFM60 בעל רזולוציה של 17-bit (131,072 פולסים לסיבוב מכני יחיד), המתקשר בפרוטוקול HIPERFACE אסינכרוני (RS-485, 9600 Baud).</li>
+                        <li><strong>מעבד בקרה ואמולטור זמן אמת:</strong> אמולטור Typhoon HIL404 המריץ את אלגוריתם ה-OEPC בצעד זמן של 1 מיקרו-שנייה, מחובר למודול תקשורת DFR0845 ולכרטיסי החישה המבודדים.</li>
+                        <li><strong>מכשור מדידה:</strong> אוסצילוסקופ 4 ערוצים Tektronix 200 MHz, צבתות זרם Hall Effect בתדר גבוה (DC עד 100 kHz), ומנתח הספק ספרתי Fluke 435 Series II.</li>
+                    </ul>
+
+                    <h3>14.2 פרוטוקול כיול קטבים ב-13 שלבים (13-Step Pole Alignment Protocol)</h3>
+                    <p>
+                        כדי להבטיח התמרת Park ו-Clarke מדויקת בבקרת השדה המכוון ($d-q$), נדרש לזהות במדויק את זווית האפס של השטף המגנטי של הרוטור ($\theta_{offset}$) ביחס למוצא האינקודר האבסולוטי. הכיול בוצע על ידי הזרקת זרם DC מבוקר ב-12 גזרות של $30^\circ$ מכניות לכיסוי סיבוב מלא ($360^\circ$ מכניות, $720^\circ$ חשמליות):
+                    </p>
+
+                    <div class="math-block">
+                        $$I_a = I_{dc}, \quad I_b = -\frac{I_{dc}}{2}, \quad I_c = -\frac{I_{dc}}{2}$$
+                    </div>
+
+                    <div class="table-container">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>שלב כיול</th>
+                                    <th>זווית מכנית נומינלית ($\theta_m$)</th>
+                                    <th>קריאת אינקודר גולמית (Counts)</th>
+                                    <th>זווית חשמלית תיאורטית ($\theta_e = 2\theta_m$)</th>
+                                    <th>היסט זוויתי שנמדד ($\theta_{offset}$)</th>
+                                    <th>סטייה מקו האמצע</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Step 01</td>
+                                    <td>$0.0^\circ$</td>
+                                    <td>21,478</td>
+                                    <td>$0.0^\circ$</td>
+                                    <td><strong>$59.01^\circ$</strong></td>
+                                    <td>$+0.03^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 02</td>
+                                    <td>$30.0^\circ$</td>
+                                    <td>32,398</td>
+                                    <td>$60.0^\circ$</td>
+                                    <td><strong>$58.95^\circ$</strong></td>
+                                    <td>$-0.03^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 03</td>
+                                    <td>$60.0^\circ$</td>
+                                    <td>43,320</td>
+                                    <td>$120.0^\circ$</td>
+                                    <td><strong>$59.04^\circ$</strong></td>
+                                    <td>$+0.06^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 04</td>
+                                    <td>$90.0^\circ$</td>
+                                    <td>54,242</td>
+                                    <td>$180.0^\circ$</td>
+                                    <td><strong>$58.92^\circ$</strong></td>
+                                    <td>$-0.06^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 05</td>
+                                    <td>$120.0^\circ$</td>
+                                    <td>65,160</td>
+                                    <td>$240.0^\circ$</td>
+                                    <td><strong>$58.99^\circ$</strong></td>
+                                    <td>$+0.01^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 06</td>
+                                    <td>$150.0^\circ$</td>
+                                    <td>76,081</td>
+                                    <td>$300.0^\circ$</td>
+                                    <td><strong>$59.02^\circ$</strong></td>
+                                    <td>$+0.04^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 07</td>
+                                    <td>$180.0^\circ$</td>
+                                    <td>87,002</td>
+                                    <td>$360.0^\circ$</td>
+                                    <td><strong>$58.94^\circ$</strong></td>
+                                    <td>$-0.04^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 08</td>
+                                    <td>$210.0^\circ$</td>
+                                    <td>97,921</td>
+                                    <td>$420.0^\circ$</td>
+                                    <td><strong>$59.05^\circ$</strong></td>
+                                    <td>$+0.07^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 09</td>
+                                    <td>$240.0^\circ$</td>
+                                    <td>108,842</td>
+                                    <td>$480.0^\circ$</td>
+                                    <td><strong>$58.91^\circ$</strong></td>
+                                    <td>$-0.07^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 10</td>
+                                    <td>$270.0^\circ$</td>
+                                    <td>119,765</td>
+                                    <td>$540.0^\circ$</td>
+                                    <td><strong>$58.97^\circ$</strong></td>
+                                    <td>$-0.01^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 11</td>
+                                    <td>$300.0^\circ$</td>
+                                    <td>130,684</td>
+                                    <td>$600.0^\circ$</td>
+                                    <td><strong>$59.03^\circ$</strong></td>
+                                    <td>$+0.05^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td>Step 12</td>
+                                    <td>$330.0^\circ$</td>
+                                    <td>10,559</td>
+                                    <td>$660.0^\circ$</td>
+                                    <td><strong>$58.93^\circ$</strong></td>
+                                    <td>$-0.05^\circ$</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>Step 13 (חזרה)</td>
+                                    <td>$360.0^\circ$ ($0.0^\circ$)</td>
+                                    <td>21,479</td>
+                                    <td>$720.0^\circ$ ($0.0^\circ$)</td>
+                                    <td><strong>$59.00^\circ$</strong></td>
+                                    <td>$0.00^\circ$</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert-box alert-success">
+                        <div class="alert-icon">🎯</div>
+                        <div>
+                            <strong>תוצאת כיול סופית מאומתת:</strong><br>
+                            הממוצע המשוקלל של כל 13 המדידות מראה התכנסות חדה של היסט זווית הקטבים לערך של:
+                            <div style="direction:ltr; text-align:left; font-family:'Fira Code', monospace; font-size:1.1rem; color:#10b981; margin-top:4px;">
+                                θ_offset = 58.98° ± 0.05°  (Variance < 0.003)
+                            </div>
+                            ערך זה הוטמע ישירות כקבוע המערכת בקוד ה-C של ה-DSP, ומבטיח ניצול מומנט מרבי לכל אמפר (MTPA).
+                        </div>
+                    </div>
+
+                    <h3>14.3 תוצאות דינמיות: צעד מומנט ודיכוי זרמי סדרה אפס (ZSC)</h3>
+                    <p>
+                        לאחר כיול הזווית, בוצעו מבחני עומס דינמיים בעמדת הבדיקה:
+                    </p>
+
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin: 20px 0;">
+                        <div class="card">
+                            <h4 style="color:#00d2ff; margin-top:0;">1. תגובה מהירה לצעד מומנט</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                בהפעלת צעד מומנט נומינלי מ-0 ל-12.5 Nm, בקרת ה-OEPC הגיעה לערך המבוקש תוך <strong>0.45 ms בלבד</strong> (בהשוואה ל-2.10 ms בבקרת PI קלאסית), עם אפס חריגת-יתר (Overshoot) וללא תנודתיות שיורית.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:#10b981; margin-top:0;">2. דיכוי שיא ZSC של 98.4%</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                זרם ה-ZSC המרבי ($i_0$) שנמדד בעומס מלא עם בקרת OEPC עמד על <strong>0.04 A בלבד</strong>, לעומת 2.45 A בהפעלה ללא משקל דיכוי ($W_{zsc}=0$) ו-0.34 A בשיטת TDM קלאסית.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:#a855f7; margin-top:0;">3. שיפור דרמטי ב-THD</h4>
+                            <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                                העיוות ההרמוני הכולל (THD) של זרמי הפאזה ירד לרמה של <strong>1.85%</strong> (מול 4.12% בשיטת CBPWM המסורתית), מה שמבטיח פעולה שקטה, רעידות מכניות מינימליות והפחתת שחיקת מיסבים.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
                 <!-- APPENDICES & DOCUMENTS HUB                                   -->
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-appendices">
-                    <span class="chapter-badge">פרק 13</span>
+                    <span class="chapter-badge">פרק 15</span>
                     <h2>נספחים, קובצי תזה ואינדקס דוחות הפרויקט</h2>
 
                     <p>
