@@ -1046,7 +1046,7 @@ def get_book_html():
             }
         }
     </style>
-</head>
+    <script src="auth_guard.js"></script>\n</head>
 <body>
 
     <!-- Reading Progress Bar -->
