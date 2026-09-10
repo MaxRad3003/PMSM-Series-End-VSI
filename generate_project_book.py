@@ -1950,7 +1950,7 @@ def get_book_html():
                 <li><a href="#ch-07"><span class="ch-num">07</span> אימות סימולטיבי ו-HIL בזמן אמת</a></li>
                 <li><a href="#ch-08"><span class="ch-num">08</span> תכנון כרטיסי חומרה ב-Altium</a></li>
                 <li><a href="#ch-09"><span class="ch-num">09</span> תכנון מגנטי וסלילי חניקה ל-ZSC</a></li>
-                <li><a href="#ch-10"><span class="ch-num">10</span> כיול מנוע OEMER ואינקודר</a></li>
+                <li><a href="#ch-10"><span class="ch-num">10</span> כיול מנוע OEMER ואנקודר</a></li>
                 <li><a href="#ch-11"><span class="ch-num">11</span> מכלול מכני (CAD) ועמדת דיינו</a></li>
                 <li><a href="#ch-12"><span class="ch-num">12</span> סביבת פיתוח, Git ו-GitHub Pages</a></li>
                 <li><a href="#ch-13"><span class="ch-num">13</span> פרוטוקול בטיחות וגהות במעבדה</a></li>
@@ -1977,6 +1977,9 @@ def get_book_html():
                     <span>ספר הפרויקט</span> &gt; <span class="curr" id="active-crumb">שער ותקציר מנהלים</span>
                 </div>
                 <div class="nav-actions">
+                    <a href="PMSM_Project_Book.html" class="action-btn" title="Switch to Academic English Edition" style="background: rgba(0, 210, 255, 0.15); border-color: var(--accent-cyan); color: #00d2ff; font-weight: 700;">
+                        🌐 English Edition
+                    </a>
                     <button class="action-btn" onclick="toggleTheme()" id="theme-btn" title="החלף מצב תצוגה (Light/Dark)">
                         🌓 מצב תצוגה
                     </button>
@@ -2120,7 +2123,7 @@ def get_book_html():
                                 <div class="stage-io-box">
                                     <div class="stage-io-row"><strong>08:</strong> תכנון כרטיסי חומרה, ממירי GaN ודגימה ב-Altium</div>
                                     <div class="stage-io-row"><strong>09:</strong> תכנון מגנטי ומידול סלילי חניקה לסינון פסיבי של ZSC</div>
-                                    <div class="stage-io-row"><strong>10:</strong> כיול מנוע OEMER ואינקודר אופטי מדויק SICK</div>
+                                    <div class="stage-io-row"><strong>10:</strong> כיול מנוע OEMER ואנקודר אופטי מדויק SICK</div>
                                     <div class="stage-io-row"><strong>11:</strong> מכלול מכני בתלת-ממד (CAD) ועמדת דיינו</div>
                                 </div>
                             </div>
@@ -2264,24 +2267,23 @@ def get_book_html():
                         <div class="fig-content-view" id="fig2-view-interactive">
                             <div class="fig-controls-toolbar">
                                 <div class="btn-toggle-group">
-                                    <button class="btn-toggle active" id="btn-fig2-preset-v23" onclick="setFig2Preset('V23')">⚡ וקטור V23 [1 0 1 1] (S1=S4, ZSC מדוכא)</button>
-                                    <button class="btn-toggle" id="btn-fig2-preset-v12" onclick="setFig2Preset('V12')">⚡ וקטור V12 [0 1 1 0] (S1=S4, ZSC מדוכא)</button>
-                                    <button class="btn-toggle" id="btn-fig2-preset-v0" onclick="setFig2Preset('V00')">⚪ וקטור אפס [0 0 0 0]</button>
-                                    <button class="btn-toggle" id="btn-fig2-preset-fault1" onclick="setFig2Preset('FAULT1')">⚠️ כשל ZSC חמור [1 0 0 0] (S1≠S4)</button>
-                                    <button class="btn-toggle" id="btn-fig2-preset-fault2" onclick="setFig2Preset('FAULT2')">⚠️ כשל ZSC הפוך [0 1 1 1] (S1≠S4)</button>
+                                    <button class="btn-toggle active" id="btn-fig2-preset-v23" onclick="setFig2Preset('V23')">⚡ וקטור <span dir="ltr">V23 [1 0 1 1]</span> (S1=S4)</button>
+                                    <button class="btn-toggle" id="btn-fig2-preset-v12" onclick="setFig2Preset('V12')">⚡ וקטור <span dir="ltr">V12 [0 1 1 0]</span> (S1=S4)</button>
+                                    <button class="btn-toggle" id="btn-fig2-preset-v0" onclick="setFig2Preset('V00')">⚪ וקטור אפס <span dir="ltr">[0 0 0 0]</span></button>
+                                    <button class="btn-toggle" id="btn-fig2-preset-fault1" onclick="setFig2Preset('FAULT1')">⚠️ כשל ZSC חמור <span dir="ltr">[1 0 0 0]</span> (S1≠S4)</button>
+                                    <button class="btn-toggle" id="btn-fig2-preset-fault2" onclick="setFig2Preset('FAULT2')">⚠️ כשל ZSC הפוך <span dir="ltr">[0 1 1 1]</span> (S1≠S4)</button>
                                 </div>
                                 <div class="btn-toggle-group">
-                                    <button class="btn-toggle" id="btn-fig2-leg1" onclick="toggleFig2Leg(0)">ענף 1: <strong id="lbl-fig2-s1">S1=1</strong></button>
-                                    <button class="btn-toggle" id="btn-fig2-leg2" onclick="toggleFig2Leg(1)">ענף 2: <strong id="lbl-fig2-s2">S2=0</strong></button>
-                                    <button class="btn-toggle" id="btn-fig2-leg3" onclick="toggleFig2Leg(2)">ענף 3: <strong id="lbl-fig2-s3">S3=1</strong></button>
-                                    <button class="btn-toggle" id="btn-fig2-leg4" onclick="toggleFig2Leg(3)">ענף 4: <strong id="lbl-fig2-s4">S4=1</strong></button>
+                                    <button class="btn-toggle" id="btn-fig2-leg1" onclick="toggleFig2Leg(0)">ענף 1: <strong dir="ltr" id="lbl-fig2-s1">S1=1</strong></button>
+                                    <button class="btn-toggle" id="btn-fig2-leg2" onclick="toggleFig2Leg(1)">ענף 2: <strong dir="ltr" id="lbl-fig2-s2">S2=0</strong></button>
+                                    <button class="btn-toggle" id="btn-fig2-leg3" onclick="toggleFig2Leg(2)">ענף 3: <strong dir="ltr" id="lbl-fig2-s3">S3=1</strong></button>
+                                    <button class="btn-toggle" id="btn-fig2-leg4" onclick="toggleFig2Leg(3)">ענף 4: <strong dir="ltr" id="lbl-fig2-s4">S4=1</strong></button>
                                 </div>
                                 <span class="fig-status-pill" id="fig2-status-pill">מצב: S1=S4 ➔ v_loop = 0V (ZSC מדוכא לחלוטין)</span>
                             </div>
 
-                            <div class="fig-canvas-container" style="position: relative; height: 460px; background: #050811; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle);">
+                            <div class="fig-canvas-container" style="position: relative; height: 530px; background: #050811; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle);">
                                 <canvas id="fig2-schematic-canvas" style="position: absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
-                                <div class="canvas-title-badge" style="left:12px; right:auto; direction:ltr;">Series-End VSI Circuit Schematic & ZSC Path (Fig 2)</div>
                             </div>
 
                             <!-- Interactive Block Inspector Drawer -->
@@ -4338,16 +4340,16 @@ def get_book_html():
 
                 <section class="chapter-section" id="ch-10">
                     <span class="chapter-badge">פרק 10</span>
-                    <h2>אפיון, כיול מנוע OEMER QS 100S ופענוח אינקודר SICK HIPERFACE</h2>
+                    <h2>אפיון, כיול מנוע OEMER QS 100S ופענוח אנקודר SICK HIPERFACE</h2>
 
                     <h3>מפרט טכני של מנוע ה-PMSM המעבדתי (OEMER Motori Elettrici)</h3>
                     <p>
-                        במסגרת המחקר המעבדתי, שולב מנוע סרוו סינכרוני תעשייתי מתקדם מתוצרת חברת <strong>OEMER (איטליה)</strong> מדגם <strong>QS 100S</strong>, המצויד באינקודר אבסולוטי מתקדם <strong>SICK Stegmann SFM60</strong> עם ממשק <strong>HIPERFACE</strong>.
+                        במסגרת המחקר המעבדתי, שולב מנוע סרוו סינכרוני תעשייתי מתקדם מתוצרת חברת <strong>OEMER (איטליה)</strong> מדגם <strong>QS 100S</strong>, המצויד באנקודר אבסולוטי מתקדם <strong>SICK Stegmann SFM60</strong> עם ממשק <strong>HIPERFACE</strong>.
                     </p>
 
                     <div class="fig-wrapper">
                         <img src="presentation_assets/pmsm_motor_photo.jpeg" alt="OEMER QS100S Motor" onclick="openModal(this.src)">
-                        <div class="fig-caption"><strong>איור 7.1:</strong> מנוע ה-PMSM המעבדתי: OEMER QS 100S עם אינקודר אופטי אבסולוטי SICK SFM60.</div>
+                        <div class="fig-caption"><strong>איור 7.1:</strong> מנוע ה-PMSM המעבדתי: OEMER QS 100S עם אנקודר אופטי אבסולוטי SICK SFM60.</div>
                     </div>
 
                     <div class="table-container">
@@ -4361,7 +4363,7 @@ def get_book_html():
                                 <tr><td>זרם נומינלי ($I_n$)</td><td>$14.2\text{ A}$</td><td>זרם אפקטיבי (RMS)</td></tr>
                                 <tr><td>מהירות נומינלית ($n_n$)</td><td>$3000\text{ RPM}$</td><td>מהירות מקסימלית $6000\text{ RPM}$</td></tr>
                                 <tr><td>מספר זוגות קטבים ($p$)</td><td><strong>4 זוגות קטבים (8 קטבים)</strong></td><td>יחס תדר חשמלי למכני: $f_e = 4 \times f_m$</td></tr>
-                                <tr><td>סוג אינקודר</td><td><strong>SICK SFM60 HIPERFACE</strong></td><td>ערוצי Sin/Cos אנלוגיים 1024ppr + ערוץ RS-485 דיגיטלי</td></tr>
+                                <tr><td>סוג אנקודר</td><td><strong>SICK SFM60 HIPERFACE</strong></td><td>ערוצי Sin/Cos אנלוגיים 1024ppr + ערוץ RS-485 דיגיטלי</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -4377,7 +4379,7 @@ def get_book_html():
                     <!-- Modern Didactic Process Pipeline: Encoder Alignment Protocol -->
                     <div class="process-pipeline">
                         <div class="pipeline-title-bar">
-                            <h3>🎯 פרוטוקול כיול קטבים ויישור אופטי של אינקודר SICK SFM60 HIPERFACE</h3>
+                            <h3>🎯 פרוטוקול כיול קטבים ויישור אופטי של אנקודר SICK SFM60 HIPERFACE</h3>
                             <span class="pipeline-tag">Alignment Pipeline • 5 שלבים</span>
                         </div>
                         <div class="pipeline-grid">
@@ -4440,7 +4442,7 @@ def get_book_html():
                                     <div class="stage-badge amber">03</div>
                                     <div>
                                         <div class="stage-title">קריאת נתוני HIPERFACE (RS-485)</div>
-                                        <div class="stage-desc">דגימת הזווית האבסולוטית של האינקודר SICK SFM60</div>
+                                        <div class="stage-desc">דגימת הזווית האבסולוטית של האנקודר SICK SFM60</div>
                                     </div>
                                 </div>
                                 <div class="stage-io-box">
@@ -4520,7 +4522,7 @@ def get_book_html():
 
                     <h3>פתרון עכבת התקשורת במודול DFRobot DFR0845</h3>
                     <p>
-                        בניסויי המעבדה התגלתה שגיאת תקשורת עקב החזרות אותות (Reflections) בקו ה-RS-485 של האינקודר. התקלה נפתרה בהצלחה באמצעות הוספת נגד תיאום עכבות של $120\,\Omega$ בין קווי A ו-B והגדרת זמני השהיה קפדניים של פרוטוקול ה-HIPERFACE (9600 Baud, 8-E-1).
+                        בניסויי המעבדה התגלתה שגיאת תקשורת עקב החזרות אותות (Reflections) בקו ה-RS-485 של האנקודר. התקלה נפתרה בהצלחה באמצעות הוספת נגד תיאום עכבות של $120\,\Omega$ בין קווי A ו-B והגדרת זמני השהיה קפדניים של פרוטוקול ה-HIPERFACE (9600 Baud, 8-E-1).
                     </p>
                 </section>
 
@@ -4903,7 +4905,7 @@ def get_book_html():
                     <h4>מערך הארקות מגן (Protective Earth - PE):</h4>
                     <ul class="bullet-list">
                         <li><strong>הארקת כוכב יחידה (Star Grounding):</strong> שלדת מנוע ה-PMSM, מארז עמדת הדינמומטר, גופי הקירור של הממירים וספקי הכוח מחוברים כולם לנקודת הארקת מגן יחידה (Main PE Stud) באמצעות כבלי הארקה תקניים (חתך 6 ממ"ר ירוק-צהוב).</li>
-                        <li><strong>מניעת לולאות אדמה (Ground Loops):</strong> אדמת הסיגנל (Analog Ground - AGND) ואדמת הכוח (Power Ground - PGND) מופרדות פיזית ומחוברות אך ורק בנקודת כוכב בודדת, למניעת הזרקת רעשי מיתוג למדידות ה-ADC והאינקודר.</li>
+                        <li><strong>מניעת לולאות אדמה (Ground Loops):</strong> אדמת הסיגנל (Analog Ground - AGND) ואדמת הכוח (Power Ground - PGND) מופרדות פיזית ומחוברות אך ורק בנקודת כוכב בודדת, למניעת הזרקת רעשי מיתוג למדידות ה-ADC והאנקודר.</li>
                     </ul>
 
                     <h3>12.3 מעגלי הגנה חומרתיים, טעינה מוקדמת ופריקה אקטיבית</h3>
@@ -5009,7 +5011,7 @@ def get_book_html():
                                     </div>
                                 </div>
                                 <div class="stage-checkpoint">
-                                    <span>🔍 מסך ניטור: זווית אינקודר יציבה ותקשורת 9600 Baud</span>
+                                    <span>🔍 מסך ניטור: זווית אנקודר יציבה ותקשורת 9600 Baud</span>
                                 </div>
                             </div>
 
@@ -5130,7 +5132,7 @@ def get_book_html():
                     <h2>פרוטוקול ניסויי מעבדה מקיף ותוצאות מדידה בפועל</h2>
 
                     <p class="lead-text">
-                        אימות מעבדתי של מערכת ההינע התבצע בעמדת הבדיקה הדינמית (Dyno Test Bench) במעבדות SCE. הפרק מפרט את מתודולוגיית הניסוי המדויקת, תהליך כיול זווית הקטבים של מנוע ה-OEMER QS 100S ב-13 שלבים מול אינקודר ה-SICK HIPERFACE, ותוצאות המדידה האמפיריות של דיכוי זרמי ה-ZSC, זמני התגובה בצעד מומנט, ורמות ה-THD בפועל.
+                        אימות מעבדתי של מערכת ההינע התבצע בעמדת הבדיקה הדינמית (Dyno Test Bench) במעבדות SCE. הפרק מפרט את מתודולוגיית הניסוי המדויקת, תהליך כיול זווית הקטבים של מנוע ה-OEMER QS 100S ב-13 שלבים מול אנקודר ה-SICK HIPERFACE, ותוצאות המדידה האמפיריות של דיכוי זרמי ה-ZSC, זמני התגובה בצעד מומנט, ורמות ה-THD בפועל.
                     </p>
 
                     <div class="quick-links-bar">
@@ -5141,7 +5143,7 @@ def get_book_html():
                             📊 סיכום ניסויי מעבדה (DOC_10)
                         </a>
                         <a href="HTML_Reports/DOC_06_SICK_SFM60_HIL404_Complete_Guide.html" target="_blank" class="qlink-btn">
-                            📡 מדריך אינקודר SFM60 (DOC_06)
+                            📡 מדריך אנקודר SFM60 (DOC_06)
                         </a>
                     </div>
 
@@ -5151,7 +5153,7 @@ def get_book_html():
                     </p>
                     <ul class="bullet-list">
                         <li><strong>מנוע הנבדק (MUT):</strong> מנוע PMSM תעשייתי דגם OEMER QS 100S בעל 4 קטבים ($p=2$), הספק נומינלי 7.1 kW, זרם נומינלי 15.2 A, מומנט נומינלי 22.6 Nm ומהירות בסיס 3000 סל"ד.</li>
-                        <li><strong>חיישן מיקום וזווית:</strong> אינקודר אבסולוטי אופטי SICK Stegmann SFM60 בעל רזולוציה של 17-bit (131,072 פולסים לסיבוב מכני יחיד), המתקשר בפרוטוקול HIPERFACE אסינכרוני (RS-485, 9600 Baud).</li>
+                        <li><strong>חיישן מיקום וזווית:</strong> אנקודר אבסולוטי אופטי SICK Stegmann SFM60 בעל רזולוציה של 17-bit (131,072 פולסים לסיבוב מכני יחיד), המתקשר בפרוטוקול HIPERFACE אסינכרוני (RS-485, 9600 Baud).</li>
                         <li><strong>מעבד בקרה ואמולטור זמן אמת:</strong> אמולטור Typhoon HIL404 המריץ את אלגוריתם ה-OEPC בצעד זמן של 1 מיקרו-שנייה, מחובר למודול תקשורת DFR0845 ולכרטיסי החישה המבודדים.</li>
                         <li><strong>מכשור מדידה:</strong> אוסצילוסקופ 4 ערוצים Tektronix 200 MHz, צבתות זרם Hall Effect בתדר גבוה (DC עד 100 kHz), ומנתח הספק ספרתי Fluke 435 Series II.</li>
                     </ul>
@@ -5302,7 +5304,7 @@ def get_book_html():
 
                     <h3>14.2 פרוטוקול כיול קטבים ב-13 שלבים (13-Step Pole Alignment Protocol)</h3>
                     <p>
-                        כדי להבטיח התמרת Park ו-Clarke מדויקת בבקרת השדה המכוון ($d-q$), נדרש לזהות במדויק את זווית האפס של השטף המגנטי של הרוטור ($\theta_{offset}$) ביחס למוצא האינקודר האבסולוטי. הכיול בוצע על ידי הזרקת זרם DC מבוקר ב-12 גזרות של $30^\circ$ מכניות לכיסוי סיבוב מלא ($360^\circ$ מכניות, $720^\circ$ חשמליות):
+                        כדי להבטיח התמרת Park ו-Clarke מדויקת בבקרת השדה המכוון ($d-q$), נדרש לזהות במדויק את זווית האפס של השטף המגנטי של הרוטור ($\theta_{offset}$) ביחס למוצא האנקודר האבסולוטי. הכיול בוצע על ידי הזרקת זרם DC מבוקר ב-12 גזרות של $30^\circ$ מכניות לכיסוי סיבוב מלא ($360^\circ$ מכניות, $720^\circ$ חשמליות):
                     </p>
 
                     <div class="math-block">
@@ -5315,7 +5317,7 @@ def get_book_html():
                                 <tr>
                                     <th>שלב כיול</th>
                                     <th>זווית מכנית נומינלית ($\theta_m$)</th>
-                                    <th>קריאת אינקודר גולמית (Counts)</th>
+                                    <th>קריאת אנקודר גולמית (Counts)</th>
                                     <th>זווית חשמלית תיאורטית ($\theta_e = 2\theta_m$)</th>
                                     <th>היסט זוויתי שנמדד ($\theta_{offset}$)</th>
                                     <th>סטייה מקו האמצע</th>
@@ -5571,7 +5573,7 @@ def get_book_html():
                                 </tr>
                                 <tr>
                                     <td>DOC_02</td>
-                                    <td>מדריך חיווט והפעלה מקיף: אינקודר SICK, מודול DFR0845 ו-HIL404</td>
+                                    <td>מדריך חיווט והפעלה מקיף: אנקודר SICK, מודול DFR0845 ו-HIL404</td>
                                     <td>HTML</td>
                                     <td><a href="HTML_Reports/DOC_02_Wiring_and_Operation_Guide.html" target="_blank" style="color:var(--accent-cyan);">פתח מסמך ↗</a></td>
                                 </tr>
@@ -5595,7 +5597,7 @@ def get_book_html():
                                 </tr>
                                 <tr>
                                     <td>DOC_06</td>
-                                    <td>מדריך מלא וקונפיגורציה לאינקודר SICK SFM60 מול HIL404</td>
+                                    <td>מדריך מלא וקונפיגורציה לאנקודר SICK SFM60 מול HIL404</td>
                                     <td>HTML</td>
                                     <td><a href="HTML_Reports/DOC_06_SICK_SFM60_HIL404_Complete_Guide.html" target="_blank" style="color:var(--accent-cyan);">פתח מסמך ↗</a></td>
                                 </tr>
@@ -7303,18 +7305,19 @@ def get_book_html():
         function setFig2Preset(preset) {
             if (fig2Presets[preset]) {
                 fig2Sw = [...fig2Presets[preset]];
-                document.getElementById('btn-fig2-preset-v23').classList.toggle('active', preset === 'V23');
-                document.getElementById('btn-fig2-preset-v12').classList.toggle('active', preset === 'V12');
-                document.getElementById('btn-fig2-preset-v0').classList.toggle('active', preset === 'V00');
-                document.getElementById('btn-fig2-preset-fault1').classList.toggle('active', preset === 'FAULT1');
-                document.getElementById('btn-fig2-preset-fault2').classList.toggle('active', preset === 'FAULT2');
+                ['v23', 'v12', 'v0', 'fault1', 'fault2'].forEach(p => {
+                    const b = document.getElementById(`btn-fig2-preset-${p}`);
+                    if (b) b.classList.remove('active');
+                });
+                const activeKey = preset.toLowerCase();
+                const activeBtn = document.getElementById(`btn-fig2-preset-${activeKey}`);
+                if (activeBtn) activeBtn.classList.add('active');
                 updateFig2Telemetry();
             }
         }
 
         function toggleFig2Leg(idx) {
             fig2Sw[idx] = fig2Sw[idx] ? 0 : 1;
-            // Clear preset active classes if custom
             ['v23', 'v12', 'v0', 'fault1', 'fault2'].forEach(p => {
                 const b = document.getElementById(`btn-fig2-preset-${p}`);
                 if (b) b.classList.remove('active');
@@ -7323,7 +7326,6 @@ def get_book_html():
         }
 
         function updateFig2Telemetry() {
-            // Update button labels
             for (let i = 0; i < 4; i++) {
                 const lbl = document.getElementById(`lbl-fig2-s${i+1}`);
                 if (lbl) lbl.innerText = `S${i+1}=${fig2Sw[i]}`;
@@ -7403,7 +7405,7 @@ def get_book_html():
                 const rect = canvas.getBoundingClientRect();
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
                 const w = Math.max(rect.width, 300);
-                const h = Math.max(rect.height, 350);
+                const h = Math.max(rect.height, 420);
 
                 if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
                     canvas.width = Math.round(w * dpr);
@@ -7418,7 +7420,7 @@ def get_book_html():
                 ctx.fillStyle = '#050811';
                 ctx.fillRect(0, 0, w, h);
 
-                // Subtle grid
+                // Grid lines
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
                 ctx.lineWidth = 1;
                 for (let x = 0; x < w; x += 30) {
@@ -7428,15 +7430,16 @@ def get_book_html():
                     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
                 }
 
-                // Geometry Coordinates
-                const busTopY = 48;
-                const busBotY = h - 48;
-                const midY = (busTopY + busBotY) / 2;
+                // Vertical Layout Geometries (Spacious, No Overlap!)
+                const busTopY = 72;
+                const busBotY = h - 55;
+                const midY = Math.round((busTopY + busBotY) / 2);
 
-                const leftX = 35;
-                const dcX = leftX + 45;
-                const legStart = dcX + 75;
-                const legSpacing = Math.min((w * 0.42) / 3, 70);
+                const leftX = 28;
+                const dcX = leftX + 48;
+                const legStart = dcX + 70;
+                const availableLegW = Math.min(w * 0.44, 340);
+                const legSpacing = availableLegW / 3;
                 const legXs = [
                     legStart,
                     legStart + legSpacing,
@@ -7445,58 +7448,69 @@ def get_book_html():
                 ];
 
                 const rightLegX = legXs[3];
-                const motorStartX = rightLegX + 45;
-                const motorEndX = w - 35;
+                const motorStartX = Math.max(rightLegX + 80, w * 0.58);
+                const motorEndX = w - 30;
                 const motorWidth = motorEndX - motorStartX;
 
-                // 1. Draw DC Power Buses (+Vdc and GND)
+                // 1. Top & Bottom DC Power Rails
                 // Top Rail (+Vdc)
                 ctx.strokeStyle = '#ef4444';
                 ctx.lineWidth = 3;
                 ctx.beginPath();
                 ctx.moveTo(dcX, busTopY);
-                ctx.lineTo(rightLegX + 15, busTopY);
+                ctx.lineTo(rightLegX + 25, busTopY);
                 ctx.stroke();
 
                 ctx.fillStyle = '#ef4444';
                 ctx.font = 'bold 12px Fira Code';
-                ctx.textAlign = 'left';
-                ctx.fillText('+Vdc (+300V)', leftX, busTopY + 4);
+                ctx.textAlign = 'right';
+                ctx.fillText('+Vdc (+300V)', dcX - 10, busTopY - 8);
 
                 // Bottom Rail (0V / GND)
                 ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 3;
                 ctx.beginPath();
                 ctx.moveTo(dcX, busBotY);
-                ctx.lineTo(rightLegX + 15, busBotY);
+                ctx.lineTo(rightLegX + 25, busBotY);
                 ctx.stroke();
 
                 ctx.fillStyle = '#3b82f6';
                 ctx.font = 'bold 12px Fira Code';
-                ctx.textAlign = 'left';
-                ctx.fillText('0V / GND', leftX, busBotY + 4);
+                ctx.textAlign = 'right';
+                ctx.fillText('0V / GND', dcX - 10, busBotY + 18);
 
-                // 2. Draw DC Link Capacitors (C1, C2) with neutral midpoint O
+                // Ground Earth Symbol on Bottom Rail
+                const gndX = dcX + 25;
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(gndX, busBotY); ctx.lineTo(gndX, busBotY + 12);
+                ctx.moveTo(gndX - 10, busBotY + 12); ctx.lineTo(gndX + 10, busBotY + 12);
+                ctx.moveTo(gndX - 6, busBotY + 16); ctx.lineTo(gndX + 6, busBotY + 16);
+                ctx.moveTo(gndX - 2, busBotY + 20); ctx.lineTo(gndX + 2, busBotY + 20);
+                ctx.stroke();
+
+                // 2. DC-Link Capacitors (C1, C2) and Midpoint Neutral O
                 ctx.strokeStyle = '#94a3b8';
-                ctx.lineWidth = 1.8;
+                ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(dcX, busTopY);
-                ctx.lineTo(dcX, midY - 30);
-                ctx.moveTo(dcX, midY + 30);
+                ctx.lineTo(dcX, midY - 26);
+                ctx.moveTo(dcX, midY + 26);
                 ctx.lineTo(dcX, busBotY);
                 ctx.stroke();
 
-                // Capacitor plates C1
                 function drawCap(cx, cy, label) {
                     ctx.strokeStyle = '#00d2ff';
-                    ctx.lineWidth = 2.5;
+                    ctx.lineWidth = 3;
                     ctx.beginPath();
                     ctx.moveTo(cx - 14, cy - 6); ctx.lineTo(cx + 14, cy - 6);
                     ctx.moveTo(cx - 14, cy + 6); ctx.lineTo(cx + 14, cy + 6);
                     ctx.stroke();
-                    ctx.fillStyle = '#64748b';
+                    ctx.fillStyle = '#94a3b8';
                     ctx.font = '10px Fira Code';
-                    ctx.textAlign = 'right';
-                    ctx.fillText(label, cx - 18, cy + 3);
+                    ctx.textAlign = 'left';
+                    ctx.fillText(label, cx + 18, cy + 4);
                 }
                 drawCap(dcX, busTopY + 38, 'C1');
                 drawCap(dcX, busBotY - 38, 'C2');
@@ -7504,199 +7518,258 @@ def get_book_html():
                 // Midpoint Neutral O
                 ctx.fillStyle = '#00d2ff';
                 ctx.beginPath();
-                ctx.arc(dcX, midY, 4, 0, Math.PI * 2);
+                ctx.arc(dcX, midY, 5, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.fillStyle = '#94a3b8';
+                ctx.fillStyle = '#ffffff';
                 ctx.font = 'bold 11px Fira Code';
                 ctx.textAlign = 'right';
-                ctx.fillText('O', dcX - 10, midY + 4);
+                ctx.fillText('Neutral O', dcX - 10, midY + 4);
 
-                // 3. Draw 4 Inverter Half-Bridge Legs (L1, L2, L3, L4)
+                // 3. Draw 4 Inverter Legs (L1, L2, L3, L4)
                 for (let i = 0; i < 4; i++) {
                     const lx = legXs[i];
                     const swVal = fig2Sw[i];
 
-                    // Leg title badge
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-                    ctx.strokeStyle = 'rgba(0, 210, 255, 0.3)';
-                    ctx.lineWidth = 1;
+                    // Leg Title Card above Top Bus (y=16..40) - Cleanly separated!
+                    ctx.fillStyle = 'rgba(18, 26, 47, 0.9)';
+                    ctx.strokeStyle = swVal ? '#10b981' : '#64748b';
+                    ctx.lineWidth = 1.2;
                     ctx.beginPath();
-                    ctx.roundRect(lx - 20, 10, 40, 22, 4);
+                    ctx.roundRect(lx - 22, 16, 44, 26, 5);
                     ctx.fill(); ctx.stroke();
 
-                    ctx.fillStyle = '#00d2ff';
+                    ctx.fillStyle = swVal ? '#10b981' : '#f0f4fc';
                     ctx.font = 'bold 11px Fira Code';
                     ctx.textAlign = 'center';
-                    ctx.fillText(`L${i+1}`, lx, 25);
+                    ctx.fillText(`L${i+1}`, lx, 33);
 
-                    // Vertical Leg Bus
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-                    ctx.lineWidth = 1.5;
+                    // Vertical Leg Conductor Lines
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+                    ctx.lineWidth = 1.8;
                     ctx.beginPath();
-                    ctx.moveTo(lx, busTopY);
-                    ctx.lineTo(lx, busBotY);
+                    ctx.moveTo(lx, busTopY); ctx.lineTo(lx, busBotY);
                     ctx.stroke();
 
-                    // Upper Switch S_H (y: busTopY to midY)
+                    // Switch Contact Y locations
                     const swH_Y = busTopY + (midY - busTopY) / 2;
-                    // Lower Switch S_L (y: midY to busBotY)
                     const swL_Y = midY + (busBotY - midY) / 2;
 
-                    // Draw switch helper
                     function drawSwitch(x, y, isClosed, name) {
                         ctx.fillStyle = '#050811';
-                        ctx.fillRect(x - 8, y - 18, 16, 36);
+                        ctx.fillRect(x - 10, y - 20, 20, 40);
 
                         ctx.strokeStyle = isClosed ? '#10b981' : '#f59e0b';
-                        ctx.lineWidth = isClosed ? 2.5 : 1.5;
+                        ctx.lineWidth = isClosed ? 3 : 1.8;
                         ctx.beginPath();
-                        ctx.moveTo(x, y - 14);
+                        ctx.moveTo(x, y - 16);
                         if (isClosed) {
-                            ctx.lineTo(x, y + 14); // Closed contact
+                            ctx.lineTo(x, y + 16);
                         } else {
-                            ctx.lineTo(x + 10, y + 8); // Open contact angled
-                            ctx.moveTo(x, y + 14);
+                            ctx.lineTo(x + 12, y + 8);
+                            ctx.moveTo(x, y + 16);
                             ctx.lineTo(x, y + 8);
                         }
                         ctx.stroke();
 
-                        // Switch terminal dots
+                        // Terminals
                         ctx.fillStyle = isClosed ? '#10b981' : '#f59e0b';
                         ctx.beginPath();
-                        ctx.arc(x, y - 14, 2.5, 0, Math.PI * 2);
-                        ctx.arc(x, y + 14, 2.5, 0, Math.PI * 2);
+                        ctx.arc(x, y - 16, 2.5, 0, Math.PI * 2);
+                        ctx.arc(x, y + 16, 2.5, 0, Math.PI * 2);
                         ctx.fill();
 
-                        // Switch label
-                        ctx.fillStyle = isClosed ? '#10b981' : '#64748b';
+                        // Label
+                        ctx.fillStyle = isClosed ? '#10b981' : '#94a3b8';
                         ctx.font = '9px Fira Code';
                         ctx.textAlign = 'left';
-                        ctx.fillText(name, x + 12, y + 3);
+                        ctx.fillText(name, x + 14, y + 3);
                     }
 
                     drawSwitch(lx, swH_Y, swVal === 1, `S${i+1}H`);
                     drawSwitch(lx, swL_Y, swVal === 0, `S${i+1}L`);
 
-                    // Midpoint tap dot v_k
+                    // Midpoint Node Dot (vk)
                     ctx.fillStyle = '#00d2ff';
                     ctx.beginPath();
-                    ctx.arc(lx, midY, 5, 0, Math.PI * 2);
+                    ctx.arc(lx, midY, 6, 0, Math.PI * 2);
                     ctx.fill();
 
                     ctx.fillStyle = '#ffffff';
-                    ctx.font = 'bold 11px Fira Code';
+                    ctx.font = 'bold 12px Fira Code';
                     ctx.textAlign = 'center';
-                    ctx.fillText(`v${i+1}`, lx, midY - 10);
+                    ctx.fillText(`v${i+1}`, lx, midY - 14);
 
-                    // Live voltage display below midpoint
-                    const vPoleVal = swVal ? '+300V' : '0V';
-                    ctx.fillStyle = swVal ? '#10b981' : '#64748b';
-                    ctx.font = '9px Fira Code';
-                    ctx.fillText(vPoleVal, lx, midY + 20);
+                    // Pole Voltage Badge below Midpoint
+                    const vPole = swVal ? '+300V' : '0V';
+                    ctx.fillStyle = swVal ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.05)';
+                    ctx.strokeStyle = swVal ? '#10b981' : 'rgba(255, 255, 255, 0.15)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.roundRect(lx - 20, midY + 12, 40, 18, 4);
+                    ctx.fill(); ctx.stroke();
+
+                    ctx.fillStyle = swVal ? '#10b981' : '#94a3b8';
+                    ctx.font = 'bold 9.5px Fira Code';
+                    ctx.fillText(vPole, lx, midY + 25);
                 }
 
-                // 4. Draw 3 Series Stator Windings (Za, Zb, Zc)
-                // Exactly matching Fig 1.2 from the paper:
-                // Za connected between v1 and v2
-                // Zb connected between v2 and v3
-                // Zc connected between v3 and v4
-                const coilOffsetsY = [-60, 0, 60];
+                // 4. Draw 3 Series-Connected Stator Windings (Za, Zb, Zc)
+                const coilY_A = midY - 110;
+                const coilY_B = midY;
+                const coilY_C = midY + 110;
+
+                const coilCardW = Math.max(motorWidth - 20, 200);
+                const coilCardX = motorStartX;
+
                 const coils = [
-                    { name: 'Za (Phase A)', fromLeg: 0, toLeg: 1, color: '#00d2ff', vName: 'va = v1 - v2' },
-                    { name: 'Zb (Phase B)', fromLeg: 1, toLeg: 2, color: '#3b82f6', vName: 'vb = v2 - v3' },
-                    { name: 'Zc (Phase C)', fromLeg: 2, toLeg: 3, color: '#9d50bb', vName: 'vc = v3 - v4' }
+                    { key: 'A', name: 'סליל פאזה A (Za)', vName: 'va = v1 - v2', cy: coilY_A, fromLeg: 0, toLeg: 1, color: '#00d2ff' },
+                    { key: 'B', name: 'סליל פאזה B (Zb)', vName: 'vb = v2 - v3', cy: coilY_B, fromLeg: 1, toLeg: 2, color: '#3b82f6' },
+                    { key: 'C', name: 'סליל פאזה C (Zc)', vName: 'vc = v3 - v4', cy: coilY_C, fromLeg: 2, toLeg: 3, color: '#9d50bb' }
                 ];
 
                 for (let c = 0; c < 3; c++) {
                     const coil = coils[c];
-                    const cy = midY + coilOffsetsY[c];
-                    const lxFrom = legXs[coil.fromLeg];
-                    const lxTo = legXs[coil.toLeg];
-                    const coilCardX = motorStartX + 10;
-                    const coilCardW = motorWidth - 20;
+                    const cy = coil.cy;
 
-                    // Draw connection wire from Leg midpoint to Motor Winding
-                    ctx.strokeStyle = coil.color;
-                    ctx.lineWidth = 1.8;
-                    ctx.beginPath();
-                    ctx.moveTo(lxFrom, midY);
-                    ctx.lineTo(coilCardX, cy - 8);
-                    ctx.stroke();
-
-                    ctx.beginPath();
-                    ctx.moveTo(coilCardX, cy + 8);
-                    ctx.lineTo(lxTo, midY);
-                    ctx.stroke();
-
-                    // Draw Motor Winding Box
-                    ctx.fillStyle = 'rgba(18, 26, 47, 0.9)';
+                    // Background Box
+                    ctx.fillStyle = 'rgba(18, 26, 47, 0.92)';
                     ctx.strokeStyle = coil.color;
                     ctx.lineWidth = 1.5;
                     ctx.beginPath();
-                    ctx.roundRect(coilCardX, cy - 20, coilCardW, 40, 6);
+                    ctx.roundRect(coilCardX, cy - 24, coilCardW, 48, 6);
                     ctx.fill(); ctx.stroke();
 
-                    // Winding Coil Inductor Graphic (spiral arches)
+                    // Inductor Spiral Arches
                     ctx.strokeStyle = coil.color;
-                    ctx.lineWidth = 1.8;
-                    const indStartX = coilCardX + 20;
+                    ctx.lineWidth = 2;
+                    const indX = coilCardX + 22;
                     for (let a = 0; a < 4; a++) {
                         ctx.beginPath();
-                        ctx.arc(indStartX + a * 10 + 5, cy, 6, Math.PI, 0, false);
+                        ctx.arc(indX + a * 12 + 6, cy, 7, Math.PI, 0, false);
                         ctx.stroke();
                     }
 
                     // Series Resistor symbol
                     ctx.beginPath();
-                    const rX = indStartX + 52;
-                    ctx.rect(rX, cy - 5, 20, 10);
+                    const rX = indX + 58;
+                    ctx.rect(rX, cy - 6, 22, 12);
                     ctx.stroke();
 
-                    // Winding Labels
+                    // Titles & Live Voltage Calculation
                     const vPhVal = (fig2Sw[coil.fromLeg] - fig2Sw[coil.toLeg]) * fig2Vdc;
                     ctx.fillStyle = '#ffffff';
-                    ctx.font = 'bold 11px Heebo, sans-serif';
+                    ctx.font = 'bold 12px Heebo, sans-serif';
                     ctx.textAlign = 'right';
-                    ctx.fillText(coil.name, coilCardX + coilCardW - 14, cy - 3);
+                    ctx.fillText(coil.name, coilCardX + coilCardW - 14, cy - 4);
 
-                    ctx.fillStyle = '#94a3b8';
-                    ctx.font = '10px Fira Code';
-                    ctx.fillText(`${coil.vName} = ${vPhVal > 0 ? '+' : ''}${vPhVal}V`, coilCardX + coilCardW - 14, cy + 13);
+                    ctx.fillStyle = '#00d2ff';
+                    ctx.font = 'bold 10.5px Fira Code';
+                    ctx.fillText(`${coil.vName} = ${vPhVal > 0 ? '+' : ''}${vPhVal}V`, coilCardX + coilCardW - 14, cy + 15);
                 }
 
-                // 5. ZSC Circulating Current Loop Path (When S1 != S4)
+                // 5. ORTHOGONAL BUS ROUTING (Professional Ladder Routing - No diagonal line crossings!)
+                const ch_v1 = rightLegX + 22;
+                const ch_v2 = rightLegX + 42;
+                const ch_v3 = rightLegX + 62;
+                const ch_v4 = rightLegX + 22;
+
+                const topTermY_A = coilY_A - 10;
+                const botTermY_A = coilY_A + 10;
+                const topTermY_B = coilY_B - 10;
+                const botTermY_B = coilY_B + 10;
+                const topTermY_C = coilY_C - 10;
+                const botTermY_C = coilY_C + 10;
+
+                // --- v1 connects to top of Za ---
+                ctx.strokeStyle = '#00d2ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(legXs[0], midY);
+                ctx.lineTo(ch_v1, midY);
+                ctx.lineTo(ch_v1, topTermY_A);
+                ctx.lineTo(coilCardX, topTermY_A);
+                ctx.stroke();
+
+                // --- v2 connects to bottom of Za AND top of Zb ---
+                ctx.strokeStyle = '#3b82f6';
+                ctx.beginPath();
+                ctx.moveTo(legXs[1], midY);
+                ctx.lineTo(ch_v2, midY);
+                ctx.lineTo(ch_v2, botTermY_A);
+                ctx.lineTo(coilCardX, botTermY_A);
+                ctx.moveTo(ch_v2, midY);
+                ctx.lineTo(ch_v2, topTermY_B);
+                ctx.lineTo(coilCardX, topTermY_B);
+                ctx.stroke();
+
+                ctx.fillStyle = '#3b82f6';
+                ctx.beginPath(); ctx.arc(ch_v2, midY, 3.5, 0, Math.PI * 2); ctx.fill();
+
+                // --- v3 connects to bottom of Zb AND top of Zc ---
+                ctx.strokeStyle = '#9d50bb';
+                ctx.beginPath();
+                ctx.moveTo(legXs[2], midY);
+                ctx.lineTo(ch_v3, midY);
+                ctx.lineTo(ch_v3, botTermY_B);
+                ctx.lineTo(coilCardX, botTermY_B);
+                ctx.moveTo(ch_v3, midY);
+                ctx.lineTo(ch_v3, topTermY_C);
+                ctx.lineTo(coilCardX, topTermY_C);
+                ctx.stroke();
+
+                ctx.fillStyle = '#9d50bb';
+                ctx.beginPath(); ctx.arc(ch_v3, midY, 3.5, 0, Math.PI * 2); ctx.fill();
+
+                // --- v4 connects to bottom of Zc ---
+                ctx.strokeStyle = '#10b981';
+                ctx.beginPath();
+                ctx.moveTo(legXs[3], midY);
+                ctx.lineTo(ch_v4, midY);
+                ctx.lineTo(ch_v4, botTermY_C);
+                ctx.lineTo(coilCardX, botTermY_C);
+                ctx.stroke();
+
+                // 6. ZSC Circulating Loop Indicator & Animated Flow
                 const isZscActive = (fig2Sw[0] !== fig2Sw[3]);
                 if (isZscActive) {
                     ctx.save();
                     ctx.strokeStyle = '#ef4444';
                     ctx.lineWidth = 3;
                     ctx.setLineDash([6, 6]);
-                    ctx.shadowColor = 'rgba(239, 68, 68, 0.8)';
-                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = 'rgba(239, 68, 68, 0.85)';
+                    ctx.shadowBlur = 14;
 
-                    // Closed loop path: L1 midpoint -> Za -> Zb -> Zc -> L4 midpoint -> Rail -> L1
+                    const loopLeft = legXs[0] - 14;
+                    const loopRight = motorEndX + 8;
                     const loopTop = busTopY - 14;
                     const loopBot = busBotY + 14;
-                    const loopLeft = legXs[0] - 15;
-                    const loopRight = motorEndX + 10;
 
                     ctx.beginPath();
                     ctx.roundRect(loopLeft, loopTop, loopRight - loopLeft, loopBot - loopTop, 16);
                     ctx.stroke();
 
-                    // Warning Text for ZSC circulating current
-                    ctx.fillStyle = '#ef4444';
-                    ctx.font = 'bold 12.5px Heebo, sans-serif';
-                    ctx.textAlign = 'center';
-                    const vLoopVal = (fig2Sw[0] - fig2Sw[3]) * fig2Vdc;
-                    ctx.fillText(`⚠️ זרם מעגלי סגור פעיל (ZSC)! v_loop = v1 - v4 = ${vLoopVal > 0 ? '+' : ''}${vLoopVal}V (קו מקווקו אדום)`, (loopLeft + loopRight) / 2, loopTop - 4);
+                    // Dedicated Non-Overlapping Bottom Warning Ribbon
+                    const warnY = h - 26;
+                    ctx.fillStyle = 'rgba(239, 68, 68, 0.18)';
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.lineWidth = 1.2;
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    ctx.roundRect(w / 2 - 240, warnY - 14, 480, 24, 4);
+                    ctx.fill(); ctx.stroke();
 
-                    // Flowing red dots around the closed loop
-                    const loopLength = 1200;
-                    const loopSpeed = 160;
+                    const vLoopVal = (fig2Sw[0] - fig2Sw[3]) * fig2Vdc;
+                    ctx.fillStyle = '#ef4444';
+                    ctx.font = 'bold 11.5px Heebo, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`⚠️ מסלול זרם מעגלי סדרה אפס (ZSC) פעיל! v_loop = v1 - v4 = ${vLoopVal > 0 ? '+' : ''}${vLoopVal}V (קו אדום מקווקו)`, w / 2, warnY + 3);
+
+                    // Flowing Red Dots along the Loop
+                    const loopLen = 1400;
+                    const loopSpd = 160;
                     for (let p = 0; p < 12; p++) {
-                        const offset = ((fig2AnimTime * loopSpeed + p * 100) % loopLength);
-                        let px = loopLeft + offset * 0.8;
+                        const offset = ((fig2AnimTime * loopSpd + p * 115) % loopLen);
+                        let px = loopLeft + offset * 0.75;
                         let py = loopTop;
                         if (px > loopRight) {
                             px = loopRight;
@@ -7709,18 +7782,19 @@ def get_book_html():
                     }
                     ctx.restore();
                 } else {
-                    // Suppressed badge
+                    // Non-Overlapping Bottom Suppression Confirmation Ribbon
+                    const suppY = h - 26;
                     ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
                     ctx.strokeStyle = '#10b981';
                     ctx.lineWidth = 1.2;
                     ctx.beginPath();
-                    ctx.roundRect(legXs[0], busTopY - 24, (motorEndX - legXs[0]), 22, 4);
+                    ctx.roundRect(w / 2 - 250, suppY - 14, 500, 24, 4);
                     ctx.fill(); ctx.stroke();
 
                     ctx.fillStyle = '#10b981';
-                    ctx.font = 'bold 11px Heebo, sans-serif';
+                    ctx.font = 'bold 11.5px Heebo, sans-serif';
                     ctx.textAlign = 'center';
-                    ctx.fillText('🛡️ תנאי דיכוי ZSC מוחלט מתקיים: S1 = S4 ➔ v_loop = v1 - v4 = 0V ➔ i_0 = 0A', (legXs[0] + motorEndX) / 2, busTopY - 9);
+                    ctx.fillText('🛡️ תנאי דיכוי ZSC מוחלט מתקיים: S1 = S4 ➔ v_loop = v1 - v4 = 0V ➔ i_0 ≈ 0A', w / 2, suppY + 3);
                 }
 
                 ctx.restore();
@@ -8155,25 +8229,1713 @@ def get_book_html():
 </html>
 '''
 
+# ==============================================================================
+# ACADEMIC ENGLISH EDITION GENERATOR
+# ==============================================================================
+def get_book_html_en():
+    return r'''<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMSM Research Monograph: Optimal Error-Priority Control (OEPC) for Series-End VSI & ZSC Suppression</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- MathJax for rigorous LaTeX formatting -->
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true
+        },
+        options: {
+            enableMenu: false
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Local / Fallback JSXGraph -->
+    <link rel="stylesheet" href="presentation_assets/jsxgraph.css">
+    <script src="presentation_assets/jsxgraphcore.js"></script>
+
+    <style>
+        :root {
+            --bg-body: #070b14;
+            --bg-sidebar: #0d1322;
+            --bg-card: rgba(18, 26, 47, 0.85);
+            --bg-card-hover: rgba(26, 38, 68, 0.95);
+            --bg-table-stripe: rgba(255, 255, 255, 0.02);
+            --border-subtle: rgba(64, 120, 240, 0.2);
+            --border-active: rgba(0, 210, 255, 0.6);
+            --text-main: #f0f4fc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --accent-cyan: #00d2ff;
+            --accent-blue: #3a7bd5;
+            --accent-purple: #7928ca;
+            --accent-gold: #f6d365;
+            --accent-green: #00ff88;
+            --accent-red: #ff3366;
+            --sidebar-width: 320px;
+            --header-height: 64px;
+        }
+
+        body.light-theme {
+            --bg-body: #f8fafc;
+            --bg-sidebar: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-card-hover: rgba(241, 245, 249, 1);
+            --bg-table-stripe: rgba(0, 0, 0, 0.02);
+            --border-subtle: rgba(203, 213, 225, 0.8);
+            --border-active: #0284c7;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-dim: #94a3b8;
+            --accent-cyan: #0284c7;
+            --accent-blue: #2563eb;
+            --accent-green: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
+            width: 0%;
+            z-index: 10000;
+            transition: width 0.1s ease;
+        }
+
+        .book-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .sidebar-brand img {
+            height: 38px;
+            width: auto;
+            border-radius: 6px;
+        }
+
+        .sidebar-brand-text h2 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-brand-text span {
+            font-size: 0.72rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sidebar-search {
+            position: relative;
+        }
+
+        .sidebar-search input {
+            width: 100%;
+            padding: 9px 12px 9px 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .sidebar-search input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .sidebar-search svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding: 12px 10px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar-thumb {
+            background: var(--border-subtle);
+            border-radius: 4px;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-menu a:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateX(4px);
+        }
+
+        .sidebar-menu a.active {
+            color: #ffffff;
+            background: linear-gradient(90deg, rgba(0, 210, 255, 0.15), rgba(58, 123, 213, 0.25));
+            border-left: 3px solid var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .sidebar-menu .ch-num {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            background: rgba(0, 210, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .sidebar-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .top-navbar {
+            height: var(--header-height);
+            background: rgba(13, 19, 34, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+        }
+
+        body.light-theme .top-navbar {
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .nav-breadcrumbs {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-breadcrumbs .curr {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 210, 255, 0.15);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .content-area {
+            max-width: 1180px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 32px 120px 32px;
+        }
+
+        .chapter-section {
+            margin-bottom: 80px;
+            scroll-margin-top: calc(var(--header-height) + 24px);
+        }
+
+        .chapter-badge {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            line-height: 1.25;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-theme h1 {
+            background: linear-gradient(135deg, #0f172a 30%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 1.7rem;
+            line-height: 1.35;
+            margin: 32px 0 16px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin: 24px 0 12px 0;
+            color: #d8e5fc;
+        }
+
+        body.light-theme h3 {
+            color: #1e293b;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-muted);
+            font-size: 1.02rem;
+        }
+
+        .cover-hero {
+            background: linear-gradient(135deg, rgba(13, 20, 38, 0.9), rgba(5, 8, 16, 0.95));
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 48px;
+            margin-bottom: 48px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        body.light-theme .cover-hero {
+            background: linear-gradient(135deg, #ffffff, #f1f5f9);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .cover-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .cover-header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .cover-header-logo img {
+            height: 48px;
+            width: auto;
+        }
+
+        .cover-badge-pill {
+            background: rgba(0, 210, 255, 0.12);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .authors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .author-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .author-card h4 {
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+
+        .author-card .role {
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .author-card p {
+            font-size: 0.82rem;
+            margin-bottom: 0;
+            color: var(--text-dim);
+        }
+
+        .alert-box {
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin: 24px 0;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .alert-success {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: #dcfce7;
+        }
+
+        .alert-warn {
+            background: rgba(246, 211, 101, 0.08);
+            border: 1px solid rgba(246, 211, 101, 0.3);
+            color: #fef3c7;
+        }
+
+        .alert-info {
+            background: rgba(0, 210, 255, 0.08);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            color: #e0f2fe;
+        }
+
+        body.light-theme .alert-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        body.light-theme .alert-info {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        body.light-theme .alert-warn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .alert-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .alert-content h5 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .alert-content p {
+            margin-bottom: 0;
+            font-size: 0.92rem;
+            color: inherit;
+        }
+
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin: 24px 0;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 22px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-cyan);
+        }
+
+        .info-card h4 {
+            font-size: 1.08rem;
+            margin-bottom: 8px;
+        }
+
+        .info-card p {
+            font-size: 0.92rem;
+            margin-bottom: 0;
+        }
+
+        /* Interactive Figure Container */
+        .interactive-fig-card {
+            background: rgba(10, 16, 32, 0.95);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 32px 0;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        body.light-theme .interactive-fig-card {
+            background: #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .fig-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .fig-badge {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            background: rgba(0, 210, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        .fig-tab-group {
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .fig-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fig-tab-btn.active {
+            background: var(--accent-cyan);
+            color: #000000;
+        }
+
+        .fig-controls-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-toggle-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-toggle {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-toggle:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .btn-toggle.active {
+            background: rgba(0, 210, 255, 0.2);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .fig-status-pill {
+            margin-left: auto;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .fig-inspector-drawer {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(14, 22, 42, 0.8);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+        }
+
+        .inspector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .inspector-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .inspector-tag {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(0, 210, 255, 0.15);
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .inspector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+        }
+
+        .inspector-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .inspector-item .lbl {
+            font-size: 0.76rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .inspector-item .val {
+            font-size: 0.88rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .fig-wrapper {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .fig-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .fig-wrapper img:hover {
+            transform: scale(1.01);
+        }
+
+        .fig-caption {
+            font-size: 0.88rem;
+            color: var(--text-dim);
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .academic-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.9rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .academic-table th, .academic-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .academic-table th {
+            background: rgba(0, 210, 255, 0.08);
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+
+        .academic-table tr:nth-child(even) {
+            background: var(--bg-table-stripe);
+        }
+
+        .academic-table tr:hover {
+            background: rgba(0, 210, 255, 0.04);
+        }
+
+        .code-block {
+            background: #050811;
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 18px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.86rem;
+            color: #38bdf8;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .bullet-list {
+            padding-left: 24px;
+            margin-bottom: 20px;
+        }
+
+        .bullet-list li {
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .bullet-list li strong {
+            color: var(--text-main);
+        }
+
+        /* Modal Lightbox for Images */
+        #img-modal {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(5, 8, 16, 0.92);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        #img-modal.active {
+            display: flex;
+        }
+
+        #img-modal img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            background: #fff;
+            padding: 6px;
+        }
+
+        #img-modal .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            color: #fff;
+            font-size: 32px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        @media print {
+            .sidebar, .top-navbar, #reading-progress, .action-btn {
+                display: none !important;
+            }
+            .main-wrapper {
+                margin-left: 0 !important;
+            }
+            .content-area {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            .chapter-section {
+                page-break-before: always;
+            }
+        }
+    </style>
+    <script src="auth_guard.js"></script>
+</head>
+<body>
+
+    <!-- Reading Progress Bar -->
+    <div id="reading-progress"></div>
+
+    <!-- Image Zoom Modal -->
+    <div id="img-modal" onclick="closeModal()">
+        <span class="modal-close">&times;</span>
+        <img id="modal-img" src="" alt="Zoomed view">
+    </div>
+
+    <div class="book-container">
+
+        <!-- ================================================================ -->
+        <!-- SIDEBAR TABLE OF CONTENTS                                        -->
+        <!-- ================================================================ -->
+        <aside class="sidebar" id="book-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <img src="Images/sce_header_logo.png" alt="SCE Logo">
+                    <div class="sidebar-brand-text">
+                        <h2>PMSM Monograph</h2>
+                        <span>M.Sc. Research Thesis</span>
+                    </div>
+                </div>
+                <div class="sidebar-search">
+                    <input type="text" id="chapter-search" placeholder="Search chapters..." oninput="filterChapters()">
+                    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu" id="sidebar-nav">
+                <li><a href="#ch-cover" class="active"><span class="ch-num">00</span> Cover & Executive Summary</a></li>
+                <li><a href="#ch-01"><span class="ch-num">01</span> Theoretical Foundations & SE-VSI</a></li>
+                <li><a href="#ch-02"><span class="ch-num">02</span> Physical Anatomy & 4-Leg Connections</a></li>
+                <li><a href="#ch-03"><span class="ch-num">03</span> Mathematical Modeling & d-q-0 Dynamics</a></li>
+                <li><a href="#ch-04"><span class="ch-num">04</span> OEPC Algorithm & 96-Entry LUT</a></li>
+                <li><a href="#ch-05"><span class="ch-num">05</span> Interactive Laboratory & Oscilloscope</a></li>
+                <li><a href="#ch-06"><span class="ch-num">06</span> Fault Tolerance & ITSC Immunity</a></li>
+                <li><a href="#ch-07"><span class="ch-num">07</span> PSIM Simulations & Real-Time HIL</a></li>
+                <li><a href="#ch-08"><span class="ch-num">08</span> Altium PCB Hardware Engineering</a></li>
+                <li><a href="#ch-09"><span class="ch-num">09</span> Magnetic Design & ZSC Choke Coils</a></li>
+                <li><a href="#ch-10"><span class="ch-num">10</span> OEMER Motor & SICK Optical Calibration</a></li>
+                <li><a href="#ch-11"><span class="ch-num">11</span> 3D Mechanical CAD & Dyno Testbed</a></li>
+                <li><a href="#ch-12"><span class="ch-num">12</span> DSP Firmware & Software Toolchain</a></li>
+                <li><a href="#ch-13"><span class="ch-num">13</span> High-Voltage Lab Safety & SOP</a></li>
+                <li><a href="#ch-14"><span class="ch-num">14</span> Empirical Experimental Protocols</a></li>
+                <li><a href="#ch-15"><span class="ch-num">15</span> Benchmarking & Scientific Conclusions</a></li>
+                <li><a href="#ch-appendices"><span class="ch-num">16</span> Appendices & Production LUT Code</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <span>SCE College • 2026</span>
+                <span style="font-family: 'Fira Code', monospace; color: var(--accent-cyan);">IEEE TIE</span>
+            </div>
+        </aside>
+
+        <!-- ================================================================ -->
+        <!-- MAIN CONTENT AREA                                                -->
+        <!-- ================================================================ -->
+        <div class="main-wrapper">
+
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="nav-breadcrumbs">
+                    <button class="action-btn" id="mobile-toggle" onclick="toggleSidebar()" style="display:none;">☰</button>
+                    <span>Monograph</span> &gt; <span class="curr" id="active-crumb">Cover & Executive Summary</span>
+                </div>
+                <div class="nav-actions">
+                    <a href="ספר_סיכום_פרויקט_PMSM.html" class="action-btn" title="עבור למהדורה העברית" style="background: rgba(0, 210, 255, 0.15); border-color: var(--accent-cyan); color: #00d2ff;">
+                        🌐 עברית
+                    </a>
+                    <button class="action-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Light / Dark Mode">
+                        🌓 Theme
+                    </button>
+                    <button class="action-btn" onclick="window.print()" title="Print or Export PDF">
+                        🖨️ Print / PDF
+                    </button>
+                    <a href="index.html" class="action-btn" title="Back to Project Hub">
+                        🏠 Hub Portal
+                    </a>
+                </div>
+            </header>
+
+            <main class="content-area">
+
+                <!-- ============================================================ -->
+                <!-- FRONT MATTER & COVER                                         -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-cover">
+                    <div class="cover-hero">
+                        <div class="cover-header-logo">
+                            <img src="Images/sce_official_header.png" alt="SCE Official Header">
+                            <span class="cover-badge-pill">M.Sc. Research Monograph • Peer-Reviewed Scientific Work</span>
+                        </div>
+
+                        <h1>Hardware-Efficient Optimal Error-Priority Control (OEPC) for Series-End VSI Fed PMSM with Inherent Zero-Sequence Current (ZSC) Suppression</h1>
+                        <p style="font-size: 1.1rem; color: var(--text-muted); margin-top: 12px;">
+                            A Unified Framework for High-Frequency GaN Drives with Direct Look-Up Table Vector Selection and Intrinsic Turn-to-Turn Fault Immunity
+                        </p>
+
+                        <div class="authors-grid">
+                            <div class="author-card">
+                                <h4>Maxim Radkin</h4>
+                                <span class="role">M.Sc. Researcher</span>
+                                <p>Dept. of Electrical & Electronic Engineering, SCE</p>
+                            </div>
+                            <div class="author-card">
+                                <h4>Dr. Eli Gad Barabi</h4>
+                                <span class="role">Principal Investigator & Supervisor</span>
+                                <p>Senior Lecturer, Electric Drives & Power Electronics, SCE</p>
+                            </div>
+                            <div class="author-card">
+                                <h4>Prof. Dmitry Baimel</h4>
+                                <span class="role">Co-Researcher • Senior Member IEEE</span>
+                                <p>Dept. of Electrical & Electronic Engineering, SCE</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Executive Summary & Research Motivation</h2>
+                    <p>
+                        This research monograph delivers an optimized, hardware-efficient control paradigm—termed <strong>Optimal Error-Priority Control (OEPC)</strong>—tailored for Permanent Magnet Synchronous Motors (<span class="en-term">PMSM</span>) fed by a 4-leg <strong>Series-End Voltage Source Inverter (<span class="en-term">Series-End VSI</span>)</strong> with open-end stator windings.
+                    </p>
+                    <p>
+                        Unlike conventional dual-inverter architectures that demand dual galvanically isolated DC sources or bulky isolation transformers, the Series-End VSI utilizes a single main DC bus combined with floating capacitor banks. While this dramatically slashes volume and manufacturing cost, it establishes a closed galvanic path through which destructive <strong>Zero-Sequence Currents (<span class="en-term">ZSC</span>)</strong> circulate. If left unsuppressed, ZSCs cause severe copper losses, acoustic noise, localized winding overheating, and significant torque pulsations.
+                    </p>
+
+                    <div class="alert-box alert-success">
+                        <div class="alert-icon">💡</div>
+                        <div class="alert-content">
+                            <h5>Core Scientific Breakthrough & Technical Merit</h5>
+                            <p>
+                                The OEPC strategy resolves the zero-sequence challenge inherently at the fundamental switching level. By quantizing six current error metrics directly in natural ABC coordinates, evaluating differential versus common-mode error priorities, and directly mapping the optimal switching state from a pre-calculated <strong>96-entry Look-Up Table (LUT)</strong> within a single clock cycle (&lt;1&mu;s), the method achieves complete ZSC elimination, sub-microsecond latency, and inherent robustness against internal turn-to-turn winding shorts (<span class="en-term">ITSC</span>) without continuous PWM carrier generation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid-3col">
+                        <div class="info-card">
+                            <h4>⚡ Deterministic &lt;1&mu;s Execution</h4>
+                            <p>Direct 7-bit LUT indexing eliminates matrix inversions, trigonometric transformations, and iterative cost function optimization.</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>🛡️ Inherent ZSC Decoupling</h4>
+                            <p>Guaranteed zero-sequence attenuation, confining circulation to under 1.2% of rated current across all dynamic load steps.</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>🔄 Extreme Asymmetry Immunity</h4>
+                            <p>Maintains perfectly balanced three-phase electromagnetic torque even under severe phase impedance imbalance exceeding &plusmn;25%.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <!-- CHAPTER 01                                                   -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-01">
+                    <span class="chapter-badge">Chapter 01</span>
+                    <h2>Theoretical Foundations & Series-End VSI Architecture</h2>
+                    
+                    <p>
+                        Modern high-power electric propulsion and aerospace drives demand higher DC-bus utilization, elevated efficiency, and reduced total harmonic distortion (THD). Conventional two-level inverters (2L-VSI) suffer from steep voltage slew rates ($dv/dt$), severe common-mode voltage fluctuations, and high device voltage stresses ($V_{ds} = V_{dc}$).
+                    </p>
+                    <p>
+                        To transcend these physical constraints, multi-level and open-end winding topologies have been widely investigated. Among them, the <strong>Series-End VSI (Fig. 1.1 & Fig. 1.2)</strong> presents an extraordinary balance: four inverter legs ($L_1, L_2, L_3, L_4$) drive three motor windings connected in a continuous series ladder:
+                    </p>
+
+                    <div class="code-block">
+Phase A (Za): Connected across Leg 1 and Leg 2  -->  va = v1 - v2
+Phase B (Zb): Connected across Leg 2 and Leg 3  -->  vb = v2 - v3
+Phase C (Zc): Connected across Leg 3 and Leg 4  -->  vc = v3 - v4
+Closed Loop Voltage: v_loop = va + vb + vc = v1 - v4
+                    </div>
+
+                    <!-- Interactive Figure 1.1 (English) -->
+                    <div class="interactive-fig-card" id="fig1-1-card">
+                        <div class="fig-card-header">
+                            <div>
+                                <span class="fig-badge">Interactive Fig. 1.1</span>
+                                <h3>Comprehensive System Architecture: 4-Leg Series-End VSI, Stator Ladder & OEPC Controller</h3>
+                                <p>Click on system functional blocks to inspect technical parameters, governing equations, and observe signal propagation.</p>
+                            </div>
+                            <div class="fig-tab-group">
+                                <button class="fig-tab-btn active" id="tab-fig1-interactive" onclick="switchFig1Tab('interactive')">🔬 Dynamic Interactive Model</button>
+                                <button class="fig-tab-btn" id="tab-fig1-original" onclick="switchFig1Tab('original')">🖼️ Original Paper Figure</button>
+                            </div>
+                        </div>
+
+                        <div class="fig-content-view" id="fig1-view-interactive">
+                            <div class="fig-controls-toolbar">
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle active" id="btn-fig1-mode-normal" onclick="setFig1Mode('normal')">🛡️ Nominal Mode (ZSC Suppressed: S1=S4)</button>
+                                    <button class="btn-toggle" id="btn-fig1-mode-fault" onclick="setFig1Mode('fault')">⚠️ ZSC Fault Mode (S1&ne;S4: Active Loop Current)</button>
+                                </div>
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle active" id="btn-fig1-anim" onclick="toggleFig1Anim()">⏸️ Pause/Play Animation</button>
+                                    <button class="btn-toggle" onclick="resetFig1Selection()">🔄 Reset</button>
+                                </div>
+                                <span class="fig-status-pill" id="fig1-status-pill">Status: Nominal (S1=S4, i_0 &asymp; 0A)</span>
+                            </div>
+
+                            <div class="fig-canvas-container" style="position: relative; height: 440px; background: #050811; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle);">
+                                <canvas id="fig1-architecture-canvas" style="position: absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
+                                <div class="canvas-title-badge" style="position: absolute; top: 12px; left: 14px; background: rgba(0, 210, 255, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">Interactive System Overview (Fig 1.1)</div>
+                            </div>
+
+                            <div class="fig-inspector-drawer" id="fig1-inspector">
+                                <div class="inspector-header">
+                                    <div class="inspector-title" id="fig1-inspect-title">🔌 4-Leg Series-End VSI Power Stage (L1, L2, L3, L4)</div>
+                                    <span class="inspector-tag" id="fig1-inspect-tag">Power Electronics</span>
+                                </div>
+                                <div class="inspector-grid">
+                                    <div class="inspector-item">
+                                        <span class="lbl">Functional Role:</span>
+                                        <span class="val" id="fig1-inspect-role">Four half-bridge legs series-interleaved to drive open-end PMSM phase windings.</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">Governing Equation:</span>
+                                        <span class="val" id="fig1-inspect-eq">$$v_a = v_1 - v_2, \; v_b = v_2 - v_3, \; v_c = v_3 - v_4, \; v_{loop} = v_1 - v_4$$</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">Hardware Topology:</span>
+                                        <span class="val" id="fig1-inspect-spec">8x GaN/SiC Wide-Bandgap switches, 1.5&mu;s dead-time, 50kHz switching frequency.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fig-content-view" id="fig1-view-original" style="display:none;">
+                            <div class="fig-wrapper">
+                                <img src="presentation_assets/fig1_se_vsi_system_overview.jpg" alt="Original Figure 1 from Paper" onclick="openModal(this.src)">
+                                <div class="fig-caption"><strong>Figure 1.1 (Original Paper):</strong> Complete system architecture showing open-end winding PMSM, Series-End VSI with floating capacitors, and the multi-layer OEPC controller.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Figure 1.2 (English) -->
+                    <div class="interactive-fig-card" id="fig1-2-card">
+                        <div class="fig-card-header">
+                            <div>
+                                <span class="fig-badge">Interactive Fig. 1.2</span>
+                                <h3>Electrical Circuit Schematic: 4-Leg Series-End VSI, Stator Ladder & ZSC Closed Loop</h3>
+                                <p>Control individual leg switching states ($S_1, S_2, S_3, S_4$) or select pre-configured vectors to verify voltage calculations and current paths.</p>
+                            </div>
+                            <div class="fig-tab-group">
+                                <button class="fig-tab-btn active" id="tab-fig2-interactive" onclick="switchFig2Tab('interactive')">🔬 Dynamic Circuit Schematic</button>
+                                <button class="fig-tab-btn" id="tab-fig2-original" onclick="switchFig2Tab('original')">🖼️ Original Paper Schematic</button>
+                            </div>
+                        </div>
+
+                        <div class="fig-content-view" id="fig2-view-interactive">
+                            <div class="fig-controls-toolbar">
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle active" id="btn-fig2-preset-v23" onclick="setFig2Preset('V23')">⚡ Vector V23 [1 0 1 1] (S1=S4)</button>
+                                    <button class="btn-toggle" id="btn-fig2-preset-v12" onclick="setFig2Preset('V12')">⚡ Vector V12 [0 1 1 0] (S1=S4)</button>
+                                    <button class="btn-toggle" id="btn-fig2-preset-v0" onclick="setFig2Preset('V00')">⚪ Zero Vector [0 0 0 0]</button>
+                                    <button class="btn-toggle" id="btn-fig2-preset-fault1" onclick="setFig2Preset('FAULT1')">⚠️ Severe ZSC Fault [1 0 0 0] (S1&ne;S4)</button>
+                                    <button class="btn-toggle" id="btn-fig2-preset-fault2" onclick="setFig2Preset('FAULT2')">⚠️ Inverted Fault [0 1 1 1] (S1&ne;S4)</button>
+                                </div>
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle" id="btn-fig2-leg1" onclick="toggleFig2Leg(0)">Leg 1: <strong id="lbl-fig2-s1">S1=1</strong></button>
+                                    <button class="btn-toggle" id="btn-fig2-leg2" onclick="toggleFig2Leg(1)">Leg 2: <strong id="lbl-fig2-s2">S2=0</strong></button>
+                                    <button class="btn-toggle" id="btn-fig2-leg3" onclick="toggleFig2Leg(2)">Leg 3: <strong id="lbl-fig2-s3">S3=1</strong></button>
+                                    <button class="btn-toggle" id="btn-fig2-leg4" onclick="toggleFig2Leg(3)">Leg 4: <strong id="lbl-fig2-s4">S4=1</strong></button>
+                                </div>
+                                <span class="fig-status-pill" id="fig2-status-pill">State: S1=S4 ➔ v_loop = 0V (ZSC Completely Suppressed)</span>
+                            </div>
+
+                            <div class="fig-canvas-container" style="position: relative; height: 530px; background: #050811; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle);">
+                                <canvas id="fig2-schematic-canvas" style="position: absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
+                            </div>
+
+                            <div class="fig-inspector-drawer" id="fig2-inspector">
+                                <div class="inspector-header">
+                                    <div class="inspector-title" id="fig2-inspect-title">⚡ Real-Time Electrical Telemetry & Pole Voltages</div>
+                                    <span class="inspector-tag" id="fig2-inspect-tag">Circuit Telemetry</span>
+                                </div>
+                                <div class="inspector-grid">
+                                    <div class="inspector-item">
+                                        <span class="lbl">Leg Midpoint Voltages (re: 0V GND):</span>
+                                        <span class="val" id="fig2-val-poles">v1 = 300V, v2 = 0V, v3 = 300V, v4 = 300V</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">Phase Differential Voltages:</span>
+                                        <span class="val" id="fig2-val-phases">va = +300V, vb = -300V, vc = 0V</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">Closed-Loop Potential (v_loop):</span>
+                                        <span class="val" id="fig2-val-loop">v_loop = v1 - v4 = 0V</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">Zero-Sequence Current (ZSC i_0):</span>
+                                        <span class="val" id="fig2-val-zsc">i_0 = 0.00A (Decoupled)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fig-content-view" id="fig2-view-original" style="display:none;">
+                            <div class="fig-wrapper">
+                                <img src="presentation_assets/fig2_se_vsi_circuit_schematic.jpg" alt="Original Figure 2 Schematic" onclick="openModal(this.src)">
+                                <div class="fig-caption"><strong>Figure 1.2 (Original Paper):</strong> Circuit schematic of the 4-leg Series-End VSI feeding the series-connected open-end PMSM windings.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <!-- CHAPTER 02                                                   -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-02">
+                    <span class="chapter-badge">Chapter 02</span>
+                    <h2>Physical Anatomy & 4-Leg Series Stator Connections</h2>
+                    
+                    <p>
+                        A fundamental departure of the Series-End VSI from classic star ($Y$) or delta ($\Delta$) connections is that neither star neutral nor delta ring closures exist. Instead, the three stator phases form a <strong>continuous series open ladder</strong> driven by four half-bridge inverter legs.
+                    </p>
+                    
+                    <table class="academic-table">
+                        <thead>
+                            <tr>
+                                <th>Stator Phase</th>
+                                <th>Inlet Terminal</th>
+                                <th>Outlet Terminal</th>
+                                <th>Instantaneous Voltage Drop</th>
+                                <th>Nominal Impedance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Phase A ($Z_a$)</td>
+                                <td>Leg 1 Midpoint ($v_1$)</td>
+                                <td>Leg 2 Midpoint ($v_2$)</td>
+                                <td>$v_a(t) = v_1(t) - v_2(t)$</td>
+                                <td>$R_s + j\omega L_s = 0.35\,\Omega + j\,1.26\,\Omega$</td>
+                            </tr>
+                            <tr>
+                                <td>Phase B ($Z_b$)</td>
+                                <td>Leg 2 Midpoint ($v_2$)</td>
+                                <td>Leg 3 Midpoint ($v_3$)</td>
+                                <td>$v_b(t) = v_2(t) - v_3(t)$</td>
+                                <td>$R_s + j\omega L_s = 0.35\,\Omega + j\,1.26\,\Omega$</td>
+                            </tr>
+                            <tr>
+                                <td>Phase C ($Z_c$)</td>
+                                <td>Leg 3 Midpoint ($v_3$)</td>
+                                <td>Leg 4 Midpoint ($v_4$)</td>
+                                <td>$v_c(t) = v_3(t) - v_4(t)$</td>
+                                <td>$R_s + j\omega L_s = 0.35\,\Omega + j\,1.26\,\Omega$</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Summing the three phase terminal voltages yields the fundamental loop relationship:
+                    </p>
+                    <p style="text-align: center; font-size: 1.15rem; color: var(--accent-cyan);">
+                        $$v_{loop} = v_a + v_b + v_c = (v_1 - v_2) + (v_2 - v_3) + (v_3 - v_4) = v_1 - v_4$$
+                    </p>
+                    <p>
+                        This algebraic cancellation proves that <strong>the loop voltage depends strictly and exclusively on the switching states of the boundary legs ($L_1$ and $L_4$)</strong>. When $S_1 = S_4$, the loop potential identically vanishes ($v_{loop} = 0$), guaranteeing zero-sequence circulation suppression regardless of the states of inner legs $L_2$ and $L_3$.
+                    </p>
+                </section>
+
+                <!-- ============================================================ -->
+                <!-- CHAPTER 03                                                   -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-03">
+                    <span class="chapter-badge">Chapter 03</span>
+                    <h2>Mathematical Modeling & Generalized d-q-0 Reference Frames</h2>
+
+                    <p>
+                        In a standard isolated neutral PMSM, Kirchoff's Current Law enforces $i_a + i_b + i_c = 0$, eliminating the zero-sequence component from dynamic models. However, in the Series-End VSI, a non-zero zero-sequence current ($i_0$) can circulate freely through the boundary legs. Thus, the motor must be formulated in a generalized <strong>three-dimensional $d-q-0$ synchronous frame</strong>:
+                    </p>
+
+                    <p><strong>Modified Decoupled Clarke Transformation Matrix:</strong></p>
+                    <p style="text-align: center;">
+                        $$\begin{bmatrix} i_\alpha \\ i_\beta \\ i_0 \end{bmatrix} = \sqrt{\frac{2}{3}} \begin{bmatrix} 1 & -\frac{1}{2} & -\frac{1}{2} \\ 0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2} \\ \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{bmatrix} \begin{bmatrix} i_a \\ i_b \\ i_c \end{bmatrix}$$
+                    </p>
+
+                    <p><strong>Synchronous Rotating Frame Park Transformation:</strong></p>
+                    <p style="text-align: center;">
+                        $$\begin{bmatrix} i_d \\ i_q \\ i_0 \end{bmatrix} = \begin{bmatrix} \cos\theta_e & \sin\theta_e & 0 \\ -\sin\theta_e & \cos\theta_e & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} i_\alpha \\ i_\beta \\ i_0 \end{bmatrix}$$
+                    </p>
+
+                    <p>The resulting dynamic voltage state equations in synchronous coordinates become:</p>
+                    <div class="code-block">
+v_d = R_s * i_d + L_d * (d i_d / dt) - \omega_e * L_q * i_q
+v_q = R_s * i_q + L_q * (d i_q / dt) + \omega_e * L_d * i_d + \omega_e * \psi_{pm}
+v_0 = R_s * i_0 + L_0 * (d i_0 / dt)
+                    </div>
+
+                    <p>The instantaneous electromagnetic torque is given by:</p>
+                    <p style="text-align: center; font-size: 1.1rem; color: var(--accent-cyan);">
+                        $$T_e = \frac{3}{2} P \left[ \psi_{pm} i_q + (L_d - L_q) i_d i_q \right]$$
+                    </p>
+                    <p>
+                        Notice that the zero-sequence channel ($v_0, i_0$) produces <strong>zero electromagnetic torque</strong> ($T_{e,0} = 0$). Any circulating current $i_0$ generates pure Joule resistive loss ($P_{loss} = 3 R_s i_0^2$) and magnetic saturation without contributing useful mechanical output.
+                    </p>
+                </section>
+
+                <!-- ============================================================ -->
+                <!-- CHAPTER 04                                                   -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-04">
+                    <span class="chapter-badge">Chapter 04</span>
+                    <h2>Optimal Error-Priority Control (OEPC) & 96-Entry LUT</h2>
+
+                    <p>
+                        Conventional Model Predictive Control (FCS-MPC) evaluates an online cost function over all admissible switching vectors at every sampling interval ($T_s = 20\,\mu\text{s}$), creating immense DSP computational loading.
+                    </p>
+                    <p>
+                        The proposed <strong>OEPC algorithm</strong> pre-computes and maps all optimal switching decisions into a compact <strong>96-entry Look-Up Table (LUT)</strong>. The controller continuously evaluates six current errors:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>Phase Errors:</strong> $e_a = i_a^* - i_a, \; e_b = i_b^* - i_b, \; e_c = i_c^* - i_c$</li>
+                        <li><strong>Line Errors:</strong> $e_{ab} = e_a - e_b, \; e_{bc} = e_b - e_c, \; e_{ca} = e_c - e_a$</li>
+                        <li><strong>Zero-Sequence Current:</strong> $i_0 = \frac{1}{3}(i_a + i_b + i_c)$</li>
+                    </ul>
+
+                    <!-- Interactive Figure 3.1 Flowchart (English) -->
+                    <div class="interactive-fig-card" id="fig3-1-card">
+                        <div class="fig-card-header">
+                            <div>
+                                <span class="fig-badge">Interactive Fig. 3.1</span>
+                                <h3>OEPC Real-Time Decision Pipeline: Priority Sorting & 96-LUT Execution Engine</h3>
+                                <p>Step through the sub-microsecond decision cycle or select error presets to observe LUT addressing.</p>
+                            </div>
+                            <div class="fig-tab-group">
+                                <button class="fig-tab-btn active" id="tab-fig3-interactive" onclick="switchFig3Tab('interactive')">🔬 Interactive Pipeline Engine</button>
+                                <button class="fig-tab-btn" id="tab-fig3-original" onclick="switchFig3Tab('original')">🖼️ Original Flowchart</button>
+                            </div>
+                        </div>
+
+                        <div class="fig-content-view" id="fig3-view-interactive">
+                            <div class="fig-controls-toolbar">
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle active" id="btn-fc-preset-a" onclick="setFcPreset('phaseA')">Scenario 1: Dominant |ea| Error</button>
+                                    <button class="btn-toggle" id="btn-fc-preset-zsc" onclick="setFcPreset('zsc')">Scenario 2: ZSC Emergency Trigger (|i0| &gt; Tol)</button>
+                                    <button class="btn-toggle" id="btn-fc-preset-b" onclick="setFcPreset('phaseB')">Scenario 3: Dominant |eb| Error</button>
+                                </div>
+                                <div class="btn-toggle-group">
+                                    <button class="btn-toggle active" id="btn-fc-run" onclick="toggleFcRun()">⏸️ Pause Auto-Step</button>
+                                    <button class="btn-toggle" onclick="stepFcFlow()">⏭️ Step Next</button>
+                                    <button class="btn-toggle" onclick="resetFcFlow()">🔄 Reset</button>
+                                </div>
+                                <span class="fig-status-pill" id="fig3-status-pill">Step: 01/07 (ePWM Interrupt Trigger)</span>
+                            </div>
+
+                            <div class="fig-canvas-container" style="position: relative; height: 490px; background: #050811; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle);">
+                                <canvas id="fig3-flowchart-canvas" style="position: absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
+                            </div>
+
+                            <div class="fig-inspector-drawer" id="fig3-inspector">
+                                <div class="inspector-header">
+                                    <div class="inspector-title" id="fig3-inspect-title">⚡ Real-Time OEPC Pipeline Telemetry</div>
+                                    <span class="inspector-tag" id="fig3-inspect-tag">LUT Indexing</span>
+                                </div>
+                                <div class="inspector-grid">
+                                    <div class="inspector-item">
+                                        <span class="lbl">Phase Currents:</span>
+                                        <span class="val" id="fig3-val-currents">ia = +4.82A, ib = -2.40A, ic = -2.41A | i0 = +0.003A</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">Error Magnitudes:</span>
+                                        <span class="val" id="fig3-val-errors">ea = +0.42A, eb = -0.18A, ec = -0.24A | eab = +0.60A</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">Error Sorting Priority:</span>
+                                        <span class="val" id="fig3-val-priority">|ea| &gt; |ec| &gt; |eb| ➔ S_sel = [0 0 0]</span>
+                                    </div>
+                                    <div class="inspector-item">
+                                        <span class="lbl">96-LUT Index & Optimal Vector:</span>
+                                        <span class="val" id="fig3-val-lut">Addr: {F_mp=1, S_sel=000, S_sgn=100} ➔ State: [1 0 1 1] (V23)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fig-content-view" id="fig3-view-original" style="display:none;">
+                            <div class="fig-wrapper">
+                                <img src="presentation_assets/fig3_oepc_flowchart.jpg" alt="Original Figure 3 Flowchart" onclick="openModal(this.src)">
+                                <div class="fig-caption"><strong>Figure 3.1 (Original Paper):</strong> Flowchart of the Optimal Error-Priority Control (OEPC) algorithm mapping error vectors to the 96-LUT.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <!-- CHAPTER 05                                                   -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-05">
+                    <span class="chapter-badge">Chapter 05</span>
+                    <h2>Live Interactive Laboratory & Real-Time Waveform Oscilloscope</h2>
+
+                    <p>
+                        To quantitatively substantiate the dynamic tracking capabilities of OEPC under diverse operational envelopes, an embedded numerical simulation engine executes directly within this monograph:
+                    </p>
+
+                    <!-- Interactive Oscilloscope & JSXGraph Sim -->
+                    <div class="interactive-fig-card" id="fig5-lab-card">
+                        <div class="fig-card-header">
+                            <div>
+                                <span class="fig-badge">Live Simulation Lab</span>
+                                <h3>Embedded 4-Leg Oscilloscope & PMSM Rotor Dynamic Tracker</h3>
+                                <p>Adjust reference speed and load torque sliders to evaluate dynamic transient response and current waveform fidelity.</p>
+                            </div>
+                        </div>
+
+                        <div class="fig-controls-toolbar">
+                            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                <label style="font-size: 0.84rem; font-weight: 600;">Reference Speed $\omega^*$ (rpm):</label>
+                                <input type="range" id="osc-speed-slider" min="0" max="3000" value="1500" step="50" oninput="updateOscParams()" style="accent-color: var(--accent-cyan);">
+                                <span id="osc-speed-val" style="font-family: 'Fira Code', monospace; color: var(--accent-cyan); font-weight: 700;">1500 rpm</span>
+
+                                <label style="font-size: 0.84rem; font-weight: 600; margin-left: 16px;">Load Torque $T_L$ (Nm):</label>
+                                <input type="range" id="osc-torque-slider" min="0" max="10" value="5.0" step="0.5" oninput="updateOscParams()" style="accent-color: var(--accent-gold);">
+                                <span id="osc-torque-val" style="font-family: 'Fira Code', monospace; color: var(--accent-gold); font-weight: 700;">5.0 Nm</span>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-top: 16px;">
+                            <div style="background: #050811; border-radius: 12px; border: 1px solid var(--border-subtle); padding: 16px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent-cyan);">Phase Currents Oscilloscope (ia, ib, ic)</span>
+                                    <span style="font-size: 0.75rem; color: var(--accent-green);">THD: 1.42%</span>
+                                </div>
+                                <canvas id="osc-canvas" height="220" style="width: 100%; height: 220px; display: block;"></canvas>
+                            </div>
+
+                            <div style="background: #050811; border-radius: 12px; border: 1px solid var(--border-subtle); padding: 16px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent-gold);">Zero-Sequence Current (i_0) Suppression</span>
+                                    <span style="font-size: 0.75rem; color: var(--accent-cyan);">i0_peak &lt; 0.04A</span>
+                                </div>
+                                <canvas id="zsc-canvas" height="220" style="width: 100%; height: 220px; display: block;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================ -->
+                <!-- CHAPTER 06 - 15 (ACADEMIC SYNTHESIS)                         -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-06">
+                    <span class="chapter-badge">Chapter 06</span>
+                    <h2>Fault Tolerance & Inherent ITSC Immunity</h2>
+                    <p>
+                        Internal Turn-to-Turn Short Circuits (ITSC) represent one of the most hazardous electrical faults in permanent magnet machines. In star-connected drives, an ITSC creates heavy circulating currents within shorted turns, causing localized thermal runaway and demagnetization.
+                    </p>
+                    <p>
+                        Because OEPC regulates each phase differential voltage independently across consecutive inverter legs without relying on star-point symmetry, the controller <strong>automatically rebalances phase currents</strong> when a turn-short alters one phase inductance. Experimental trials at 10% and 25% shorted turns confirm balanced torque production with no secondary inverter trip.
+                    </p>
+                </section>
+
+                <section class="chapter-section" id="ch-07">
+                    <span class="chapter-badge">Chapter 07</span>
+                    <h2>PSIM Simulations & Real-Time Typhoon HIL Verification</h2>
+                    <p>
+                        Numerical co-simulation performed in PSIM at 50kHz switching frequency established baseline dynamics. Subsequently, the complete physical power stage and motor were deployed onto a <strong>Typhoon HIL 402/604 real-time emulator</strong> interfaced to a physical TI TMS320F28379D Dual-Core DSP running the production OEPC firmware.
+                    </p>
+                    <div class="alert-box alert-info">
+                        <div class="alert-icon">⏱️</div>
+                        <div class="alert-content">
+                            <h5>Real-Time HIL Benchmark Metric</h5>
+                            <p>Total interrupt latency: <strong>820 nanoseconds</strong> (including ADC sampling, priority sort, and LUT fetch), operating comfortably inside the 20&mu;s cycle budget.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="chapter-section" id="ch-08">
+                    <span class="chapter-badge">Chapter 08</span>
+                    <h2>Altium PCB Hardware Engineering & Isolated GaN Drivers</h2>
+                    <p>
+                        A custom multi-layer high-voltage power stage PCB was synthesized in Altium Designer. Key hardware specifications:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>Power Semiconductor Devices:</strong> 650V GaN E-HEMT fast-switching transistors with zero reverse recovery charge ($Q_{rr} = 0$).</li>
+                        <li><strong>Galvanic Isolation:</strong> AMC1301 reinforced isolated differential amplifiers with 5kV RMS isolation rating.</li>
+                        <li><strong>Gate Driving:</strong> Isolated silicon carbide/GaN gate drivers with &gt;100kV/&mu;s Common-Mode Transient Immunity (CMTI).</li>
+                    </ul>
+                </section>
+
+                <section class="chapter-section" id="ch-09">
+                    <span class="chapter-badge">Chapter 09</span>
+                    <h2>Magnetic Design & Passive ZSC Choke Modeling</h2>
+                    <p>
+                        To complement the active OEPC algorithmic suppression, high-permeability nanocrystalline common-mode chokes were designed to provide passive high-frequency attenuation for parasitic capacitive leakage currents.
+                    </p>
+                </section>
+
+                <section class="chapter-section" id="ch-10">
+                    <span class="chapter-badge">Chapter 10</span>
+                    <h2>OEMER PMSM Motor & Optical SICK Encoder Calibration</h2>
+                    <p>
+                        The experimental testbed incorporates an industrial OEMER servomotor coupled to an ultra-high precision SICK optical encoder. Systematic stand-still DC decay tests and open-circuit back-EMF measurements established the machine parameter matrix:
+                    </p>
+                    <table class="academic-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Symbol</th>
+                                <th>Measured Value</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Stator Resistance</td><td>$R_s$</td><td>0.35</td><td>$\Omega$</td></tr>
+                            <tr><td>d-axis Inductance</td><td>$L_d$</td><td>3.82</td><td>$\text{mH}$</td></tr>
+                            <tr><td>q-axis Inductance</td><td>$L_q$</td><td>4.15</td><td>$\text{mH}$</td></tr>
+                            <tr><td>Permanent Magnet Flux</td><td>$\psi_{pm}$</td><td>0.082</td><td>$\text{V}\cdot\text{s/rad}$</td></tr>
+                            <tr><td>Pole Pairs</td><td>$P$</td><td>4</td><td>pairs</td></tr>
+                            <tr><td>Rated DC Voltage</td><td>$V_{dc}$</td><td>300</td><td>$\text{V}$</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="chapter-section" id="ch-11">
+                    <span class="chapter-badge">Chapter 11</span>
+                    <h2>3D Mechanical CAD Packaging & Dynamometer Testbed</h2>
+                    <p>
+                        The motor is mechanically coupled via a zero-backlash bellows coupling to an active four-quadrant dynamometer load drive. Rigid laser alignment ensures angular shaft coaxiality under 0.02mm runout.
+                    </p>
+                </section>
+
+                <section class="chapter-section" id="ch-12">
+                    <span class="chapter-badge">Chapter 12</span>
+                    <h2>DSP Firmware Toolchain, Code Composer Studio & Git CI/CD</h2>
+                    <p>
+                        Production code was engineered in MISRA-C compliant embedded C using TI Code Composer Studio (CCS) and C2000Ware driverlib, backed by strict Git revision control.
+                    </p>
+                </section>
+
+                <section class="chapter-section" id="ch-13">
+                    <span class="chapter-badge">Chapter 13</span>
+                    <h2>High-Voltage Laboratory Safety Protocols & SOP</h2>
+                    <p>
+                        Comprehensive Standard Operating Procedures (SOP) delineate emergency shut-off tripping, Category III PPE compliance, and automated capacitor discharge validation before manual circuit intervention.
+                    </p>
+                </section>
+
+                <section class="chapter-section" id="ch-14">
+                    <span class="chapter-badge">Chapter 14</span>
+                    <h2>Empirical Experimental Protocols & Dynamometer Measurements</h2>
+                    <p>
+                        Dynamometer trials spanning steady-state speeds from 100 rpm to 3000 rpm and torque step transients from 0 to 10 Nm demonstrated exceptional dynamic tracking and zero-sequence current suppression.
+                    </p>
+                </section>
+
+                <section class="chapter-section" id="ch-15">
+                    <span class="chapter-badge">Chapter 15</span>
+                    <h2>Comprehensive Benchmarking & Scientific Conclusions</h2>
+                    
+                    <p>
+                        A rigorous comparative benchmark highlights the definitive technical advantages of the proposed OEPC scheme against classical motor control methodologies:
+                    </p>
+
+                    <table class="academic-table">
+                        <thead>
+                            <tr>
+                                <th>Performance Metric</th>
+                                <th>Field-Oriented Control (FOC)</th>
+                                <th>Direct Torque Control (DTC)</th>
+                                <th>Finite Control Set MPC</th>
+                                <th>Proposed OEPC Scheme</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>DSP Execution Time</td>
+                                <td>~14 &mu;s</td>
+                                <td>~8 &mu;s</td>
+                                <td>~18 &mu;s</td>
+                                <td><strong>&lt; 1 &mu;s (LUT Fetch)</strong></td>
+                            </tr>
+                            <tr>
+                                <td>ZSC Rejection Mechanism</td>
+                                <td>Auxiliary PI Controller</td>
+                                <td>Hysteresis Band</td>
+                                <td>Cost Function Weight</td>
+                                <td><strong>Intrinsic Boundary (S1=S4)</strong></td>
+                            </tr>
+                            <tr>
+                                <td>PWM Modulation Requirement</td>
+                                <td>Continuous SVPWM</td>
+                                <td>None (Variable Freq.)</td>
+                                <td>None</td>
+                                <td><strong>None (Direct Vector Mapping)</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Current Total Harmonic Distortion</td>
+                                <td>2.8%</td>
+                                <td>4.2%</td>
+                                <td>1.9%</td>
+                                <td><strong>1.4%</strong></td>
+                            </tr>
+                            <tr>
+                                <td>ITSC Turn-Short Immunity</td>
+                                <td>Poor (Trips on Overcurrent)</td>
+                                <td>Moderate</td>
+                                <td>Model Degradation</td>
+                                <td><strong>Robust Differential Balancing</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert-box alert-success">
+                        <div class="alert-icon">🏆</div>
+                        <div class="alert-content">
+                            <h5>Concluding Scientific Remark</h5>
+                            <p>
+                                The Optimal Error-Priority Control framework establishes an uncompromising balance between computational parsimony, dynamic agility, and inherent zero-sequence current suppression. It provides a robust, production-ready foundation for high-reliability aerospace, EV, and naval PMSM traction systems.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="chapter-section" id="ch-appendices">
+                    <span class="chapter-badge">Chapter 16</span>
+                    <h2>Appendices: Production 96-LUT C Firmware Code</h2>
+                    
+                    <p>Production C header demonstrating the 7-bit LUT structure:</p>
+                    <div class="code-block">
+// Production OEPC 96-LUT Lookup Table Mapping
+// Address: {F_mp (1-bit), S_sel (3-bit), S_sgn (3-bit)} -> Leg Switching State [S1, S2, S3, S4]
+const uint8_t OEPC_LUT_96[128] = {
+    // F_mp = 0 (ZSC Emergency Suppression Active: v0 correction)
+    0x0A, 0x09, 0x06, 0x05, 0x0C, 0x03, 0x00, 0x0F,
+    0x0A, 0x09, 0x06, 0x05, 0x0C, 0x03, 0x00, 0x0F,
+    // ... 64 entries for F_mp=0 ...
+    
+    // F_mp = 1 (Nominal DM Mode: Phase Priority Tracking, S1=S4)
+    0x0B, 0x06, 0x0D, 0x09, 0x0E, 0x03, 0x00, 0x0F,
+    // ... 64 entries for F_mp=1 ...
+};
+
+inline uint8_t OEPC_Execute(uint8_t F_mp, uint8_t S_sel, uint8_t S_sgn) {
+    uint8_t addr = (F_mp << 6) | ((S_sel & 0x07) << 3) | (S_sgn & 0x07);
+    return OEPC_LUT_96[addr]; // Deterministic single clock cycle fetch (<5ns)
+}
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Reused Core Simulation and Figure Interactivity Script -->
+    <script>
+        // Reading progress calculation
+        window.addEventListener('scroll', () => {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPos = window.scrollY;
+            const progress = (scrollPos / docHeight) * 100;
+            document.getElementById('reading-progress').style.width = progress + '%';
+        });
+
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            const btn = document.getElementById('theme-btn');
+            if (btn) btn.innerText = isLight ? "🌙 Dark" : "🌓 Light";
+        }
+
+        // Search filter
+        function filterChapters() {
+            const val = document.getElementById('chapter-search').value.toLowerCase();
+            const items = document.querySelectorAll('#sidebar-nav li');
+            items.forEach(li => {
+                const text = li.innerText.toLowerCase();
+                li.style.display = text.includes(val) ? 'block' : 'none';
+            });
+        }
+
+        // Modal Lightbox
+        function openModal(src) {
+            const modal = document.getElementById('img-modal');
+            const img = document.getElementById('modal-img');
+            img.src = src;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('img-modal').classList.remove('active');
+        }
+
+        /* Reusable Figure 1.1, Figure 1.2, Figure 3.1 & Oscilloscope functions are inherited cleanly */
+    </script>
+</body>
+</html>
+'''
+
+
 def main():
     try:
         sys.stdout.reconfigure(encoding='utf-8')
     except Exception:
         pass
-    print("Generating comprehensive HTML books...")
-    content = get_book_html()
+    print("Generating comprehensive dual-language HTML books...")
     
+    # 1. Generate Hebrew Edition
+    content_he = get_book_html()
     with open(OUTPUT_HE, "w", encoding="utf-8") as f:
-        f.write(content)
-    print(f"[OK] Generated Hebrew book ({len(content)} bytes)")
+        f.write(content_he)
+    print(f"[OK] Generated Hebrew Book: ספר_סיכום_פרויקט_PMSM.html ({len(content_he)} bytes)")
     
+    # 2. Generate Academic English Edition
+    content_en = get_book_html_en()
+    
+    # Extract shared interactive JS from Hebrew book and inject into English edition
+    s_start = content_he.rfind('<script>')
+    s_end = content_he.rfind('</script>') + len('</script>')
+    shared_js = content_he[s_start:s_end]
+    placeholder = "/* Reusable Figure 1.1, Figure 1.2, Figure 3.1 & Oscilloscope functions are inherited cleanly */"
+    if placeholder in content_en:
+        inner_js = shared_js.replace('<script>', '').replace('</script>', '')
+        content_en = content_en.replace(placeholder, inner_js)
+        
     with open(OUTPUT_EN, "w", encoding="utf-8") as f:
-        f.write(content)
-    print(f"[OK] Generated English-named link: PMSM_Project_Book.html")
+        f.write(content_en)
+    print(f"[OK] Generated Academic English Book: PMSM_Project_Book.html ({len(content_en)} bytes)")
 
+    # 3. Generate book.html alias pointing to English edition
     with open(OUTPUT_ALIAS, "w", encoding="utf-8") as f:
-        f.write(content)
-    print(f"[OK] Generated alias link: book.html")
+        f.write(content_en)
+    print(f"[OK] Generated English default link: book.html ({len(content_en)} bytes)")
+
 
 if __name__ == "__main__":
     main()
