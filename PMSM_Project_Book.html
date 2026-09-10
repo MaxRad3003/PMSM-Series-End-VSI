@@ -1560,7 +1560,8 @@
                 <li><a href="#ch-12"><span class="ch-num">12</span> פרוטוקול בטיחות וגהות במעבדה</a></li>
                 <li><a href="#ch-13"><span class="ch-num">13</span> תכנון מגנטי וסלילי חניקה ל-ZSC</a></li>
                 <li><a href="#ch-14"><span class="ch-num">14</span> פרוטוקול ניסויי מעבדה ומדידות</a></li>
-                <li><a href="#ch-appendices"><span class="ch-num">15</span> נספחים ואינדקס דוחות</a></li>
+                <li><a href="#ch-15"><span class="ch-num">15</span> אנטומיה פיזיקלית והדמיית מנוע וממיר</a></li>
+                <li><a href="#ch-appendices"><span class="ch-num">16</span> נספחים ואינדקס דוחות</a></li>
             </ul>
 
             <div class="sidebar-footer">
@@ -3793,10 +3794,160 @@
                 </section>
 
                 <!-- ============================================================ -->
+                <!-- CHAPTER 15: INTERACTIVE PMSM MOTOR & INVERTER LEGS ANATOMY   -->
+                <!-- ============================================================ -->
+                <section class="chapter-section" id="ch-15">
+                    <span class="chapter-badge">פרק 15</span>
+                    <h2>אנטומיה פיזיקלית והדמיה אינטראקטיבית: רוטור מגנטים, סלילי סטטור וחיבור לרגלי הממיר</h2>
+
+                    <p class="lead-text">
+                        כדי לחבר בין התאוריה המתמטית של בקרת השדה המכוון ($d-q$), מודל ה-OEPC וטבלת 96 המצבים, לבין החומרה הפיזית במעבדה, פותחה הדמיה זו המציגה חתך דו-ממדי דינמי (Cross-Section) של מנוע ה-PMSM (מבוסס גאומטריית ה-OEMER QS 100S) במקביל למעגל הכוח של שני ממירי ה-Series-End VSI. ההדמיה ממחישה בזמן אמת כיצד מיתוג 6 רגלי הממיר מזרים זרמים בשלושת סלילי הסטטור הפתוחים, כיצד נוצר שדה מגנטי מסתובב באוויר הרווח ($B_s$), וכיצד הוא מושך את מגנטי הרוטור במומנט אלקטרומגנטי סנכרוני.
+                    </p>
+
+                    <!-- Interactive Simulation Card -->
+                    <div class="sim-embed-card" id="sim3-card">
+                        <div class="sim-embed-header">
+                            <div>
+                                <h3>🔬 הדמיה 3: מודל חתך מנוע PMSM (4 קטבים) וחיבור לרגלי ממיר Series-End VSI</h3>
+                                <p style="color:var(--text-muted); font-size:13px; margin-top:4px;">
+                                    צפה ברוטור המגנטים המסתובב, זרימת זרמי הפאזות בסלילים הפתוחים, ומצבי ההולכה של מפסקי שני הממירים (VSI-1 ו-VSI-2) בזמן אמת.
+                                </p>
+                            </div>
+                            <span class="badge" style="background:rgba(0,210,255,0.15); color:var(--accent-cyan); border:1px solid var(--accent-cyan); padding:4px 10px; border-radius:20px; font-size:12px;">
+                                60FPS Interactive Motor Core
+                            </span>
+                        </div>
+
+                        <div class="sim-container-grid">
+                            <!-- Controls Panel -->
+                            <div class="sim-controls-panel">
+                                <h4 style="color:var(--accent-cyan); margin:0 0 8px 0; font-size:14px; border-bottom:1px solid var(--border-subtle); padding-bottom:6px;">🎛️ לוח בקרה להדמיית מנוע וממיר</h4>
+
+                                <div class="control-group">
+                                    <label><span>מהירות סיבוב מנוע (RPM):</span> <span id="val-motor-rpm" class="en-term" style="color:var(--accent-cyan); font-weight:700;">600 RPM</span></label>
+                                    <input type="range" id="slider-motor-rpm" min="0" max="1800" step="50" value="600" oninput="updateMotorParams()">
+                                </div>
+
+                                <div class="control-group">
+                                    <label><span>זווית מומנט עומס ($\delta$):</span> <span id="val-motor-delta" class="en-term" style="color:#10b981; font-weight:700;">90° (MTPA)</span></label>
+                                    <input type="range" id="slider-motor-delta" min="0" max="150" step="5" value="90" oninput="updateMotorParams()">
+                                </div>
+
+                                <div class="control-group" style="display:flex; flex-direction:column; gap:8px;">
+                                    <label style="margin-bottom:0;"><span>תצוגות שדה ווקטורים:</span></label>
+                                    <div style="display:flex; gap:8px;">
+                                        <button class="btn-toggle active" id="btn-toggle-flux" onclick="toggleFluxLines()" style="flex:1; font-size:11.5px;">🧲 קווי שטף</button>
+                                        <button class="btn-toggle active" id="btn-toggle-dq" onclick="toggleDqVectors()" style="flex:1; font-size:11.5px;">🧭 צירי d-q</button>
+                                    </div>
+                                </div>
+
+                                <div class="control-group" style="display:flex; gap:8px;">
+                                    <button class="btn-toggle" onclick="stepMotor(-15)" style="flex:1; font-size:12px;">◀ פסיעה -15°</button>
+                                    <button class="btn-toggle" onclick="stepMotor(15)" style="flex:1; font-size:12px;">פסיעה +15° ▶</button>
+                                </div>
+
+                                <div class="control-group" style="display:flex; gap:8px; margin-top:4px;">
+                                    <button class="btn-toggle active" id="btn-motor-run" onclick="toggleMotorSim()" style="flex:1;">⏸️ השהה / הפעל</button>
+                                    <button class="btn-toggle" onclick="resetMotorSim()" style="flex:1;">🔄 איפוס</button>
+                                </div>
+
+                                <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle); border-radius:8px; padding:10px; font-size:11.5px; color:var(--text-muted); line-height:1.5;">
+                                    <strong style="color:#fff; display:block; margin-bottom:4px;">מקרא מפסקים (Switch State):</strong>
+                                    <div><span style="color:#10b981; font-weight:700;">ירוק זוהר:</span> מפסק מוליך (ON, חיבור למתח)</div>
+                                    <div><span style="color:#64748b;">אפור כהה:</span> מפסק חסום (OFF, נתק)</div>
+                                    <div style="margin-top:4px;"><span style="color:#ef4444;">● פאזה A</span> | <span style="color:#10b981;">● פאזה B</span> | <span style="color:#38bdf8;">● פאזה C</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Canvas and Telemetry View -->
+                            <div class="sim-view-panel">
+                                <div style="position:relative; width:100%; height:460px; background:#050811; border:1px solid var(--border-subtle); border-radius:12px; overflow:hidden;">
+                                    <canvas id="motor-inverter-canvas" style="position:absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
+                                    <div class="canvas-title-badge" style="left:12px; right:auto; direction:ltr;">Dual Inverter Legs & PMSM Cross-Section</div>
+                                </div>
+
+                                <div class="telemetry-strip">
+                                    <div class="telemetry-item">
+                                        <span class="lbl">זווית מכנית ($\theta_m$)</span>
+                                        <span class="val" id="disp-motor-thetam">0.0°</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">זווית חשמלית ($\theta_e$)</span>
+                                        <span class="val" id="disp-motor-thetae">0.0°</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">מצב מפסקים $[S_1]-[S_2]$</span>
+                                        <span class="val" id="disp-motor-sw" style="font-size:12.5px;">[100]-[011]</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">מומנט אלקטרומגנטי ($T_e$)</span>
+                                        <span class="val" id="disp-motor-te">14.2 Nm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>15.1 אנטומיה פיזיקלית של מנוע ה-OEMER QS 100S</h3>
+                    <p>
+                        המנוע הנבדק במעבדה הוא מנוע סינכרוני עם מגנטים קבועים תעשייתי בעל מבנה ייעודי:
+                    </p>
+
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin: 20px 0;">
+                        <div class="card" style="border-right: 3px solid #ef4444;">
+                            <h4 style="color:#ef4444; margin-top:0;">רוטור בעל 4 קטבים (p=2 Pole Pairs)</h4>
+                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                                הרוטור כולל 4 מגנטים קבועים מניאודימיום (NdFeB) בעלי צפיפות אנרגיה גבוהה המסודרים לסירוגין סביב הציר: <strong>צפון (N) $\rightarrow$ דרום (S) $\rightarrow$ צפון (N) $\rightarrow$ דרום (S)</strong>. כתוצאה מכך, על כל סיבוב מכני יחיד ($360^\circ$ מכניות), השדה המגנטי משלים <strong>שני מחזורים חשמליים מלאים</strong> ($\theta_e = 2 \cdot \theta_m$).
+                            </p>
+                        </div>
+                        <div class="card" style="border-right: 3px solid #38bdf8;">
+                            <h4 style="color:#38bdf8; margin-top:0;">סטטור עם סלילים פתוחים (Open-Ended Winding)</h4>
+                            <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                                עוגן הסטטור בנוי מלמינציות פלדת סיליקון (Silicon Steel) בעלות הפסדי היסטרזיס נמוכים. בניגוד למנוע סטנדרטי שבו קצוות הפאזות מחוברים יחד בתוך המנוע לנקודת ניוטרל כוכב, במנוע ה-OEMER כל 6 הקצוות של שלושת הסלילים ($A_1-A_2, B_1-B_2, C_1-C_2$) מוצאים החוצה לחיבור ישיר לשני הממירים.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>15.2 חיבור קצוות הסלילים לרגלי שני הממירים (Series-End VSI Connection)</h3>
+                    <p>
+                        טופולוגיית ה-Series-End VSI עושה שימוש בשני ממירי חצי-גשר תלת-פאזיים סטנדרטיים (VSI-1 ו-VSI-2) המחוברים לאותו ספק כוח DC ראשי:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>ממיר ראשי 1 (VSI-1):</strong> שלוש רגלי הממיר ($S_{1a}, S_{1b}, S_{1c}$) מחוברות להזנת הכניסה של שלושת סלילי המנוע ($A_1, B_1, C_1$).</li>
+                        <li><strong>ממיר ראשי 2 (VSI-2):</strong> שלוש רגלי הממיר ($S_{2a}, S_{2b}, S_{2c}$) מחוברות לקצוות הנגדיים של אותם סלילים בדיוק ($A_2, B_2, C_2$).</li>
+                        <li><strong>מתח הפאזה הנופל על המנוע:</strong> המתח הרגעי הנופל על כל פאזה שווה להפרש הפוטנציאלים בין שתי הרגליים המתאימות:
+                            <div class="math-block" style="font-size:15px;">
+                                $$v_{an}(t) = v_{A1}(t) - v_{A2}(t)$$
+                                $$v_{bn}(t) = v_{B1}(t) - v_{B2}(t)$$
+                                $$v_{cn}(t) = v_{C1}(t) - v_{C2}(t)$$
+                            </div>
+                        </li>
+                        <li><strong>הכפלת מתח אפקטיבית:</strong> בזכות ההזנה משני הקצוות, מתח הקו האפקטיבי המרבי מגיע לפי $\sqrt{3} \cdot V_{dc}$, דבר המאפשר הגעה למהירויות סיבוב גבוהות פי שניים ללא צורך בהעלאת מתח ה-DC Link המסוכן!</li>
+                    </ul>
+
+                    <h3>15.3 יצירת המומנט האלקטרומגנטי ואינטראקציית צירי d-q</h3>
+                    <p>
+                        כאשר רגלי הממיר ממתגות את זרמי הפאזה הסינוסואידליים $i_a(t), i_b(t), i_c(t)$, הם מייצרים באוויר הרווח של הסטטור שדה מגנטי מסתובב ($B_s$). 
+                    </p>
+                    <p>
+                        שדה זה מפעיל כוח לורנץ מגנטי משיכתי על המגנטים הקבועים של הרוטור ($B_r$). בבקרת השדה המכוון (FOC) ובקרת ה-OEPC:
+                    </p>
+                    <ul class="bullet-list">
+                        <li><strong>ציר d (Direct Axis):</strong> מיושר ישירות עם ציר השטף המגנטי של מגנטי הרוטור. זרם בציר זה ($i_d$) מייצר רק כוח הצמדה רדיאלי ואינו מייצר מומנט סיבובי.</li>
+                        <li><strong>ציר q (Quadrature Axis):</strong> ניצב ב-$90^\circ$ חשמליות לציר ה-d. זרם בציר זה ($i_q$) פועל בזווית אופטימלית של $90^\circ$ מול המגנטים ומייצר את מלוא המומנט הסיבובי:
+                            <div class="math-block">
+                                $$T_e = \frac{3}{2} \cdot p \cdot \psi_{pm} \cdot i_q + \frac{3}{2} \cdot p \cdot (L_d - L_q) \cdot i_d \cdot i_q$$
+                            </div>
+                        </li>
+                        <li>במנוע PMSM בעל מגנטים מודבקים על פני הרוטור (SPMSM) שבו $L_d \approx L_q$, בקרת ה-OEPC שומרת על $i_d = 0$ (זווית עומס $\delta = 90^\circ$), מה שמבטיח פעולה בנצילות שיא ובמומנט מקסימלי לכל אמפר (MTPA).</li>
+                    </ul>
+                </section>
+
+                <!-- ============================================================ -->
                 <!-- APPENDICES & DOCUMENTS HUB                                   -->
                 <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-appendices">
-                    <span class="chapter-badge">פרק 15</span>
+                    <span class="chapter-badge">פרק 16</span>
                     <h2>נספחים, קובצי תזה ואינדקס דוחות הפרויקט</h2>
 
                     <p>
@@ -4322,6 +4473,627 @@
             requestAnimationFrame(oscStep);
         }
 
+        // ============================================================
+        // SIMULATION 3: PMSM MOTOR CROSS-SECTION & DUAL INVERTER LEGS
+        // ============================================================
+        let motorSimRunning = true;
+        let motorSimRpm = 600;
+        let motorSimDelta = 90 * Math.PI / 180; // 90 deg electrical (MTPA)
+        let motorSimThetaM = 0; // mechanical rotor angle (rad)
+        let motorSimShowFlux = true;
+        let motorSimShowDq = true;
+        let lastMotorSimTime = 0;
+
+        function updateMotorParams() {
+            const rpmInput = document.getElementById('slider-motor-rpm');
+            const deltaInput = document.getElementById('slider-motor-delta');
+            if (rpmInput) {
+                motorSimRpm = parseFloat(rpmInput.value);
+                const el = document.getElementById('val-motor-rpm');
+                if (el) el.innerText = motorSimRpm + ' RPM';
+            }
+            if (deltaInput) {
+                const deg = parseFloat(deltaInput.value);
+                motorSimDelta = deg * Math.PI / 180;
+                let lbl = deg + '°';
+                if (deg === 90) lbl += ' (MTPA)';
+                else if (deg > 90) lbl += ' (Field Weakening)';
+                const el = document.getElementById('val-motor-delta');
+                if (el) el.innerText = lbl;
+            }
+        }
+
+        function toggleMotorSim() {
+            motorSimRunning = !motorSimRunning;
+            const btn = document.getElementById('btn-motor-run');
+            if (btn) {
+                btn.classList.toggle('active', motorSimRunning);
+                btn.innerHTML = motorSimRunning ? '⏸️ השהה / הפעל' : '▶️ הפעל';
+            }
+        }
+
+        function resetMotorSim() {
+            motorSimThetaM = 0;
+            const rpmInput = document.getElementById('slider-motor-rpm');
+            const deltaInput = document.getElementById('slider-motor-delta');
+            if (rpmInput) rpmInput.value = 600;
+            if (deltaInput) deltaInput.value = 90;
+            updateMotorParams();
+        }
+
+        function stepMotor(deg) {
+            motorSimThetaM += (deg * Math.PI / 180);
+            drawMotorSimStep(performance.now());
+        }
+
+        function toggleFluxLines() {
+            motorSimShowFlux = !motorSimShowFlux;
+            const btn = document.getElementById('btn-toggle-flux');
+            if (btn) btn.classList.toggle('active', motorSimShowFlux);
+        }
+
+        function toggleDqVectors() {
+            motorSimShowDq = !motorSimShowDq;
+            const btn = document.getElementById('btn-toggle-dq');
+            if (btn) btn.classList.toggle('active', motorSimShowDq);
+        }
+
+        // Helper to draw a single half-bridge leg
+        function drawLeg(ctx, x, topY, botY, switchTopOn, switchBotOn, color, label) {
+            const midY = (topY + botY) / 2;
+            ctx.lineWidth = 2.5;
+
+            // DC+ rail connection to top switch
+            ctx.strokeStyle = switchTopOn ? '#10b981' : '#334155';
+            ctx.beginPath();
+            ctx.moveTo(x, topY);
+            ctx.lineTo(x, topY + 18);
+            ctx.stroke();
+
+            // Top switch
+            ctx.fillStyle = switchTopOn ? '#10b981' : '#1e293b';
+            ctx.strokeStyle = switchTopOn ? '#34d399' : '#475569';
+            ctx.lineWidth = 1.5;
+            ctx.fillRect(x - 14, topY + 18, 28, 26);
+            ctx.strokeRect(x - 14, topY + 18, 28, 26);
+            ctx.font = 'bold 9px Fira Code';
+            ctx.fillStyle = switchTopOn ? '#050811' : '#94a3b8';
+            ctx.textAlign = 'center';
+            ctx.fillText(switchTopOn ? 'ON' : 'OFF', x, topY + 34);
+
+            // Mid connection
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = switchTopOn ? '#10b981' : (switchBotOn ? '#38bdf8' : '#475569');
+            ctx.beginPath();
+            ctx.moveTo(x, topY + 44);
+            ctx.lineTo(x, midY);
+            ctx.lineTo(x, botY - 44);
+            ctx.stroke();
+
+            // Midpoint terminal dot
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, midY, 4.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Bottom switch
+            ctx.fillStyle = switchBotOn ? '#10b981' : '#1e293b';
+            ctx.strokeStyle = switchBotOn ? '#34d399' : '#475569';
+            ctx.lineWidth = 1.5;
+            ctx.fillRect(x - 14, botY - 44, 28, 26);
+            ctx.strokeRect(x - 14, botY - 44, 28, 26);
+            ctx.font = 'bold 9px Fira Code';
+            ctx.fillStyle = switchBotOn ? '#050811' : '#94a3b8';
+            ctx.textAlign = 'center';
+            ctx.fillText(switchBotOn ? 'ON' : 'OFF', x, botY - 28);
+
+            // DC- connection
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = switchBotOn ? '#10b981' : '#334155';
+            ctx.beginPath();
+            ctx.moveTo(x, botY - 18);
+            ctx.lineTo(x, botY);
+            ctx.stroke();
+
+            // Label
+            ctx.font = 'bold 11px Rubik';
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x, midY - 8);
+
+            return { x: x, y: midY };
+        }
+
+        function drawInverterSection(ctx, leftX, topY, width, height, data) {
+            const halfH = height / 2 - 12;
+            const colors = ['#ef4444', '#10b981', '#38bdf8'];
+            const labels1 = ['A1', 'B1', 'C1'];
+            const labels2 = ['A2', 'B2', 'C2'];
+
+            // Box VSI-1
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.65)';
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)';
+            ctx.lineWidth = 1.2;
+            ctx.roundRect(leftX, topY, width, halfH, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.font = 'bold 11px Rubik';
+            ctx.fillStyle = '#38bdf8';
+            ctx.textAlign = 'right';
+            ctx.fillText('ממיר ראשי VSI-1 (קצוות כניסה)', leftX + width - 12, topY + 16);
+
+            // Rails for VSI-1
+            const rail1Top = topY + 28;
+            const rail1Bot = topY + halfH - 18;
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ef4444'; // DC+
+            ctx.beginPath(); ctx.moveTo(leftX + 10, rail1Top); ctx.lineTo(leftX + width - 10, rail1Top); ctx.stroke();
+            ctx.font = '8px Fira Code'; ctx.fillStyle = '#ef4444'; ctx.textAlign = 'left'; ctx.fillText('+Vdc', leftX + 12, rail1Top - 4);
+
+            ctx.strokeStyle = '#38bdf8'; // DC-
+            ctx.beginPath(); ctx.moveTo(leftX + 10, rail1Bot); ctx.lineTo(leftX + width - 10, rail1Bot); ctx.stroke();
+            ctx.fillStyle = '#38bdf8'; ctx.fillText('GND', leftX + 12, rail1Bot + 10);
+
+            // Legs VSI-1
+            const legSpacing = (width - 40) / 3;
+            const terminals1 = [];
+            for (let i = 0; i < 3; i++) {
+                const lx = leftX + 30 + i * legSpacing;
+                const swTop = data.s1[i] === 1;
+                const swBot = !swTop;
+                const pt = drawLeg(ctx, lx, rail1Top, rail1Bot, swTop, swBot, colors[i], labels1[i]);
+                terminals1.push(pt);
+            }
+
+            // Box VSI-2
+            const topY2 = topY + halfH + 20;
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.65)';
+            ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
+            ctx.lineWidth = 1.2;
+            ctx.roundRect(leftX, topY2, width, halfH, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.font = 'bold 11px Rubik';
+            ctx.fillStyle = '#10b981';
+            ctx.textAlign = 'right';
+            ctx.fillText('ממיר משני VSI-2 (קצוות יציאה)', leftX + width - 12, topY2 + 16);
+
+            // Rails for VSI-2
+            const rail2Top = topY2 + 28;
+            const rail2Bot = topY2 + halfH - 18;
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ef4444';
+            ctx.beginPath(); ctx.moveTo(leftX + 10, rail2Top); ctx.lineTo(leftX + width - 10, rail2Top); ctx.stroke();
+            ctx.font = '8px Fira Code'; ctx.fillStyle = '#ef4444'; ctx.textAlign = 'left'; ctx.fillText('+Vdc', leftX + 12, rail2Top - 4);
+
+            ctx.strokeStyle = '#38bdf8';
+            ctx.beginPath(); ctx.moveTo(leftX + 10, rail2Bot); ctx.lineTo(leftX + width - 10, rail2Bot); ctx.stroke();
+            ctx.fillStyle = '#38bdf8'; ctx.fillText('GND', leftX + 12, rail2Bot + 10);
+
+            // Legs VSI-2
+            const terminals2 = [];
+            for (let i = 0; i < 3; i++) {
+                const lx = leftX + 30 + i * legSpacing;
+                const swTop = data.s2[i] === 1;
+                const swBot = !swTop;
+                const pt = drawLeg(ctx, lx, rail2Top, rail2Bot, swTop, swBot, colors[i], labels2[i]);
+                terminals2.push(pt);
+            }
+
+            // Bus wires exiting to the right with animated flow dashes
+            const animOffset = (performance.now() / 30) % 20;
+            for (let i = 0; i < 3; i++) {
+                const c = colors[i];
+                const currentVal = data.i[i];
+                ctx.strokeStyle = c;
+                ctx.lineWidth = Math.min(Math.max(Math.abs(currentVal) * 3.5, 1.2), 4);
+                ctx.setLineDash([6, 6]);
+                ctx.lineDashOffset = currentVal >= 0 ? -animOffset : animOffset;
+
+                // Wire from VSI-1 terminal to right edge
+                ctx.beginPath();
+                ctx.moveTo(terminals1[i].x, terminals1[i].y);
+                ctx.lineTo(leftX + width + 8 + i * 8, terminals1[i].y);
+                ctx.stroke();
+
+                // Wire from VSI-2 terminal to right edge
+                ctx.beginPath();
+                ctx.moveTo(terminals2[i].x, terminals2[i].y);
+                ctx.lineTo(leftX + width + 8 + i * 8, terminals2[i].y);
+                ctx.stroke();
+            }
+            ctx.setLineDash([]);
+        }
+
+        function drawMotorSection(ctx, cx, cy, r, data) {
+            // Outer Stator Iron Core
+            const rHousing = r * 1.08;
+            const rStatorOuter = r;
+            const rStatorInner = r * 0.65;
+            const rRotorOuter = r * 0.58;
+            const rShaft = r * 0.20;
+
+            // Stator cooling ribs
+            ctx.fillStyle = '#1e293b';
+            for (let a = 0; a < Math.PI * 2; a += Math.PI / 16) {
+                const ribX = cx + Math.cos(a) * rHousing;
+                const ribY = cy + Math.sin(a) * rHousing;
+                ctx.beginPath();
+                ctx.arc(ribX, ribY, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Stator Iron ring gradient
+            const statorGrad = ctx.createRadialGradient(cx, cy, rStatorInner, cx, cy, rStatorOuter);
+            statorGrad.addColorStop(0, '#1e293b');
+            statorGrad.addColorStop(0.7, '#334155');
+            statorGrad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = statorGrad;
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, rStatorOuter, 0, Math.PI * 2);
+            ctx.arc(cx, cy, rStatorInner, 0, Math.PI * 2, true);
+            ctx.fill();
+            ctx.stroke();
+
+            // 12 Stator Teeth & Winding Slots
+            const numSlots = 12;
+            const slotColors = ['#ef4444', '#10b981', '#38bdf8']; // A, B, C
+            const phaseCurrents = [data.ia, data.ib, data.ic];
+            const slotLabels = [
+                '+A', '+B', '+C', '-A', '-B', '-C',
+                '+A', '+B', '+C', '-A', '-B', '-C'
+            ];
+
+            const rSlot = (rStatorInner + rStatorOuter) / 2;
+
+            for (let k = 0; k < numSlots; k++) {
+                const angle = (k * 2 * Math.PI) / numSlots - Math.PI / 2;
+                const toothX1 = cx + Math.cos(angle) * rStatorInner;
+                const toothY1 = cy + Math.sin(angle) * rStatorInner;
+                const toothX2 = cx + Math.cos(angle) * (rStatorInner + 14);
+                const toothY2 = cy + Math.sin(angle) * (rStatorInner + 14);
+
+                // Draw tooth tip
+                ctx.strokeStyle = '#64748b';
+                ctx.lineWidth = 3.5;
+                ctx.beginPath();
+                ctx.moveTo(toothX1, toothY1);
+                ctx.lineTo(toothX2, toothY2);
+                ctx.stroke();
+
+                // Slot coil position
+                const slotAngle = angle + (Math.PI / numSlots);
+                const sx = cx + Math.cos(slotAngle) * rSlot;
+                const sy = cy + Math.sin(slotAngle) * rSlot;
+
+                const phaseIdx = k % 3;
+                const isPos = (Math.floor(k / 3) % 2 === 0);
+                const phaseColor = slotColors[phaseIdx];
+                const iVal = phaseCurrents[phaseIdx] * (isPos ? 1 : -1);
+
+                // Coil Slot background
+                ctx.fillStyle = '#0b1120';
+                ctx.strokeStyle = phaseColor;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(sx, sy, 11, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Current Dot or Cross
+                const mag = Math.min(Math.abs(iVal), 1.0);
+                if (iVal >= 0.08) {
+                    // Current coming out (Dot)
+                    ctx.fillStyle = phaseColor;
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, 2.5 + mag * 3.5, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (iVal <= -0.08) {
+                    // Current going in (Cross)
+                    ctx.strokeStyle = phaseColor;
+                    ctx.lineWidth = 1.8;
+                    const crossR = 3.0 + mag * 3.0;
+                    ctx.beginPath();
+                    ctx.moveTo(sx - crossR, sy - crossR); ctx.lineTo(sx + crossR, sy + crossR);
+                    ctx.moveTo(sx + crossR, sy - crossR); ctx.lineTo(sx - crossR, sy + crossR);
+                    ctx.stroke();
+                }
+
+                // Small phase label near slot
+                ctx.font = 'bold 8px Fira Code';
+                ctx.fillStyle = phaseColor;
+                ctx.textAlign = 'center';
+                const lblR = rStatorOuter + 10;
+                ctx.fillText(slotLabels[k], cx + Math.cos(slotAngle) * lblR, cy + Math.sin(slotAngle) * lblR + 3);
+            }
+
+            // Air Gap Circle
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.2)';
+            ctx.setLineDash([2, 4]);
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(cx, cy, (rStatorInner + rRotorOuter) / 2, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // ----------------------------------------------------
+            // ROTOR (Rotating with thetaM)
+            // ----------------------------------------------------
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(data.thetaM);
+
+            // Rotor Iron Core
+            const rotorGrad = ctx.createRadialGradient(0, 0, rShaft, 0, 0, rRotorOuter);
+            rotorGrad.addColorStop(0, '#334155');
+            rotorGrad.addColorStop(0.85, '#1e293b');
+            rotorGrad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = rotorGrad;
+            ctx.beginPath();
+            ctx.arc(0, 0, rRotorOuter, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // 4 Surface Permanent Magnets: N-S-N-S (p=2)
+            const magThickness = (rRotorOuter - rShaft) * 0.35;
+            const magOuterR = rRotorOuter;
+            const magInnerR = rRotorOuter - magThickness;
+            const poleArc = (Math.PI / 2) * 0.76; // ~68 degrees span per magnet
+
+            const magnetPoles = [
+                { angle: 0, isNorth: true },
+                { angle: Math.PI / 2, isNorth: false },
+                { angle: Math.PI, isNorth: true },
+                { angle: 3 * Math.PI / 2, isNorth: false }
+            ];
+
+            magnetPoles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(0, 0, magOuterR, p.angle - poleArc / 2, p.angle + poleArc / 2);
+                ctx.arc(0, 0, magInnerR, p.angle + poleArc / 2, p.angle - poleArc / 2, true);
+                ctx.closePath();
+
+                if (p.isNorth) {
+                    const nGrad = ctx.createRadialGradient(0, 0, magInnerR, 0, 0, magOuterR);
+                    nGrad.addColorStop(0, '#991b1b');
+                    nGrad.addColorStop(1, '#ef4444');
+                    ctx.fillStyle = nGrad;
+                    ctx.strokeStyle = '#fca5a5';
+                } else {
+                    const sGrad = ctx.createRadialGradient(0, 0, magInnerR, 0, 0, magOuterR);
+                    sGrad.addColorStop(0, '#1e40af');
+                    sGrad.addColorStop(1, '#38bdf8');
+                    ctx.fillStyle = sGrad;
+                    ctx.strokeStyle = '#bae6fd';
+                }
+                ctx.lineWidth = 1.5;
+                ctx.fill();
+                ctx.stroke();
+
+                // Magnet letter N / S
+                const letterR = (magInnerR + magOuterR) / 2;
+                const lx = Math.cos(p.angle) * letterR;
+                const ly = Math.sin(p.angle) * letterR;
+                ctx.font = 'bold 12px Rubik';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(p.isNorth ? 'N' : 'S', lx, ly);
+            });
+
+            // Shaft at center
+            const shaftGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, rShaft);
+            shaftGrad.addColorStop(0, '#94a3b8');
+            shaftGrad.addColorStop(0.7, '#475569');
+            shaftGrad.addColorStop(1, '#1e293b');
+            ctx.fillStyle = shaftGrad;
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, 0, rShaft, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Shaft Keyway notch
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(rShaft - 6, -3, 6, 6);
+
+            // Center pivot cross
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(-5, 0); ctx.lineTo(5, 0);
+            ctx.moveTo(0, -5); ctx.lineTo(0, 5);
+            ctx.stroke();
+
+            ctx.restore(); // Exit rotor rotation context
+
+            // ----------------------------------------------------
+            // OVERLAYS: FLUX LINES & D-Q VECTORS
+            // ----------------------------------------------------
+            if (data.showFlux) {
+                // Draw dynamic magnetic flux lines across air gap
+                ctx.strokeStyle = 'rgba(239, 68, 68, 0.35)';
+                ctx.lineWidth = 1.2;
+                for (let k = 0; k < 4; k++) {
+                    const poleM = data.thetaM + k * Math.PI / 2;
+                    const isN = (k % 2 === 0);
+                    ctx.strokeStyle = isN ? 'rgba(239, 68, 68, 0.45)' : 'rgba(56, 189, 248, 0.45)';
+                    for (let f = -0.25; f <= 0.25; f += 0.25) {
+                        const fa = poleM + f;
+                        const rx = cx + Math.cos(fa) * rRotorOuter;
+                        const ry = cy + Math.sin(fa) * rRotorOuter;
+                        const sx = cx + Math.cos(fa) * (rStatorInner + 4);
+                        const sy = cy + Math.sin(fa) * (rStatorInner + 4);
+                        ctx.beginPath();
+                        ctx.moveTo(rx, ry);
+                        ctx.lineTo(sx, sy);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            if (data.showDq) {
+                // Vector d-axis (aligned with Rotor N-pole at thetaM)
+                const dLen = rStatorOuter + 22;
+                const dx = cx + Math.cos(data.thetaM) * dLen;
+                const dy = cy + Math.sin(data.thetaM) * dLen;
+                drawArrow(ctx, cx, cy, dx, dy, '#00d2ff', 2.5);
+                ctx.font = 'bold 11px Rubik';
+                ctx.fillStyle = '#00d2ff';
+                ctx.textAlign = 'left';
+                ctx.fillText('ציר d (שטף רוטור)', dx + 6, dy);
+
+                // Vector q-axis (90 deg electrical = 45 deg mechanical from d-axis)
+                const qAngle = data.thetaM + (Math.PI / 4);
+                const qx = cx + Math.cos(qAngle) * dLen;
+                const qy = cy + Math.sin(qAngle) * dLen;
+                drawArrow(ctx, cx, cy, qx, qy, '#10b981', 2.5);
+                ctx.fillStyle = '#10b981';
+                ctx.fillText('ציר q (מומנט)', qx + 6, qy);
+
+                // Stator MMF field vector Bs (leads d-axis by delta electrical = delta/2 mechanical)
+                const sAngle = data.thetaM + (motorSimDelta / 2);
+                const sx = cx + Math.cos(sAngle) * (dLen * 0.92);
+                const sy = cy + Math.sin(sAngle) * (dLen * 0.92);
+                drawArrow(ctx, cx, cy, sx, sy, '#f43f5e', 2.8);
+                ctx.fillStyle = '#f43f5e';
+                ctx.fillText('Bs שדה סטטור', sx + 6, sy);
+            }
+        }
+
+        // Helper function to draw an arrow
+        function drawArrow(ctx, fromX, fromY, toX, toY, color, width) {
+            const headLen = 10;
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = width;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headLen * Math.cos(angle - Math.PI / 6), toY - headLen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(toX - headLen * Math.cos(angle + Math.PI / 6), toY - headLen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawMotorSimStep(now) {
+            if (!lastMotorSimTime) lastMotorSimTime = now;
+            const dt = Math.min((now - lastMotorSimTime) / 1000, 0.05);
+            lastMotorSimTime = now;
+
+            if (motorSimRunning) {
+                const omegaM = (motorSimRpm * 2 * Math.PI) / 60; // rad/s
+                motorSimThetaM += omegaM * dt;
+            }
+
+            const canvas = document.getElementById('motor-inverter-canvas');
+            if (canvas) {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                const displayW = Math.max(rect.width, 300);
+                const displayH = Math.max(rect.height, 300);
+
+                if (canvas.width !== Math.round(displayW * dpr) || canvas.height !== Math.round(displayH * dpr)) {
+                    canvas.width = Math.round(displayW * dpr);
+                    canvas.height = Math.round(displayH * dpr);
+                }
+
+                const ctx = canvas.getContext('2d');
+                ctx.save();
+                ctx.scale(dpr, dpr);
+
+                const w = displayW;
+                const h = displayH;
+
+                // Background
+                ctx.fillStyle = '#050811';
+                ctx.fillRect(0, 0, w, h);
+
+                // Subtle grid
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < w; x += 30) {
+                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+                }
+                for (let y = 0; y < h; y += 30) {
+                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+                }
+
+                // Electrical angle (p = 2 pole pairs)
+                const thetaE = (2 * motorSimThetaM) % (2 * Math.PI);
+                const iAngle = thetaE + motorSimDelta;
+
+                // Instantaneous currents
+                const ia = Math.cos(iAngle);
+                const ib = Math.cos(iAngle - (2 * Math.PI / 3));
+                const ic = Math.cos(iAngle + (2 * Math.PI / 3));
+
+                // Inverter switching states
+                const s1a = ia >= 0 ? 1 : 0;
+                const s2a = ia < 0 ? 1 : 0;
+                const s1b = ib >= 0 ? 1 : 0;
+                const s2b = ib < 0 ? 1 : 0;
+                const s1c = ic >= 0 ? 1 : 0;
+                const s2c = ic < 0 ? 1 : 0;
+
+                // Canvas Layout
+                const isMobile = w < 720;
+                const invW = isMobile ? w * 0.42 : Math.min(w * 0.38, 320);
+                const motorCenterX = isMobile ? (w + invW) / 2 : invW + (w - invW) / 2;
+                const motorCenterY = h / 2;
+                const motorRadius = Math.min((w - invW) * 0.44, h * 0.40, 165);
+
+                // 1. Draw Inverter Legs (VSI-1 & VSI-2)
+                drawInverterSection(ctx, 12, 16, invW - 20, h - 32, {
+                    s1: [s1a, s1b, s1c],
+                    s2: [s2a, s2b, s2c],
+                    i: [ia, ib, ic]
+                });
+
+                // 2. Draw Motor Cross-Section
+                drawMotorSection(ctx, motorCenterX, motorCenterY, motorRadius, {
+                    thetaM: motorSimThetaM,
+                    thetaE: thetaE,
+                    ia: ia,
+                    ib: ib,
+                    ic: ic,
+                    showFlux: motorSimShowFlux,
+                    showDq: motorSimShowDq
+                });
+
+                ctx.restore();
+
+                // Update Telemetry Panel
+                const normThetaM = ((motorSimThetaM * 180 / Math.PI) % 360 + 360) % 360;
+                const normThetaE = ((thetaE * 180 / Math.PI) % 360 + 360) % 360;
+                const te = 14.2 * Math.sin(motorSimDelta);
+
+                const elThetaM = document.getElementById('disp-motor-thetam');
+                const elThetaE = document.getElementById('disp-motor-thetae');
+                const elSw = document.getElementById('disp-motor-sw');
+                const elTe = document.getElementById('disp-motor-te');
+
+                if (elThetaM) elThetaM.innerText = normThetaM.toFixed(1) + '°';
+                if (elThetaE) elThetaE.innerText = normThetaE.toFixed(1) + '°';
+                if (elSw) elSw.innerText = `[${s1a}${s1b}${s1c}]-[${s2a}${s2b}${s2c}]`;
+                if (elTe) elTe.innerText = te.toFixed(1) + ' Nm';
+            }
+
+            requestAnimationFrame(drawMotorSimStep);
+        }
+
         // Copy text to clipboard helper
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
@@ -4336,7 +5108,9 @@
             initJsx();
             updateJsxSim();
             updateOscParams();
+            updateMotorParams();
             requestAnimationFrame(oscStep);
+            requestAnimationFrame(drawMotorSimStep);
         });
     </script>
 </body>
