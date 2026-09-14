@@ -3062,11 +3062,11 @@ def get_book_html():
                     </p>
 
                     <div class="math-block">
-                        \begin{aligned}
+                        $$\begin{aligned}
                         v_d &= R_s i_d + \frac{d\lambda_d}{dt} - \omega_e \lambda_q \\
                         v_q &= R_s i_q + \frac{d\lambda_q}{dt} + \omega_e \lambda_d \\
                         v_0 &= R_0 i_0 + \frac{d\lambda_0}{dt}
-                        \end{aligned}
+                        \end{aligned}$$
                     </div>
 
                     <p>
@@ -3074,11 +3074,11 @@ def get_book_html():
                     </p>
 
                     <div class="math-block">
-                        \begin{aligned}
+                        $$\begin{aligned}
                         \lambda_d &= L_d i_d + \lambda_{pm} \\
                         \lambda_q &= L_q i_q \\
                         \lambda_0 &= L_0 i_0
-                        \end{aligned}
+                        \end{aligned}$$
                     </div>
 
                     <p>
@@ -9362,11 +9362,13 @@ def get_book_html_en():
                         To transcend these physical constraints, multi-level and open-end winding topologies have been widely investigated. Among them, the <strong>Series-End VSI (Fig. 1.1 & Fig. 1.2)</strong> presents an extraordinary balance: four inverter legs ($L_1, L_2, L_3, L_4$) drive three motor windings connected in a continuous series ladder:
                     </p>
 
-                    <div class="code-block">
-Phase A (Za): Connected across Leg 1 and Leg 2  -->  va = v1 - v2
-Phase B (Zb): Connected across Leg 2 and Leg 3  -->  vb = v2 - v3
-Phase C (Zc): Connected across Leg 3 and Leg 4  -->  vc = v3 - v4
-Closed Loop Voltage: v_loop = va + vb + vc = v1 - v4
+                    <div class="math-block">
+                        $$\begin{aligned}
+                        v_a(t) &= v_1(t) - v_2(t) \quad &\text{[Phase A Potential across Leg 1 and Leg 2]} \\
+                        v_b(t) &= v_2(t) - v_3(t) \quad &\text{[Phase B Potential across Leg 2 and Leg 3]} \\
+                        v_c(t) &= v_3(t) - v_4(t) \quad &\text{[Phase C Potential across Leg 3 and Leg 4]} \\
+                        v_{loop}(t) &= v_a + v_b + v_c = (v_1 - v_2) + (v_2 - v_3) + (v_3 - v_4) = v_1(t) - v_4(t)
+                        \end{aligned}$$
                     </div>
 
                     <!-- Interactive Figure 1.1 (English) -->
@@ -9624,11 +9626,11 @@ Closed Loop Voltage: v_loop = va + vb + vc = v1 - v4
 
                                 <div class="telemetry-strip">
                                     <div class="telemetry-item">
-                                        <span class="lbl">Mechanical Angle ($	heta_m$)</span>
+                                        <span class="lbl">Mechanical Angle ($\theta_m$)</span>
                                         <span class="val" id="disp-motor-thetam">0.0°</span>
                                     </div>
                                     <div class="telemetry-item">
-                                        <span class="lbl">Electrical Angle ($	heta_e$)</span>
+                                        <span class="lbl">Electrical Angle ($\theta_e$)</span>
                                         <span class="val" id="disp-motor-thetae">0.0°</span>
                                     </div>
                                     <div class="telemetry-item">
@@ -9657,33 +9659,123 @@ Closed Loop Voltage: v_loop = va + vb + vc = v1 - v4
                     <h2>Mathematical Modeling & Generalized d-q-0 Reference Frames</h2>
 
                     <p>
-                        In a standard isolated neutral PMSM, Kirchoff's Current Law enforces $i_a + i_b + i_c = 0$, eliminating the zero-sequence component from dynamic models. However, in the Series-End VSI, a non-zero zero-sequence current ($i_0$) can circulate freely through the boundary legs. Thus, the motor must be formulated in a generalized <strong>three-dimensional $d-q-0$ synchronous frame</strong>:
+                        In a standard star-connected PMSM with isolated neutral, Kirchhoff's Current Law strictly enforces $\sum i_{abc} = i_a + i_b + i_c = 0$, completely nullifying the zero-sequence channel from dynamic drive models. However, in the Series-End VSI topology, the boundary inverter legs ($L_1$ and $L_4$) close an external current conduction loop through the DC rail capacitors. Consequently, a non-zero zero-sequence current ($i_0$) can circulate dynamically through all three series phase coils ($Z_a, Z_b, Z_c$). Thus, the complete electrodynamic state space must be rigorously formulated in a generalized <strong>three-dimensional $d-q-0$ orthogonal coordinate system</strong>.
                     </p>
 
-                    <p><strong>Modified Decoupled Clarke Transformation Matrix:</strong></p>
-                    <p style="text-align: center;">
-                        $$\begin{bmatrix} i_\alpha \\ i_\beta \\ i_0 \end{bmatrix} = \sqrt{\frac{2}{3}} \begin{bmatrix} 1 & -\frac{1}{2} & -\frac{1}{2} \\ 0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2} \\ \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{bmatrix} \begin{bmatrix} i_a \\ i_b \\ i_c \end{bmatrix}$$
+                    <h3>1. Natural Stator Coordinate System ($a-b-c$)</h3>
+                    <p>
+                        The terminal voltages across the three physical stator windings are governed by the coupled electromagnetic vector differential equation:
                     </p>
-
-                    <p><strong>Synchronous Rotating Frame Park Transformation:</strong></p>
-                    <p style="text-align: center;">
-                        $$\begin{bmatrix} i_d \\ i_q \\ i_0 \end{bmatrix} = \begin{bmatrix} \cos\theta_e & \sin\theta_e & 0 \\ -\sin\theta_e & \cos\theta_e & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} i_\alpha \\ i_\beta \\ i_0 \end{bmatrix}$$
+                    <div class="math-block">
+                        $$\mathbf{v}_{abc} = \begin{bmatrix} v_a \\ v_b \\ v_c \end{bmatrix} = R_s \begin{bmatrix} i_a \\ i_b \\ i_c \end{bmatrix} + \frac{d}{dt}\begin{bmatrix} \lambda_a \\ \lambda_b \\ \lambda_c \end{bmatrix}$$
+                    </div>
+                    <p>
+                        The total stator flux linkage vector $\boldsymbol{\lambda}_{abc}$ accounts for stator self and mutual inductances as well as the permanent magnet rotor flux distribution:
                     </p>
-
-                    <p>The resulting dynamic voltage state equations in synchronous coordinates become:</p>
-                    <div class="code-block">
-v_d = R_s * i_d + L_d * (d i_d / dt) - \omega_e * L_q * i_q
-v_q = R_s * i_q + L_q * (d i_q / dt) + \omega_e * L_d * i_d + \omega_e * \psi_{pm}
-v_0 = R_s * i_0 + L_0 * (d i_0 / dt)
+                    <div class="math-block">
+                        $$\boldsymbol{\lambda}_{abc} = \mathbf{L}_{abc}(\theta_e)\,\mathbf{i}_{abc} + \boldsymbol{\lambda}_{pm}^{abc}(\theta_e)$$
+                    </div>
+                    <p>
+                        where the sinusoidal rotor permanent magnet flux linkage vector is given by:
+                    </p>
+                    <div class="math-block">
+                        $$\boldsymbol{\lambda}_{pm}^{abc}(\theta_e) = \lambda_{pm} \begin{bmatrix} \cos(\theta_e) \\ \cos\left(\theta_e - \frac{2\pi}{3}\right) \\ \cos\left(\theta_e + \frac{2\pi}{3}\right) \end{bmatrix}$$
                     </div>
 
-                    <p>The instantaneous electromagnetic torque is given by:</p>
-                    <p style="text-align: center; font-size: 1.1rem; color: var(--accent-cyan);">
-                        $$T_e = \frac{3}{2} P \left[ \psi_{pm} i_q + (L_d - L_q) i_d i_q \right]$$
-                    </p>
+                    <h3>2. Generalized Decoupled Clarke Transformation ($a-b-c \to \alpha-\beta-0$)</h3>
                     <p>
-                        Notice that the zero-sequence channel ($v_0, i_0$) produces <strong>zero electromagnetic torque</strong> ($T_{e,0} = 0$). Any circulating current $i_0$ generates pure Joule resistive loss ($P_{loss} = 3 R_s i_0^2$) and magnetic saturation without contributing useful mechanical output.
+                        To transform the stationary three-phase variables into stationary orthogonal axes with explicit zero-sequence decoupling, the amplitude-invariant Clarke transformation matrix is defined:
                     </p>
+                    <div class="math-block">
+                        $$\begin{bmatrix} f_\alpha \\ f_\beta \\ f_0 \end{bmatrix} = \frac{2}{3} \begin{bmatrix} 
+                        1 & -\frac{1}{2} & -\frac{1}{2} \\[6pt]
+                        0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2} \\[6pt]
+                        \frac{1}{2} & \frac{1}{2} & \frac{1}{2} 
+                        \end{bmatrix} \begin{bmatrix} f_a \\ f_b \\ f_c \end{bmatrix}$$
+                    </div>
+                    <p>
+                        Its corresponding exact inverse transformation is given by:
+                    </p>
+                    <div class="math-block">
+                        $$\begin{bmatrix} f_a \\ f_b \\ f_c \end{bmatrix} = \begin{bmatrix} 
+                        1 & 0 & 1 \\[6pt]
+                        -\frac{1}{2} & \frac{\sqrt{3}}{2} & 1 \\[6pt]
+                        -\frac{1}{2} & -\frac{\sqrt{3}}{2} & 1 
+                        \end{bmatrix} \begin{bmatrix} f_\alpha \\ f_\beta \\ f_0 \end{bmatrix}$$
+                    </div>
+
+                    <h3>3. Synchronous Rotating Reference Frame ($d-q-0$)</h3>
+                    <p>
+                        By rotating the stationary orthogonal system $(\alpha-\beta)$ synchronously at rotor electrical angular velocity $\omega_e = \frac{d\theta_e}{dt}$, the direct ($d$) axis is continuously aligned with the rotor permanent magnet flux vector:
+                    </p>
+                    <div class="math-block">
+                        $$\begin{bmatrix} f_d \\ f_q \\ f_0 \end{bmatrix} = \begin{bmatrix} 
+                        \cos\theta_e & \sin\theta_e & 0 \\ 
+                        -\sin\theta_e & \cos\theta_e & 0 \\ 
+                        0 & 0 & 1 
+                        \end{bmatrix} \begin{bmatrix} f_\alpha \\ f_\beta \\ f_0 \end{bmatrix}$$
+                    </div>
+                    <p>
+                        The inverse Park transformation maps $d-q-0$ quantities back to stationary $\alpha-\beta-0$:
+                    </p>
+                    <div class="math-block">
+                        $$\begin{bmatrix} f_\alpha \\ f_\beta \\ f_0 \end{bmatrix} = \begin{bmatrix} 
+                        \cos\theta_e & -\sin\theta_e & 0 \\ 
+                        \sin\theta_e & \cos\theta_e & 0 \\ 
+                        0 & 0 & 1 
+                        \end{bmatrix} \begin{bmatrix} f_d \\ f_q \\ f_0 \end{bmatrix}$$
+                    </div>
+
+                    <h3>4. Dynamic State Equations in Synchronous Coordinates</h3>
+                    <p>
+                        Applying the chain rule of differentiation yields the canonical dynamic state equations of the PMSM under Series-End VSI excitation:
+                    </p>
+                    <div class="math-block">
+                        $$\begin{aligned}
+                        v_d &= R_s i_d + \frac{d\lambda_d}{dt} - \omega_e \lambda_q \\[6pt]
+                        v_q &= R_s i_q + \frac{d\lambda_q}{dt} + \omega_e \lambda_d \\[6pt]
+                        v_0 &= R_0 i_0 + \frac{d\lambda_0}{dt}
+                        \end{aligned}$$
+                    </div>
+                    <p>
+                        Substituting the synchronous axis magnetic flux relations $\lambda_d = L_d i_d + \lambda_{pm}$, $\lambda_q = L_q i_q$, and $\lambda_0 = L_0 i_0$ yields the explicit voltage-current differential system:
+                    </p>
+                    <div class="math-block">
+                        $$\begin{aligned}
+                        v_d &= R_s i_d + L_d \frac{di_d}{dt} - \omega_e L_q i_q \\[6pt]
+                        v_q &= R_s i_q + L_q \frac{di_q}{dt} + \omega_e L_d i_d + \omega_e \lambda_{pm} \\[6pt]
+                        v_0 &= R_0 i_0 + L_0 \frac{di_0}{dt}
+                        \end{aligned}$$
+                    </div>
+
+                    <h3>5. Instantaneous Power Conservation & Torque Decomposition</h3>
+                    <p>
+                        The total instantaneous electrical power delivered by the inverter power stage into the three series stator phases is formulated as:
+                    </p>
+                    <div class="math-block">
+                        $$P_{in} = v_a i_a + v_b i_b + v_c i_c = \frac{3}{2} (v_d i_d + v_q i_q) + 3 v_0 i_0$$
+                    </div>
+                    <p>
+                        Decomposing into Joule resistive losses, magnetic field rate of change, and converted electromechanical power ($P_{em}$):
+                    </p>
+                    <div class="math-block">
+                        $$P_{in} = \underbrace{\frac{3}{2} R_s (i_d^2 + i_q^2) + 3 R_0 i_0^2}_{P_{cu}\text{ (Total Copper Loss)}} + \frac{3}{2}\left(i_d \frac{d\lambda_d}{dt} + i_q \frac{d\lambda_q}{dt}\right) + 3 i_0 \frac{d\lambda_0}{dt} + P_{em}$$
+                    </div>
+                    <p>
+                        The instantaneous electromechanical torque developed on the motor shaft is rigorously derived as:
+                    </p>
+                    <div class="math-block">
+                        $$T_e = \frac{P_{em}}{\omega_m} = \frac{3}{2} p (\lambda_d i_q - \lambda_q i_d) = \frac{3}{2} p \left[ \lambda_{pm} i_q + (L_d - L_q) i_d i_q \right]$$
+                    </div>
+                    <div class="alert-box alert-warning">
+                        <div class="alert-icon">⚡</div>
+                        <div class="alert-content">
+                            <h5>Fundamental Insight on Zero-Sequence Conduction</h5>
+                            <p>
+                                The zero-sequence component ($v_0, i_0$) contributes <strong>identically zero electromagnetic torque</strong> ($T_{e,0} \equiv 0$). Any circulating current $i_0$ causes purely parasitic Joule heating ($P_{cu,0} = 3 R_0 i_0^2$), induces severe core saturation, and drastically reduces drive efficiency. Hence, active suppression of $i_0$ is mandatory.
+                            </p>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- ============================================================ -->
@@ -9699,11 +9791,21 @@ v_0 = R_s * i_0 + L_0 * (d i_0 / dt)
                     <p>
                         The proposed <strong>OEPC algorithm</strong> pre-computes and maps all optimal switching decisions into a compact <strong>96-entry Look-Up Table (LUT)</strong>. The controller continuously evaluates six current errors:
                     </p>
-                    <ul class="bullet-list">
-                        <li><strong>Phase Errors:</strong> $e_a = i_a^* - i_a, \; e_b = i_b^* - i_b, \; e_c = i_c^* - i_c$</li>
-                        <li><strong>Line Errors:</strong> $e_{ab} = e_a - e_b, \; e_{bc} = e_b - e_c, \; e_{ca} = e_c - e_a$</li>
-                        <li><strong>Zero-Sequence Current:</strong> $i_0 = \frac{1}{3}(i_a + i_b + i_c)$</li>
-                    </ul>
+                    <p>At every discrete sampling period ($T_s = 20\,\mu\text{s}$), the controller tracks six differential current error states and the zero-sequence circulation:</p>
+                    <div class="math-block">
+                        $$\begin{aligned}
+                        e_a &= i_a^* - i_a, \quad &e_b &= i_b^* - i_b, \quad &e_c &= i_c^* - i_c \quad &\text{[Phase Tracking Errors]} \\[6pt]
+                        e_{ab} &= e_a - e_b, \quad &e_{bc} &= e_b - e_c, \quad &e_{ca} &= e_c - e_a \quad &\text{[Line-to-Line Differential Errors]}
+                        \end{aligned}$$
+                    </div>
+                    <p>The discrete forward Euler prediction of the zero-sequence current at step $k+1$ obeys:</p>
+                    <div class="math-block">
+                        $$i_0[k+1] = \left(1 - \frac{R_0 T_s}{L_0}\right) i_0[k] + \frac{T_s}{3 L_0} \left( v_1[k] - v_4[k] \right)$$
+                    </div>
+                    <p>The 96-entry Look-Up Table (LUT) is addressed in hardware by a deterministic 7-bit digital pointer:</p>
+                    <div class="math-block">
+                        $$\text{LUT Address (7 Bits)} = \underbrace{F_{mp}}_{\text{Bit 6 (ZSC Protection Flag)}} \;\Big|\; \underbrace{S_{sel}}_{\text{Bits 5..3 (Dominant Error Sector)}} \;\Big|\; \underbrace{S_{sgn}}_{\text{Bits 2..0 (Error Sign Polarities)}}$$
+                    </div>
 
                     <!-- Interactive Figure 3.1 Flowchart (English) -->
                     <div class="interactive-fig-card" id="fig3-1-card">
@@ -9982,15 +10084,44 @@ v_0 = R_s * i_0 + L_0 * (d i_0 / dt)
                     <span class="chapter-badge">Chapter 09</span>
                     <h2>Magnetic Design & Passive ZSC Choke Modeling</h2>
                     <p>
-                        To complement the active OEPC algorithmic suppression, high-permeability nanocrystalline common-mode chokes were designed to provide passive high-frequency attenuation for parasitic capacitive leakage currents.
+                        To complement the active OEPC algorithmic suppression at high switching harmonics, high-permeability nanocrystalline common-mode chokes were engineered to provide passive high-frequency attenuation for common-mode voltage fluctuations and ground leakage currents.
                     </p>
+                    <p>The zero-sequence loop voltage driving high-frequency circulation is governed by:</p>
+                    <div class="math-block">
+                        $$v_0(t) = \frac{v_{an}(t) + v_{bn}(t) + v_{cn}(t)}{3} = R_0 \cdot i_0(t) + L_0 \cdot \frac{d i_0(t)}{dt}$$
+                    </div>
+                    <p>The common-mode inductance $L_{cm}$ of the high-frequency toroidal choke is calculated from magnetic core geometry:</p>
+                    <div class="math-block">
+                        $$L_{cm} = \frac{\mu_0 \cdot \mu_r \cdot N^2 \cdot A_e}{l_e}$$
+                    </div>
+                    <p>
+                        where $\mu_0 = 4\pi \times 10^{-7}\,\text{H/m}$, $\mu_r \approx 30{,}000$ is the initial relative permeability of the Vitroperm nanocrystalline alloy, $N$ is winding turns, $A_e$ is effective cross-sectional magnetic area, and $l_e$ is mean magnetic path length. To guarantee zero magnetic saturation under peak zero-sequence current transients:
+                    </p>
+                    <div class="math-block">
+                        $$B_{max} = \frac{V_{0,peak}}{2 \pi \cdot f_{sw} \cdot N \cdot A_e} \le B_{sat} \quad (B_{sat} \approx 1.2\,\text{T})$$
+                    </div>
                 </section>
 
                 <section class="chapter-section" id="ch-10">
                     <span class="chapter-badge">Chapter 10</span>
                     <h2>OEMER PMSM Motor & Optical SICK Encoder Calibration</h2>
                     <p>
-                        The experimental testbed incorporates an industrial OEMER servomotor coupled to an ultra-high precision SICK optical encoder. Systematic stand-still DC decay tests and open-circuit back-EMF measurements established the machine parameter matrix:
+                        The experimental testbed incorporates an industrial OEMER servomotor coupled to an ultra-high precision SICK optical encoder. Precise Field-Oriented Control requires exact alignment between the optical encoder zero marker and the physical rotor $d$-axis ($d$-axis flux offset angle $\theta_{offset}$).
+                    </p>
+                    <p>
+                        The rotor position calibration was executed through controlled standstill DC current injection:
+                    </p>
+                    <div class="math-block">
+                        $$I_a = I_{dc}, \quad I_b = -\frac{I_{dc}}{2}, \quad I_c = -\frac{I_{dc}}{2} \implies \theta_e \equiv 0^\circ$$
+                    </div>
+                    <p>
+                        The relationship between electrical and mechanical rotor angles is determined by pole pair count $p = 4$:
+                    </p>
+                    <div class="math-block">
+                        $$\theta_e = p \cdot \theta_m = 4 \cdot \theta_m, \quad \omega_e = 4 \cdot \omega_m \quad (f_{e,nom} = 200\,\text{Hz})$$
+                    </div>
+                    <p>
+                        Systematic stand-still DC decay tests and open-circuit back-EMF measurements established the complete machine parameter matrix:
                     </p>
                     <table class="academic-table">
                         <thead>
