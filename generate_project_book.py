@@ -5795,10 +5795,15 @@ def get_book_html():
         }
 
         function updateJsxSim() {
-            const ea = parseFloat(document.getElementById('slider-ea').value);
-            const eb = parseFloat(document.getElementById('slider-eb').value);
-            const ec = parseFloat(document.getElementById('slider-ec').value);
-            const e0 = parseFloat(document.getElementById('slider-e0').value);
+            const elEa = document.getElementById('slider-ea');
+            const elEb = document.getElementById('slider-eb');
+            const elEc = document.getElementById('slider-ec');
+            const elE0 = document.getElementById('slider-e0');
+            if (!elEa || !elEb || !elEc || !elE0) return;
+            const ea = parseFloat(elEa.value);
+            const eb = parseFloat(elEb.value);
+            const ec = parseFloat(elEc.value);
+            const e0 = parseFloat(elE0.value);
 
             // Clarke
             const alpha = ea - 0.5 * (eb + ec);
@@ -5811,10 +5816,11 @@ def get_book_html():
         }
 
         function updateJsxLabels(ea, eb, ec, e0 = 0.15) {
-            document.getElementById('val-ea').textContent = ea.toFixed(2) + ' A';
-            document.getElementById('val-eb').textContent = eb.toFixed(2) + ' A';
-            document.getElementById('val-ec').textContent = ec.toFixed(2) + ' A';
-            document.getElementById('val-e0').textContent = e0.toFixed(2) + ' A';
+            const isDocEn = document.documentElement.lang === 'en' || document.dir === 'ltr';
+            const elA = document.getElementById('val-ea'); if (elA) elA.textContent = ea.toFixed(2) + ' A';
+            const elB = document.getElementById('val-eb'); if (elB) elB.textContent = eb.toFixed(2) + ' A';
+            const elC = document.getElementById('val-ec'); if (elC) elC.textContent = ec.toFixed(2) + ' A';
+            const el0 = document.getElementById('val-e0'); if (el0) el0.textContent = e0.toFixed(2) + ' A';
 
             // EPC sort
             const absA = Math.abs(ea), absB = Math.abs(eb), absC = Math.abs(ec);
@@ -5843,14 +5849,14 @@ def get_book_html():
                 empVal = 1;
             }
 
-            document.getElementById('disp-epc').textContent = `${epcStr} (${epcDesc})`;
-            document.getElementById('disp-esc').textContent = `${escStr} (${escDesc})`;
-            document.getElementById('disp-emp').textContent = empVal === 1 ? '1 (DM Priority)' : '0 (CM Priority)';
+            const elEpc = document.getElementById('disp-epc'); if (elEpc) elEpc.textContent = `${epcStr} (${epcDesc})`;
+            const elEsc = document.getElementById('disp-esc'); if (elEsc) elEsc.textContent = `${escStr} (${escDesc})`;
+            const elEmp = document.getElementById('disp-emp'); if (elEmp) elEmp.textContent = empVal === 1 ? (isDocEn ? '1 (DM Priority)' : '1 (עדיפות DM)') : (isDocEn ? '0 (CM Priority)' : '0 (עדיפות CM)');
 
             // Look up vector sample
             const sampleVectors = ['V1 (1001)', 'V2 (1010)', 'V3 (1101)', 'V4 (0110)', 'V5 (0101)', 'V6 (0011)'];
             const idx = (parseInt(epcStr, 2) + parseInt(escStr, 2) + empVal) % 6;
-            document.getElementById('disp-vec').textContent = sampleVectors[idx];
+            const elVec = document.getElementById('disp-vec'); if (elVec) elVec.textContent = sampleVectors[idx];
         }
 
         // ====================================================================
@@ -5878,9 +5884,13 @@ def get_book_html():
         }
 
         function updateOscParams() {
-            oscAsym = parseFloat(document.getElementById('slider-osc-asym').value) / 100;
-            oscRpm = parseFloat(document.getElementById('slider-osc-rpm').value);
-            oscZscWeight = parseFloat(document.getElementById('slider-osc-zsc').value) / 100;
+            const elAsym = document.getElementById('slider-osc-asym');
+            const elRpm = document.getElementById('slider-osc-rpm');
+            const elZsc = document.getElementById('slider-osc-zsc');
+            if (!elAsym || !elRpm || !elZsc) return;
+            oscAsym = parseFloat(elAsym.value) / 100;
+            oscRpm = parseFloat(elRpm.value);
+            oscZscWeight = parseFloat(elZsc.value) / 100;
 
             document.getElementById('val-osc-asym').textContent = (oscAsym * 100).toFixed(0) + '%';
             document.getElementById('val-osc-rpm').textContent = oscRpm.toFixed(0) + ' RPM';
@@ -6660,7 +6670,7 @@ def get_book_html():
                 motorSimThetaM += omegaM * dt;
             }
 
-            const canvas = document.getElementById('motor-inverter-canvas');
+            const canvas = document.getElementById('motor-inverter-canvas') || document.getElementById('motor-sim-canvas');
             if (canvas) {
                 const rect = canvas.getBoundingClientRect();
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -7346,7 +7356,7 @@ def get_book_html():
 
             const elPoles = document.getElementById('fig2-val-poles');
             const elPhases = document.getElementById('fig2-val-phases');
-            const elVloop = document.getElementById('fig2-val-vloop');
+            const elVloop = document.getElementById('fig2-val-vloop') || document.getElementById('fig2-val-loop');
             const elZsc = document.getElementById('fig2-val-zsc');
             const elStatus = document.getElementById('fig2-status-pill');
 
@@ -7858,6 +7868,137 @@ def get_book_html():
             requestAnimationFrame(drawFig2Step);
         }
 
+        /* ==========================================================================
+           FIGURE 3.1: INTERACTIVE OEPC FLOWCHART & 96-LUT EXECUTION ENGINE
+           ========================================================================== */
+        let fcPreset = 'phaseA';
+        let fcCurrentStep = 0; // 0: Start, 1: Sample, 2: Errors, 3: Sort, 4: Decision, 5: 96-LUT, 6: Apply
+        let fcRunning = true;
+        let fcLastStepTime = 0;
+        const fcStepDuration = 1500; // ms per step in auto mode
+
+        const isDocEn = document.documentElement.lang === 'en' || document.dir === 'ltr';
+
+        const fcPresets = {
+            phaseA: {
+                name: isDocEn ? "Scenario 1: Phase A Dominant Error (|ea| Maximum)" : "תרחיש 1: שגיאה דומיננטית בפאזה A (|ea| מקסימלי)",
+                currents: isDocEn ? "ia = +4.82A, ib = -2.40A, ic = -2.41A | i0 = +0.003A (Nominal)" : "ia = +4.82A, ib = -2.40A, ic = -2.41A | i0 = +0.003A (נומינלי)",
+                errors: isDocEn ? "ea = +0.42A (Max), eb = -0.18A, ec = -0.24A | eab = +0.60A" : "ea = +0.42A (מקסימלי), eb = -0.18A, ec = -0.24A | eab = +0.60A",
+                priority: isDocEn ? "|ea| > |ec| > |eb| ➔ S_sel = [0 0 0] (Permutation 1)" : "|ea| > |ec| > |eb| ➔ S_sel = [0 0 0] (Permutation 1)",
+                decision: isDocEn ? "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)" : "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)",
+                lut: isDocEn ? "Addr: {F_mp=1, S_sel=000, S_sgn=100} ➔ State: [1 0 1 1] (V23) ➔ va=+Vdc" : "Addr: {F_mp=1, S_sel=000, S_sgn=100} ➔ State: [1 0 1 1] (V23) ➔ va=+Vdc",
+                status: isDocEn ? "Execution: Differential correction for Phase A | ZSC Suppressed (S1=S4=1)" : "שלב ביצוע: תיקון דיפרנציאלי לפאזה A | דיכוי מוחלט של ZSC (S1=S4=1)"
+            },
+            zsc: {
+                name: isDocEn ? "Scenario 2: Emergency ZSC Suppression (|i0| > Tol)" : "תרחיש 2: חירום דיכוי ZSC (|i0| > Tol)",
+                currents: isDocEn ? "ia = +3.10A, ib = +1.20A, ic = -3.76A | i0 = +0.180A (Severe ZSC Excursion!)" : "ia = +3.10A, ib = +1.20A, ic = -3.76A | i0 = +0.180A (חריגת ZSC קיצונית!)",
+                errors: isDocEn ? "ea = +0.15A, eb = +0.10A, ec = -0.25A | e0 = +0.180A" : "ea = +0.15A, eb = +0.10A, ec = -0.25A | e0 = +0.180A",
+                priority: isDocEn ? "|ec| > |ea| > |eb| ➔ S_sel = [0 1 0] (Permutation 3)" : "|ec| > |ea| > |eb| ➔ S_sel = [0 1 0] (Permutation 3)",
+                decision: isDocEn ? "|i0| = 0.180A > 0.05A (Tol) ➔ YES! ➔ F_mp = 0 (EMERGENCY ZSC TRIGGER!)" : "|i0| = 0.180A > 0.05A (Tol) ➔ YES! ➔ F_mp = 0 (EMERGENCY ZSC TRIGGER!)",
+                lut: isDocEn ? "Addr: {F_mp=0, S_sel=010, S_sgn=001} ➔ State: [1 1 0 1] (V25) ➔ v0=-Vdc" : "Addr: {F_mp=0, S_sel=010, S_sgn=001} ➔ State: [1 1 0 1] (V25) ➔ v0=-Vdc",
+                status: isDocEn ? "Execution: EMERGENCY ZSC ACTIVATED! F_mp=0 suppresses circulating current in 1 clock cycle" : "שלב ביצוע: הפעלת מצב חירום ZSC! F_mp=0 מדכא את הזרם המעגלי במחזור שעון יחיד"
+            },
+            phaseB: {
+                name: isDocEn ? "Scenario 3: Phase B Dominant Error (|eb| Maximum)" : "תרחיש 3: שגיאה דומיננטית בפאזה B (|eb| מקסימלי)",
+                currents: isDocEn ? "ia = -2.15A, ib = +4.70A, ic = -2.54A | i0 = +0.003A (Nominal)" : "ia = -2.15A, ib = +4.70A, ic = -2.54A | i0 = +0.003A (נומינלי)",
+                errors: isDocEn ? "ea = -0.12A, eb = +0.49A (Max), ec = -0.37A | ebc = +0.86A" : "ea = -0.12A, eb = +0.49A (מקסימלי), ec = -0.37A | ebc = +0.86A",
+                priority: isDocEn ? "|eb| > |ec| > |ea| ➔ S_sel = [0 1 0] (Permutation 2)" : "|eb| > |ec| > |ea| ➔ S_sel = [0 1 0] (Permutation 2)",
+                decision: isDocEn ? "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)" : "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)",
+                lut: isDocEn ? "Addr: {F_mp=1, S_sel=010, S_sgn=010} ➔ State: [0 1 1 0] (V12) ➔ vb=+Vdc" : "Addr: {F_mp=1, S_sel=010, S_sgn=010} ➔ State: [0 1 1 0] (V12) ➔ vb=+Vdc",
+                status: isDocEn ? "Execution: Differential correction for Phase B | ZSC Suppressed (S1=S4=0)" : "שלב ביצוע: תיקון דיפרנציאלי לפאזה B | דיכוי מוחלט של ZSC (S1=S4=0)"
+            }
+        };
+
+        const fcNodes = [
+            { id: 0, title: isDocEn ? "01: ePWM Hardware Trigger" : "01: טריגר חומרה ePWM", sub: isDocEn ? "Interrupt every cycle (50kHz / 20µs)" : "הפעלת פסיקה בכל מחזור (50kHz / 20µs)", y: 15, h: 48, type: 'rect' },
+            { id: 1, title: isDocEn ? "02: Current Sampling & i0" : "02: דגימת זרמים וחישוב i_0", sub: isDocEn ? "Sample ia, ib, ic & compute zero-seq i0" : "דגימת ia, ib, ic וחישוב זרם סכום i_0", y: 78, h: 48, type: 'rect' },
+            { id: 2, title: isDocEn ? "03: Compute 6 Current Errors" : "03: חישוב 6 שגיאות זרם", sub: isDocEn ? "ea, eb, ec (phase) & eab, ebc, eca (line)" : "ea, eb, ec (פאזות) ו-eab, ebc, eca (קווים)", y: 141, h: 48, type: 'rect' },
+            { id: 3, title: isDocEn ? "04: Sort Error Magnitudes" : "04: מיון גודל שגיאות", sub: isDocEn ? "Sort by absolute value ➔ Select S_sel" : "מיון לפי ערך מוחלט ➔ בחירת S_sel (3 ביטים)", y: 204, h: 48, type: 'rect' },
+            { id: 4, title: isDocEn ? "05: Priority Phase Decision" : "05: החלטת פאזה מועדפת (F_mp)", sub: isDocEn ? "Is |i0| > Tol ? (ZSC Suppression vs DM)" : "האם |i_0| > Tol ? (דיכוי ZSC מול DM)", y: 267, h: 56, type: 'diamond' },
+            { id: 5, title: isDocEn ? "06: Fetch Vector from 96-LUT" : "06: שליפת וקטור מ-96-LUT", sub: isDocEn ? "7-bit addr {F_mp, S_sel, S_sgn} ➔ [S1..S4]" : "כתובת 7 ביט {F_mp, S_sel, S_sgn} ➔ [S1..S4]", y: 338, h: 48, type: 'rect' },
+            { id: 6, title: isDocEn ? "07: Apply ePWM Switching" : "07: הפעלת פסיקת מיתוג ePWM", sub: isDocEn ? "Output gate pulses + 1.5µs dead-time" : "הוצאת פולסים לדרייברים + Dead-time 1.5µs", y: 401, h: 48, type: 'rect' }
+        ];
+
+        function switchFig3Tab(tab) {
+            const btnInt = document.getElementById('tab-fig3-interactive');
+            const btnOrig = document.getElementById('tab-fig3-original');
+            const viewInt = document.getElementById('fig3-view-interactive');
+            const viewOrig = document.getElementById('fig3-view-original');
+            if (tab === 'interactive') {
+                btnInt.classList.add('active');
+                btnOrig.classList.remove('active');
+                viewInt.style.display = 'block';
+                viewOrig.style.display = 'none';
+            } else {
+                btnInt.classList.remove('active');
+                btnOrig.classList.add('active');
+                viewInt.style.display = 'none';
+                viewOrig.style.display = 'block';
+            }
+        }
+
+        function setFcPreset(preset) {
+            fcPreset = preset;
+            document.getElementById('btn-fc-preset-a').classList.toggle('active', preset === 'phaseA');
+            document.getElementById('btn-fc-preset-zsc').classList.toggle('active', preset === 'zsc');
+            document.getElementById('btn-fc-preset-b').classList.toggle('active', preset === 'phaseB');
+            updateFcTelemetry();
+        }
+
+        function toggleFcRun() {
+            fcRunning = !fcRunning;
+            const btn = document.getElementById('btn-fc-run');
+            if (btn) {
+                btn.innerText = fcRunning ? "⏸️ השהה הרצה" : "▶️ הרצה רציפה";
+                btn.classList.toggle('active', fcRunning);
+            }
+        }
+
+        function stepFcFlow() {
+            fcCurrentStep = (fcCurrentStep + 1) % fcNodes.length;
+            updateFcTelemetry();
+        }
+
+        function resetFcFlow() {
+            fcCurrentStep = 0;
+            updateFcTelemetry();
+        }
+
+        function updateFcTelemetry() {
+            const p = fcPresets[fcPreset];
+            const elStatus = document.getElementById('fig3-status-pill');
+            const elCurr = document.getElementById('fig3-val-currents');
+            const elErr = document.getElementById('fig3-val-errors');
+            const elPrio = document.getElementById('fig3-val-priority');
+            const elLut = document.getElementById('fig3-val-lut');
+
+            if (elStatus) {
+                const node = fcNodes[fcCurrentStep];
+                elStatus.innerText = `${node.title}: ${p.status}`;
+                elStatus.style.borderColor = (fcPreset === 'zsc') ? 'rgba(239, 68, 68, 0.6)' : 'rgba(0, 210, 255, 0.6)';
+                elStatus.style.color = (fcPreset === 'zsc') ? '#ef4444' : '#00d2ff';
+            }
+
+            if (elCurr) elCurr.innerText = (fcCurrentStep >= 1) ? p.currents : (isDocEn ? "Waiting for sample..." : "ממתין לדגימה...");
+            if (elErr) elErr.innerText = (fcCurrentStep >= 2) ? p.errors : (isDocEn ? "Pending error calculation..." : "טרם חושב");
+            if (elPrio) elPrio.innerText = (fcCurrentStep >= 3) ? p.priority : (isDocEn ? "Pending magnitude sorting..." : "טרם מוין");
+            if (elLut) {
+                if (fcCurrentStep >= 5) {
+                    elLut.innerText = p.lut;
+                    elLut.style.color = (fcPreset === 'zsc') ? '#ef4444' : 'var(--accent-cyan)';
+                } else {
+                    elLut.innerText = isDocEn ? "Vector not fetched yet" : "טרם נשלף וקטור";
+                    elLut.style.color = '#94a3b8';
+                }
+            }
+        }
+
+        
+        // Compatibility alias for Motor Sim
+        function toggleMotorSimRun() {
+            if (typeof toggleMotorSim === 'function') toggleMotorSim();
+        }
+
         function initFig3() {
             const canvas = document.getElementById('fig3-flowchart-canvas');
             if (!canvas) return;
@@ -8000,12 +8141,19 @@ def get_book_html():
                     // Node Title & Subtitle
                     ctx.fillStyle = isCur ? '#ffffff' : '#f0f4fc';
                     ctx.font = isCur ? 'bold 11.5px Heebo, sans-serif' : '500 11px Heebo, sans-serif';
-                    ctx.textAlign = 'right';
-                    ctx.fillText(n.title, nx + nw - 14, ny + 18);
-
-                    ctx.fillStyle = isCur ? '#00d2ff' : '#94a3b8';
-                    ctx.font = '9.5px Heebo, sans-serif';
-                    ctx.fillText(n.sub, nx + nw - 14, ny + 34);
+                    if (isDocEn) {
+                        ctx.textAlign = 'left';
+                        ctx.fillText(n.title, nx + 34, ny + 18);
+                        ctx.fillStyle = isCur ? '#00d2ff' : '#94a3b8';
+                        ctx.font = '9.5px Heebo, sans-serif';
+                        ctx.fillText(n.sub, nx + 34, ny + 34);
+                    } else {
+                        ctx.textAlign = 'right';
+                        ctx.fillText(n.title, nx + nw - 14, ny + 18);
+                        ctx.fillStyle = isCur ? '#00d2ff' : '#94a3b8';
+                        ctx.font = '9.5px Heebo, sans-serif';
+                        ctx.fillText(n.sub, nx + nw - 14, ny + 34);
+                    }
 
                     // Step Number Icon
                     ctx.fillStyle = isCur ? '#00d2ff' : 'rgba(255, 255, 255, 0.15)';
@@ -8034,12 +8182,19 @@ def get_book_html():
                 // Explanatory Header
                 ctx.fillStyle = '#00d2ff';
                 ctx.font = 'bold 12.5px Heebo, sans-serif';
-                ctx.textAlign = 'right';
-                ctx.fillText(`🔍 ${curN.title}`, expBox.x + expBox.w - 16, expBox.y + 26);
-
-                ctx.fillStyle = '#94a3b8';
-                ctx.font = '10px Heebo, sans-serif';
-                ctx.fillText(`מחזור: 20µs (50kHz) • שלב ${fcCurrentStep + 1} מתוך 7`, expBox.x + expBox.w - 16, expBox.y + 44);
+                if (isDocEn) {
+                    ctx.textAlign = 'left';
+                    ctx.fillText(`🔍 ${curN.title}`, expBox.x + 16, expBox.y + 26);
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '10px Heebo, sans-serif';
+                    ctx.fillText(`Period: 20µs (50kHz) • Step ${fcCurrentStep + 1} of 7`, expBox.x + 16, expBox.y + 44);
+                } else {
+                    ctx.textAlign = 'right';
+                    ctx.fillText(`🔍 ${curN.title}`, expBox.x + expBox.w - 16, expBox.y + 26);
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '10px Heebo, sans-serif';
+                    ctx.fillText(`מחזור: 20µs (50kHz) • שלב ${fcCurrentStep + 1} מתוך 7`, expBox.x + expBox.w - 16, expBox.y + 44);
+                }
 
                 // Divider line
                 ctx.strokeStyle = 'rgba(64, 120, 240, 0.2)';
@@ -8144,17 +8299,17 @@ def get_book_html():
             });
         }
 
-        // Initialize on load
+        // Initialize on load with robust error isolation
         window.addEventListener('load', () => {
-            initJsx();
-            updateJsxSim();
-            updateOscParams();
-            updateMotorParams();
-            initFig1();
-            initFig2();
-            initFig3();
-            requestAnimationFrame(oscStep);
-            requestAnimationFrame(drawMotorSimStep);
+            try { initJsx(); } catch (e) { console.warn('initJsx:', e); }
+            try { updateJsxSim(); } catch (e) { console.warn('updateJsxSim:', e); }
+            try { updateOscParams(); } catch (e) { console.warn('updateOscParams:', e); }
+            try { updateMotorParams(); } catch (e) { console.warn('updateMotorParams:', e); }
+            try { initFig1(); } catch (e) { console.warn('initFig1:', e); }
+            try { initFig2(); } catch (e) { console.warn('initFig2:', e); }
+            try { initFig3(); } catch (e) { console.warn('initFig3:', e); }
+            try { requestAnimationFrame(oscStep); } catch (e) { console.warn('oscStep:', e); }
+            try { requestAnimationFrame(drawMotorSimStep); } catch (e) { console.warn('drawMotorSimStep:', e); }
         });
     </script>
 </body>
@@ -9328,7 +9483,7 @@ Closed Loop Voltage: v_loop = va + vb + vc = v1 - v4
                                     </div>
                                     <div class="inspector-item">
                                         <span class="lbl">Closed-Loop Potential (v_loop):</span>
-                                        <span class="val" id="fig2-val-loop">v_loop = v1 - v4 = 0V</span>
+                                        <span class="val en-term" id="fig2-val-vloop" style="color: #10b981; font-weight:700;">v_loop = v1 - v4 = 0V (ZSC Suppression Condition Satisfied!)</span>
                                     </div>
                                     <div class="inspector-item">
                                         <span class="lbl">Zero-Sequence Current (ZSC i_0):</span>
@@ -9402,6 +9557,96 @@ Closed Loop Voltage: v_loop = va + vb + vc = v1 - v4
                     <p>
                         This algebraic cancellation proves that <strong>the loop voltage depends strictly and exclusively on the switching states of the boundary legs ($L_1$ and $L_4$)</strong>. When $S_1 = S_4$, the loop potential identically vanishes ($v_{loop} = 0$), guaranteeing zero-sequence circulation suppression regardless of the states of inner legs $L_2$ and $L_3$.
                     </p>
+                
+                    <!-- Interactive Simulation Card -->
+                    <div class="sim-embed-card" id="sim3-card">
+                        <div class="sim-embed-header">
+                            <div>
+                                <h3>🔬 Interactive Simulation: 4-Pole PMSM Anatomy & 4-Leg Series-End VSI Integration (Fig 1.2 Core)</h3>
+                                <p style="color:var(--text-muted); font-size:13px; margin-top:4px;">
+                                    Observe rotating neodymium rotor magnets, series stator phase currents, and conduction states of the 4 inverter legs ($L_1-L_4$) with real-time zero-sequence circulating loop visualization.
+                                </p>
+                            </div>
+                            <span class="badge" style="background:rgba(0,210,255,0.15); color:var(--accent-cyan); border:1px solid var(--accent-cyan); padding:4px 10px; border-radius:20px; font-size:12px;">
+                                60FPS 4-Leg Series-End VSI Core
+                            </span>
+                        </div>
+
+                        <div class="sim-container-grid">
+                            <!-- Controls Panel -->
+                            <div class="sim-controls-panel">
+                                <h4 style="color:var(--accent-cyan); margin:0 0 8px 0; font-size:14px; border-bottom:1px solid var(--border-subtle); padding-bottom:6px;">🎛️ Motor & 4-Leg Inverter Control Panel</h4>
+
+                                <div class="control-group">
+                                    <label><span>Rotor Speed (RPM):</span> <span id="val-motor-rpm" class="en-term" style="color:var(--accent-cyan); font-weight:700;">600 RPM</span></label>
+                                    <input type="range" id="slider-motor-rpm" min="0" max="1800" step="50" value="600" oninput="updateMotorParams()">
+                                </div>
+
+                                <div class="control-group">
+                                    <label><span>Load Torque Angle ($\delta$):</span> <span id="val-motor-delta" class="en-term" style="color:#10b981; font-weight:700;">90° (MTPA)</span></label>
+                                    <input type="range" id="slider-motor-delta" min="0" max="150" step="5" value="90" oninput="updateMotorParams()">
+                                </div>
+
+                                <div class="control-group" style="display:flex; flex-direction:column; gap:8px;">
+                                    <label style="margin-bottom:0;"><span>ZSC & Field Overlays:</span></label>
+                                    <div style="display:flex; gap:8px;">
+                                        <button class="btn-toggle active" id="btn-toggle-zsc" onclick="toggleZscSuppression()" style="flex:1; font-size:11.5px;">🛡️ ZSC Shield (S1=S4)</button>
+                                        <button class="btn-toggle active" id="btn-toggle-flux" onclick="toggleFluxLines()" style="flex:1; font-size:11.5px;">🧲 Flux Lines</button>
+                                    </div>
+                                    <button class="btn-toggle active" id="btn-toggle-dq" onclick="toggleDqVectors()" style="width:100%; font-size:11.5px;">🧭 d-q Axes & Bs Vector</button>
+                                </div>
+
+                                <div class="control-group" style="display:flex; gap:8px;">
+                                    <button class="btn-toggle" onclick="stepMotor(-15)" style="flex:1; font-size:12px;">◀ Step -15°</button>
+                                    <button class="btn-toggle" onclick="stepMotor(15)" style="flex:1; font-size:12px;">Step +15° ▶</button>
+                                </div>
+
+                                <div class="control-group" style="display:flex; gap:8px; margin-top:4px;">
+                                    <button class="btn-toggle active" id="btn-motor-run" onclick="toggleMotorSim()" style="flex:1;">⏸️ Pause / Run</button>
+                                    <button class="btn-toggle" onclick="resetMotorSim()" style="flex:1;">🔄 Reset</button>
+                                </div>
+
+                                <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle); border-radius:8px; padding:10px; font-size:11.5px; color:var(--text-muted); line-height:1.5;">
+                                    <strong style="color:#fff; display:block; margin-bottom:4px;">4-Leg Series Topology Connection (Fig 1.2):</strong>
+                                    <div><span style="color:#ef4444; font-weight:700;">Phase A ($Z_a$):</span> Connected between Leg 1 and Leg 2 ($v_a = v_1 - v_2$)</div>
+                                    <div><span style="color:#10b981; font-weight:700;">Phase B ($Z_b$):</span> Connected between Leg 2 and Leg 3 ($v_b = v_2 - v_3$)</div>
+                                    <div><span style="color:#38bdf8; font-weight:700;">Phase C ($Z_c$):</span> Connected between Leg 3 and Leg 4 ($v_c = v_3 - v_4$)</div>
+                                    <div style="margin-top:4px; border-top:1px dashed var(--border-subtle); padding-top:4px;"><span style="color:#f43f5e; font-weight:700;">ZSC Loop:</span> Total sum $v_1 - v_4$. Identically 0 when $S_1 = S_4$.</div>
+                                </div>
+                            </div>
+
+                            <!-- Canvas and Telemetry View -->
+                            <div class="sim-view-panel">
+                                <div style="position:relative; width:100%; height:460px; background:#050811; border:1px solid var(--border-subtle); border-radius:12px; overflow:hidden;">
+                                    <canvas id="motor-inverter-canvas" style="position:absolute; top:0; left:0; width:100% !important; height:100% !important; display:block;"></canvas>
+                                    <div class="canvas-title-badge" style="left:12px; right:auto; direction:ltr;">4-Leg Series-End VSI & PMSM Core (Fig 1.2)</div>
+                                </div>
+
+                                <div class="telemetry-strip">
+                                    <div class="telemetry-item">
+                                        <span class="lbl">Mechanical Angle ($	heta_m$)</span>
+                                        <span class="val" id="disp-motor-thetam">0.0°</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">Electrical Angle ($	heta_e$)</span>
+                                        <span class="val" id="disp-motor-thetae">0.0°</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">4 Inverter Legs $[S_1 S_2 S_3 S_4]$</span>
+                                        <span class="val" id="disp-motor-sw" style="font-size:12.5px;">[1 0 1 1]</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">ZSC Loop Voltage ($v_1 - v_4$)</span>
+                                        <span class="val" id="disp-motor-v0" style="color:#10b981;">0.0 V (Suppressed)</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <span class="lbl">Electromagnetic Torque ($T_e$)</span>
+                                        <span class="val" id="disp-motor-te">14.2 Nm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- ============================================================ -->
@@ -9531,59 +9776,169 @@ v_0 = R_s * i_0 + L_0 * (d i_0 / dt)
                 <!-- ============================================================ -->
                 <!-- CHAPTER 05                                                   -->
                 <!-- ============================================================ -->
+                                <!-- ============================================================ -->
+                <!-- CHAPTER 05: INTERACTIVE LABORATORY & OSCILLOSCOPE             -->
+                <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-05">
                     <span class="chapter-badge">Chapter 05</span>
-                    <h2>Live Interactive Laboratory & Real-Time Waveform Oscilloscope</h2>
+                    <h2>Embedded Interactive Laboratory: Real-Time Dynamic Simulators</h2>
 
                     <p>
-                        To quantitatively substantiate the dynamic tracking capabilities of OEPC under diverse operational envelopes, an embedded numerical simulation engine executes directly within this monograph:
+                        This chapter provides two autonomous real-time interactive simulation engines executing directly in your browser at 60 FPS, allowing direct empirical evaluation of the OEPC algorithm under diverse transient and asymmetric operating conditions:
                     </p>
 
-                    <!-- Interactive Oscilloscope & JSXGraph Sim -->
-                    <div class="interactive-fig-card" id="fig5-lab-card">
+                    <!-- SIMULATION 1: JSXGRAPH VECTOR DECODER -->
+                    <div class="interactive-fig-card">
                         <div class="fig-card-header">
                             <div>
-                                <span class="fig-badge">Live Simulation Lab</span>
-                                <h3>Embedded 4-Leg Oscilloscope & PMSM Rotor Dynamic Tracker</h3>
-                                <p>Adjust reference speed and load torque sliders to evaluate dynamic transient response and current waveform fidelity.</p>
+                                <span class="fig-badge">Interactive Simulation 1</span>
+                                <h3>📐 2D Error Vector Decoder & 96-LUT Mapping (JSXGraph Engine)</h3>
+                                <p>Drag the current error vector $\vec{\varepsilon}_{\alpha\beta}$ across the voltage hexagon or adjust error sliders to observe how the 7-bit address is encoded to fetch the optimal vector in a single clock cycle:</p>
                             </div>
+                            <span class="cover-badge-pill">JSXGraph Engine</span>
                         </div>
 
-                        <div class="fig-controls-toolbar">
-                            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                                <label style="font-size: 0.84rem; font-weight: 600;">Reference Speed $\omega^*$ (rpm):</label>
-                                <input type="range" id="osc-speed-slider" min="0" max="3000" value="1500" step="50" oninput="updateOscParams()" style="accent-color: var(--accent-cyan);">
-                                <span id="osc-speed-val" style="font-family: 'Fira Code', monospace; color: var(--accent-cyan); font-weight: 700;">1500 rpm</span>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+                            <div style="background: rgba(14, 22, 42, 0.8); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 20px;">
+                                <div style="margin-bottom: 14px;">
+                                    <label style="display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 600; margin-bottom: 4px;">
+                                        <span>Phase A Error ($\varepsilon_a$):</span> <span id="val-ea" style="font-family: 'Fira Code', monospace; color: var(--accent-cyan);">0.45 A</span>
+                                    </label>
+                                    <input type="range" id="slider-ea" min="-2.0" max="2.0" step="0.05" value="0.45" oninput="updateJsxSim()" style="width: 100%; accent-color: var(--accent-cyan);">
+                                </div>
+                                <div style="margin-bottom: 14px;">
+                                    <label style="display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 600; margin-bottom: 4px;">
+                                        <span>Phase B Error ($\varepsilon_b$):</span> <span id="val-eb" style="font-family: 'Fira Code', monospace; color: var(--accent-cyan);">-0.80 A</span>
+                                    </label>
+                                    <input type="range" id="slider-eb" min="-2.0" max="2.0" step="0.05" value="-0.80" oninput="updateJsxSim()" style="width: 100%; accent-color: var(--accent-cyan);">
+                                </div>
+                                <div style="margin-bottom: 14px;">
+                                    <label style="display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 600; margin-bottom: 4px;">
+                                        <span>Phase C Error ($\varepsilon_c$):</span> <span id="val-ec" style="font-family: 'Fira Code', monospace; color: var(--accent-cyan);">0.35 A</span>
+                                    </label>
+                                    <input type="range" id="slider-ec" min="-2.0" max="2.0" step="0.05" value="0.35" oninput="updateJsxSim()" style="width: 100%; accent-color: var(--accent-cyan);">
+                                </div>
+                                <div style="margin-bottom: 14px;">
+                                    <label style="display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 600; margin-bottom: 4px;">
+                                        <span>ZSC Error ($i_0$ error):</span> <span id="val-e0" style="font-family: 'Fira Code', monospace; color: var(--accent-gold);">0.15 A</span>
+                                    </label>
+                                    <input type="range" id="slider-e0" min="-1.0" max="1.0" step="0.02" value="0.15" oninput="updateJsxSim()" style="width: 100%; accent-color: var(--accent-gold);">
+                                </div>
+                                <div>
+                                    <label style="font-size: 0.84rem; font-weight: 600; display: block; margin-bottom: 6px;">ZSC Priority Weight ($F_{mp}$ flag):</label>
+                                    <div class="btn-toggle-group">
+                                        <button class="btn-toggle active" id="btn-emp-auto" onclick="setEmpMode('auto')">Adaptive Auto</button>
+                                        <button class="btn-toggle" id="btn-emp-dm" onclick="setEmpMode('dm')">DM Priority</button>
+                                        <button class="btn-toggle" id="btn-emp-cm" onclick="setEmpMode('cm')">ZSC Priority</button>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <label style="font-size: 0.84rem; font-weight: 600; margin-left: 16px;">Load Torque $T_L$ (Nm):</label>
-                                <input type="range" id="osc-torque-slider" min="0" max="10" value="5.0" step="0.5" oninput="updateOscParams()" style="accent-color: var(--accent-gold);">
-                                <span id="osc-torque-val" style="font-family: 'Fira Code', monospace; color: var(--accent-gold); font-weight: 700;">5.0 Nm</span>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <div style="height: 320px; background: #050811; border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; position: relative;">
+                                    <div id="jxgbox-book" style="width: 100%; height: 100%;"></div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: rgba(14, 22, 42, 0.8); padding: 12px; border-radius: 10px; border: 1px solid var(--border-subtle); text-align: center;">
+                                    <div>
+                                        <span style="font-size: 0.72rem; color: var(--text-dim); display: block; text-transform: uppercase;">EPC Priority</span>
+                                        <span id="disp-epc" style="font-family: 'Fira Code', monospace; font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan);">010 (BAC)</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.72rem; color: var(--text-dim); display: block; text-transform: uppercase;">ESC Sign</span>
+                                        <span id="disp-esc" style="font-family: 'Fira Code', monospace; font-size: 0.95rem; font-weight: 700; color: var(--accent-green);">101 (+ - +)</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.72rem; color: var(--text-dim); display: block; text-transform: uppercase;">EMP Flag ($F_{mp}$)</span>
+                                        <span id="disp-emp" style="font-family: 'Fira Code', monospace; font-size: 0.95rem; font-weight: 700; color: var(--text-main);">1 (DM)</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.72rem; color: var(--text-dim); display: block; text-transform: uppercase;">Fetched LUT Vector</span>
+                                        <span id="disp-vec" style="font-family: 'Fira Code', monospace; font-size: 0.95rem; font-weight: 700; color: var(--accent-gold);">V3 (1101)</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-top: 16px;">
-                            <div style="background: #050811; border-radius: 12px; border: 1px solid var(--border-subtle); padding: 16px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent-cyan);">Phase Currents Oscilloscope (ia, ib, ic)</span>
-                                    <span style="font-size: 0.75rem; color: var(--accent-green);">THD: 1.42%</span>
+                    <!-- SIMULATION 2: 60 FPS VIRTUAL OSCILLOSCOPE -->
+                    <div class="interactive-fig-card" style="margin-top: 32px;">
+                        <div class="fig-card-header">
+                            <div>
+                                <span class="fig-badge">Interactive Simulation 2</span>
+                                <h3>📈 60 FPS Virtual Oscilloscope: 3-Phase Currents, ZSC & $\alpha-\beta$ Orbit</h3>
+                                <p>Compare the proposed OEPC against classical TDM and PWM methods in real-time, inject load asymmetry, and observe instant zero-sequence attenuation:</p>
+                            </div>
+                            <span class="cover-badge-pill">HTML5 Canvas Real-Time Core</span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+                            <div style="background: rgba(14, 22, 42, 0.8); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 20px;">
+                                <div style="margin-bottom: 14px;">
+                                    <label style="font-size: 0.84rem; font-weight: 600; display: block; margin-bottom: 6px;">Evaluated Control Algorithm:</label>
+                                    <div class="btn-toggle-group">
+                                        <button class="btn-toggle active" id="btn-ctrl-oepc" onclick="setOscAlgorithm('oepc')">Optimal OEPC</button>
+                                        <button class="btn-toggle" id="btn-ctrl-tdm" onclick="setOscAlgorithm('tdm')">Classic TDM</button>
+                                        <button class="btn-toggle" id="btn-ctrl-pwm" onclick="setOscAlgorithm('pwm')">Conventional PWM</button>
+                                    </div>
                                 </div>
-                                <canvas id="osc-canvas" height="220" style="width: 100%; height: 220px; display: block;"></canvas>
+                                <div style="margin-bottom: 14px;">
+                                    <label style="display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 600; margin-bottom: 4px;">
+                                        <span>Load Phase Asymmetry:</span> <span id="val-osc-asym" style="font-family: 'Fira Code', monospace; color: var(--accent-cyan);">0%</span>
+                                    </label>
+                                    <input type="range" id="slider-osc-asym" min="-30" max="30" step="1" value="0" oninput="updateOscParams()" style="width: 100%; accent-color: var(--accent-cyan);">
+                                </div>
+                                <div style="margin-bottom: 14px;">
+                                    <label style="display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 600; margin-bottom: 4px;">
+                                        <span>Motor Speed (RPM):</span> <span id="val-osc-rpm" style="font-family: 'Fira Code', monospace; color: var(--accent-cyan);">580 RPM</span>
+                                    </label>
+                                    <input type="range" id="slider-osc-rpm" min="100" max="1000" step="20" value="580" oninput="updateOscParams()" style="width: 100%; accent-color: var(--accent-cyan);">
+                                </div>
+                                <div style="margin-bottom: 14px;">
+                                    <label style="display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 600; margin-bottom: 4px;">
+                                        <span>ZSC Suppression Weight:</span> <span id="val-osc-zsc" style="font-family: 'Fira Code', monospace; color: var(--accent-green);">100% (Max)</span>
+                                    </label>
+                                    <input type="range" id="slider-osc-zsc" min="0" max="100" step="5" value="100" oninput="updateOscParams()" style="width: 100%; accent-color: var(--accent-green);">
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn-toggle active" id="btn-osc-run" onclick="toggleOscRun()" style="flex: 1;">⏸️ Pause / Run</button>
+                                    <button class="btn-toggle" onclick="resetOsc()" style="flex: 1;">🔄 Reset</button>
+                                </div>
                             </div>
 
-                            <div style="background: #050811; border-radius: 12px; border: 1px solid var(--border-subtle); padding: 16px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent-gold);">Zero-Sequence Current (i_0) Suppression</span>
-                                    <span style="font-size: 0.75rem; color: var(--accent-cyan);">i0_peak &lt; 0.04A</span>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; height: 280px;">
+                                    <div style="background: #050811; border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; position: relative;">
+                                        <canvas id="osc-time-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+                                        <div class="canvas-title-badge" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; color: var(--text-dim);">Time Domain: 3-Phase & ZSC</div>
+                                    </div>
+                                    <div style="background: #050811; border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; position: relative;">
+                                        <canvas id="osc-xy-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+                                        <div class="canvas-title-badge" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; color: var(--text-dim);">&alpha;-&beta; Orbit (Lissajous)</div>
+                                    </div>
                                 </div>
-                                <canvas id="zsc-canvas" height="220" style="width: 100%; height: 220px; display: block;"></canvas>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: rgba(14, 22, 42, 0.8); padding: 12px; border-radius: 10px; border: 1px solid var(--border-subtle); text-align: center;">
+                                    <div>
+                                        <span style="font-size: 0.72rem; color: var(--text-dim); display: block; text-transform: uppercase;">Phase Current THD</span>
+                                        <span id="disp-thd" style="font-family: 'Fira Code', monospace; font-size: 0.95rem; font-weight: 700; color: var(--accent-green);">1.85%</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.72rem; color: var(--text-dim); display: block; text-transform: uppercase;">ZSC Peak ($i_0$)</span>
+                                        <span id="disp-zsc-peak" style="font-family: 'Fira Code', monospace; font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan);">0.04 A</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.72rem; color: var(--text-dim); display: block; text-transform: uppercase;">Mean Switching Freq</span>
+                                        <span id="disp-fsw" style="font-family: 'Fira Code', monospace; font-size: 0.95rem; font-weight: 700; color: var(--accent-gold);">18.4 kHz</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.72rem; color: var(--text-dim); display: block; text-transform: uppercase;">Electromagnetic Torque</span>
+                                        <span id="disp-torque" style="font-family: 'Fira Code', monospace; font-size: 0.95rem; font-weight: 700; color: var(--text-main);">12.5 Nm</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- ============================================================ -->
-                <!-- CHAPTER 06 - 15 (ACADEMIC SYNTHESIS)                         -->
-                <!-- ============================================================ -->
                 <section class="chapter-section" id="ch-06">
                     <span class="chapter-badge">Chapter 06</span>
                     <h2>Fault Tolerance & Inherent ITSC Immunity</h2>

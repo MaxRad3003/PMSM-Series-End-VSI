@@ -5778,10 +5778,15 @@
         }
 
         function updateJsxSim() {
-            const ea = parseFloat(document.getElementById('slider-ea').value);
-            const eb = parseFloat(document.getElementById('slider-eb').value);
-            const ec = parseFloat(document.getElementById('slider-ec').value);
-            const e0 = parseFloat(document.getElementById('slider-e0').value);
+            const elEa = document.getElementById('slider-ea');
+            const elEb = document.getElementById('slider-eb');
+            const elEc = document.getElementById('slider-ec');
+            const elE0 = document.getElementById('slider-e0');
+            if (!elEa || !elEb || !elEc || !elE0) return;
+            const ea = parseFloat(elEa.value);
+            const eb = parseFloat(elEb.value);
+            const ec = parseFloat(elEc.value);
+            const e0 = parseFloat(elE0.value);
 
             // Clarke
             const alpha = ea - 0.5 * (eb + ec);
@@ -5794,10 +5799,11 @@
         }
 
         function updateJsxLabels(ea, eb, ec, e0 = 0.15) {
-            document.getElementById('val-ea').textContent = ea.toFixed(2) + ' A';
-            document.getElementById('val-eb').textContent = eb.toFixed(2) + ' A';
-            document.getElementById('val-ec').textContent = ec.toFixed(2) + ' A';
-            document.getElementById('val-e0').textContent = e0.toFixed(2) + ' A';
+            const isDocEn = document.documentElement.lang === 'en' || document.dir === 'ltr';
+            const elA = document.getElementById('val-ea'); if (elA) elA.textContent = ea.toFixed(2) + ' A';
+            const elB = document.getElementById('val-eb'); if (elB) elB.textContent = eb.toFixed(2) + ' A';
+            const elC = document.getElementById('val-ec'); if (elC) elC.textContent = ec.toFixed(2) + ' A';
+            const el0 = document.getElementById('val-e0'); if (el0) el0.textContent = e0.toFixed(2) + ' A';
 
             // EPC sort
             const absA = Math.abs(ea), absB = Math.abs(eb), absC = Math.abs(ec);
@@ -5826,14 +5832,14 @@
                 empVal = 1;
             }
 
-            document.getElementById('disp-epc').textContent = `${epcStr} (${epcDesc})`;
-            document.getElementById('disp-esc').textContent = `${escStr} (${escDesc})`;
-            document.getElementById('disp-emp').textContent = empVal === 1 ? '1 (DM Priority)' : '0 (CM Priority)';
+            const elEpc = document.getElementById('disp-epc'); if (elEpc) elEpc.textContent = `${epcStr} (${epcDesc})`;
+            const elEsc = document.getElementById('disp-esc'); if (elEsc) elEsc.textContent = `${escStr} (${escDesc})`;
+            const elEmp = document.getElementById('disp-emp'); if (elEmp) elEmp.textContent = empVal === 1 ? (isDocEn ? '1 (DM Priority)' : '1 (עדיפות DM)') : (isDocEn ? '0 (CM Priority)' : '0 (עדיפות CM)');
 
             // Look up vector sample
             const sampleVectors = ['V1 (1001)', 'V2 (1010)', 'V3 (1101)', 'V4 (0110)', 'V5 (0101)', 'V6 (0011)'];
             const idx = (parseInt(epcStr, 2) + parseInt(escStr, 2) + empVal) % 6;
-            document.getElementById('disp-vec').textContent = sampleVectors[idx];
+            const elVec = document.getElementById('disp-vec'); if (elVec) elVec.textContent = sampleVectors[idx];
         }
 
         // ====================================================================
@@ -5861,9 +5867,13 @@
         }
 
         function updateOscParams() {
-            oscAsym = parseFloat(document.getElementById('slider-osc-asym').value) / 100;
-            oscRpm = parseFloat(document.getElementById('slider-osc-rpm').value);
-            oscZscWeight = parseFloat(document.getElementById('slider-osc-zsc').value) / 100;
+            const elAsym = document.getElementById('slider-osc-asym');
+            const elRpm = document.getElementById('slider-osc-rpm');
+            const elZsc = document.getElementById('slider-osc-zsc');
+            if (!elAsym || !elRpm || !elZsc) return;
+            oscAsym = parseFloat(elAsym.value) / 100;
+            oscRpm = parseFloat(elRpm.value);
+            oscZscWeight = parseFloat(elZsc.value) / 100;
 
             document.getElementById('val-osc-asym').textContent = (oscAsym * 100).toFixed(0) + '%';
             document.getElementById('val-osc-rpm').textContent = oscRpm.toFixed(0) + ' RPM';
@@ -6643,7 +6653,7 @@
                 motorSimThetaM += omegaM * dt;
             }
 
-            const canvas = document.getElementById('motor-inverter-canvas');
+            const canvas = document.getElementById('motor-inverter-canvas') || document.getElementById('motor-sim-canvas');
             if (canvas) {
                 const rect = canvas.getBoundingClientRect();
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -7329,7 +7339,7 @@
 
             const elPoles = document.getElementById('fig2-val-poles');
             const elPhases = document.getElementById('fig2-val-phases');
-            const elVloop = document.getElementById('fig2-val-vloop');
+            const elVloop = document.getElementById('fig2-val-vloop') || document.getElementById('fig2-val-loop');
             const elZsc = document.getElementById('fig2-val-zsc');
             const elStatus = document.getElementById('fig2-status-pill');
 
@@ -7841,6 +7851,137 @@
             requestAnimationFrame(drawFig2Step);
         }
 
+        /* ==========================================================================
+           FIGURE 3.1: INTERACTIVE OEPC FLOWCHART & 96-LUT EXECUTION ENGINE
+           ========================================================================== */
+        let fcPreset = 'phaseA';
+        let fcCurrentStep = 0; // 0: Start, 1: Sample, 2: Errors, 3: Sort, 4: Decision, 5: 96-LUT, 6: Apply
+        let fcRunning = true;
+        let fcLastStepTime = 0;
+        const fcStepDuration = 1500; // ms per step in auto mode
+
+        const isDocEn = document.documentElement.lang === 'en' || document.dir === 'ltr';
+
+        const fcPresets = {
+            phaseA: {
+                name: isDocEn ? "Scenario 1: Phase A Dominant Error (|ea| Maximum)" : "תרחיש 1: שגיאה דומיננטית בפאזה A (|ea| מקסימלי)",
+                currents: isDocEn ? "ia = +4.82A, ib = -2.40A, ic = -2.41A | i0 = +0.003A (Nominal)" : "ia = +4.82A, ib = -2.40A, ic = -2.41A | i0 = +0.003A (נומינלי)",
+                errors: isDocEn ? "ea = +0.42A (Max), eb = -0.18A, ec = -0.24A | eab = +0.60A" : "ea = +0.42A (מקסימלי), eb = -0.18A, ec = -0.24A | eab = +0.60A",
+                priority: isDocEn ? "|ea| > |ec| > |eb| ➔ S_sel = [0 0 0] (Permutation 1)" : "|ea| > |ec| > |eb| ➔ S_sel = [0 0 0] (Permutation 1)",
+                decision: isDocEn ? "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)" : "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)",
+                lut: isDocEn ? "Addr: {F_mp=1, S_sel=000, S_sgn=100} ➔ State: [1 0 1 1] (V23) ➔ va=+Vdc" : "Addr: {F_mp=1, S_sel=000, S_sgn=100} ➔ State: [1 0 1 1] (V23) ➔ va=+Vdc",
+                status: isDocEn ? "Execution: Differential correction for Phase A | ZSC Suppressed (S1=S4=1)" : "שלב ביצוע: תיקון דיפרנציאלי לפאזה A | דיכוי מוחלט של ZSC (S1=S4=1)"
+            },
+            zsc: {
+                name: isDocEn ? "Scenario 2: Emergency ZSC Suppression (|i0| > Tol)" : "תרחיש 2: חירום דיכוי ZSC (|i0| > Tol)",
+                currents: isDocEn ? "ia = +3.10A, ib = +1.20A, ic = -3.76A | i0 = +0.180A (Severe ZSC Excursion!)" : "ia = +3.10A, ib = +1.20A, ic = -3.76A | i0 = +0.180A (חריגת ZSC קיצונית!)",
+                errors: isDocEn ? "ea = +0.15A, eb = +0.10A, ec = -0.25A | e0 = +0.180A" : "ea = +0.15A, eb = +0.10A, ec = -0.25A | e0 = +0.180A",
+                priority: isDocEn ? "|ec| > |ea| > |eb| ➔ S_sel = [0 1 0] (Permutation 3)" : "|ec| > |ea| > |eb| ➔ S_sel = [0 1 0] (Permutation 3)",
+                decision: isDocEn ? "|i0| = 0.180A > 0.05A (Tol) ➔ YES! ➔ F_mp = 0 (EMERGENCY ZSC TRIGGER!)" : "|i0| = 0.180A > 0.05A (Tol) ➔ YES! ➔ F_mp = 0 (EMERGENCY ZSC TRIGGER!)",
+                lut: isDocEn ? "Addr: {F_mp=0, S_sel=010, S_sgn=001} ➔ State: [1 1 0 1] (V25) ➔ v0=-Vdc" : "Addr: {F_mp=0, S_sel=010, S_sgn=001} ➔ State: [1 1 0 1] (V25) ➔ v0=-Vdc",
+                status: isDocEn ? "Execution: EMERGENCY ZSC ACTIVATED! F_mp=0 suppresses circulating current in 1 clock cycle" : "שלב ביצוע: הפעלת מצב חירום ZSC! F_mp=0 מדכא את הזרם המעגלי במחזור שעון יחיד"
+            },
+            phaseB: {
+                name: isDocEn ? "Scenario 3: Phase B Dominant Error (|eb| Maximum)" : "תרחיש 3: שגיאה דומיננטית בפאזה B (|eb| מקסימלי)",
+                currents: isDocEn ? "ia = -2.15A, ib = +4.70A, ic = -2.54A | i0 = +0.003A (Nominal)" : "ia = -2.15A, ib = +4.70A, ic = -2.54A | i0 = +0.003A (נומינלי)",
+                errors: isDocEn ? "ea = -0.12A, eb = +0.49A (Max), ec = -0.37A | ebc = +0.86A" : "ea = -0.12A, eb = +0.49A (מקסימלי), ec = -0.37A | ebc = +0.86A",
+                priority: isDocEn ? "|eb| > |ec| > |ea| ➔ S_sel = [0 1 0] (Permutation 2)" : "|eb| > |ec| > |ea| ➔ S_sel = [0 1 0] (Permutation 2)",
+                decision: isDocEn ? "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)" : "|i0| = 0.003A < 0.05A (Tol) ➔ NO ➔ F_mp = 1 (DM Phase Priority)",
+                lut: isDocEn ? "Addr: {F_mp=1, S_sel=010, S_sgn=010} ➔ State: [0 1 1 0] (V12) ➔ vb=+Vdc" : "Addr: {F_mp=1, S_sel=010, S_sgn=010} ➔ State: [0 1 1 0] (V12) ➔ vb=+Vdc",
+                status: isDocEn ? "Execution: Differential correction for Phase B | ZSC Suppressed (S1=S4=0)" : "שלב ביצוע: תיקון דיפרנציאלי לפאזה B | דיכוי מוחלט של ZSC (S1=S4=0)"
+            }
+        };
+
+        const fcNodes = [
+            { id: 0, title: isDocEn ? "01: ePWM Hardware Trigger" : "01: טריגר חומרה ePWM", sub: isDocEn ? "Interrupt every cycle (50kHz / 20µs)" : "הפעלת פסיקה בכל מחזור (50kHz / 20µs)", y: 15, h: 48, type: 'rect' },
+            { id: 1, title: isDocEn ? "02: Current Sampling & i0" : "02: דגימת זרמים וחישוב i_0", sub: isDocEn ? "Sample ia, ib, ic & compute zero-seq i0" : "דגימת ia, ib, ic וחישוב זרם סכום i_0", y: 78, h: 48, type: 'rect' },
+            { id: 2, title: isDocEn ? "03: Compute 6 Current Errors" : "03: חישוב 6 שגיאות זרם", sub: isDocEn ? "ea, eb, ec (phase) & eab, ebc, eca (line)" : "ea, eb, ec (פאזות) ו-eab, ebc, eca (קווים)", y: 141, h: 48, type: 'rect' },
+            { id: 3, title: isDocEn ? "04: Sort Error Magnitudes" : "04: מיון גודל שגיאות", sub: isDocEn ? "Sort by absolute value ➔ Select S_sel" : "מיון לפי ערך מוחלט ➔ בחירת S_sel (3 ביטים)", y: 204, h: 48, type: 'rect' },
+            { id: 4, title: isDocEn ? "05: Priority Phase Decision" : "05: החלטת פאזה מועדפת (F_mp)", sub: isDocEn ? "Is |i0| > Tol ? (ZSC Suppression vs DM)" : "האם |i_0| > Tol ? (דיכוי ZSC מול DM)", y: 267, h: 56, type: 'diamond' },
+            { id: 5, title: isDocEn ? "06: Fetch Vector from 96-LUT" : "06: שליפת וקטור מ-96-LUT", sub: isDocEn ? "7-bit addr {F_mp, S_sel, S_sgn} ➔ [S1..S4]" : "כתובת 7 ביט {F_mp, S_sel, S_sgn} ➔ [S1..S4]", y: 338, h: 48, type: 'rect' },
+            { id: 6, title: isDocEn ? "07: Apply ePWM Switching" : "07: הפעלת פסיקת מיתוג ePWM", sub: isDocEn ? "Output gate pulses + 1.5µs dead-time" : "הוצאת פולסים לדרייברים + Dead-time 1.5µs", y: 401, h: 48, type: 'rect' }
+        ];
+
+        function switchFig3Tab(tab) {
+            const btnInt = document.getElementById('tab-fig3-interactive');
+            const btnOrig = document.getElementById('tab-fig3-original');
+            const viewInt = document.getElementById('fig3-view-interactive');
+            const viewOrig = document.getElementById('fig3-view-original');
+            if (tab === 'interactive') {
+                btnInt.classList.add('active');
+                btnOrig.classList.remove('active');
+                viewInt.style.display = 'block';
+                viewOrig.style.display = 'none';
+            } else {
+                btnInt.classList.remove('active');
+                btnOrig.classList.add('active');
+                viewInt.style.display = 'none';
+                viewOrig.style.display = 'block';
+            }
+        }
+
+        function setFcPreset(preset) {
+            fcPreset = preset;
+            document.getElementById('btn-fc-preset-a').classList.toggle('active', preset === 'phaseA');
+            document.getElementById('btn-fc-preset-zsc').classList.toggle('active', preset === 'zsc');
+            document.getElementById('btn-fc-preset-b').classList.toggle('active', preset === 'phaseB');
+            updateFcTelemetry();
+        }
+
+        function toggleFcRun() {
+            fcRunning = !fcRunning;
+            const btn = document.getElementById('btn-fc-run');
+            if (btn) {
+                btn.innerText = fcRunning ? "⏸️ השהה הרצה" : "▶️ הרצה רציפה";
+                btn.classList.toggle('active', fcRunning);
+            }
+        }
+
+        function stepFcFlow() {
+            fcCurrentStep = (fcCurrentStep + 1) % fcNodes.length;
+            updateFcTelemetry();
+        }
+
+        function resetFcFlow() {
+            fcCurrentStep = 0;
+            updateFcTelemetry();
+        }
+
+        function updateFcTelemetry() {
+            const p = fcPresets[fcPreset];
+            const elStatus = document.getElementById('fig3-status-pill');
+            const elCurr = document.getElementById('fig3-val-currents');
+            const elErr = document.getElementById('fig3-val-errors');
+            const elPrio = document.getElementById('fig3-val-priority');
+            const elLut = document.getElementById('fig3-val-lut');
+
+            if (elStatus) {
+                const node = fcNodes[fcCurrentStep];
+                elStatus.innerText = `${node.title}: ${p.status}`;
+                elStatus.style.borderColor = (fcPreset === 'zsc') ? 'rgba(239, 68, 68, 0.6)' : 'rgba(0, 210, 255, 0.6)';
+                elStatus.style.color = (fcPreset === 'zsc') ? '#ef4444' : '#00d2ff';
+            }
+
+            if (elCurr) elCurr.innerText = (fcCurrentStep >= 1) ? p.currents : (isDocEn ? "Waiting for sample..." : "ממתין לדגימה...");
+            if (elErr) elErr.innerText = (fcCurrentStep >= 2) ? p.errors : (isDocEn ? "Pending error calculation..." : "טרם חושב");
+            if (elPrio) elPrio.innerText = (fcCurrentStep >= 3) ? p.priority : (isDocEn ? "Pending magnitude sorting..." : "טרם מוין");
+            if (elLut) {
+                if (fcCurrentStep >= 5) {
+                    elLut.innerText = p.lut;
+                    elLut.style.color = (fcPreset === 'zsc') ? '#ef4444' : 'var(--accent-cyan)';
+                } else {
+                    elLut.innerText = isDocEn ? "Vector not fetched yet" : "טרם נשלף וקטור";
+                    elLut.style.color = '#94a3b8';
+                }
+            }
+        }
+
+        
+        // Compatibility alias for Motor Sim
+        function toggleMotorSimRun() {
+            if (typeof toggleMotorSim === 'function') toggleMotorSim();
+        }
+
         function initFig3() {
             const canvas = document.getElementById('fig3-flowchart-canvas');
             if (!canvas) return;
@@ -7983,12 +8124,19 @@
                     // Node Title & Subtitle
                     ctx.fillStyle = isCur ? '#ffffff' : '#f0f4fc';
                     ctx.font = isCur ? 'bold 11.5px Heebo, sans-serif' : '500 11px Heebo, sans-serif';
-                    ctx.textAlign = 'right';
-                    ctx.fillText(n.title, nx + nw - 14, ny + 18);
-
-                    ctx.fillStyle = isCur ? '#00d2ff' : '#94a3b8';
-                    ctx.font = '9.5px Heebo, sans-serif';
-                    ctx.fillText(n.sub, nx + nw - 14, ny + 34);
+                    if (isDocEn) {
+                        ctx.textAlign = 'left';
+                        ctx.fillText(n.title, nx + 34, ny + 18);
+                        ctx.fillStyle = isCur ? '#00d2ff' : '#94a3b8';
+                        ctx.font = '9.5px Heebo, sans-serif';
+                        ctx.fillText(n.sub, nx + 34, ny + 34);
+                    } else {
+                        ctx.textAlign = 'right';
+                        ctx.fillText(n.title, nx + nw - 14, ny + 18);
+                        ctx.fillStyle = isCur ? '#00d2ff' : '#94a3b8';
+                        ctx.font = '9.5px Heebo, sans-serif';
+                        ctx.fillText(n.sub, nx + nw - 14, ny + 34);
+                    }
 
                     // Step Number Icon
                     ctx.fillStyle = isCur ? '#00d2ff' : 'rgba(255, 255, 255, 0.15)';
@@ -8017,12 +8165,19 @@
                 // Explanatory Header
                 ctx.fillStyle = '#00d2ff';
                 ctx.font = 'bold 12.5px Heebo, sans-serif';
-                ctx.textAlign = 'right';
-                ctx.fillText(`🔍 ${curN.title}`, expBox.x + expBox.w - 16, expBox.y + 26);
-
-                ctx.fillStyle = '#94a3b8';
-                ctx.font = '10px Heebo, sans-serif';
-                ctx.fillText(`מחזור: 20µs (50kHz) • שלב ${fcCurrentStep + 1} מתוך 7`, expBox.x + expBox.w - 16, expBox.y + 44);
+                if (isDocEn) {
+                    ctx.textAlign = 'left';
+                    ctx.fillText(`🔍 ${curN.title}`, expBox.x + 16, expBox.y + 26);
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '10px Heebo, sans-serif';
+                    ctx.fillText(`Period: 20µs (50kHz) • Step ${fcCurrentStep + 1} of 7`, expBox.x + 16, expBox.y + 44);
+                } else {
+                    ctx.textAlign = 'right';
+                    ctx.fillText(`🔍 ${curN.title}`, expBox.x + expBox.w - 16, expBox.y + 26);
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '10px Heebo, sans-serif';
+                    ctx.fillText(`מחזור: 20µs (50kHz) • שלב ${fcCurrentStep + 1} מתוך 7`, expBox.x + expBox.w - 16, expBox.y + 44);
+                }
 
                 // Divider line
                 ctx.strokeStyle = 'rgba(64, 120, 240, 0.2)';
@@ -8127,17 +8282,17 @@
             });
         }
 
-        // Initialize on load
+        // Initialize on load with robust error isolation
         window.addEventListener('load', () => {
-            initJsx();
-            updateJsxSim();
-            updateOscParams();
-            updateMotorParams();
-            initFig1();
-            initFig2();
-            initFig3();
-            requestAnimationFrame(oscStep);
-            requestAnimationFrame(drawMotorSimStep);
+            try { initJsx(); } catch (e) { console.warn('initJsx:', e); }
+            try { updateJsxSim(); } catch (e) { console.warn('updateJsxSim:', e); }
+            try { updateOscParams(); } catch (e) { console.warn('updateOscParams:', e); }
+            try { updateMotorParams(); } catch (e) { console.warn('updateMotorParams:', e); }
+            try { initFig1(); } catch (e) { console.warn('initFig1:', e); }
+            try { initFig2(); } catch (e) { console.warn('initFig2:', e); }
+            try { initFig3(); } catch (e) { console.warn('initFig3:', e); }
+            try { requestAnimationFrame(oscStep); } catch (e) { console.warn('oscStep:', e); }
+            try { requestAnimationFrame(drawMotorSimStep); } catch (e) { console.warn('drawMotorSimStep:', e); }
         });
     </script>
 </body>
